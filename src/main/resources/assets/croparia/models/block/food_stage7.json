@@ -1,0 +1,7 @@
+{
+  "parent": "croparia:block/crop",
+  "textures": {
+    "crop": "croparia:block/food_stage_7_overlay",
+    "background": "croparia:block/food_stage_7"
+  }
+}

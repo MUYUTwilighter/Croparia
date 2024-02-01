@@ -1,11 +1,11 @@
 {
     "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
     "textures": {
-        "particle": "croparia:blocks/infusor_top",
-        "0": "croparia:blocks/infusor_ns",
-        "1": "croparia:blocks/infusor_ew",
-        "2": "croparia:blocks/infusor_top",
-        "3": "croparia:blocks/infusor_bottom"
+        "particle": "croparia:block/infusor_top",
+        "0": "croparia:block/infusor_ns",
+        "1": "croparia:block/infusor_ew",
+        "2": "croparia:block/infusor_top",
+        "3": "croparia:block/infusor_bottom"
     },
     "elements": [
         {

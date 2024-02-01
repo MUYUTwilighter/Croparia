@@ -1,9 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-  "BBB", 
-  "P P"
-  ],
+  "category": "misc",
   "key": {
     "B": {
       "item": "minecraft:iron_block"
@@ -12,7 +9,12 @@
       "item": "minecraft:iron_ingot"
     }
   },
+  "pattern": [
+    "BBB",
+    "P P"
+  ],
   "result": {
     "item": "croparia:ritual_stand"
-  }
+  },
+  "show_notification": true
 }

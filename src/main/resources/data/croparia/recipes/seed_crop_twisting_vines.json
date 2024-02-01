@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": {
+      "item": "croparia:croparia"
+    },
+    "M": {
+      "item": "minecraft:twisting_vines"
+    },
+    "S": {
+      "item": "minecraft:wheat_seeds"
+    }
+  },
+  "pattern": [
+    "MSM",
+    "SES",
+    "MSM"
+  ],
+  "result": {
+    "item": "croparia:seed_crop_twisting_vines"
+  },
+  "show_notification": true
+}

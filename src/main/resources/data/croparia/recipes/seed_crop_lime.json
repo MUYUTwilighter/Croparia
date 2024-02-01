@@ -1,22 +1,24 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "MPM",
-    "PSP",
-    "MPM"
-  ],
+  "category": "misc",
   "key": {
+    "E": {
+      "item": "croparia:croparia"
+    },
     "M": {
       "item": "minecraft:lime_dye"
     },
     "S": {
-      "item": "croparia:croparia"
-    },
-    "P": {
-      "tag": "forge:seeds"
+      "item": "minecraft:wheat_seeds"
     }
   },
+  "pattern": [
+    "MSM",
+    "SES",
+    "MSM"
+  ],
   "result": {
     "item": "croparia:seed_crop_lime"
-  }
+  },
+  "show_notification": true
 }

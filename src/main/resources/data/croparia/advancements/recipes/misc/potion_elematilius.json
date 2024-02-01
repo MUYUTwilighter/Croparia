@@ -1,0 +1,48 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_elematilius": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "croparia:elematilius"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_glass_bottle": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:glass_bottle"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:potion_elematilius"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_elematilius",
+      "has_glass_bottle"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:potion_elematilius"
+    ]
+  },
+  "sends_telemetry_event": false
+}

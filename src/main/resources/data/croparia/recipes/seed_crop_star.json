@@ -1,22 +1,24 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "MPM",
-    "PSP",
-    "MPM"
-  ],
+  "category": "misc",
   "key": {
+    "E": {
+      "item": "croparia:croparia6"
+    },
     "M": {
       "item": "minecraft:nether_star"
     },
     "S": {
-      "item": "croparia:croparia6"
-    },
-    "P": {
-      "tag": "forge:seeds"
+      "item": "minecraft:wheat_seeds"
     }
   },
+  "pattern": [
+    "MSM",
+    "SES",
+    "MSM"
+  ],
   "result": {
     "item": "croparia:seed_crop_star"
-  }
+  },
+  "show_notification": true
 }

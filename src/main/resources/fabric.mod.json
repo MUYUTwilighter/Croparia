@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "croparia",
+  "version": "${version}",
+  "name": "croparia",
+  "description": "",
+  "authors": [],
+  "contact": {
+    "repo": "https://github.com/MUYU_Twilighter/untitled"
+  },
+  "license": "All-Rights-Reserved",
+  "icon": "assets/croparia/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "com.defacto34.croparia.CropariaClient"
+    ],
+    "main": [
+      "com.defacto34.croparia.Croparia"
+    ]
+  },
+  "mixins": [
+    "croparia.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": "*",
+    "fabric": "*",
+    "minecraft": "~1.20"
+  }
+}

@@ -1,22 +1,24 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "MPM",
-    "PSP",
-    "MPM"
-  ],
+  "category": "misc",
   "key": {
+    "E": {
+      "item": "croparia:croparia2"
+    },
     "M": {
       "item": "minecraft:slime_ball"
     },
     "S": {
-      "item": "croparia:croparia2"
-    },
-    "P": {
-      "tag": "forge:seeds"
+      "item": "minecraft:wheat_seeds"
     }
   },
+  "pattern": [
+    "MSM",
+    "SES",
+    "MSM"
+  ],
   "result": {
     "item": "croparia:seed_crop_slime"
-  }
+  },
+  "show_notification": true
 }

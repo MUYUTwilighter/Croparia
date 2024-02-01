@@ -1,7 +1,7 @@
     {
     "parent": "item/generated",
     "textures": {
-        "layer0": "croparia:items/potion_fire"
+        "layer0": "croparia:item/potion_fire"
     }
 }
     

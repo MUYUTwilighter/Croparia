@@ -1,20 +1,7 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-  "PIP", 
-  "IPI", 
-  "PIP"
-  ],
-  "key": {
-    "I": {
-      "item": "croparia:elematilius"
-    },
-    "P": {
-      "item": "croparia:croparia3"
-    }
-  },
-  "result": {
-    "item": "croparia:croparia4"
-  },
-    "group": "Croparia"
+  "type": "croparia:infusor_recipe",
+  "input": "croparia:croparia3",
+  "element": "elemental",
+  "output": "croparia:croparia4",
+  "count": 1
 }

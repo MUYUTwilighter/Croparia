@@ -1,7 +1,7 @@
-    {
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "croparia:items/fruit/fruit_electrum"
-    }
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "croparia:item/fruit_crop",
+    "layer1": "croparia:item/fruit_crop_overlay"
+  }
 }
-    

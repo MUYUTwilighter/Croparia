@@ -1,0 +1,61 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_croparia4": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "croparia:croparia4"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_echo_shard": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:echo_shard"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:seed_crop_echo_shard"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_wheat_seeds": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:wheat_seeds"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_wheat_seeds",
+      "has_echo_shard",
+      "has_croparia4"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:seed_crop_echo_shard"
+    ]
+  },
+  "sends_telemetry_event": false
+}

@@ -1,6 +1,0 @@
-{
-    "parent": "block/crop",
-    "textures": {
-        "crop": "croparia:blocks/crop/refined_obsidian_stage_7"
-    }
-}

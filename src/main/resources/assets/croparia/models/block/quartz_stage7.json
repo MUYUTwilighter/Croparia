@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/crop",
-  "textures": {
-    "crop": "croparia:blocks/crop/quartz_stage_7"
-  }
-}

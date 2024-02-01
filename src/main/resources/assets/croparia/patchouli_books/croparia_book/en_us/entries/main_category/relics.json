@@ -1,0 +1,57 @@
+{
+  "name": "Relics",
+  "icon": "croparia:midas_hand",
+  "category": "croparia:main",
+  "sortnum" : 4,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "item": "croparia:elemental_stone",
+      "text": "There are 4 relics in croparia. One that change everything into gold, another gives infinite food and more. If you want them, you will need to build the next structure. To craft an elemental stone, you need to drop a stone on an elemental infusor."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "croparia:ritual_stand"
+    },
+    {
+      "type": "patchouli:multiblock",
+      "name": "Ritual Tier 1",
+      "multiblock": {
+        "pattern": [
+          [ "_________", "_A_____A_", "_________", "_________", "_________", "_________", "_________", "_A_____A_", "_________" ],
+          [ "___D_D___", "_A__G__A_", "_________", "D__I_I__D", "_G__0__G_", "D__I_I__D", "_________", "_A__G__A_", "___D_D___" ],
+          [ "_________", "_________", "_________", "____ ____", "___ E ___", "____ ____", "_________", "_________", "_________" ]
+        ],
+        "mapping": {
+          "A": "minecraft:andesite",
+          "D": "minecraft:diorite",
+          "I": "croparia:block_crop_iron[age=7]",
+          "G": "croparia:block_crop_gold[age=7]",
+          "0": "croparia:ritual_stand",
+          "E": "croparia:elemental_stone"
+        }
+      },
+      "symmetrical":true
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "croparia:midas_hand",
+      "text": "A mythical golden hand that turn anything into gold ! Fill the 4 holes around the elemental stone with gold block and drop a stick on the ritual stand."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "croparia:infinite_apple",
+      "text": "An apple that you can't finish. Fill the 4 holes around the elemental stone with nether wart block and drop a golden apple on the ritual stand."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "croparia:horn_plenty",
+      "text": "A horn engraved with an unknown symbol that provides unlimited food. Fill the 4 holes around the elemental stone with spruce planks and drop a nether wart block on the ritual stand."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "croparia:magic_rope",
+      "text": "You'll never get lost again. Fill the 4 holes around the elemental stone with elemental stone and drop a lead on the ritual stand."
+    }
+  ]
+}

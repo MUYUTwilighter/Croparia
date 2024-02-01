@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": {
+      "item": "croparia:croparia"
+    },
+    "M": {
+      "item": "minecraft:rabbit"
+    },
+    "S": {
+      "item": "minecraft:wheat_seeds"
+    }
+  },
+  "pattern": [
+    "MSM",
+    "SES",
+    "MSM"
+  ],
+  "result": {
+    "item": "croparia:seed_crop_raw_rabbit"
+  },
+  "show_notification": true
+}

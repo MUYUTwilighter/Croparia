@@ -1,0 +1,61 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_croparia7": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "croparia:croparia7"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_dragon_egg": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:dragon_egg"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:seed_crop_dragon"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_wheat_seeds": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:wheat_seeds"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_wheat_seeds",
+      "has_dragon_egg",
+      "has_croparia7"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:seed_crop_dragon"
+    ]
+  },
+  "sends_telemetry_event": false
+}

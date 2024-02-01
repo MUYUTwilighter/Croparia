@@ -1,20 +1,21 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-  "PIP", 
-  "IPI", 
-  "PIP"
-  ],
+  "category": "misc",
   "key": {
     "I": {
       "item": "croparia:elematilius"
     },
     "P": {
-      "tag": "forge:seeds"
+      "item": "minecraft:wheat_seeds"
     }
   },
+  "pattern": [
+    "PIP",
+    "IPI",
+    "PIP"
+  ],
   "result": {
     "item": "croparia:croparia"
   },
-    "group": "Croparia"
+  "show_notification": true
 }

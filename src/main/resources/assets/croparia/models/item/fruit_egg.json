@@ -1,6 +1,7 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "croparia:items/fruit/fruit_egg"
+    "layer0": "croparia:item/fruit_food",
+    "layer1": "croparia:item/fruit_food_overlay"
   }
 }

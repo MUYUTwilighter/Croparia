@@ -1,22 +1,24 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "ISI", 
-    "SPS", 
-    "ISI"
-  ],
+  "category": "misc",
   "key": {
-    "P": {
+    "E": {
       "item": "croparia:croparia2"
     },
-    "S": {
-      "tag": "forge:seeds"
-    },
-    "I": {
+    "M": {
       "item": "minecraft:copper_ingot"
+    },
+    "S": {
+      "item": "minecraft:wheat_seeds"
     }
   },
+  "pattern": [
+    "MSM",
+    "SES",
+    "MSM"
+  ],
   "result": {
     "item": "croparia:seed_crop_copper"
-  }
+  },
+  "show_notification": true
 }

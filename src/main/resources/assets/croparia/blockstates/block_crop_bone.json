@@ -16,13 +16,13 @@
       "model": "croparia:block/crop_stage4"
     },
     "age=5": {
-      "model": "croparia:block/bone_stage5"
+      "model": "croparia:block/monster_stage5"
     },
     "age=6": {
-      "model": "croparia:block/bone_stage6"
+      "model": "croparia:block/monster_stage6"
     },
     "age=7": {
-      "model": "croparia:block/bone_stage7"
+      "model": "croparia:block/monster_stage7"
     }
   }
 }

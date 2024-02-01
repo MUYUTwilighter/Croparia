@@ -1,23 +1,24 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "sgs",
-    "G G",
-    "G G"
-  ],
+  "category": "misc",
   "key": {
-    "s": {
-      "item": "minecraft:stick"
-    },
-    "g": {
+    "G": {
       "item": "minecraft:glowstone_dust"
     },
-    "G": {
+    "P": {
       "item": "minecraft:glass_pane"
+    },
+    "S": {
+      "item": "minecraft:stick"
     }
   },
+  "pattern": [
+    "SGS",
+    "P P",
+    "P P"
+  ],
   "result": {
     "item": "croparia:greenhouse"
   },
-    "group": "greenhouse"
+  "show_notification": true
 }

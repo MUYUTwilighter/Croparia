@@ -1,7 +1,7 @@
     {
     "parent": "item/generated",
     "textures": {
-        "layer0": "croparia:items/elemental_fire"
+        "layer0": "croparia:item/elemental_fire"
     }
 }
     

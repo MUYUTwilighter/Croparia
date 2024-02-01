@@ -1,0 +1,36 @@
+{
+  "name": "Your first Croparia",
+  "icon": "croparia:croparia",
+  "category": "croparia:main",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "First of all, you will need to find some Elematilius Ores. By mining them, you will obtain elematilius, a strange purple stone."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "croparia:elematilius_ore",
+      "text": "This is a strange purple stone."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "With your brand new elematilius, you are now able to craft your first Croparia ! You will soon be able to craft your first seed. You can also craft elematilius if you need to.",
+      "title": "Some Crafts"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "croparia:croparia",
+      "recipe2": "croparia:elematilius"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "Congratulation ! You can now have unlimited acacia saplings, black dyes, vines and so much more ! Humm... you are a bit disapointed I see. If you want the netherite seed, you still have a lot of work to do !",
+      "title": "SEEDS !"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "croparia:seed_crop_acacia",
+      "text": "Once you harvest your crops, you will have some fruits. Break them on a block to collect your precious items"
+    }
+  ]
+}

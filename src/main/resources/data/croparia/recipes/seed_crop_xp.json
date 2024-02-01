@@ -1,22 +1,24 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "MPM",
-    "PSP",
-    "MPM"
-  ],
+  "category": "misc",
   "key": {
+    "E": {
+      "item": "croparia:croparia4"
+    },
     "M": {
       "item": "minecraft:experience_bottle"
     },
     "S": {
-      "item": "croparia:croparia4"
-    },
-    "P": {
-      "tag": "forge:seeds"
+      "item": "minecraft:wheat_seeds"
     }
   },
+  "pattern": [
+    "MSM",
+    "SES",
+    "MSM"
+  ],
   "result": {
     "item": "croparia:seed_crop_xp"
-  }
+  },
+  "show_notification": true
 }

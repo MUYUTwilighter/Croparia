@@ -1,7 +1,7 @@
     {
     "parent": "item/generated",
     "textures": {
-        "layer0": "croparia:items/infinite_apple"
+        "layer0": "croparia:item/infinite_apple"
     }
 }
     

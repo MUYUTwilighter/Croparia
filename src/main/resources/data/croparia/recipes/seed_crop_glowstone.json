@@ -1,22 +1,24 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "MPM",
-    "PSP",
-    "MPM"
-  ],
+  "category": "misc",
   "key": {
-    "M": {
-      "item": "minecraft:glowstone_dust"
-    },
-    "S": {
+    "E": {
       "item": "croparia:croparia3"
     },
-    "P": {
-      "tag": "forge:seeds"
+    "M": {
+      "item": "minecraft:glowstone"
+    },
+    "S": {
+      "item": "minecraft:wheat_seeds"
     }
   },
+  "pattern": [
+    "MSM",
+    "SES",
+    "MSM"
+  ],
   "result": {
     "item": "croparia:seed_crop_glowstone"
-  }
+  },
+  "show_notification": true
 }

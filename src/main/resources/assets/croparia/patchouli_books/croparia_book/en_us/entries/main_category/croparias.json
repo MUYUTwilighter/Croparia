@@ -1,0 +1,47 @@
+{
+  "name": "Better Croparias",
+  "icon": "croparia:croparia7",
+  "category": "croparia:main",
+  "sortnum" : 1,
+  "pages": [
+    {
+      "type": "patchouli:spotlight",
+      "text": "It's time to get better croparias !",
+      "item": "croparia:croparia2"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "To do so, you will need to discover a new way to craft items"
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "croparia:potion_elematilius",
+      "text": "You can put an elematilius in a cauldron full of water to obtain some liquid elematilius. Then, you should be able to fill some bottles with it."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "croparia:infusor",
+      "text": "This stone is able to manipulate the elematilius when applied with a filled bottle."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "croparia:croparia2",
+      "text": "Now, just drop a croparia on the infusor to obtain a croparia T2."
+    },
+    {
+      "type": "patchouli:spotlight",
+      "item": "croparia:croparia7",
+      "text": "You can repeat it until the maximum tier : croparia T7 !"
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "croparia:seed_crop_diamond",
+      "text": "Each tier of croparia will grant you access to better seeds."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "croparia:seed_crop_dragon",
+      "text": "Even the DRAGON SEED !"
+    }
+  ]
+}

@@ -1,34 +1,24 @@
 {
   "type": "minecraft:crafting_shaped",
-  "pattern": [
-    "ISI", 
-    "SPS", 
-    "ISI"
-  ],
+  "category": "misc",
   "key": {
-    "P": {
-      "item": "croparia:croparia4"
+    "E": {
+      "item": "croparia:croparia3"
     },
-    "S": [
-    {
-      "item": "minecraft:wheat_seeds"
-    },
-    {
-      "item": "minecraft:pumpkin_seeds"
-    },
-    {
-      "item": "minecraft:melon_seeds"
-    },
-    {
-      "item": "minecraft:beetroot_seeds"
-    }
-    ],
-    "I": {
+    "M": {
       "item": "croparia:elematilius"
+    },
+    "S": {
+      "item": "minecraft:wheat_seeds"
     }
   },
+  "pattern": [
+    "MSM",
+    "SES",
+    "MSM"
+  ],
   "result": {
     "item": "croparia:seed_crop_elemental"
   },
-    "group": "CropariaT4"
+  "show_notification": true
 }

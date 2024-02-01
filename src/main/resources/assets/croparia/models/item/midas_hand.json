@@ -1,7 +1,7 @@
     {
     "parent": "item/generated",
     "textures": {
-        "layer0": "croparia:items/midas_hand"
+        "layer0": "croparia:item/midas_hand"
     }
 }
     

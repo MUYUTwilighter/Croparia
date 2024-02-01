@@ -1,6 +1,7 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "croparia:items/fruit/fruit_ink"
+    "layer0": "croparia:item/fruit_animal",
+    "layer1": "croparia:item/fruit_animal_overlay"
   }
 }

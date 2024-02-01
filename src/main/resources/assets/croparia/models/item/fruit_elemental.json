@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "croparia:items/fruit/fruit_elemental"
+    "layer0": "croparia:item/fruit_elemental"
   }
 }

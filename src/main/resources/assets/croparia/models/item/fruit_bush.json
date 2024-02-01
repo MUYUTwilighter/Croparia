@@ -1,6 +1,7 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "croparia:items/fruit/fruit_bush"
+    "layer0": "croparia:item/fruit_nature",
+    "layer1": "croparia:item/fruit_nature_overlay"
   }
 }

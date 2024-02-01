@@ -1,6 +1,6 @@
 {
     "parent": "block/cube_all",
     "textures": {
-        "all": "croparia:blocks/elemental_stone"
+        "all": "croparia:block/elemental_stone"
     }
 }

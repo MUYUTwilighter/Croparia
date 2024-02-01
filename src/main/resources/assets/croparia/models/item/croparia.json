@@ -1,7 +1,6 @@
-    {
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "croparia:items/fruit/fruit_start"
-    }
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "croparia:item/croparia1"
+  }
 }
-    
