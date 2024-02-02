@@ -16,6 +16,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.Inventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.Generic3x3ContainerScreenHandler;
@@ -38,11 +39,17 @@ public class GreenhouseBE extends BlockEntity implements NamedScreenHandlerFacto
         if (!level.isClient) {
             BlockState belowState = level.getBlockState(worldPosition.down());
             if (belowState.getBlock() instanceof CropBlock block) {
+                Item seed = block.getPickStack(level, worldPosition, belowState).getItem();
                 if (block.isMature(belowState)) {
                     List<ItemStack> droppedStacks = Block.getDroppedStacks(
                             belowState, level.getServer().getWorld(level.getRegistryKey()),
                             worldPosition.down(), level.getBlockEntity(worldPosition.down()));
+                    boolean decreased = false;
                     for (ItemStack stack : droppedStacks) {
+                        if (!decreased && stack.isOf(seed)) {
+                            stack.decrement(1);
+                            decreased = true;
+                        }
                         addItemStackInInventory(stack, greenHouseBE);
                     }
 

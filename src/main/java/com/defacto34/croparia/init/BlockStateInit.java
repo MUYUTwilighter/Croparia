@@ -1,24 +1,28 @@
 package com.defacto34.croparia.init;
 
+import com.defacto34.croparia.Croparia;
 import com.defacto34.croparia.api.crop.Crop;
 import com.defacto34.croparia.api.crop.CropariaCrops;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.resource.DirectoryResourcePack;
+import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourcePack;
+import net.minecraft.util.Identifier;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
 
 /** NOT COMPLETED!<br/>
  * Add default BlockState json for crops
  * */
 public class BlockStateInit {
+    public static Map<Identifier, Resource> BLOCK_STATES = new HashMap<>();
     public static Path RESOURCE_PATH = FabricLoader.getInstance().getConfigDir().resolve("croparia/resources/assets/croparia/blockstates");
-    public static ResourcePack RESOURCE_PACK = new DirectoryResourcePack("croparia", RESOURCE_PATH, true);
+    public static ResourcePack RESOURCE_PACK;
 
-    public static void registerCrop(Crop crop) throws IOException {
+    public static void registerCrop(Crop crop) {
         String cropName = crop.cropName;
         CropariaCrops crops = (CropariaCrops) crop.cropBlock;
 
@@ -38,14 +42,8 @@ public class BlockStateInit {
         builder.append("}").append('\n');
         String content = builder.toString();
 
-        Path blockState = RESOURCE_PATH.resolve("block_crop_" + cropName + ".json");
-        File file = new File(blockState.toUri());
-        if (!file.exists()) {
-            file.createNewFile();
-        }
-        FileWriter writer = new FileWriter(file);
-        writer.write(content);
-        writer.close();
+        Identifier identifier = new Identifier(Croparia.MOD_ID, "blockstates/block_crop_" + cropName);
+//        Resource resource = new Resource();
     }
 
     public static void registerCrops() {
