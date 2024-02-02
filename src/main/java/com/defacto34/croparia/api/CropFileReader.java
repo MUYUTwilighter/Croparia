@@ -24,26 +24,6 @@ public class CropFileReader {
     public CropFileReader() {
     }
 
-    public static JsonObject readJsonFile(String filePath) throws IOException {
-        FileReader reader = new FileReader(filePath);
-
-        JsonObject var2;
-        try {
-            var2 = JsonParser.parseReader(reader).getAsJsonObject();
-        } catch (Throwable var5) {
-            try {
-                reader.close();
-            } catch (Throwable var4) {
-                var5.addSuppressed(var4);
-            }
-
-            throw var5;
-        }
-
-        reader.close();
-        return var2;
-    }
-
     public static void readAllCustomJsons(String folderPath) throws IOException {
         List<Crop> customObjects = new ArrayList();
         String jsonFilePath = folderPath + File.separator + "exemple.json";
@@ -53,9 +33,7 @@ public class CropFileReader {
 
         File folder = new File(folderPath);
         if (folder.exists() && folder.isDirectory()) {
-            File[] files = folder.listFiles((dir, name) -> {
-                return name.endsWith(".json");
-            });
+            File[] files = folder.listFiles((dir, name) -> name.endsWith(".json"));
             if (files != null) {
                 File[] var6 = files;
                 int var7 = files.length;
@@ -69,35 +47,12 @@ public class CropFileReader {
 
     }
 
-    private static void createDefaultJsonFile(File file) throws IOException {
-        JsonObject defaultJsonObject = new JsonObject();
-        defaultJsonObject.add("name", new JsonPrimitive("exemple"));
-        defaultJsonObject.add("tier", new JsonPrimitive(1));
-        defaultJsonObject.add("tag", new JsonPrimitive("c:coal"));
-        defaultJsonObject.add("color", new JsonPrimitive("0x333333"));
-        FileWriter writer = new FileWriter(file);
-
-        try {
-            BlockEntitySignTextStrictJsonFix.GSON.toJson(defaultJsonObject, writer);
-        } catch (Throwable var6) {
-            try {
-                writer.close();
-            } catch (Throwable var5) {
-                var6.addSuppressed(var5);
-            }
-
-            throw var6;
-        }
-
-        writer.close();
-    }
-
     private static Crop readCustomJson(File file) throws IOException {
         FileReader reader = new FileReader(file);
 
         Crop var3;
         try {
-            JsonObject jsonObject = (JsonObject)BlockEntitySignTextStrictJsonFix.GSON.fromJson(reader, JsonObject.class);
+            JsonObject jsonObject = BlockEntitySignTextStrictJsonFix.GSON.fromJson(reader, JsonObject.class);
             var3 = parseCustomObject(jsonObject);
         } catch (Throwable var5) {
             try {

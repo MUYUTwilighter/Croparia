@@ -15,11 +15,13 @@ import com.defacto34.croparia.init.*;
 import com.defacto34.croparia.worldgen.gen.OreGen;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -66,6 +68,8 @@ public class Croparia implements ModInitializer {
         RecipesInit.registerRecipes();
         HornPlenty.initFood();
         CropariaCauldronInteraction.bootStrap();
+        if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
+        }
         LOGGER.info("Hello from Croparia");
     }
 
