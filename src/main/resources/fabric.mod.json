@@ -2,11 +2,11 @@
   "schemaVersion": 1,
   "id": "croparia",
   "version": "${version}",
-  "name": "croparia",
+  "name": "croparia-if",
   "description": "",
   "authors": [],
   "contact": {
-    "repo": "https://github.com/MUYU_Twilighter/untitled"
+    "repo": "https://github.com/MUYUTwilighter/Croparia"
   },
   "license": "All-Rights-Reserved",
   "icon": "assets/croparia/icon.png",

@@ -68,8 +68,6 @@ public class Croparia implements ModInitializer {
         RecipesInit.registerRecipes();
         HornPlenty.initFood();
         CropariaCauldronInteraction.bootStrap();
-        if (FabricLoader.getInstance().getEnvironmentType() == EnvType.CLIENT) {
-        }
         LOGGER.info("Hello from Croparia");
     }
 

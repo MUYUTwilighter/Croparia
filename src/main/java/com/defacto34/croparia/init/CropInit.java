@@ -197,7 +197,17 @@ public class CropInit {
         if (shouldLoad.get()) {
             Crop crop = new Crop(name, cropType, tier, tag, color);
             compatCropList.add(crop);
-            JsonObject seedRecipe = Croparia.createShapedRecipeJson(Lists.newArrayList('E', 'M', 'S'), Lists.newArrayList(new Identifier[]{new Identifier(Croparia.MOD_ID, ((Item)ItemInit.croparias.get(tier - 1)).getTranslationKey().replaceFirst("item.croparia.", "")), new Identifier(tag), new Identifier("wheat_seeds")}), Lists.newArrayList(new String[]{"item", "tag", "item"}), Lists.newArrayList(new String[]{"MSM", "SES", "MSM"}), new Identifier(Croparia.MOD_ID, "seed_crop_" + name));
+            JsonObject seedRecipe = Croparia.createShapedRecipeJson(
+                    Lists.newArrayList('E', 'M', 'S'),
+                    Lists.newArrayList(
+                            new Identifier(Croparia.MOD_ID, ItemInit.croparias.get(tier - 1)
+                                    .getTranslationKey()
+                                    .replaceFirst("item.croparia.", "")),
+                            new Identifier(tag),
+                            new Identifier("wheat_seeds")),
+                    Lists.newArrayList("item", "tag", "item"),
+                    Lists.newArrayList("MSM", "SES", "MSM"),
+                    new Identifier(Croparia.MOD_ID, "seed_crop_" + name));
             recipes.add(seedRecipe);
             return crop;
         } else {
