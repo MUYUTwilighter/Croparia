@@ -151,7 +151,7 @@ An example of acacia seed loot table, details can be seen in Minecraft wiki
           "type": "minecraft:item",
           "conditions": [
             {
-              "block": "minecraft:wheat",
+              "block": "croparia:block_crop_acacia",
               "condition": "minecraft:block_state_property",
               "properties": {
                 "age": "7"
