@@ -40,6 +40,7 @@ import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -48,6 +49,8 @@ public class Croparia implements ModInitializer {
     public static final Logger LOGGER = LoggerFactory.getLogger("croparia");
     public static final RegistryKey<ItemGroup> MAIN;
     public static final RegistryKey<ItemGroup> CROP;
+    public static  final Path CONFIG_PATH = FabricLoader.getInstance().getConfigDir().resolve("croparia/config.json");
+    public static Config CONFIG = ConfigIoProcessor.load(CONFIG_PATH);
 
     public Croparia() {
     }
@@ -68,6 +71,12 @@ public class Croparia implements ModInitializer {
         RecipesInit.registerRecipes();
         HornPlenty.initFood();
         CropariaCauldronInteraction.bootStrap();
+        ServerLifecycleEvents.START_DATA_PACK_RELOAD.register((server, manager) -> CONFIG = ConfigIoProcessor.load(CONFIG_PATH));
+        ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((server, resourceManager, success) -> {
+            if (CONFIG.getGenRecipe() != null) {
+                RecipesInit.dumpFruitRecipes();
+            }
+        });
         LOGGER.info("Hello from Croparia");
     }
 

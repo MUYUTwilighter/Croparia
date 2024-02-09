@@ -9,6 +9,7 @@ import com.defacto34.croparia.Croparia;
 import com.defacto34.croparia.api.crop.Crop;
 import com.defacto34.croparia.api.crop.CropType;
 import com.google.common.collect.Lists;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,6 +19,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.block.ComposterBlock;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 
 public class CropInit {
@@ -186,7 +188,7 @@ public class CropInit {
     public CropInit() {
     }
 
-    public static Crop compatCrops(String name, CropType cropType, int tier, String tag, int color, String... modId) {
+    public static Crop compatCrops(String name, CropType cropType, int tier, String item, int color, String... modId) {
         AtomicBoolean shouldLoad = new AtomicBoolean(false);
         Arrays.stream(modId).forEach((id) -> {
             if (FabricLoader.getInstance().isModLoaded(id)) {
@@ -195,7 +197,7 @@ public class CropInit {
 
         });
         if (shouldLoad.get()) {
-            Crop crop = new Crop(name, cropType, tier, tag, color);
+            Crop crop = new Crop(name, cropType, tier, item, color);
             compatCropList.add(crop);
             JsonObject seedRecipe = Croparia.createShapedRecipeJson(
                     Lists.newArrayList('E', 'M', 'S'),
@@ -203,7 +205,7 @@ public class CropInit {
                             new Identifier(Croparia.MOD_ID, ItemInit.croparias.get(tier - 1)
                                     .getTranslationKey()
                                     .replaceFirst("item.croparia.", "")),
-                            new Identifier(tag),
+                            new Identifier(item),
                             new Identifier("wheat_seeds")),
                     Lists.newArrayList("item", "tag", "item"),
                     Lists.newArrayList("MSM", "SES", "MSM"),

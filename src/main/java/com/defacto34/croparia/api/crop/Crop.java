@@ -31,13 +31,13 @@ public class Crop {
         CropInit.cropList.add(this);
     }
 
-    public Crop(String cropName, CropType type, int tier, String tag, int color) {
+    public Crop(String cropName, CropType type, int tier, String item, int color) {
         this.cropName = cropName;
         this.type = type;
         this.material = Items.AIR;
         this.tier = tier;
         this.color = color;
-        this.tag = tag;
+        this.tag = item;
         CropInit.cropList.add(this);
     }
 }
