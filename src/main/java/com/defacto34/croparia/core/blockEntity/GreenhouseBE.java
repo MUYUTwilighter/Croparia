@@ -5,6 +5,7 @@
 
 package com.defacto34.croparia.core.blockEntity;
 
+import com.defacto34.croparia.access.CropBlockAccess;
 import com.defacto34.croparia.init.BlockEntityInit;
 
 import java.util.List;
@@ -22,6 +23,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.Generic3x3ContainerScreenHandler;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.state.property.IntProperty;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
@@ -53,11 +55,9 @@ public class GreenhouseBE extends BlockEntity implements NamedScreenHandlerFacto
                         addItemStackInInventory(stack, greenHouseBE);
                     }
 
-                    if (level.getBlockState(worldPosition.down()).getBlock() instanceof BeetrootsBlock) {
-                        level.setBlockState(worldPosition.down(), block.getDefaultState().with(BeetrootsBlock.AGE, 1));
-                    } else {
-                        level.setBlockState(worldPosition.down(), block.getDefaultState().with(CropBlock.AGE, 4));
-                    }
+                    IntProperty property = ((CropBlockAccess) block).invokeGetAgeProperty();
+                    int maxAge = block.getMaxAge();
+                    level.setBlockState(worldPosition.down(), block.getDefaultState().with(property, maxAge / 2));
                 }
             }
         }
