@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonWriter;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.SharedConstants;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -31,19 +32,11 @@ public class PackHandler {
     protected JsonObject generateMetaFile() {
         JsonObject root = new JsonObject();
         JsonObject pack = new JsonObject();
-        pack.addProperty("pack_format", 9);
+        pack.addProperty("pack_format", SharedConstants.RESOURCE_PACK_VERSION);
         pack.addProperty("description",
             "Croparia mandatory pack in %s.\nPlease do not modify data / assets folders!".formatted(PACKS_DIR));
         root.add("pack", pack);
         return root;
-    }
-
-    protected void writeJsonOrPass(Path path, JsonElement element) {
-        File file = path.toFile();
-        if (file.exists()) {
-            return;
-        }
-        this.writeJson(element, file);
     }
 
     protected void writeJson(JsonElement element, File file) {
