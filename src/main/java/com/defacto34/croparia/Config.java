@@ -2,7 +2,7 @@ package com.defacto34.croparia;
 
 public class Config {
     private Boolean fruitUse = true;
-    private String genRecipe = null;
+    private Boolean postDataGen = true;
 
     public Boolean getFruitUse() {
         return fruitUse;
@@ -12,11 +12,11 @@ public class Config {
         this.fruitUse = fruitUse;
     }
 
-    public String getGenRecipe() {
-        return genRecipe;
+    public Boolean getPostDataGen() {
+        return postDataGen;
     }
 
-    public void setGenRecipe(String genRecipe) {
-        this.genRecipe = genRecipe;
+    public void setRecipePostInjector(Boolean recipePostInjector) {
+        this.postDataGen = recipePostInjector;
     }
 }

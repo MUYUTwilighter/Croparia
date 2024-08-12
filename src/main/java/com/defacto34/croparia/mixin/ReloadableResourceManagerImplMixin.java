@@ -1,6 +1,6 @@
 package com.defacto34.croparia.mixin;
 
-import com.defacto34.croparia.ResourcePackHandler;
+import com.defacto34.croparia.handler.pack.ResourcePackHandler;
 import net.minecraft.resource.ReloadableResourceManagerImpl;
 import net.minecraft.resource.ResourcePack;
 import org.spongepowered.asm.mixin.Mixin;

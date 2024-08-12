@@ -12,50 +12,21 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonWriter;
 import net.minecraft.item.Item;
+import net.minecraft.recipe.Recipe;
+import net.minecraft.recipe.RecipeManager;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RecipesInit {
     private static final Gson gson = new Gson();
 
-    public RecipesInit() {
-    }
-
-    public static void registerRecipes() {
-    }
-
-    public static void dumpFruitRecipes() {
-        Path path = Path.of(Croparia.CONFIG.getGenRecipe());
-        File dir = path.toFile();
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
-        if (dir.isFile()) {
-            return;
-        }
-        CropInit.cropList.forEach(crop -> {
-            JsonObject recipe = genFruitRecipe(crop);
-            String fileName = "fruit_" + crop.cropName + ".json";
-            File file = path.resolve(fileName).toFile();
-            try {
-                if (!file.exists()) {
-                    file.createNewFile();
-                }
-                FileWriter fileWriter = new FileWriter(file);
-                JsonWriter writer = new JsonWriter(fileWriter);
-                writer.setIndent("    ");
-                gson.toJson(recipe, writer);
-                writer.close();
-            } catch (Exception ignored) {
-            }
-        });
-    }
-
-    private static JsonObject genFruitRecipe(Crop crop) {
+    public static JsonObject genFruitRawRecipe(Crop crop) {
         JsonObject root = new JsonObject();
 
         root.addProperty("type", "minecraft:crafting_shapeless");
@@ -74,5 +45,29 @@ public class RecipesInit {
         root.add("result", result);
 
         return root;
+    }
+
+    public static JsonObject createShapedRecipeJson(ArrayList<Character> keys, ArrayList<Identifier> items, ArrayList<String> type, ArrayList<String> pattern, Identifier output) {
+        JsonObject json = new JsonObject();
+        json.addProperty("type", "minecraft:crafting_shaped");
+        JsonArray jsonArray = new JsonArray();
+        jsonArray.add(pattern.get(0));
+        jsonArray.add(pattern.get(1));
+        jsonArray.add(pattern.get(2));
+        json.add("pattern", jsonArray);
+        JsonObject keyList = new JsonObject();
+
+        for (int i = 0; i < keys.size(); ++i) {
+            JsonObject individualKey = new JsonObject();
+            individualKey.addProperty(type.get(i), items.get(i).toString());
+            keyList.add(String.valueOf(keys.get(i)), individualKey);
+        }
+
+        json.add("key", keyList);
+        JsonObject result = new JsonObject();
+        result.addProperty("item", output.toString());
+        result.addProperty("count", 1);
+        json.add("result", result);
+        return json;
     }
 }

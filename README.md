@@ -19,6 +19,7 @@ Including:
 - Auto-gen default textures and models for items & block.
 - Recipes of crop seeds can be replaced by datapack. (The original project would overwrite the recipes in datapacks)
 - Auto generate recipes for botany pots
+- Auto generate recipes converting fruits to resources on crafting table (Double reload might be needed)
 
 # Customization
 
@@ -44,6 +45,8 @@ To add custom seeds (for example, an end_stone seed), you need to create a json 
 To modify data files of this mod, simply replace the original data file by creating a new datapack.
 
 The namespace should be "croparia".
+
+You should always follow the auto generated files in config directory as prior tutorial.
 
 ### Seed recipe
 
@@ -166,6 +169,32 @@ An example of acacia seed loot table, details can be seen in Minecraft wiki
 }
 ```
 
+### Fruit-to-resource recipe
+
+Once started your game and entered the world, this content will be auto generated in config directory.
+
+See `.../data/croparia/recipes/crafting/resource` for detail.
+
 ### Textures & models
 
+Once started your game (entering world is not required), this content will be auto generated in config directory.
+
+See `.../assets/croparia` for detail.
+
 Following tutorials in [original project](https://www.curseforge.com/minecraft/mc-mods/croparia) is OK.
+
+# Config
+
+Config directory is located at `GAME_DIR/config/croparia`.
+Modifiable config file is `config.json`.
+
+*WARNING: Auto-generated files is also located here,
+you can view them as the best tutorial of this mod
+but you should **NEVER** Modify them.*
+
+Config file will always be auto reloaded when using
+
+## Property
+
+- `fruitUse`: enable conversion from fruit to resource by using the fruit item, default: true.
+- `postDataGen`: enable post-generation of data pack files like recipes in config directory, default: true.

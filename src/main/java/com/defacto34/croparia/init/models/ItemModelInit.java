@@ -1,6 +1,6 @@
 package com.defacto34.croparia.init.models;
 
-import com.defacto34.croparia.ResourcePackHandler;
+import com.defacto34.croparia.handler.pack.ResourcePackHandler;
 import com.defacto34.croparia.api.crop.Crop;
 import com.google.gson.JsonObject;
 

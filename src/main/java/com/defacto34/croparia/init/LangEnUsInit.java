@@ -1,6 +1,6 @@
 package com.defacto34.croparia.init;
 
-import com.defacto34.croparia.ResourcePackHandler;
+import com.defacto34.croparia.handler.pack.ResourcePackHandler;
 import com.google.gson.JsonObject;
 
 public class LangEnUsInit {
