@@ -1,0 +1,7 @@
+{
+  "type": "croparia:infusor_recipe",
+  "input": "croparia:seed_crop_iron",
+  "element": "ELEMENTAL",
+  "output": "croparia:seed_crop_gold",
+  "count": 1
+}

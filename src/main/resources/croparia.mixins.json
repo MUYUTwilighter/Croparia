@@ -2,10 +2,9 @@
   "required": true,
   "minVersion": "0.8",
   "package": "com.defacto34.croparia.mixin",
-  "compatibilityLevel": "JAVA_17",
+  "compatibilityLevel": "JAVA_21",
   "mixins": [
     "CropBlockMixin",
-    "LootManagerMixin",
     "RecipeManagerMixin",
     "ReloadableResourceManagerImplMixin",
     "ResourcePackManagerMixin"

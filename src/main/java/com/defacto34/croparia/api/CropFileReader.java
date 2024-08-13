@@ -8,17 +8,15 @@ package com.defacto34.croparia.api;
 import com.defacto34.croparia.api.crop.Crop;
 import com.defacto34.croparia.api.crop.CropType;
 import com.defacto34.croparia.init.CropInit;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonPrimitive;
+import net.fabricmc.loader.api.FabricLoader;
+
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.datafixer.fix.BlockEntitySignTextStrictJsonFix;
 
 public class CropFileReader {
     public CropFileReader() {
@@ -52,7 +50,7 @@ public class CropFileReader {
 
         Crop var3;
         try {
-            JsonObject jsonObject = BlockEntitySignTextStrictJsonFix.GSON.fromJson(reader, JsonObject.class);
+            JsonObject jsonObject = new Gson().fromJson(reader, JsonObject.class);
             var3 = parseCustomObject(jsonObject);
         } catch (Throwable var5) {
             try {
@@ -73,7 +71,7 @@ public class CropFileReader {
         int tier = getIntOrDefault(jsonObject, "tier", 0);
         String item = getStringOrNull(jsonObject, "tag");
         int color = getColorAsInt(jsonObject, "color");
-        return CropInit.compatCrops(name, CropType.CUSTOM, tier, item, color, new String[]{"minecraft"});
+        return CropInit.compatCrops(name, CropType.CUSTOM, tier, item, color, "minecraft");
     }
 
     private static String getStringOrNull(JsonObject jsonObject, String key) {

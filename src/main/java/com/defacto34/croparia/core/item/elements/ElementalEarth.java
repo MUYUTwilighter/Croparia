@@ -6,7 +6,6 @@
 package com.defacto34.croparia.core.item.elements;
 
 import com.defacto34.croparia.init.BlockInit;
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.LeveledCauldronBlock;
 import net.minecraft.item.Item;
@@ -17,7 +16,7 @@ import net.minecraft.world.World;
 
 public class ElementalEarth extends Item {
     public ElementalEarth() {
-        super(new FabricItemSettings());
+        super(new Item.Settings());
     }
 
     public ActionResult useOnBlock(ItemUsageContext context) {

@@ -5,11 +5,10 @@
 
 package com.defacto34.croparia.core.item.relics;
 
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.Entity.RemovalReason;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.Entity.RemovalReason;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -22,7 +21,7 @@ import net.minecraft.world.World;
 
 public class MidasHand extends Item {
     public MidasHand() {
-        super((new FabricItemSettings()).maxCount(1));
+        super((new Item.Settings()).maxCount(1));
     }
 
     public ActionResult useOnBlock(ItemUsageContext context) {

@@ -19,7 +19,6 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.SharedConstants;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -57,14 +56,14 @@ public class Croparia implements ModInitializer {
         Registry.register(Registries.ITEM_GROUP, CROP, FabricItemGroup.builder().icon(() -> new ItemStack(CropInit.DIAMOND.seed)).displayName(Text.translatable("itemGroup." + MOD_ID + ".crop")).build());
         OreGen.generateOres();
         Registry.register(Registries.RECIPE_SERIALIZER, InfusorRecipeSerializer.ID, InfusorRecipeSerializer.INSTANCE);
-        Registry.register(Registries.RECIPE_TYPE, new Identifier(MOD_ID, "infusor_recipe"), Type.INSTANCE);
+        Registry.register(Registries.RECIPE_TYPE, Identifier.of(MOD_ID, "infusor_recipe"), Type.INSTANCE);
         Registry.register(Registries.RECIPE_SERIALIZER, RitualRecipeSerializer.ID, RitualRecipeSerializer.INSTANCE);
-        Registry.register(Registries.RECIPE_TYPE, new Identifier(MOD_ID, "ritual_recipe"), com.defacto34.croparia.core.recipes.RitualRecipe.Type.INSTANCE);
+        Registry.register(Registries.RECIPE_TYPE, Identifier.of(MOD_ID, "ritual_recipe"), com.defacto34.croparia.core.recipes.RitualRecipe.Type.INSTANCE);
         HornPlenty.initFood();
         CropariaCauldronInteraction.bootStrap();
-        ServerLifecycleEvents.SERVER_STARTED.register((server) -> updateDataPack());
+        ServerLifecycleEvents.SERVER_STARTED.register((server) -> dataPostGen());
         ServerLifecycleEvents.START_DATA_PACK_RELOAD.register((server, manager) -> CONFIG = ConfigIoProcessor.load(CONFIG_PATH));
-        ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((server, resourceManager, success) -> updateDataPack());
+        ServerLifecycleEvents.END_DATA_PACK_RELOAD.register((server, resourceManager, success) -> dataPostGen());
         LOGGER.info("Hello from Croparia");
     }
 
@@ -75,10 +74,10 @@ public class Croparia implements ModInitializer {
     public static ItemStack getItemFromTag(Identifier tag) {
         TagKey<Item> TAG = TagKey.of(RegistryKeys.ITEM, tag);
         Optional<RegistryEntryList.Named<Item>> list = Registries.ITEM.getEntryList(TAG);
-        return list.isPresent() ? ((Item) ((RegistryEntryList.Named) list.get()).get(0).value()).getDefaultStack() : Items.APPLE.getDefaultStack();
+        return list.isPresent() ? list.get().get(0).value().getDefaultStack() : Items.APPLE.getDefaultStack();
     }
 
-    public static void updateDataPack() {
+    public static void dataPostGen() {
         if (!CONFIG.getPostDataGen()) {
             return;
         }
@@ -94,7 +93,7 @@ public class Croparia implements ModInitializer {
     }
 
     static {
-        MAIN = RegistryKey.of(RegistryKeys.ITEM_GROUP, new Identifier(MOD_ID, "main"));
-        CROP = RegistryKey.of(RegistryKeys.ITEM_GROUP, new Identifier(MOD_ID, "crop"));
+        MAIN = RegistryKey.of(RegistryKeys.ITEM_GROUP, Identifier.of(MOD_ID, "main"));
+        CROP = RegistryKey.of(RegistryKeys.ITEM_GROUP, Identifier.of(MOD_ID, "crop"));
     }
 }

@@ -5,19 +5,17 @@
 
 package com.defacto34.croparia.init;
 
-import com.defacto34.croparia.Croparia;
 import com.defacto34.croparia.api.crop.Crop;
 import com.defacto34.croparia.api.crop.CropType;
-import com.google.common.collect.Lists;
 import com.google.gson.JsonObject;
+import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.block.ComposterBlock;
+import net.minecraft.item.Items;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
-import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.block.ComposterBlock;
-import net.minecraft.item.Items;
-import net.minecraft.util.Identifier;
 
 public class CropInit {
     public static List<Crop> cropList = new ArrayList();
@@ -188,23 +186,10 @@ public class CropInit {
             if (FabricLoader.getInstance().isModLoaded(id)) {
                 shouldLoad.set(true);
             }
-
         });
         if (shouldLoad.get()) {
             Crop crop = new Crop(name, cropType, tier, item, color);
             compatCropList.add(crop);
-            JsonObject seedRecipe = RecipesInit.createShapedRecipeJson(
-                    Lists.newArrayList('E', 'M', 'S'),
-                    Lists.newArrayList(
-                            new Identifier(Croparia.MOD_ID, ItemInit.croparias.get(tier - 1)
-                                    .getTranslationKey()
-                                    .replaceFirst("item.croparia.", "")),
-                            new Identifier(item),
-                            new Identifier("wheat_seeds")),
-                    Lists.newArrayList("item", "tag", "item"),
-                    Lists.newArrayList("MSM", "SES", "MSM"),
-                    new Identifier(Croparia.MOD_ID, "seed_crop_" + name));
-            recipes.add(seedRecipe);
             return crop;
         } else {
             return null;
@@ -219,6 +204,7 @@ public class CropInit {
         BlockInit.registerCrop(crop);
         ItemInit.registerCrop(crop);
         LootTableInit.registerCrop(crop);
+        recipes.add(RecipesInit.genRawSeedRecipe(crop));
         ComposterBlock.ITEM_TO_LEVEL_INCREASE_CHANCE.putIfAbsent(crop.seed, 0.3F);
         ComposterBlock.ITEM_TO_LEVEL_INCREASE_CHANCE.putIfAbsent(crop.fruit, 0.65F);
     }
@@ -266,7 +252,7 @@ public class CropInit {
         TWISTING_VINES = new Crop("twisting_vines", CropType.NATURE, 1, Items.TWISTING_VINES, 1356419);
         LILY_PAD = new Crop("lilypad", CropType.NATURE, 1, Items.LILY_PAD, 810772);
         BUSH = new Crop("bush", CropType.NATURE, 1, Items.DEAD_BUSH, 9724968);
-        GRASS = new Crop("grass", CropType.NATURE, 1, Items.GRASS, 136335627);
+        GRASS = new Crop("grass", CropType.NATURE, 1, Items.SHORT_GRASS, 136335627);
         LARGE_FERN = new Crop("largefern", CropType.NATURE, 1, Items.LARGE_FERN, 4878912);
         TALL_GRASS = new Crop("tallgrass", CropType.NATURE, 1, Items.TALL_GRASS, 3098408);
         FERN = new Crop("fern", CropType.NATURE, 1, Items.FERN, 1787145);
@@ -321,7 +307,7 @@ public class CropInit {
         NAME_TAG = new Crop("name_tag", CropType.BASIC, 1, Items.NAME_TAG, 8024418);
         XP = new Crop("xp", CropType.BASIC, 4, Items.EXPERIENCE_BOTTLE, 12255049);
         SEA = new Crop("sea", CropType.BASIC, 4, Items.HEART_OF_THE_SEA, 2070193);
-        SCUTE = new Crop("scute", CropType.ANIMAL, 2, Items.SCUTE, 4702026);
+        SCUTE = new Crop("scute", CropType.ANIMAL, 2, Items.TURTLE_SCUTE, 4702026);
         NAUTILUS = new Crop("nautilus", CropType.BASIC, 3, Items.NAUTILUS_SHELL, 13946051);
         PHANTOM = new Crop("phantom", CropType.MONSTER, 2, Items.PHANTOM_MEMBRANE, 14473664);
         WITHER = new Crop("wither", CropType.MONSTER, 5, Items.WITHER_ROSE, 2760473);

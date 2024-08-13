@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": {
+      "item": "croparia:croparia"
+    },
+    "M": {
+      "item": "minecraft:cod"
+    },
+    "S": {
+      "item": "minecraft:wheat_seeds"
+    }
+  },
+  "pattern": [
+    "MSM",
+    "SES",
+    "MSM"
+  ],
+  "result": {
+    "id": "croparia:seed_crop_fish"
+  },
+  "show_notification": true
+}

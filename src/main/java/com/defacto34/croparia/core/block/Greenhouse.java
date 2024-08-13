@@ -9,13 +9,9 @@ import com.defacto34.croparia.core.blockEntity.GreenhouseBE;
 import com.defacto34.croparia.init.BlockEntityInit;
 import java.util.ArrayList;
 import java.util.List;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.BlockWithEntity;
-import net.minecraft.block.CropBlock;
-import net.minecraft.block.ShapeContext;
+
+import com.mojang.serialization.MapCodec;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
@@ -34,12 +30,18 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 public class Greenhouse extends BlockWithEntity {
+    public static final MapCodec<Greenhouse> CODEC = createCodec(Greenhouse::new);
     public static List<Greenhouse> blockGreenhouse = new ArrayList();
     protected final VoxelShape SHAPE = Block.createCuboidShape(1.0, 1.0, 0.0, 15.0, 3.0, 15.0);
 
     public Greenhouse(AbstractBlock.Settings settings) {
         super(settings);
         blockGreenhouse.add(this);
+    }
+
+    @Override
+    protected MapCodec<? extends BlockWithEntity> getCodec() {
+        return CODEC;
     }
 
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
@@ -54,7 +56,7 @@ public class Greenhouse extends BlockWithEntity {
         return false;
     }
 
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if (!world.isClient) {
             NamedScreenHandlerFactory screenHandlerFactory = state.createScreenHandlerFactory(world, pos);
             if (screenHandlerFactory != null) {
@@ -77,7 +79,7 @@ public class Greenhouse extends BlockWithEntity {
     }
 
     public <T extends BlockEntity> @Nullable BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, BlockEntityInit.GREENHOUSE_BE, (world1, pos, state1, be) -> {
+        return validateTicker(type, BlockEntityInit.GREENHOUSE_BE, (world1, pos, state1, be) -> {
             GreenhouseBE.tick(world1, pos, be);
         });
     }

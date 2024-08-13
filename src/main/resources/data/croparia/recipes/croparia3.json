@@ -1,7 +1,0 @@
-{
-  "type": "croparia:infusor_recipe",
-  "input": "croparia:croparia2",
-  "element": "elemental",
-  "output": "croparia:croparia3",
-  "count": 1
-}

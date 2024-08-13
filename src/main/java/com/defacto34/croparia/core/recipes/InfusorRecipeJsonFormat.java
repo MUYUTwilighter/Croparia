@@ -10,7 +10,4 @@ class InfusorRecipeJsonFormat {
     String element;
     String output;
     int count;
-
-    InfusorRecipeJsonFormat() {
-    }
 }

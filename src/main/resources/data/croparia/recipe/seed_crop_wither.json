@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": {
+      "item": "croparia:croparia5"
+    },
+    "M": {
+      "item": "minecraft:wither_rose"
+    },
+    "S": {
+      "item": "minecraft:wheat_seeds"
+    }
+  },
+  "pattern": [
+    "MSM",
+    "SES",
+    "MSM"
+  ],
+  "result": {
+    "id": "croparia:seed_crop_wither"
+  },
+  "show_notification": true
+}

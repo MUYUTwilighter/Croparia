@@ -1,7 +1,0 @@
-{
-  "type": "croparia:infusor_recipe",
-  "input": "minecraft:stone",
-  "element": "elemental",
-  "output": "croparia:elemental_stone",
-  "count": 1
-}

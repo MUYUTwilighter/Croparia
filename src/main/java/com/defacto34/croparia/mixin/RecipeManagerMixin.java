@@ -11,49 +11,40 @@ import com.defacto34.croparia.init.CropInit;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-
-import java.util.Map;
-
 import com.google.gson.JsonObject;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeManager;
-import net.minecraft.recipe.RecipeType;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.profiler.Profiler;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin({RecipeManager.class})
-public abstract class RecipeManagerMixin{
-    @Shadow
-    private Map<RecipeType<?>, Map<Identifier, Recipe<?>>> recipes;
-    @Shadow
-    private Map<Identifier, Recipe<?>> recipesById;
+import java.util.Map;
 
+@Mixin({RecipeManager.class})
+public abstract class RecipeManagerMixin {
     @Inject(
         method = {"apply*"},
         at = {@At("HEAD")}
     )
     public void interceptApply(Map<Identifier, JsonElement> map, ResourceManager resourceManager, Profiler profiler, CallbackInfo info) {
         CropInit.recipes.forEach(
-            (jsonObject) -> map.putIfAbsent(
-                new Identifier(
+            (recipe) -> map.putIfAbsent(
+                Identifier.of(
                     Croparia.MOD_ID,
-                    jsonObject.getAsJsonObject("result").get("item").getAsString().replaceFirst("croparia:", "")),
-                (new Gson()).fromJson(jsonObject, JsonElement.class)
+                    recipe.getAsJsonObject("result").get("id").getAsString().replaceFirst("croparia:", "")),
+                (new Gson()).fromJson(recipe, JsonElement.class)
             )
         );
         boolean bpLoaded = FabricLoader.getInstance().isModLoaded("botanypots");
         if (bpLoaded) {
             CropInit.cropList.forEach(
                 crop -> {
-                    Identifier identifier = new Identifier("botanypots:croparia/seed/" + crop.cropName);
+                    Identifier identifier = Identifier.of("botanypots:croparia/seed/" + crop.cropName);
                     JsonObject recipe = this.genBotanyPotRecipe(crop);
                     map.putIfAbsent(identifier, recipe);
                 }

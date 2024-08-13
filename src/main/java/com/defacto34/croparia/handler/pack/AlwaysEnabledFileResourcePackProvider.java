@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 public class AlwaysEnabledFileResourcePackProvider extends FileResourcePackProvider {
@@ -17,7 +18,7 @@ public class AlwaysEnabledFileResourcePackProvider extends FileResourcePackProvi
     private final ResourcePackSource source;
 
     public AlwaysEnabledFileResourcePackProvider(Path packsDir, ResourceType type, ResourcePackSource source) {
-        super(packsDir, type, source);
+        super(packsDir, type, source, null);
         this.packsDir = packsDir;
         this.type = type;
         this.source = source;
@@ -27,12 +28,11 @@ public class AlwaysEnabledFileResourcePackProvider extends FileResourcePackProvi
     public void register(Consumer<ResourcePackProfile> profileAdder) {
         try {
             PathUtil.createDirectories(this.packsDir);
-            ResourcePackProfile.PackFactory packFactory = getFactory(this.packsDir, true);
+            ResourcePackProfile.PackFactory packFactory = new DirectoryResourcePack.DirectoryBackedFactory(this.packsDir);
             String fileName = getFileName(this.packsDir);
-            ResourcePackProfile datapackProfile = ResourcePackProfile.create(
-                "file/" + fileName, Text.literal(fileName),
-                true, packFactory, this.type,
-                ResourcePackProfile.InsertionPosition.BOTTOM, this.source);
+            ResourcePackInfo info = new ResourcePackInfo("file/" + fileName, Text.literal(fileName), this.source, Optional.empty());
+            ResourcePackPosition position = new ResourcePackPosition(true, ResourcePackProfile.InsertionPosition.BOTTOM, false);
+            ResourcePackProfile datapackProfile = ResourcePackProfile.create(info, packFactory, this.type, position);
             if (datapackProfile != null) {
                 profileAdder.accept(datapackProfile);
             }

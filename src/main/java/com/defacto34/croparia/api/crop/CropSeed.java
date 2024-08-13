@@ -5,14 +5,14 @@
 
 package com.defacto34.croparia.api.crop;
 
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
 
 public class CropSeed extends BlockItem {
     public Crop crop;
 
     public CropSeed(Crop crop) {
-        super(crop.cropBlock, new FabricItemSettings());
+        super(crop.cropBlock, new Item.Settings());
         this.crop = crop;
     }
 }

@@ -6,57 +6,53 @@
 package com.defacto34.croparia.core.recipes;
 
 import com.defacto34.croparia.core.util.ElementsEnum;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.network.PacketByteBuf;
+import net.minecraft.network.RegistryByteBuf;
+import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 
 public class InfusorRecipeSerializer implements RecipeSerializer<InfusorRecipe> {
+    public static final MapCodec<InfusorRecipe> CODEC = RecordCodecBuilder.mapCodec((instance) ->
+        instance.group(
+            Identifier.CODEC.fieldOf("input").forGetter((recipe) -> Registries.ITEM.getId(recipe.getInput())),
+            Codec.STRING.fieldOf("element").forGetter((recipe) -> recipe.getElement().name()),
+            Identifier.CODEC.fieldOf("output").forGetter((recipe) -> Registries.ITEM.getId(recipe.getOutput().getItem())),
+            Codec.INT.fieldOf("count").forGetter(InfusorRecipe::getCount)
+        ).apply(instance, (input, element, output, count) ->
+            new InfusorRecipe(Registries.ITEM.get(input), ElementsEnum.valueOf(element), Registries.ITEM.get(output), count)));
+    public static final PacketCodec<RegistryByteBuf, InfusorRecipe> PACKET_CODEC = PacketCodec.ofStatic(
+        InfusorRecipeSerializer::write, InfusorRecipeSerializer::read);
     public static final InfusorRecipeSerializer INSTANCE = new InfusorRecipeSerializer();
-    public static final Identifier ID = new Identifier("croparia:infusor_recipe");
+    public static final Identifier ID = Identifier.of("croparia:infusor_recipe");
 
-    private InfusorRecipeSerializer() {
-    }
-
-    public InfusorRecipe read(Identifier id, JsonObject json) {
-        InfusorRecipeJsonFormat recipeJson = (InfusorRecipeJsonFormat)(new Gson()).fromJson(json, InfusorRecipeJsonFormat.class);
-        if (recipeJson.input != null && recipeJson.element != null && recipeJson.output != null) {
-            if (recipeJson.count == 0) {
-                recipeJson.count = 1;
-            }
-
-            Item input = (Item)Registries.ITEM.getOrEmpty(new Identifier(recipeJson.input)).orElseThrow(() -> {
-                return new JsonSyntaxException("No such item " + recipeJson.input);
-            });
-            ElementsEnum element = (ElementsEnum)Enum.valueOf(ElementsEnum.class, recipeJson.element.toUpperCase());
-            Item output = (Item)Registries.ITEM.getOrEmpty(new Identifier(recipeJson.output)).orElseThrow(() -> {
-                return new JsonSyntaxException("No such item " + recipeJson.output);
-            });
-            int count = recipeJson.count;
-            InfusorRecipe.addRecipe(id, input, element, output, count);
-            return new InfusorRecipe(id, input, element, output, count);
-        } else {
-            throw new JsonSyntaxException("A required attribute is missing!");
-        }
-    }
-
-    public void write(PacketByteBuf buf, InfusorRecipe recipe) {
-        buf.writeItemStack(new ItemStack(recipe.getInput()));
+    public static void write(RegistryByteBuf buf, InfusorRecipe recipe) {
+        ItemStack.PACKET_CODEC.encode(buf, recipe.input().getDefaultStack());
         buf.writeEnumConstant(recipe.getElement());
-        buf.writeItemStack(recipe.getOutput());
+        ItemStack.PACKET_CODEC.encode(buf, recipe.output().getDefaultStack());
         buf.writeInt(recipe.getCount());
     }
 
-    public InfusorRecipe read(Identifier id, PacketByteBuf buf) {
-        Item input = buf.readItemStack().getItem();
-        ElementsEnum element = (ElementsEnum)buf.readEnumConstant(ElementsEnum.class);
-        Item output = buf.readItemStack().getItem();
+    public static InfusorRecipe read(RegistryByteBuf buf) {
+        Item input = ItemStack.PACKET_CODEC.decode(buf).getItem();
+        ElementsEnum element = buf.readEnumConstant(ElementsEnum.class);
+        Item output = ItemStack.PACKET_CODEC.decode(buf).getItem();
         int count = buf.readInt();
-        return new InfusorRecipe(id, input, element, output, count);
+        return new InfusorRecipe(input, element, output, count);
+    }
+
+    @Override
+    public MapCodec<InfusorRecipe> codec() {
+        return CODEC;
+    }
+
+    @Override
+    public PacketCodec<RegistryByteBuf, InfusorRecipe> packetCodec() {
+        return PACKET_CODEC;
     }
 }

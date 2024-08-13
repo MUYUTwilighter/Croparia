@@ -17,7 +17,7 @@ public enum ElementsEnum implements StringIdentifiable {
 
     private final String name;
 
-    private ElementsEnum(String name) {
+    ElementsEnum(String name) {
         this.name = name;
     }
 

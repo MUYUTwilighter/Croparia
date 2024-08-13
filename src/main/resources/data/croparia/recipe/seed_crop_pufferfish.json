@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": {
+      "item": "croparia:croparia"
+    },
+    "M": {
+      "item": "minecraft:pufferfish_spawn_egg"
+    },
+    "S": {
+      "item": "minecraft:wheat_seeds"
+    }
+  },
+  "pattern": [
+    "MSM",
+    "SES",
+    "MSM"
+  ],
+  "result": {
+    "id": "croparia:seed_crop_pufferfish"
+  },
+  "show_notification": true
+}

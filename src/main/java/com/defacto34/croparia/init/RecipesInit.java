@@ -10,21 +10,54 @@ import com.defacto34.croparia.api.crop.Crop;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.stream.JsonWriter;
 import net.minecraft.item.Item;
-import net.minecraft.recipe.Recipe;
-import net.minecraft.recipe.RecipeManager;
+import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-
 public class RecipesInit {
     private static final Gson gson = new Gson();
+
+    public static JsonObject genRawSeedRecipe(Crop crop) {
+        // Assemble resource key
+        JsonObject resourceKey = new JsonObject();
+        if (crop.material == null) {
+            resourceKey.addProperty("tag", "#" + crop.resource);
+        } else {
+            resourceKey.addProperty("item", crop.resource);
+        }
+        // Assemble seed key
+        JsonObject seedKey = new JsonObject();
+        seedKey.addProperty("item", "minecraft:wheat_seeds");
+        // Assemble croparia key
+        JsonObject cropariaKey = new JsonObject();
+        cropariaKey.addProperty("item", "croparia:croparia" + (crop.tier == 1 ? "" : crop.tier));
+        // Assemble key
+        JsonObject key = new JsonObject();
+        key.add("R", resourceKey);
+        key.add("S", seedKey);
+        key.add("C", cropariaKey);
+
+        // Assemble pattern
+        JsonArray pattern = new JsonArray();
+        pattern.add("RSR");
+        pattern.add("SCS");
+        pattern.add("RSR");
+
+        // Assemble result
+        JsonObject result = new JsonObject();
+        result.addProperty("count", 1);
+        result.addProperty("id", "croparia:seed_crop_" + crop.cropName);
+
+        // Assemble root
+        JsonObject root = new JsonObject();
+        root.addProperty("type", "minecraft:crafting_shaped");
+        root.add("pattern", pattern);
+        root.add("result", result);
+        root.add("key", key);
+
+        return root;
+    }
 
     public static JsonObject genFruitRawRecipe(Crop crop) {
         JsonObject root = new JsonObject();
@@ -38,36 +71,12 @@ public class RecipesInit {
         root.add("ingredients", ingredients);
 
         JsonObject result = new JsonObject();
-        Item resultItem = crop.tag == null ? crop.material : Croparia.getItemFromTag(new Identifier(crop.tag)).getItem();
+        Item resultItem = crop.material != Items.AIR ? crop.material : crop.tag != null ? Croparia.getItemFromTag(Identifier.of(crop.tag)).getItem() : Items.AIR;
         Identifier resultId = Registries.ITEM.getId(resultItem);
-        result.addProperty("item", resultId.toString());
-        result.addProperty("count", 2);
+        result.addProperty("id", resultId.toString());
+        result.addProperty("count", Math.min(2, resultItem.getMaxCount()));
         root.add("result", result);
 
         return root;
-    }
-
-    public static JsonObject createShapedRecipeJson(ArrayList<Character> keys, ArrayList<Identifier> items, ArrayList<String> type, ArrayList<String> pattern, Identifier output) {
-        JsonObject json = new JsonObject();
-        json.addProperty("type", "minecraft:crafting_shaped");
-        JsonArray jsonArray = new JsonArray();
-        jsonArray.add(pattern.get(0));
-        jsonArray.add(pattern.get(1));
-        jsonArray.add(pattern.get(2));
-        json.add("pattern", jsonArray);
-        JsonObject keyList = new JsonObject();
-
-        for (int i = 0; i < keys.size(); ++i) {
-            JsonObject individualKey = new JsonObject();
-            individualKey.addProperty(type.get(i), items.get(i).toString());
-            keyList.add(String.valueOf(keys.get(i)), individualKey);
-        }
-
-        json.add("key", keyList);
-        JsonObject result = new JsonObject();
-        result.addProperty("item", output.toString());
-        result.addProperty("count", 1);
-        json.add("result", result);
-        return json;
     }
 }
