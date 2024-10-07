@@ -6,6 +6,10 @@ This is an forked project from Dalarion's [Croparia v4.5](https://www.curseforge
 
 Following GNU license, this project has provided a share for the original author, and this page would get closed if the original author opposes this.
 
+## Issue
+
+Please post your issues [here](https://github.com/MUYUTwilighter/IssuePage/issues)
+
 ## Features
 
 Most features in Dalarion's [Croparia v4.5](https://www.curseforge.com/minecraft/mc-mods/croparia) are reserved.
