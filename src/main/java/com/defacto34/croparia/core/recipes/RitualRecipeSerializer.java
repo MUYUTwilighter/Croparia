@@ -25,8 +25,13 @@ public class RitualRecipeSerializer implements RecipeSerializer<RitualRecipe> {
             Identifier.CODEC.fieldOf("output").forGetter((recipe) -> Registries.ITEM.getId(recipe.getOutput().getItem())),
             Codec.INT.fieldOf("count").forGetter(RitualRecipe::getCount),
             Codec.INT.fieldOf("tier").forGetter(RitualRecipe::getTier)
-        ).apply(instance, (input, block, output, count, tier) ->
-            new RitualRecipe(tier, Registries.ITEM.get(input), Registries.BLOCK.get(block), Registries.ITEM.get(output), count)));
+        ).apply(instance, (input, block, output, count, tier) -> {
+            Item inputItem = Registries.ITEM.get(input);
+            Block blockInst = Registries.BLOCK.get(block);
+            Item outputItem = Registries.ITEM.get(output);
+            RitualRecipe.addRecipe(tier, inputItem, blockInst, outputItem, count);
+            return new RitualRecipe(tier, inputItem, blockInst, outputItem, count);
+        }));
     public static final PacketCodec<RegistryByteBuf, RitualRecipe> PACKET_CODEC = PacketCodec.ofStatic(
         RitualRecipeSerializer::write, RitualRecipeSerializer::read);
     public static final RitualRecipeSerializer INSTANCE = new RitualRecipeSerializer();

@@ -43,11 +43,11 @@ public class Infusor extends Block {
             if (state.get(TYPE) == ElementsEnum.EMPTY && ItemInit.getElementFromPotion(player.getMainHandStack().getItem()) != ElementsEnum.EMPTY) {
                 world.setBlockState(pos, this.getDefaultState().with(TYPE, ItemInit.getElementFromPotion(player.getMainHandStack().getItem())));
                 player.getMainHandStack().decrement(1);
-                world.spawnEntity(new ItemEntity(world, (double)pos.getX() + 0.5, (double)pos.getY() + 0.5, (double)pos.getZ() + 0.5, new ItemStack(Items.GLASS_BOTTLE)));
+                world.spawnEntity(new ItemEntity(world, (double) pos.getX() + 0.5, (double) pos.getY() + 0.5, (double) pos.getZ() + 0.5, new ItemStack(Items.GLASS_BOTTLE)));
             } else if (state.get(TYPE) != ElementsEnum.EMPTY && player.getMainHandStack().getItem() == Items.GLASS_BOTTLE) {
                 world.setBlockState(pos, this.getDefaultState().with(TYPE, ElementsEnum.EMPTY));
                 player.getMainHandStack().decrement(1);
-                world.spawnEntity(new ItemEntity(world, (double)pos.getX() + 0.5, (double)pos.getY() + 0.5, (double)pos.getZ() + 0.5, new ItemStack(ItemInit.getPotionFromElement((ElementsEnum)state.get(TYPE)))));
+                world.spawnEntity(new ItemEntity(world, (double) pos.getX() + 0.5, (double) pos.getY() + 0.5, (double) pos.getZ() + 0.5, new ItemStack(ItemInit.getPotionFromElement((ElementsEnum) state.get(TYPE)))));
             }
 
             return ActionResult.PASS;
@@ -58,7 +58,6 @@ public class Infusor extends Block {
         if (entity instanceof ItemEntity itemEntity && !world.isClient) {
             InfusorRecipe.craft(itemEntity.getStack(), world, pos);
         }
-
     }
 
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {

@@ -24,8 +24,13 @@ public class InfusorRecipeSerializer implements RecipeSerializer<InfusorRecipe> 
             Codec.STRING.fieldOf("element").forGetter((recipe) -> recipe.getElement().name()),
             Identifier.CODEC.fieldOf("output").forGetter((recipe) -> Registries.ITEM.getId(recipe.getOutput().getItem())),
             Codec.INT.fieldOf("count").forGetter(InfusorRecipe::getCount)
-        ).apply(instance, (input, element, output, count) ->
-            new InfusorRecipe(Registries.ITEM.get(input), ElementsEnum.valueOf(element), Registries.ITEM.get(output), count)));
+        ).apply(instance, (input, element, output, count) -> {
+            Item inputItem = Registries.ITEM.get(input);
+            ElementsEnum elementEnum = ElementsEnum.valueOf(element);
+            Item outputItem = Registries.ITEM.get(output);
+            InfusorRecipe.addRecipe(inputItem, elementEnum, outputItem, count);
+            return new InfusorRecipe(inputItem, elementEnum, outputItem, count);
+        }));
     public static final PacketCodec<RegistryByteBuf, InfusorRecipe> PACKET_CODEC = PacketCodec.ofStatic(
         InfusorRecipeSerializer::write, InfusorRecipeSerializer::read);
     public static final InfusorRecipeSerializer INSTANCE = new InfusorRecipeSerializer();
