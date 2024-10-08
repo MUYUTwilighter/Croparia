@@ -33,19 +33,19 @@ public class Infusor extends Block {
 
     public Infusor() {
         super(FabricBlockSettings.create().strength(1.0F, 1.0F).requiresTool());
-        this.setDefaultState((BlockState)this.getDefaultState().with(TYPE, ElementsEnum.EMPTY));
+        this.setDefaultState(this.getDefaultState().with(TYPE, ElementsEnum.EMPTY));
     }
 
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if (world.isClient) {
             return ActionResult.FAIL;
         } else {
             if (state.get(TYPE) == ElementsEnum.EMPTY && ItemInit.getElementFromPotion(player.getMainHandStack().getItem()) != ElementsEnum.EMPTY) {
-                world.setBlockState(pos, (BlockState)this.getDefaultState().with(TYPE, ItemInit.getElementFromPotion(player.getMainHandStack().getItem())));
+                world.setBlockState(pos, this.getDefaultState().with(TYPE, ItemInit.getElementFromPotion(player.getMainHandStack().getItem())));
                 player.getMainHandStack().decrement(1);
                 world.spawnEntity(new ItemEntity(world, (double)pos.getX() + 0.5, (double)pos.getY() + 0.5, (double)pos.getZ() + 0.5, new ItemStack(Items.GLASS_BOTTLE)));
             } else if (state.get(TYPE) != ElementsEnum.EMPTY && player.getMainHandStack().getItem() == Items.GLASS_BOTTLE) {
-                world.setBlockState(pos, (BlockState)this.getDefaultState().with(TYPE, ElementsEnum.EMPTY));
+                world.setBlockState(pos, this.getDefaultState().with(TYPE, ElementsEnum.EMPTY));
                 player.getMainHandStack().decrement(1);
                 world.spawnEntity(new ItemEntity(world, (double)pos.getX() + 0.5, (double)pos.getY() + 0.5, (double)pos.getZ() + 0.5, new ItemStack(ItemInit.getPotionFromElement((ElementsEnum)state.get(TYPE)))));
             }

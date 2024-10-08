@@ -5,9 +5,6 @@
 
 package com.defacto34.croparia.core.recipes;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -35,32 +32,6 @@ public class RitualRecipeSerializer implements RecipeSerializer<RitualRecipe> {
     public static final RitualRecipeSerializer INSTANCE = new RitualRecipeSerializer();
     public static final Identifier ID = Identifier.of("croparia:ritual_recipe");
 
-    public RitualRecipe read(JsonObject json) {
-        RitualRecipeJsonFormat recipeJson = (new Gson()).fromJson(json, RitualRecipeJsonFormat.class);
-        if (recipeJson.input != null && recipeJson.block != null && recipeJson.output != null) {
-            if (recipeJson.count == 0) {
-                recipeJson.count = 1;
-            }
-
-            if (recipeJson.tier == 0) {
-                recipeJson.tier = 1;
-            }
-
-            Item input = Registries.ITEM.getOrEmpty(Identifier.of(recipeJson.input)).orElseThrow(() ->
-                new JsonSyntaxException("No such item " + recipeJson.input));
-            Block block = Registries.BLOCK.getOrEmpty(Identifier.of(recipeJson.block)).orElseThrow(() ->
-                new JsonSyntaxException("No such block " + recipeJson.block));
-            Item output = Registries.ITEM.getOrEmpty(Identifier.of(recipeJson.output)).orElseThrow(() ->
-                new JsonSyntaxException("No such item " + recipeJson.output));
-            int count = recipeJson.count;
-            int tier = recipeJson.tier;
-            RitualRecipe.addRecipe(tier, input, block, output, count);
-            return new RitualRecipe(tier, input, block, output, count);
-        } else {
-            throw new JsonSyntaxException("A required attribute is missing!");
-        }
-    }
-
     public static void write(RegistryByteBuf buf, RitualRecipe recipe) {
         buf.writeInt(recipe.getTier());
         ItemStack.PACKET_CODEC.encode(buf, recipe.getInput().getDefaultStack());
@@ -75,6 +46,7 @@ public class RitualRecipeSerializer implements RecipeSerializer<RitualRecipe> {
         Block block = Block.getBlockFromItem(ItemStack.PACKET_CODEC.decode(buf).getItem());
         Item output = ItemStack.PACKET_CODEC.decode(buf).getItem();
         int count = buf.readInt();
+        RitualRecipe.addRecipe(tier, input, block, output, count);
         return new RitualRecipe(tier, input, block, output, count);
     }
 

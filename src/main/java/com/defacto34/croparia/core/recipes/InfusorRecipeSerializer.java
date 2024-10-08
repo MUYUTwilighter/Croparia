@@ -43,6 +43,7 @@ public class InfusorRecipeSerializer implements RecipeSerializer<InfusorRecipe> 
         ElementsEnum element = buf.readEnumConstant(ElementsEnum.class);
         Item output = ItemStack.PACKET_CODEC.decode(buf).getItem();
         int count = buf.readInt();
+        InfusorRecipe.addRecipe(input, element, output, count);
         return new InfusorRecipe(input, element, output, count);
     }
 
