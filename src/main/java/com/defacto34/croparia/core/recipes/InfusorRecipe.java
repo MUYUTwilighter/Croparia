@@ -65,7 +65,7 @@ public class InfusorRecipe implements Recipe<SimpleInventory> {
         int index = 0;
 
         while(!ret && index < recipes.size()) {
-            if (((InfusorRecipe)recipes.get(index)).input == input.getItem() && world.getBlockState(pos).get(Infusor.TYPE) == ((InfusorRecipe)recipes.get(index)).element) {
+            if (recipes.get(index).input == input.getItem() && world.getBlockState(pos).get(Infusor.TYPE) == ((InfusorRecipe)recipes.get(index)).element) {
                 ret = true;
             } else {
                 ++index;
@@ -74,7 +74,7 @@ public class InfusorRecipe implements Recipe<SimpleInventory> {
 
         if (ret) {
             world.spawnEntity(new ItemEntity(world, (double)pos.getX() + 0.5, (double)pos.getY() + 0.5, (double)pos.getZ() + 0.5, ((InfusorRecipe)recipes.get(index)).getOutput().copy()));
-            world.setBlockState(pos, (BlockState)BlockInit.INFUSOR.getDefaultState().with(Infusor.TYPE, ElementsEnum.EMPTY));
+            world.setBlockState(pos, BlockInit.INFUSOR.getDefaultState().with(Infusor.TYPE, ElementsEnum.EMPTY));
             input.decrement(1);
         }
 

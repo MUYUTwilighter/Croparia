@@ -17,6 +17,7 @@ import com.defacto34.croparia.init.*;
 import com.defacto34.croparia.worldgen.gen.OreGen;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.event.registry.DynamicRegistries;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.SharedConstants;
@@ -25,10 +26,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.*;
 import net.minecraft.registry.entry.RegistryEntryList;
 import net.minecraft.registry.tag.TagKey;
 import net.minecraft.text.Text;
@@ -48,6 +46,9 @@ public class Croparia implements ModInitializer {
     public static Config CONFIG = ConfigIoProcessor.load(CONFIG_PATH);
 
     public void onInitialize() {
+        DynamicRegistries.getDynamicRegistries().forEach((registry) -> {
+        });
+
         CropFileReader.main();
         CropInit.registerCrops();
         BlockInit.registerBlocks();
