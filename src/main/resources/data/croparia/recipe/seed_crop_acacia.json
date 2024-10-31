@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "E": {
-      "item": "croparia:croparia"
-    },
-    "M": {
-      "item": "minecraft:acacia_planks"
-    },
-    "S": {
-      "item": "minecraft:wheat_seeds"
-    }
+    "E": "croparia:croparia",
+    "M": "minecraft:acacia_planks",
+    "S": "minecraft:wheat_seeds"
   },
   "pattern": [
     "MSM",

@@ -10,13 +10,16 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.LeveledCauldronBlock;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemUsageContext;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class ElementalEarth extends Item {
     public ElementalEarth() {
-        super(new Item.Settings());
+        super(new Item.Settings().registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of("croparia", "elemental_earth"))));
     }
 
     public ActionResult useOnBlock(ItemUsageContext context) {

@@ -8,6 +8,7 @@ package com.defacto34.croparia.init;
 import com.defacto34.croparia.Croparia;
 import com.defacto34.croparia.core.block.Greenhouse;
 import com.defacto34.croparia.core.blockEntity.GreenhouseBE;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.registry.Registries;
@@ -21,6 +22,6 @@ public class BlockEntityInit {
 
     public static void onInitialize() {
         GREENHOUSE_BE = Registry.register(Registries.BLOCK_ENTITY_TYPE, Croparia.MOD_ID + "greenhouse_be",
-            BlockEntityType.Builder.create(GreenhouseBE::new, Greenhouse.blockGreenhouse.toArray(Block[]::new)).build(null));
+            FabricBlockEntityTypeBuilder.create(GreenhouseBE::new, Greenhouse.blockGreenhouse.toArray(Block[]::new)).build(null));
     }
 }

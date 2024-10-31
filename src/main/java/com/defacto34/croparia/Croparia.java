@@ -73,7 +73,7 @@ public class Croparia implements ModInitializer {
 
     public static ItemStack getItemFromTag(Identifier tag) {
         TagKey<Item> TAG = TagKey.of(RegistryKeys.ITEM, tag);
-        Optional<RegistryEntryList.Named<Item>> list = Registries.ITEM.getEntryList(TAG);
+        Optional<RegistryEntryList.Named<Item>> list = Registries.ITEM.getOptional(TAG);
         return list.isPresent() ? list.get().get(0).value().getDefaultStack() : Items.APPLE.getDefaultStack();
     }
 

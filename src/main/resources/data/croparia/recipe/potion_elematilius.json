@@ -2,12 +2,8 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    {
-      "item": "minecraft:glass_bottle"
-    },
-    {
-      "item": "croparia:elematilius"
-    }
+    "minecraft:glass_bottle",
+    "croparia:elematilius"
   ],
   "result": {
     "id": "croparia:potion_elematilius"

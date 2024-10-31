@@ -9,8 +9,9 @@ public class LangEnUsInit {
         CropInit.cropList.forEach(crop -> {
             String cropName = crop.cropName;
             String formattedCropName = cropName.substring(0, 1).toUpperCase() + cropName.substring(1);
-            root.addProperty("block.croparia.block_crop_" + cropName, formattedCropName + " Seeds");
+            root.addProperty("block.croparia.block_crop_" + cropName, formattedCropName + " Crop");
             root.addProperty("item.croparia.fruit_" + cropName, formattedCropName + " Fruit");
+            root.addProperty("item.croparia.seed_crop_" + cropName, formattedCropName + " Seeds");
         });
         ResourcePackHandler.INSTANCE.addLangEnUs(root);
     }

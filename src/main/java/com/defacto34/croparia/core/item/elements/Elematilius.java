@@ -24,10 +24,9 @@ public class Elematilius extends Item {
             World world = context.getWorld();
             BlockPos pos = context.getBlockPos();
             BlockState state = world.getBlockState(pos);
-            if (state.getBlock() instanceof LeveledCauldronBlock) {
-                LeveledCauldronBlock block = (LeveledCauldronBlock)state.getBlock();
+            if (state.getBlock() instanceof LeveledCauldronBlock block) {
                 if (block.isFull(state)) {
-                    world.setBlockState(pos, (BlockState)BlockInit.CAULDRON.getDefaultState().with(LeveledCauldronBlock.LEVEL, 3));
+                    world.setBlockState(pos, BlockInit.CAULDRON.getDefaultState().with(LeveledCauldronBlock.LEVEL, 3));
                     context.getStack().decrement(1);
                     return ActionResult.SUCCESS;
                 }

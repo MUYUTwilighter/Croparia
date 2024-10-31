@@ -8,7 +8,6 @@ package com.defacto34.croparia.core.block;
 import com.defacto34.croparia.core.recipes.InfusorRecipe;
 import com.defacto34.croparia.core.util.ElementsEnum;
 import com.defacto34.croparia.init.ItemInit;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
@@ -20,7 +19,6 @@ import net.minecraft.item.Items;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.EnumProperty;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.shape.VoxelShape;
@@ -31,8 +29,8 @@ public class Infusor extends Block {
     protected final VoxelShape SHAPE = Block.createCuboidShape(0.0, 0.0, 0.0, 16.0, 8.0, 16.0);
     public static final EnumProperty<ElementsEnum> TYPE = EnumProperty.of("infusor_type", ElementsEnum.class);
 
-    public Infusor() {
-        super(FabricBlockSettings.create().strength(1.0F, 1.0F).requiresTool());
+    public Infusor(Settings settings) {
+        super(settings.strength(1.0F, 1.0F).requiresTool());
         this.setDefaultState(this.getDefaultState().with(TYPE, ElementsEnum.EMPTY));
     }
 

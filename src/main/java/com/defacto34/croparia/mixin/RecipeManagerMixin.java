@@ -8,48 +8,53 @@ package com.defacto34.croparia.mixin;
 import com.defacto34.croparia.Croparia;
 import com.defacto34.croparia.api.crop.Crop;
 import com.defacto34.croparia.init.CropInit;
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.recipe.RecipeManager;
+import com.llamalad7.mixinextras.sugar.Local;
+import com.mojang.serialization.JsonOps;
+import net.minecraft.recipe.*;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.profiler.Profiler;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.Map;
+import java.util.SortedMap;
 
-@Mixin({RecipeManager.class})
+@Mixin({ServerRecipeManager.class})
 public abstract class RecipeManagerMixin {
+    @Shadow @Final private RegistryWrapper.WrapperLookup registries;
+
     @Inject(
-        method = {"apply*"},
-        at = {@At("HEAD")}
+        method = {"prepare(Lnet/minecraft/resource/ResourceManager;Lnet/minecraft/util/profiler/Profiler;)Lnet/minecraft/recipe/PreparedRecipes;"},
+        at = {@At(value = "INVOKE", target = "Ljava/util/SortedMap;size()I", shift = At.Shift.BEFORE)}
     )
-    public void interceptApply(Map<Identifier, JsonElement> map, ResourceManager resourceManager, Profiler profiler, CallbackInfo info) {
+    public void interceptApply(ResourceManager resourceManager, Profiler profiler, CallbackInfoReturnable<PreparedRecipes> cir, @Local SortedMap<Identifier, Recipe<?>> map) {
         CropInit.recipes.forEach(
             (recipe) -> map.putIfAbsent(
                 Identifier.of(
                     Croparia.MOD_ID,
-                    recipe.getAsJsonObject("result").get("id").getAsString().replaceFirst("croparia:", "")),
-                (new Gson()).fromJson(recipe, JsonElement.class)
+                    recipe.getAsJsonObject("result").get("id").getAsString().replaceFirst("croparia:", "")
+                ),
+                Recipe.CODEC.parse(this.registries.getOps(JsonOps.INSTANCE), recipe).getOrThrow()
             )
         );
-        boolean bpLoaded = FabricLoader.getInstance().isModLoaded("botanypots");
-        if (bpLoaded) {
-            CropInit.cropList.forEach(
-                crop -> {
-                    Identifier identifier = Identifier.of("botanypots:croparia/seed/" + crop.cropName);
-                    JsonObject recipe = this.genBotanyPotRecipe(crop);
-                    map.putIfAbsent(identifier, recipe);
-                }
-            );
-        }
+//        boolean bpLoaded = FabricLoader.getInstance().isModLoaded("botanypots");
+//        if (bpLoaded) {
+//            CropInit.cropList.forEach(
+//                crop -> {
+//                    Identifier identifier = Identifier.of("botanypots:croparia/seed/" + crop.cropName);
+//                    JsonObject recipe = this.genBotanyPotRecipe(crop);
+//                    map.putIfAbsent(identifier, recipe);
+//                }
+//            );
+//        }
     }
 
     @Unique

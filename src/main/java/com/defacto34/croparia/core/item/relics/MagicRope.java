@@ -19,8 +19,8 @@ import static com.defacto34.croparia.core.CropariaComponentTypes.TARGET_POS;
 
 public class MagicRope extends Item {
 
-    public MagicRope() {
-        super(new Item.Settings());
+    public MagicRope(Settings settings) {
+        super(settings);
     }
 
     public ActionResult useOnBlock(ItemUsageContext context) {

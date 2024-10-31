@@ -15,8 +15,8 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.world.World;
 
 public class InfiniteApple extends Item {
-    public InfiniteApple() {
-        super((new Item.Settings()).food(FoodComponents.GOLDEN_CARROT).maxCount(1));
+    public InfiniteApple(Settings settings) {
+        super(settings.maxCount(1));
     }
 
     public ItemStack finishUsing(ItemStack stack, World world, LivingEntity user) {

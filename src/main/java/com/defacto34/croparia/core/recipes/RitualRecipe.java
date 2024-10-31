@@ -10,9 +10,12 @@ import com.defacto34.croparia.core.recipes.rituals.RitualUtils;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.recipe.IngredientPlacement;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.recipe.RecipeType;
+import net.minecraft.recipe.book.RecipeBookCategories;
+import net.minecraft.recipe.book.RecipeBookCategory;
 import net.minecraft.recipe.input.SingleStackRecipeInput;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.math.BlockPos;
@@ -82,7 +85,7 @@ public class RitualRecipe implements Recipe<SingleStackRecipeInput> {
 
     @Override
     public boolean matches(SingleStackRecipeInput input, World world) {
-        return input.getSize() < 1 ? false : this.input.equals(input.getStackInSlot(0).getItem());
+        return !input.isEmpty() && this.input.equals(input.getStackInSlot(0).getItem());
     }
 
     @Override
@@ -90,11 +93,6 @@ public class RitualRecipe implements Recipe<SingleStackRecipeInput> {
         return this.getResult(lookup).copy();
     }
 
-    public boolean fits(int width, int height) {
-        return true;
-    }
-
-    @Override
     public ItemStack getResult(RegistryWrapper.WrapperLookup registriesLookup) {
         return new ItemStack(this.output, this.count);
     }
@@ -103,15 +101,30 @@ public class RitualRecipe implements Recipe<SingleStackRecipeInput> {
         return new ItemStack(this.output, this.count);
     }
 
-    public RecipeType<?> getType() {
+    public RecipeType<? extends Recipe<SingleStackRecipeInput>> getType() {
         return RitualRecipe.Type.INSTANCE;
     }
 
-    public RecipeSerializer<?> getSerializer() {
+    @Override
+    public IngredientPlacement getIngredientPlacement() {
+        return IngredientPlacement.NONE;
+    }
+
+    @Override
+    public RecipeBookCategory getRecipeBookCategory() {
+        return null;
+    }
+
+    public RecipeSerializer<? extends Recipe<SingleStackRecipeInput>> getSerializer() {
         return RitualRecipeSerializer.INSTANCE;
     }
 
     public static class Type implements RecipeType<RitualRecipe> {
         public static final Type INSTANCE = new Type();
+    }
+
+    @Override
+    public boolean isIgnoredInRecipeBook() {
+        return true;
     }
 }

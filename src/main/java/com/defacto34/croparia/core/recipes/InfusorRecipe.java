@@ -12,9 +12,9 @@ import net.minecraft.block.BlockState;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.recipe.Recipe;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.RecipeType;
+import net.minecraft.recipe.*;
+import net.minecraft.recipe.book.RecipeBookCategories;
+import net.minecraft.recipe.book.RecipeBookCategory;
 import net.minecraft.recipe.input.SingleStackRecipeInput;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.math.BlockPos;
@@ -25,6 +25,7 @@ import java.util.List;
 
 public record InfusorRecipe(Item input, ElementsEnum element, Item output, int count) implements Recipe<SingleStackRecipeInput> {
     public static List<InfusorRecipe> recipes = new ArrayList();
+
 
     public Item getInput() {
         return this.input;
@@ -56,14 +57,14 @@ public record InfusorRecipe(Item input, ElementsEnum element, Item output, int c
 
         if (ret) {
             world.spawnEntity(new ItemEntity(world, (double) pos.getX() + 0.5, (double) pos.getY() + 0.5, (double) pos.getZ() + 0.5, ((InfusorRecipe) recipes.get(index)).getOutput().copy()));
-            world.setBlockState(pos, (BlockState) BlockInit.INFUSOR.getDefaultState().with(Infusor.TYPE, ElementsEnum.EMPTY));
+            world.setBlockState(pos, BlockInit.INFUSOR.getDefaultState().with(Infusor.TYPE, ElementsEnum.EMPTY));
             input.decrement(1);
         }
 
     }
 
     public boolean matches(SingleStackRecipeInput input, World world) {
-        return input.getSize() < 1 ? false : this.input.equals(input.getStackInSlot(0).getItem());
+        return !input.isEmpty() && this.input.equals(input.getStackInSlot(0).getItem());
     }
 
     public ItemStack craft(SingleStackRecipeInput inventory, RegistryWrapper.WrapperLookup lookup) {
@@ -82,11 +83,26 @@ public record InfusorRecipe(Item input, ElementsEnum element, Item output, int c
         return true;
     }
 
-    public RecipeType<?> getType() {
+    public RecipeType<? extends Recipe<SingleStackRecipeInput>> getType() {
         return InfusorRecipe.Type.INSTANCE;
     }
 
-    public RecipeSerializer<?> getSerializer() {
+    @Override
+    public IngredientPlacement getIngredientPlacement() {
+        return IngredientPlacement.NONE;
+    }
+
+    @Override
+    public boolean isIgnoredInRecipeBook() {
+        return true;
+    }
+
+    @Override
+    public RecipeBookCategory getRecipeBookCategory() {
+        return null;
+    }
+
+    public RecipeSerializer<? extends Recipe<SingleStackRecipeInput>> getSerializer() {
         return InfusorRecipeSerializer.INSTANCE;
     }
 

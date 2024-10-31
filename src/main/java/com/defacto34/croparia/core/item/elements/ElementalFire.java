@@ -10,13 +10,16 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.LeveledCauldronBlock;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemUsageContext;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class ElementalFire extends Item {
     public ElementalFire() {
-        super(new Item.Settings());
+        super(new Item.Settings().registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of("croparia", "elemental_fire"))));
     }
 
     public ActionResult useOnBlock(ItemUsageContext context) {
@@ -24,10 +27,9 @@ public class ElementalFire extends Item {
             World world = context.getWorld();
             BlockPos pos = context.getBlockPos();
             BlockState state = world.getBlockState(pos);
-            if (state.getBlock() instanceof LeveledCauldronBlock) {
-                LeveledCauldronBlock block = (LeveledCauldronBlock)state.getBlock();
+            if (state.getBlock() instanceof LeveledCauldronBlock block) {
                 if (block.isFull(state)) {
-                    world.setBlockState(pos, (BlockState)BlockInit.FIRE_CAULDRON.getDefaultState().with(LeveledCauldronBlock.LEVEL, 3));
+                    world.setBlockState(pos, BlockInit.FIRE_CAULDRON.getDefaultState().with(LeveledCauldronBlock.LEVEL, 3));
                     context.getStack().decrement(1);
                     return ActionResult.SUCCESS;
                 }

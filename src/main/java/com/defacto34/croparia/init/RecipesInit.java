@@ -19,24 +19,11 @@ public class RecipesInit {
     private static final Gson gson = new Gson();
 
     public static JsonObject genRawSeedRecipe(Crop crop) {
-        // Assemble resource key
-        JsonObject resourceKey = new JsonObject();
-        if (crop.material == null) {
-            resourceKey.addProperty("tag", "#" + crop.resource);
-        } else {
-            resourceKey.addProperty("item", crop.resource);
-        }
-        // Assemble seed key
-        JsonObject seedKey = new JsonObject();
-        seedKey.addProperty("item", "minecraft:wheat_seeds");
-        // Assemble croparia key
-        JsonObject cropariaKey = new JsonObject();
-        cropariaKey.addProperty("item", "croparia:croparia" + (crop.tier == 1 ? "" : crop.tier));
         // Assemble key
         JsonObject key = new JsonObject();
-        key.add("R", resourceKey);
-        key.add("S", seedKey);
-        key.add("C", cropariaKey);
+        key.addProperty("R", (crop.material == null ? "#" : "") + crop.resource);
+        key.addProperty("S", "minecraft:wheat_seeds");
+        key.addProperty("C", "croparia:croparia" + (crop.tier == 1 ? "" : crop.tier));
 
         // Assemble pattern
         JsonArray pattern = new JsonArray();
@@ -65,9 +52,7 @@ public class RecipesInit {
         root.addProperty("type", "minecraft:crafting_shapeless");
 
         JsonArray ingredients = new JsonArray();
-        JsonObject ingredient = new JsonObject();
-        ingredient.addProperty("item", "croparia:fruit_" + crop.cropName);
-        ingredients.add(ingredient);
+        ingredients.add("croparia:fruit_" + crop.cropName);
         root.add("ingredients", ingredients);
 
         JsonObject result = new JsonObject();

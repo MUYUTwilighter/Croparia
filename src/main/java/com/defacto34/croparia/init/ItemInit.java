@@ -20,34 +20,40 @@ import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ItemInit {
-    public static final Item ELEMATILIUS = register("elematilius", new Elematilius(new Item.Settings()));
+    public static final Item ELEMATILIUS = register("elematilius", new Elematilius(settingsWithId("elematilius")));
     public static final Item ELEMENTAL_FIRE = register("elemental_fire", new ElementalFire());
     public static final Item ELEMENTAL_WATER = register("elemental_water", new ElementalWater());
     public static final Item ELEMENTAL_EARTH = register("elemental_earth", new ElementalEarth());
     public static final Item ELEMENTAL_AIR = register("elemental_air", new ElementalAir());
-    public static final Item POTION_ELEMATILIUS = register("potion_elematilius", new Item(new Item.Settings()));
-    public static final Item POTION_WATER = register("potion_water", new Item(new Item.Settings()));
-    public static final Item POTION_FIRE = register("potion_fire", new Item(new Item.Settings()));
-    public static final Item POTION_EARTH = register("potion_earth", new Item(new Item.Settings()));
-    public static final Item POTION_AIR = register("potion_air", new Item(new Item.Settings()));
-    public static List<Item> croparias = new ArrayList();
-    public static final Item CROPARIA = registerCroparia("croparia", new Item(new Item.Settings()));
-    public static final Item CROPARIA2 = registerCroparia("croparia2", new Item(new Item.Settings()));
-    public static final Item CROPARIA3 = registerCroparia("croparia3", new Item(new Item.Settings()));
-    public static final Item CROPARIA4 = registerCroparia("croparia4", new Item(new Item.Settings()));
-    public static final Item CROPARIA5 = registerCroparia("croparia5", new Item(new Item.Settings()));
-    public static final Item CROPARIA6 = registerCroparia("croparia6", new Item(new Item.Settings()));
-    public static final Item CROPARIA7 = registerCroparia("croparia7", new Item(new Item.Settings()));
-    public static final Item MIDAS_HAND = register("midas_hand", new MidasHand());
-    public static final Item INFINITE_APPLE = register("infinite_apple", new InfiniteApple());
-    public static final Item HORN_PLENTY = register("horn_plenty", new HornPlenty());
-    public static final Item MAGIC_ROPE = register("magic_rope", new MagicRope());
+    public static final Item POTION_ELEMATILIUS = register("potion_elematilius", new Item(settingsWithId("potion_elematilius")));
+    public static final Item POTION_WATER = register("potion_water", new Item(settingsWithId("potion_water")));
+    public static final Item POTION_FIRE = register("potion_fire", new Item(settingsWithId("potion_fire")));
+    public static final Item POTION_EARTH = register("potion_earth", new Item(settingsWithId("potion_earth")));
+    public static final Item POTION_AIR = register("potion_air", new Item(settingsWithId("potion_air")));
+    public static List<Item> croparias = new ArrayList<>();
+    public static final Item CROPARIA = registerCroparia("croparia", new Item(settingsWithId("croparia")));
+    public static final Item CROPARIA2 = registerCroparia("croparia2", new Item(settingsWithId("croparia2")));
+    public static final Item CROPARIA3 = registerCroparia("croparia3", new Item(settingsWithId("croparia3")));
+    public static final Item CROPARIA4 = registerCroparia("croparia4", new Item(settingsWithId("croparia4")));
+    public static final Item CROPARIA5 = registerCroparia("croparia5", new Item(settingsWithId("croparia5")));
+    public static final Item CROPARIA6 = registerCroparia("croparia6", new Item(settingsWithId("croparia6")));
+    public static final Item CROPARIA7 = registerCroparia("croparia7", new Item(settingsWithId("croparia7")));
+    public static final Item MIDAS_HAND = register("midas_hand", new MidasHand(settingsWithId("midas_hand")));
+    public static final Item INFINITE_APPLE = register("infinite_apple", new InfiniteApple(settingsWithId("infinite_apple")));
+    public static final Item HORN_PLENTY = register("horn_plenty", new HornPlenty(settingsWithId("horn_plenty")));
+    public static final Item MAGIC_ROPE = register("magic_rope", new MagicRope(settingsWithId("magic_rope")));
+
+    public static Item.Settings settingsWithId(String id) {
+        return new Item.Settings().registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of("croparia", id)));
+    }
 
     public ItemInit() {
     }
@@ -67,22 +73,14 @@ public class ItemInit {
     }
 
     public static Item getPotionFromElement(ElementsEnum element) {
-        switch (element) {
-            case WATER:
-                return POTION_WATER;
-            case FIRE:
-                return POTION_FIRE;
-            case EARTH:
-                return POTION_EARTH;
-            case AIR:
-                return POTION_AIR;
-            case ELEMENTAL:
-                return POTION_ELEMATILIUS;
-            case EMPTY:
-                return Items.GLASS_BOTTLE;
-            default:
-                return Items.GLASS_BOTTLE;
-        }
+        return switch (element) {
+            case WATER -> POTION_WATER;
+            case FIRE -> POTION_FIRE;
+            case EARTH -> POTION_EARTH;
+            case AIR -> POTION_AIR;
+            case ELEMENTAL -> POTION_ELEMATILIUS;
+            case EMPTY -> Items.GLASS_BOTTLE;
+        };
     }
 
     public static Item register(String name, Item item) {

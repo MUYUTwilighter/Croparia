@@ -7,7 +7,6 @@ package com.defacto34.croparia.core.block;
 
 import com.defacto34.croparia.core.recipes.RitualRecipe;
 import com.defacto34.croparia.core.recipes.rituals.FirstRitual;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
@@ -24,8 +23,8 @@ import net.minecraft.world.World;
 public class RitualStand extends Block {
     protected final VoxelShape SHAPE = Block.createCuboidShape(0.0, 0.3, 0.0, 16.0, 6.0, 16.0);
 
-    public RitualStand() {
-        super(FabricBlockSettings.create().strength(1.0F, 1.0F).sounds(BlockSoundGroup.ANVIL).requiresTool());
+    public RitualStand(Settings settings) {
+        super(settings.strength(1.0F, 1.0F).sounds(BlockSoundGroup.ANVIL).requiresTool());
     }
 
     public void onSteppedOn(World worldIn, BlockPos pos, BlockState state, Entity entityIn) {

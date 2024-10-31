@@ -2,15 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "G": {
-      "item": "minecraft:glowstone_dust"
-    },
-    "P": {
-      "item": "minecraft:glass_pane"
-    },
-    "S": {
-      "item": "minecraft:stick"
-    }
+    "G": "minecraft:glowstone_dust",
+    "P": "minecraft:glass_pane",
+    "S": "minecraft:stick"
   },
   "pattern": [
     "SGS",

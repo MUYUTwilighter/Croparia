@@ -6,6 +6,7 @@
 package com.defacto34.croparia.api.crop;
 
 import com.defacto34.croparia.Croparia;
+import com.defacto34.croparia.init.ItemInit;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -18,7 +19,7 @@ public class CropFruit extends Item {
     public Crop crop;
 
     public CropFruit(Crop crop) {
-        super(new Item.Settings());
+        super(ItemInit.settingsWithId("fruit_" + crop.cropName));
         this.crop = crop;
     }
 

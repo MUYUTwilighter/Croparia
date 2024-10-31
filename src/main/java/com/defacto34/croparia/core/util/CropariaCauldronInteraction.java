@@ -12,7 +12,7 @@ import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.Items;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.util.ItemActionResult;
+import net.minecraft.util.ActionResult;
 import net.minecraft.world.event.GameEvent;
 
 public interface CropariaCauldronInteraction extends CauldronBehavior {
@@ -32,7 +32,7 @@ public interface CropariaCauldronInteraction extends CauldronBehavior {
                 level.emitGameEvent(null, GameEvent.FLUID_PICKUP, blockPos);
             }
 
-            return ItemActionResult.success(level.isClient);
+            return ActionResult.SUCCESS;
         });
         WATER_CAULDRON.map().put(Items.GLASS_BOTTLE, (blockState, level, blockPos, player, hand, stack) -> {
             if (!level.isClient) {
@@ -43,7 +43,7 @@ public interface CropariaCauldronInteraction extends CauldronBehavior {
                 level.emitGameEvent(null, GameEvent.FLUID_PICKUP, blockPos);
             }
 
-            return ItemActionResult.success(level.isClient);
+            return ActionResult.SUCCESS;
         });
         FIRE_CAULDRON.map().put(Items.GLASS_BOTTLE, (blockState, level, blockPos, player, hand, stack) -> {
             if (!level.isClient) {
@@ -54,7 +54,7 @@ public interface CropariaCauldronInteraction extends CauldronBehavior {
                 level.emitGameEvent(null, GameEvent.FLUID_PICKUP, blockPos);
             }
 
-            return ItemActionResult.success(level.isClient);
+            return ActionResult.SUCCESS;
         });
         EARTH_CAULDRON.map().put(Items.GLASS_BOTTLE, (blockState, level, blockPos, player, hand, stack) -> {
             if (!level.isClient) {
@@ -65,7 +65,7 @@ public interface CropariaCauldronInteraction extends CauldronBehavior {
                 level.emitGameEvent(null, GameEvent.FLUID_PICKUP, blockPos);
             }
 
-            return ItemActionResult.success(level.isClient);
+            return ActionResult.SUCCESS;
         });
         AIR_CAULDRON.map().put(Items.GLASS_BOTTLE, (blockState, level, blockPos, player, hand, stack) -> {
             if (!level.isClient) {
@@ -76,7 +76,7 @@ public interface CropariaCauldronInteraction extends CauldronBehavior {
                 level.emitGameEvent(null, GameEvent.FLUID_PICKUP, blockPos);
             }
 
-            return ItemActionResult.success(level.isClient);
+            return ActionResult.SUCCESS;
         });
     }
 }

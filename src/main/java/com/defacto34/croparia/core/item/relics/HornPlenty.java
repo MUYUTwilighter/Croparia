@@ -21,8 +21,8 @@ import java.util.stream.Collectors;
 public class HornPlenty extends Item {
     private static List food = new ArrayList();
 
-    public HornPlenty() {
-        super((new Item.Settings()).maxCount(1));
+    public HornPlenty(Settings settings) {
+        super(settings.maxCount(1));
     }
 
     public static void initFood() {

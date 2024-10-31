@@ -20,8 +20,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class MidasHand extends Item {
-    public MidasHand() {
-        super((new Item.Settings()).maxCount(1));
+    public MidasHand(Settings settings) {
+        super(settings.maxCount(1));
     }
 
     public ActionResult useOnBlock(ItemUsageContext context) {
