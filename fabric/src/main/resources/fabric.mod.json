@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "croparia",
+  "version": "${version}",
+  "name": "Croparia-If",
+  "description": "A forked project from Dalarion's Croparia 4.5",
+  "authors": [
+    "Me!"
+  ],
+  "contact": {
+    "original": "https://www.curseforge.com/minecraft/mc-mods/croparia",
+    "homepage": "https://modrinth.com/mod/croparia-if",
+    "sources": "https://github.com/MUYUTwilighter/Croparia"
+  },
+  "license": "MIT",
+  "icon": "assets/croparia/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "cool.muyucloud.fabric.CropariaIfFabric"
+    ]
+  },
+  "mixins": [
+    "croparia-if.mixins.json",
+    "croparia-if-common.mixins.json"
+  ],
+  "depends": {
+    "fabric": "*",
+    "minecraft": "~1.20",
+    "architectury": "*"
+  }
+}

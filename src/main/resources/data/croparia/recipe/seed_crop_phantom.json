@@ -1,1 +1,0 @@
-{"type": "minecraft:crafting_shaped", "category": "misc", "key": {"E": "croparia:croparia2", "M": "minecraft:phantom_membrane", "S": "minecraft:wheat_seeds"}, "pattern": ["MSM", "SES", "MSM"], "result": {"id": "croparia:seed_crop_phantom"}, "show_notification": true}

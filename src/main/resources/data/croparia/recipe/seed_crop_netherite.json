@@ -1,1 +1,0 @@
-{"type": "minecraft:crafting_shaped", "category": "misc", "key": {"E": "croparia:croparia5", "M": "minecraft:netherite_ingot", "S": "minecraft:wheat_seeds"}, "pattern": ["MSM", "SES", "MSM"], "result": {"id": "croparia:seed_crop_netherite"}, "show_notification": true}

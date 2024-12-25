@@ -1,1 +1,0 @@
-{"type": "minecraft:crafting_shaped", "category": "misc", "key": {"E": "croparia:croparia3", "M": "minecraft:quartz", "S": "minecraft:wheat_seeds"}, "pattern": ["MSM", "SES", "MSM"], "result": {"id": "croparia:seed_crop_quartz"}, "show_notification": true}

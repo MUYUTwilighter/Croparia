@@ -1,0 +1,38 @@
+{
+  "item.croparia.elemental_fire": "Elemental Fire",
+  "item.croparia.elemental_water": "Elemental Water",
+  "item.croparia.elemental_air": "Elemental Air",
+  "item.croparia.elemental_earth": "Elemental Earth",
+
+  "item.croparia.potion_fire": "Potion Fire",
+  "item.croparia.potion_water": "Potion Water",
+  "item.croparia.potion_air": "Potion Air",
+  "item.croparia.potion_earth": "Potion Earth",
+
+  "block.croparia.crop.block": "{0} Crop",
+  "block.croparia.deepslate_elematilius_ore": "Deepslate Elematilius Ore",
+  "block.croparia.elematilius_ore": "Elematilius Ore",
+  "block.croparia.elemental_stone": "Elemental Stone",
+  "block.croparia.greenhouse": "Greenhouse",
+  "block.croparia.infusor": "Infusor",
+  "block.croparia.ritual_stand": "Ritual Stand",
+  "container.greenhouse": "Greenhouse",
+  "item.croparia.croparia": "Croparia",
+  "item.croparia.croparia2": "Croparia T2",
+  "item.croparia.croparia3": "Croparia T3",
+  "item.croparia.croparia4": "Croparia T4",
+  "item.croparia.croparia5": "Croparia T5",
+  "item.croparia.croparia6": "Croparia T6",
+  "item.croparia.croparia7": "Croparia T7",
+  "item.croparia.elematilius": "Elematilius",
+  "item.croparia.crop.fruit": "{0} Fruit",
+  "item.croparia.crop.seed": "{0} Seeds",
+
+  "item.croparia.horn_plenty": "Horn of Plenty",
+  "item.croparia.infinite_apple": "Infinite Apple",
+  "item.croparia.magic_rope": "Magic Rope",
+  "item.croparia.midas_hand": "Midas Hand",
+  "item.croparia.potion_elematilius": "Elematilius Potion",
+  "tab.croparia.crop": "Croparia : Crops",
+  "tab.croparia.main": "Croparia"
+}

@@ -1,0 +1,88 @@
+package cool.muyucloud.registry;
+
+import cool.muyucloud.Crop;
+import cool.muyucloud.data.CropFileReader;
+import cool.muyucloud.data.CropType;
+import cool.muyucloud.data.RawCrop;
+import dev.architectury.platform.Platform;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.*;
+
+public class Crops {
+    public static final Set<Crop> CROPS = new HashSet<>();
+
+    public static final Crop APPLE = registerCrop("apple", "minecraft:apple", 0x7F7F00, 0, CropType.FOOD, "item.minecraft.apple");
+
+    /**
+     * Add a simple crop. Mainly used for croparia crops.
+     *
+     * @param name       crop name
+     * @param materialId material id which the crop grows, could be item ID or item tag
+     * @param color      int value of color
+     * @param tier       tier
+     * @param type       crop type that specifies the textures. See also {@link CropType}
+     */
+    private static Crop registerCrop(@NotNull String name, @NotNull String materialId, int color, int tier, @NotNull CropType type) {
+        Crop crop = Crop.create(name, materialId, color, tier, type);
+        CROPS.add(crop);
+        return crop;
+    }
+
+    /**
+     * Add a simple crop with specified translation key. Mainly used for vanilla crops.
+     *
+     * @param name           crop name
+     * @param materialId     material id which the crop grows, could be item ID or item tag
+     * @param color          int value of color
+     * @param tier           tier
+     * @param type           crop type that specifies the textures. See also {@link CropType}
+     * @param translationKey translation key for the crop, used for formatting item & block names.
+     */
+    private static Crop registerCrop(@NotNull String name, @NotNull String materialId, int color, int tier, @NotNull CropType type, @NotNull String translationKey) {
+        Crop crop = Crop.create(name, materialId, color, tier, type, translationKey, Map.of());
+        CROPS.add(crop);
+        return crop;
+    }
+
+    /**
+     * Add a crop from other mods which should be loaded.
+     *
+     * @param name         crop name
+     * @param materialId   material id which the crop grows, could be item ID or item tag
+     * @param color        int value of color
+     * @param tier         tier
+     * @param type         crop type that specifies the textures. See also {@link CropType}
+     * @param dependencies mod dependencies
+     */
+    private static Optional<Crop> registerCrop(@NotNull String name, @NotNull String materialId, int color, int tier, @NotNull CropType type, @NotNull String translationKey, String... dependencies) {
+        if (shouldLoad(dependencies)) {
+            return Optional.of(registerCrop(name, materialId, color, tier, type));
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    private static boolean shouldLoad(Set<String> dependencies) {
+        return dependencies.stream().allMatch(Platform::isModLoaded);
+    }
+
+    private static boolean shouldLoad(String... dependencies) {
+        return Arrays.stream(dependencies).allMatch(Platform::isModLoaded);
+    }
+
+    public static void register() {
+        new CropFileReader().readCrops(Platform.getGameFolder().resolve("crops")).forEach(Crops::registerFileCrop);
+        for (Crop crop : CROPS) {
+            Items.registerCrop(crop);
+            Blocks.registerCrop(crop);
+        }
+    }
+
+    private static void registerFileCrop(RawCrop raw) {
+        if (shouldLoad(raw.dependencies())) {
+            Crop crop = Crop.of(raw);
+            CROPS.add(crop);
+        }
+    }
+}
