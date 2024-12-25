@@ -1,8 +1,3 @@
-//
-// Source code recreated from a .class file by IntelliJ IDEA
-// (powered by FernFlower decompiler)
-//
-
 package cool.muyucloud.item;
 
 import cool.muyucloud.Crop;
@@ -34,7 +29,6 @@ public class CropFruit extends Item {
             context.getPlayer().getMainHandItem().shrink(1);
             return InteractionResult.SUCCESS;
         }
-
         return InteractionResult.FAIL;
     }
 
@@ -45,7 +39,7 @@ public class CropFruit extends Item {
     }
 
     @Override
-    protected @NotNull String getOrCreateDescriptionId() {
+    public @NotNull String getDescriptionId() {
         return "item." + CropariaIf.MOD_ID + ".crop.fruit";
     }
 }

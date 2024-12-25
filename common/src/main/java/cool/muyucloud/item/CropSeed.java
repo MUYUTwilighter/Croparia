@@ -28,7 +28,7 @@ public class CropSeed extends BlockItem {
     }
 
     @Override
-    protected String getOrCreateDescriptionId() {
+    public String getDescriptionId() {
         return "item." + CropariaIf.MOD_ID + ".crop.seed";
     }
 }
