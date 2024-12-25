@@ -3,13 +3,11 @@
   "item.croparia.elemental_water": "Elemental Water",
   "item.croparia.elemental_air": "Elemental Air",
   "item.croparia.elemental_earth": "Elemental Earth",
-
   "item.croparia.potion_fire": "Potion Fire",
   "item.croparia.potion_water": "Potion Water",
   "item.croparia.potion_air": "Potion Air",
   "item.croparia.potion_earth": "Potion Earth",
-
-  "block.croparia.crop.block": "{0} Crop",
+  "block.croparia.crop.block": "%s Crop",
   "block.croparia.deepslate_elematilius_ore": "Deepslate Elematilius Ore",
   "block.croparia.elematilius_ore": "Elematilius Ore",
   "block.croparia.elemental_stone": "Elemental Stone",
@@ -25,9 +23,8 @@
   "item.croparia.croparia6": "Croparia T6",
   "item.croparia.croparia7": "Croparia T7",
   "item.croparia.elematilius": "Elematilius",
-  "item.croparia.crop.fruit": "{0} Fruit",
-  "item.croparia.crop.seed": "{0} Seeds",
-
+  "item.croparia.crop.fruit": "%s Fruit",
+  "item.croparia.crop.seed": "%s Seeds",
   "item.croparia.horn_plenty": "Horn of Plenty",
   "item.croparia.infinite_apple": "Infinite Apple",
   "item.croparia.magic_rope": "Magic Rope",

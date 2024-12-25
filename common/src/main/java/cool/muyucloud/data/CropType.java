@@ -5,5 +5,5 @@ public enum CropType {
     MONSTER,
     ANIMAL,
     NATURE,
-    FOOD;
+    FOOD
 }
