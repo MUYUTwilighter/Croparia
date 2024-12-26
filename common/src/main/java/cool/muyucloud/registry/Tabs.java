@@ -20,6 +20,13 @@ public class Tabs {
         "crops",
         () -> CreativeTabRegistry.create(
             Component.translatable("tab." + CropariaIf.MOD_ID + ".crops"),
+            CropariaItems.CROPARIA.get()::getDefaultInstance
+        )
+    );
+    public static final RegistrySupplier<CreativeModeTab> MAIN = registerTab(
+        "main",
+        () -> CreativeTabRegistry.create(
+            Component.translatable("tab." + CropariaIf.MOD_ID + ".main"),
             Items.APPLE::getDefaultInstance
         )
     );

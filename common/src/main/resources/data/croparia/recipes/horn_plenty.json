@@ -1,0 +1,8 @@
+{
+  "type": "croparia:ritual_recipe",
+  "tier": 1,
+  "input": "minecraft:nether_wart_block",
+  "block": "minecraft:spruce_wood",
+  "output": "croparia:horn_plenty",
+  "count": 1
+}

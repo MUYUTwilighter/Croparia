@@ -6,7 +6,9 @@
   "client": [
   ],
   "mixins": [
-    "CropBlockMixin"
+    "CropBlockMixin",
+    "ReloadableResourceManagerImplMixin",
+    "ResourcePackManagerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

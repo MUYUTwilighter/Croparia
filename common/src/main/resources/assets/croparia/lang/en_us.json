@@ -31,5 +31,6 @@
   "item.croparia.midas_hand": "Midas Hand",
   "item.croparia.potion_elematilius": "Elematilius Potion",
   "tab.croparia.crop": "Croparia : Crops",
-  "tab.croparia.main": "Croparia"
+  "tab.croparia.main": "Croparia",
+  "crop.croparia.elematilius": "Elematilius"
 }

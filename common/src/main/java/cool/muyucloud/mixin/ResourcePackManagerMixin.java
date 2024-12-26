@@ -1,6 +1,6 @@
 package cool.muyucloud.mixin;
 
-import cool.muyucloud.util.DataPackHandler;
+import cool.muyucloud.util.pack.DataPackHandler;
 import net.minecraft.server.packs.repository.PackRepository;
 import net.minecraft.server.packs.repository.RepositorySource;
 import org.spongepowered.asm.mixin.Mixin;

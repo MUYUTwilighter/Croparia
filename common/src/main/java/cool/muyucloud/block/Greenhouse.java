@@ -5,7 +5,7 @@
 
 package cool.muyucloud.block;
 
-import cool.muyucloud.blockentity.GreenhouseBE;
+import cool.muyucloud.blockentity.GreenhouseBlockEntity;
 import cool.muyucloud.registry.BlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -74,12 +74,12 @@ public class Greenhouse extends BaseEntityBlock {
     }
 
     public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new GreenhouseBE(pos, state);
+        return new GreenhouseBlockEntity(pos, state);
     }
 
     public <T extends BlockEntity> @Nullable BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-        return createTickerHelper(type, BlockEntities.get(BlockEntities.GREENHOUSE_BE), (world1, pos, state1, be) -> {
-            GreenhouseBE.tick(world1, pos, (GreenhouseBE) be);
+        return createTickerHelper(type, BlockEntities.GREENHOUSE_BE.get(), (world1, pos, state1, be) -> {
+            GreenhouseBlockEntity.tick(world1, pos, be);
         });
     }
 
@@ -90,12 +90,10 @@ public class Greenhouse extends BaseEntityBlock {
     public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean moved) {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof GreenhouseBE) {
-                Containers.dropContents(world, pos, (GreenhouseBE)blockEntity);
+            if (blockEntity instanceof GreenhouseBlockEntity) {
+                Containers.dropContents(world, pos, (GreenhouseBlockEntity) blockEntity);
             }
-
             super.onRemove(state, world, pos, newState, moved);
         }
-
     }
 }

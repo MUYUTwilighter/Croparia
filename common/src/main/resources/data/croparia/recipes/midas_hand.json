@@ -1,0 +1,8 @@
+{
+  "type": "croparia:ritual_recipe",
+  "tier": 1,
+  "input": "minecraft:stick",
+  "block": "minecraft:gold_block",
+  "output": "croparia:midas_hand",
+  "count": 1
+}

@@ -1,0 +1,8 @@
+{
+  "type": "croparia:ritual_recipe",
+  "tier": 1,
+  "input": "minecraft:golden_apple",
+  "block": "minecraft:nether_wart_block",
+  "output": "croparia:infinite_apple",
+  "count": 1
+}

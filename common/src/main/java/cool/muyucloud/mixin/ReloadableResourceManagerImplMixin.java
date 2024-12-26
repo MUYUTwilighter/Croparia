@@ -1,6 +1,6 @@
 package cool.muyucloud.mixin;
 
-import cool.muyucloud.util.ResourcePackHandler;
+import cool.muyucloud.util.pack.ResourcePackHandler;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.server.packs.resources.ResourceManager;

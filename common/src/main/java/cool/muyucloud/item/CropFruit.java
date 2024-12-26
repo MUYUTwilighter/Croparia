@@ -1,6 +1,6 @@
 package cool.muyucloud.item;
 
-import cool.muyucloud.Crop;
+import cool.muyucloud.data.crop.Crop;
 import cool.muyucloud.CropariaIf;
 import cool.muyucloud.registry.Tabs;
 import net.minecraft.network.chat.Component;

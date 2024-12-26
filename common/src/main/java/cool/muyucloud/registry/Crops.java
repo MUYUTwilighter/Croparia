@@ -1,9 +1,9 @@
 package cool.muyucloud.registry;
 
-import cool.muyucloud.Crop;
-import cool.muyucloud.data.CropFileReader;
-import cool.muyucloud.data.CropType;
-import cool.muyucloud.data.RawCrop;
+import cool.muyucloud.data.crop.Crop;
+import cool.muyucloud.data.crop.CropFileReader;
+import cool.muyucloud.data.crop.CropType;
+import cool.muyucloud.data.crop.RawCrop;
 import dev.architectury.platform.Platform;
 import org.jetbrains.annotations.NotNull;
 
@@ -13,6 +13,7 @@ public class Crops {
     public static final Set<Crop> CROPS = new HashSet<>();
 
     public static final Crop APPLE = registerCrop("apple", "minecraft:apple", 0x7F7F00, 0, CropType.FOOD, "item.minecraft.apple");
+    public static final Crop ELEMATILIUS = registerCrop("elematilius", "minecraft:elematilius", 0x7F7F00, 3, CropType.ELEMENTAL);
 
     /**
      * Add a simple crop. Mainly used for croparia crops.
@@ -72,10 +73,10 @@ public class Crops {
     }
 
     public static void register() {
-        new CropFileReader().readCrops(Platform.getGameFolder().resolve("crops")).forEach(Crops::registerFileCrop);
+        CropFileReader.readCrops().forEach(Crops::registerFileCrop);
         for (Crop crop : CROPS) {
-            Items.registerCrop(crop);
-            Blocks.registerCrop(crop);
+            CropariaItems.registerCrop(crop);
+            CropariaBlocks.registerCrop(crop);
         }
     }
 

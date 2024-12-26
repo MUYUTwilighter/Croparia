@@ -1,30 +1,28 @@
 package cool.muyucloud;
 
-import com.google.common.base.Suppliers;
-import cool.muyucloud.registry.Blocks;
-import cool.muyucloud.registry.Crops;
-import cool.muyucloud.registry.Items;
-import cool.muyucloud.registry.Tabs;
-import dev.architectury.registry.registries.DeferredRegister;
-import dev.architectury.registry.registries.RegistrarManager;
-import net.minecraft.core.registries.Registries;
+import com.mojang.logging.LogUtils;
+import cool.muyucloud.data.config.Config;
+import cool.muyucloud.data.config.ConfigFileHandler;
+import cool.muyucloud.registry.*;
+import dev.architectury.registry.client.rendering.RenderTypeRegistry;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
-
-import java.util.function.Supplier;
+import org.slf4j.Logger;
 
 public class CropariaIf {
     public static final String MOD_ID = "croparia";
-    // We can use this if we don't want to use DeferredRegister
-    public static final Supplier<RegistrarManager> REGISTRIES = Suppliers.memoize(() -> RegistrarManager.get(MOD_ID));
-
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(MOD_ID, Registries.ITEM);
+    public static final Logger LOGGER = LogUtils.getLogger();
+    public static final Config CONFIG = ConfigFileHandler.load();
 
     public static void init() {
+        RecipeTypes.register();
+        RecipeSerializers.register();
         Crops.register();
+        CropariaBlocks.register();
+        BlockEntities.register();
+        CropariaItems.register();
         Tabs.register();
-        Items.register();
-        Blocks.register();
+        RenderTypeRegistry.register(RenderType.cutout(), CropariaBlocks.GREENHOUSE.get());
     }
 
     public static ResourceLocation of(String path) {
