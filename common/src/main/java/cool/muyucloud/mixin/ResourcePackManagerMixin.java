@@ -7,6 +7,10 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
+/**
+ * Mixin class used to insert our datapack provided by {@link DataPackHandler},
+ * so that the datapack can be loaded.
+ * */
 @Mixin(PackRepository.class)
 public abstract class ResourcePackManagerMixin {
     @ModifyVariable(method = "<init>", at = @At("HEAD"), argsOnly = true)

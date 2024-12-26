@@ -12,6 +12,13 @@ public class InfusorContainer implements Container {
     private ItemStack item = ItemStack.EMPTY;
     private transient boolean dirty = false;
 
+    public static InfusorContainer of(ElementsEnum element, ItemStack item) {
+        InfusorContainer container = new InfusorContainer();
+        container.element = element;
+        container.item = item;
+        return container;
+    }
+
     public @NotNull ElementsEnum getElement() {
         return element;
     }

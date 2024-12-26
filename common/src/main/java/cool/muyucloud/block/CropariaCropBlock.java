@@ -23,15 +23,13 @@ public class CropariaCropBlock extends CropBlock {
     }
 
     @Override
-    public MutableComponent getName() {
+    public @NotNull MutableComponent getName() {
         MutableComponent cropName = Component.translatable(this.crop.getTranslationKey());
         return Component.translatable(this.getDescriptionId(), cropName);
     }
 
     @Override
-    public String getDescriptionId() {
+    public @NotNull String getDescriptionId() {
         return "block." + CropariaIf.MOD_ID + ".crop.block";
     }
-
-
 }

@@ -1,0 +1,10 @@
+{
+  "type": "croparia:infusor",
+  "element": "elemental",
+  "ingredient": {
+    "id": "croparia:seed_crop_diamond"
+  },
+  "result": {
+    "id": "croparia:seed_crop_emerald"
+  }
+}

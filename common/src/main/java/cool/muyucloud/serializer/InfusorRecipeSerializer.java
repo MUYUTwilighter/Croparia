@@ -16,7 +16,7 @@ public class InfusorRecipeSerializer implements RecipeSerializer<InfusorRecipe> 
     @Override
     public @NotNull InfusorRecipe fromJson(ResourceLocation id, JsonObject jsonObject) {
         ElementsEnum element = Optional.of(ElementsEnum.valueOf(jsonObject.get("element").getAsString().toUpperCase()))
-            .orElseThrow(() -> new IllegalArgumentException("Unknown element"));
+            .orElseThrow(() -> new IllegalArgumentException("Unknown or missing element"));
         ItemStack ingredient = ItemStack.CODEC.parse(JsonOps.INSTANCE, jsonObject.get("ingredient"))
             .getOrThrow(false, msg -> {
                 throw new IllegalArgumentException(msg);

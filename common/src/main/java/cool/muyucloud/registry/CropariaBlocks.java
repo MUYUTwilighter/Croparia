@@ -1,5 +1,6 @@
 package cool.muyucloud.registry;
 
+import cool.muyucloud.block.Infusor;
 import cool.muyucloud.data.crop.Crop;
 import cool.muyucloud.CropariaIf;
 import cool.muyucloud.block.CropariaCropBlock;
@@ -24,7 +25,7 @@ import java.util.function.Supplier;
 public class CropariaBlocks {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(CropariaIf.MOD_ID, Registries.BLOCK);
 
-    public static final RegistrySupplier<Block> GREENHOUSE = registerBlock(
+    public static final RegistrySupplier<Greenhouse> GREENHOUSE = registerBlock(
         "greenhouse",
         () -> new Greenhouse(
             BlockBehaviour.Properties.of().strength(1.0F, 1.0F).randomTicks().lightLevel(state -> 8)
@@ -32,20 +33,22 @@ public class CropariaBlocks {
                 .isViewBlocking((state, world, pos) -> false)
         )
     );
+    public static final RegistrySupplier<Infusor> INFUSOR = registerBlock("infusor", Infusor::new);
     public static final RegistrySupplier<Block> ELEMENTAL_STONE = registerBlock(
         "elemental_stone",
-        () -> new Block(
-            BlockBehaviour.Properties.of().strength(1.0F, 1.0F).requiresCorrectToolForDrops()
+        () -> new DropExperienceBlock(
+            BlockBehaviour.Properties.of().strength(1.0F, 1.0F).requiresCorrectToolForDrops(),
+            UniformInt.of(0, 2)
         )
     );
-    public static final RegistrySupplier<Block> ELEMATILIUS_ORE = registerBlock(
+    public static final RegistrySupplier<DropExperienceBlock> ELEMATILIUS_ORE = registerBlock(
         "elematilius_ore",
         () -> new DropExperienceBlock(
             BlockBehaviour.Properties.of().strength(1.0F, 1.0F).requiresCorrectToolForDrops(),
             UniformInt.of(0, 2)
         )
     );
-    public static final RegistrySupplier<Block> DEEPSLATE_ELEMATILIUS_ORE = registerBlock(
+    public static final RegistrySupplier<DropExperienceBlock> DEEPSLATE_ELEMATILIUS_ORE = registerBlock(
         "deepslate_elematilius_ore",
         () -> new DropExperienceBlock(
             BlockBehaviour.Properties.of().strength(1.0F, 1.0F).requiresCorrectToolForDrops().
@@ -53,14 +56,14 @@ public class CropariaBlocks {
             UniformInt.of(0, 2)
         )
     );
-    public static final RegistrySupplier<Block> CAULDRON = registerBlock(
+    public static final RegistrySupplier<LayeredCauldronBlock> CAULDRON = registerBlock(
         "elematilius_cauldron",
         () -> new LayeredCauldronBlock(
             BlockBehaviour.Properties.copy(net.minecraft.world.level.block.Blocks.CAULDRON),
             LayeredCauldronBlock.RAIN, CropariaCauldronInteraction.ELEMATILIUS
         )
     );
-    public static final RegistrySupplier<Block> WATER_CAULDRON = registerBlock(
+    public static final RegistrySupplier<LayeredCauldronBlock> WATER_CAULDRON = registerBlock(
         "water_cauldron",
         () -> new LayeredCauldronBlock(
             BlockBehaviour.Properties.copy(net.minecraft.world.level.block.Blocks.CAULDRON),
@@ -68,21 +71,21 @@ public class CropariaBlocks {
             CropariaCauldronInteraction.WATER_CAULDRON
         )
     );
-    public static final RegistrySupplier<Block> FIRE_CAULDRON = registerBlock(
+    public static final RegistrySupplier<LayeredCauldronBlock> FIRE_CAULDRON = registerBlock(
         "fire_cauldron",
         () -> new LayeredCauldronBlock(
             BlockBehaviour.Properties.copy(net.minecraft.world.level.block.Blocks.CAULDRON),
             LayeredCauldronBlock.RAIN, CropariaCauldronInteraction.FIRE_CAULDRON
         )
     );
-    public static final RegistrySupplier<Block> EARTH_CAULDRON = registerBlock(
+    public static final RegistrySupplier<LayeredCauldronBlock> EARTH_CAULDRON = registerBlock(
         "earth_cauldron",
         () -> new LayeredCauldronBlock(
             BlockBehaviour.Properties.copy(net.minecraft.world.level.block.Blocks.CAULDRON),
             LayeredCauldronBlock.RAIN, CropariaCauldronInteraction.EARTH_CAULDRON
         )
     );
-    public static final RegistrySupplier<Block> AIR_CAULDRON = registerBlock(
+    public static final RegistrySupplier<LayeredCauldronBlock> AIR_CAULDRON = registerBlock(
         "air_cauldron",
         () -> new LayeredCauldronBlock(
             BlockBehaviour.Properties.copy(net.minecraft.world.level.block.Blocks.CAULDRON),
@@ -90,7 +93,7 @@ public class CropariaBlocks {
         )
     );
 
-    public static RegistrySupplier<Block> registerBlock(String name, Supplier<Block> supplier) {
+    public static <T extends Block> RegistrySupplier<T> registerBlock(String name, Supplier<T> supplier) {
         return BLOCKS.register(name, supplier);
     }
 
@@ -102,7 +105,7 @@ public class CropariaBlocks {
         BLOCKS.register();
     }
 
-    public static @Nullable RegistrySupplier<Block> getCauldron(@NotNull ElementsEnum element) {
+    public static @Nullable RegistrySupplier<LayeredCauldronBlock> getCauldron(@NotNull ElementsEnum element) {
         return switch (element) {
             case WATER -> WATER_CAULDRON;
             case FIRE -> FIRE_CAULDRON;

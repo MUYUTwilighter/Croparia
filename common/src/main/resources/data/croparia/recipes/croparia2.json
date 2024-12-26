@@ -1,7 +1,12 @@
 {
-  "type": "croparia:infusor_recipe",
-  "input": "croparia:croparia",
+  "type": "croparia:infusor",
   "element": "elemental",
-  "output": "croparia:croparia2",
-  "count": 1
+  "ingredient": {
+    "id": "croparia:croparia",
+    "Count": 1
+  },
+  "result": {
+    "id": "croparia:croparia2",
+    "Count": 1
+  }
 }

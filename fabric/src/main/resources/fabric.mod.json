@@ -18,6 +18,9 @@
   "entrypoints": {
     "main": [
       "cool.muyucloud.fabric.CropariaIfFabric"
+    ],
+    "client": [
+      "cool.muyucloud.fabric.CropariaIfClientFabric"
     ]
   },
   "mixins": [

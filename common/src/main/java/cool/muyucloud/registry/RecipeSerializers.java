@@ -2,6 +2,7 @@ package cool.muyucloud.registry;
 
 import cool.muyucloud.CropariaIf;
 import cool.muyucloud.serializer.InfusorRecipeSerializer;
+import cool.muyucloud.serializer.OldInfusorRecipeSerializer;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
@@ -12,9 +13,10 @@ import java.util.function.Supplier;
 public class RecipeSerializers {
     public static DeferredRegister<RecipeSerializer<?>> SERIALIZERS = DeferredRegister.create(CropariaIf.MOD_ID, Registries.RECIPE_SERIALIZER);
 
-    public static RegistrySupplier<RecipeSerializer<?>> INFUSOR = register("infusor", InfusorRecipeSerializer::new);
+    public static RegistrySupplier<InfusorRecipeSerializer> INFUSOR = register("infusor", InfusorRecipeSerializer::new);
+    public static RegistrySupplier<OldInfusorRecipeSerializer> INFUSOR_OLD = register("infusor_recipe", OldInfusorRecipeSerializer::new);
 
-    public static RegistrySupplier<RecipeSerializer<?>> register(String id, Supplier<RecipeSerializer<?>> supplier) {
+    public static <T extends RecipeSerializer<?>> RegistrySupplier<T> register(String id, Supplier<T> supplier) {
         return SERIALIZERS.register(id, supplier);
     }
 

@@ -9,13 +9,18 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 
+/**
+ * Mixin class for {@link CropBlock} to access age property from {@link CropBlockAccess}.<br/>
+ * @see CropBlockAccess
+ */
 @Mixin(CropBlock.class)
 public abstract class CropBlockMixin extends BushBlock implements BonemealableBlock, CropBlockAccess {
     public CropBlockMixin(Properties settings) {
         super(settings);
     }
 
-    @Shadow protected abstract IntegerProperty getAgeProperty();
+    @Shadow
+    protected abstract IntegerProperty getAgeProperty();
 
     @Unique
     @Override

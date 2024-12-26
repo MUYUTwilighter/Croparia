@@ -18,7 +18,7 @@ public class GreenhouseItem extends BlockItem {
         super(block, settings);
     }
 
-    public @NotNull InteractionResult useOn(UseOnContext context) {
+    public @NotNull InteractionResult useOn(@NotNull UseOnContext context) {
         Level world = context.getLevel();
         Player player = context.getPlayer();
         BlockPos pos = context.getClickedPos();

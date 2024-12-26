@@ -14,24 +14,25 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Recipe data entity for the infusor.<br/>
+ * For serialization, see {@link cool.muyucloud.serializer.InfusorRecipeSerializer}.<br/>
+ * For old version of infusor recipe formed by Dalarion, see {@link OldInfusorRecipe}.
+ * */
 public class InfusorRecipe implements Recipe<InfusorContainer> {
-    private ResourceLocation id;
-    private ElementsEnum element;
-    private ItemStack ingredient;
-    private ItemStack result;
-
-    public int getMaxUses() {
-        return Math.min(
-            this.result.getMaxStackSize() / this.result.getCount(),
-            this.ingredient.getMaxStackSize() / this.ingredient.getCount()
-        );
-    }
+    protected ResourceLocation id;
+    protected ElementsEnum element = ElementsEnum.ELEMENTAL;
+    protected ItemStack ingredient = ItemStack.EMPTY;
+    protected ItemStack result = ItemStack.EMPTY;
 
     public ItemStack getResult() {
         return result.copy();
     }
 
     public void setResult(ItemStack result) {
+        if (result.isEmpty()) {
+            throw new IllegalArgumentException("Empty result item %s in recipe %s".formatted(result, this.getId()));
+        }
         this.result = result;
     }
 
@@ -48,14 +49,15 @@ public class InfusorRecipe implements Recipe<InfusorContainer> {
     }
 
     public void setIngredient(ItemStack ingredient) {
+        if (ingredient.isEmpty()) {
+            throw new IllegalArgumentException("Empty input item %s in recipe %s".formatted(ingredient, this.getId()));
+        }
         this.ingredient = ingredient;
     }
 
     public boolean matches(InfusorContainer container) {
         ItemStack input = container.getItem(0);
-        return ItemStack.isSameItemSameTags(input, ingredient)
-            && input.getCount() >= ingredient.getCount()
-            && container.getElement() == element;
+        return ItemStack.isSameItemSameTags(input, ingredient) && input.getCount() >= ingredient.getCount() && container.getElement() == element;
     }
 
     public @NotNull ItemStack assemble(@NotNull InfusorContainer container) {
@@ -63,19 +65,6 @@ public class InfusorRecipe implements Recipe<InfusorContainer> {
             ItemStack input = container.getItem(0);
             input.shrink(ingredient.getCount());
             return getResult();
-        } else {
-            return ItemStack.EMPTY;
-        }
-    }
-
-    public @NotNull ItemStack assembleAll(@NotNull InfusorContainer container) {
-        if (matches(container)) {
-            ItemStack input = container.getItem(0);
-            ItemStack result = getResult();
-            int uses = Math.min(input.getCount() / ingredient.getCount(), this.getMaxUses());
-            input.shrink(uses * ingredient.getCount());
-            result.setCount(uses * result.getCount());
-            return result;
         } else {
             return ItemStack.EMPTY;
         }

@@ -12,6 +12,7 @@ import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,19 +21,23 @@ import java.util.function.Supplier;
 public class CropariaItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(CropariaIf.MOD_ID, Registries.ITEM);
 
-    public static final RegistrySupplier<Item> GREENHOUSE = registerItem(
+    public static final RegistrySupplier<BlockItem> GREENHOUSE = registerItem(
         "greenhouse",
         () -> new GreenhouseItem(CropariaBlocks.GREENHOUSE.get(), new Item.Properties().arch$tab(Tabs.MAIN))
     );
-    public static final RegistrySupplier<Item> ELEMENTAL_STONE = registerItem(
+    public static final RegistrySupplier<BlockItem> INFUSOR = registerItem(
+        "infusor",
+        () -> new BlockItem(CropariaBlocks.INFUSOR.get(), new Item.Properties().arch$tab(Tabs.MAIN))
+    );
+    public static final RegistrySupplier<BlockItem> ELEMENTAL_STONE = registerItem(
         "elemental_stone",
         () -> new BlockItem(CropariaBlocks.ELEMENTAL_STONE.get(), new Item.Properties().arch$tab(Tabs.MAIN))
     );
-    public static final RegistrySupplier<Item> ELEMATILIUS_ORE = registerItem(
+    public static final RegistrySupplier<BlockItem> ELEMATILIUS_ORE = registerItem(
         "elematilius_ore",
         () -> new BlockItem(CropariaBlocks.ELEMATILIUS_ORE.get(), new Item.Properties().arch$tab(Tabs.MAIN))
     );
-    public static final RegistrySupplier<Item> DEEPSLATE_ELEMATILIUS_ORE = registerItem(
+    public static final RegistrySupplier<BlockItem> DEEPSLATE_ELEMATILIUS_ORE = registerItem(
         "deepslate_elematilius_ore",
         () -> new BlockItem(CropariaBlocks.DEEPSLATE_ELEMATILIUS_ORE.get(), new Item.Properties().arch$tab(Tabs.MAIN))
     );
@@ -56,47 +61,47 @@ public class CropariaItems {
         "potion_air",
         () -> new Item(new Item.Properties().arch$tab(Tabs.MAIN))
     );
-    public static final RegistrySupplier<Item> ELEMATILIUS = registerItem(
+    public static final RegistrySupplier<Elematilius> ELEMATILIUS = registerItem(
         "elematilius",
         () -> new Elematilius(ElementsEnum.ELEMENTAL, new Item.Properties().arch$tab(Tabs.MAIN))
     );
-    public static final RegistrySupplier<Item> ELEMENTAL_FIRE = registerItem(
+    public static final RegistrySupplier<Elematilius> ELEMENTAL_FIRE = registerItem(
         "elemental_fire",
         () -> new Elematilius(ElementsEnum.FIRE, new Item.Properties().arch$tab(Tabs.MAIN))
     );
-    public static final RegistrySupplier<Item> ELEMENTAL_WATER = registerItem(
+    public static final RegistrySupplier<Elematilius> ELEMENTAL_WATER = registerItem(
         "elemental_water",
         () -> new Elematilius(ElementsEnum.WATER, new Item.Properties().arch$tab(Tabs.MAIN))
     );
-    public static final RegistrySupplier<Item> ELEMENTAL_EARTH = registerItem(
+    public static final RegistrySupplier<Elematilius> ELEMENTAL_EARTH = registerItem(
         "elemental_earth",
         () -> new Elematilius(ElementsEnum.EARTH, new Item.Properties().arch$tab(Tabs.MAIN))
     );
-    public static final RegistrySupplier<Item> ELEMENTAL_AIR = registerItem(
+    public static final RegistrySupplier<Elematilius> ELEMENTAL_AIR = registerItem(
         "elemental_air",
         () -> new Elematilius(ElementsEnum.AIR, new Item.Properties().arch$tab(Tabs.MAIN))
     );
     public static final RegistrySupplier<Item> CROPARIA = registerItem(
-        "croparia", () -> new Item(new Item.Properties()));
+        "croparia", () -> new Item(new Item.Properties().arch$tab(Tabs.MAIN)));
     public static final RegistrySupplier<Item> CROPARIA2 = registerItem(
-        "croparia2", () -> new Item(new Item.Properties()));
+        "croparia2", () -> new Item(new Item.Properties().arch$tab(Tabs.MAIN)));
     public static final RegistrySupplier<Item> CROPARIA3 = registerItem(
-        "croparia3", () -> new Item(new Item.Properties()));
+        "croparia3", () -> new Item(new Item.Properties().arch$tab(Tabs.MAIN)));
     public static final RegistrySupplier<Item> CROPARIA4 = registerItem(
-        "croparia4", () -> new Item(new Item.Properties()));
+        "croparia4", () -> new Item(new Item.Properties().arch$tab(Tabs.MAIN)));
     public static final RegistrySupplier<Item> CROPARIA5 = registerItem(
-        "croparia5", () -> new Item(new Item.Properties()));
+        "croparia5", () -> new Item(new Item.Properties().arch$tab(Tabs.MAIN)));
     public static final RegistrySupplier<Item> CROPARIA6 = registerItem(
-        "croparia6", () -> new Item(new Item.Properties()));
+        "croparia6", () -> new Item(new Item.Properties().arch$tab(Tabs.MAIN)));
     public static final RegistrySupplier<Item> CROPARIA7 = registerItem(
-        "croparia7", () -> new Item(new Item.Properties()));
+        "croparia7", () -> new Item(new Item.Properties().arch$tab(Tabs.MAIN)));
 
     public static void registerCrop(Crop crop) {
         ITEMS.register(crop.getSeedId(), () -> new CropSeed(crop));
         ITEMS.register(crop.getFruitId(), () -> new CropFruit(crop));
     }
 
-    public static RegistrySupplier<Item> registerItem(String name, Supplier<Item> supplier) {
+    public static <T extends Item> RegistrySupplier<T> registerItem(String name, Supplier<T> supplier) {
         return ITEMS.register(name, supplier);
     }
 
@@ -104,25 +109,34 @@ public class CropariaItems {
         ITEMS.register();
     }
 
-    public static @Nullable RegistrySupplier<Item> getPotion(@NotNull ElementsEnum element) {
+    public static ElementsEnum elementFromPotion(@NotNull Item item) {
+        if (item == POTION_ELEMATILIUS.get()) return ElementsEnum.ELEMENTAL;
+        else if (item == POTION_WATER.get()) return ElementsEnum.WATER;
+        else if (item == POTION_FIRE.get()) return ElementsEnum.FIRE;
+        else if (item == POTION_EARTH.get()) return ElementsEnum.EARTH;
+        else if (item == POTION_AIR.get()) return ElementsEnum.AIR;
+        return ElementsEnum.EMPTY;
+    }
+
+    public static @NotNull Item getPotion(@NotNull ElementsEnum element) {
         return switch (element) {
-            case WATER -> POTION_WATER;
-            case FIRE -> POTION_FIRE;
-            case EARTH -> POTION_EARTH;
-            case AIR -> POTION_AIR;
-            case ELEMENTAL -> POTION_ELEMATILIUS;
-            case EMPTY -> null;
+            case WATER -> POTION_WATER.get();
+            case FIRE -> POTION_FIRE.get();
+            case EARTH -> POTION_EARTH.get();
+            case AIR -> POTION_AIR.get();
+            case ELEMENTAL -> POTION_ELEMATILIUS.get();
+            case EMPTY -> Items.AIR;
         };
     }
 
-    public static @Nullable RegistrySupplier<Item> getElementilius(@NotNull ElementsEnum element) {
+    public static @NotNull Item getElementilius(@NotNull ElementsEnum element) {
         return switch (element) {
-            case WATER -> ELEMENTAL_WATER;
-            case FIRE -> ELEMENTAL_FIRE;
-            case EARTH -> ELEMENTAL_EARTH;
-            case AIR -> ELEMENTAL_AIR;
-            case ELEMENTAL -> ELEMATILIUS;
-            case EMPTY -> null;
+            case WATER -> ELEMENTAL_WATER.get();
+            case FIRE -> ELEMENTAL_FIRE.get();
+            case EARTH -> ELEMENTAL_EARTH.get();
+            case AIR -> ELEMENTAL_AIR.get();
+            case ELEMENTAL -> ELEMATILIUS.get();
+            case EMPTY -> Items.AIR;
         };
     }
 }

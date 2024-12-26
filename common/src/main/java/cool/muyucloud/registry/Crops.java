@@ -13,7 +13,7 @@ public class Crops {
     public static final Set<Crop> CROPS = new HashSet<>();
 
     public static final Crop APPLE = registerCrop("apple", "minecraft:apple", 0x7F7F00, 0, CropType.FOOD, "item.minecraft.apple");
-    public static final Crop ELEMATILIUS = registerCrop("elematilius", "minecraft:elematilius", 0x7F7F00, 3, CropType.ELEMENTAL);
+    public static final Crop ELEMATILIUS = registerCrop("elematilius", "croparia:elematilius", 0x7F7F00, 3, CropType.ELEMENTAL);
 
     /**
      * Add a simple crop. Mainly used for croparia crops.
@@ -47,7 +47,7 @@ public class Crops {
     }
 
     /**
-     * Add a crop from other mods which should be loaded.
+     * Add a crop from other mods which should be loaded. Mainly used for modded crops.
      *
      * @param name         crop name
      * @param materialId   material id which the crop grows, could be item ID or item tag
@@ -56,7 +56,10 @@ public class Crops {
      * @param type         crop type that specifies the textures. See also {@link CropType}
      * @param dependencies mod dependencies
      */
-    private static Optional<Crop> registerCrop(@NotNull String name, @NotNull String materialId, int color, int tier, @NotNull CropType type, @NotNull String translationKey, String... dependencies) {
+    private static Optional<Crop> registerCrop(
+        @NotNull String name, @NotNull String materialId, int color, int tier, @NotNull CropType type,
+        @NotNull String translationKey, @NotNull List<String>... dependencies
+    ) {
         if (shouldLoad(dependencies)) {
             return Optional.of(registerCrop(name, materialId, color, tier, type));
         } else {
@@ -64,12 +67,12 @@ public class Crops {
         }
     }
 
-    private static boolean shouldLoad(Set<String> dependencies) {
-        return dependencies.stream().allMatch(Platform::isModLoaded);
+    public static boolean shouldLoad(List<List<String>> dependencies) {
+        return dependencies.stream().allMatch(list -> list.stream().anyMatch(Platform::isModLoaded));
     }
 
-    private static boolean shouldLoad(String... dependencies) {
-        return Arrays.stream(dependencies).allMatch(Platform::isModLoaded);
+    public static boolean shouldLoad(List<String>... dependencies) {
+        return Arrays.stream(dependencies).allMatch(list -> list.stream().anyMatch(Platform::isModLoaded));
     }
 
     public static void register() {
@@ -81,7 +84,7 @@ public class Crops {
     }
 
     private static void registerFileCrop(RawCrop raw) {
-        if (shouldLoad(raw.dependencies())) {
+        if (raw.dependencies() == null || shouldLoad(raw.dependencies())) {
             Crop crop = Crop.of(raw);
             CROPS.add(crop);
         }

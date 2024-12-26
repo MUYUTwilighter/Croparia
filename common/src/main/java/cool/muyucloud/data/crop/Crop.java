@@ -2,7 +2,6 @@ package cool.muyucloud.data.crop;
 
 import cool.muyucloud.CropariaIf;
 import cool.muyucloud.util.Util;
-import dev.architectury.platform.Platform;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -32,29 +31,29 @@ public class Crop {
     private final int color;
     private final int tier;
     @NotNull
-    private final ResourceLocation blockId;
+    private transient final ResourceLocation blockId;
     @NotNull
-    private final ResourceLocation seedId;
+    private transient final ResourceLocation seedId;
     @NotNull
-    private final ResourceLocation fruitId;
-    private final boolean tag;
+    private transient final ResourceLocation fruitId;
+    private transient final boolean tag;
     @NotNull
-    private Item material = Items.AIR;
+    private transient Item material = Items.AIR;
 
     private Crop(@NotNull RawCrop raw) {
-        if (Util.hasNull(raw.name(), raw.materialId())) {
+        if (Util.hasNull(raw.name(), raw.material())) {
             throw new IllegalArgumentException("Crop name and material ID cannot be null");
         }
         this.name = parseName(raw.name());
-        this.materialId = parseMaterialId(raw.materialId());
+        this.materialId = parseMaterialId(raw.material());
         this.type = parseType(raw.type());
         this.translations = parseTranslation(raw.translations(), parseDefaultTranslation(this.name));
-        this.translationKey = raw.translationKey() == null ? "croparia.crop." + this.name : raw.translationKey();
+        this.translationKey = raw.translationKey() == null ? "crop.croparia." + this.name : raw.translationKey();
         this.color = raw.color();
         this.tier = raw.tier();
-        this.tag = raw.materialId().trim().startsWith("#");
-        this.blockId = CropariaIf.of("block_" + this.name);
-        this.seedId = CropariaIf.of("seed_" + this.name);
+        this.tag = raw.material().trim().startsWith("#");
+        this.blockId = CropariaIf.of("block_crop_" + this.name);
+        this.seedId = CropariaIf.of("seed_crop_" + this.name);
         this.fruitId = CropariaIf.of("fruit_" + this.name);
     }
 
@@ -135,17 +134,6 @@ public class Crop {
                 append(" ");
         }
         return builder.toString().trim();
-    }
-
-    public boolean shouldLoad(String... dependencies) {
-        if (dependencies != null) {
-            for (String dep : dependencies) {
-                if (!Platform.isModLoaded(dep)) {
-                    return false;
-                }
-            }
-        }
-        return true;
     }
 
     @NotNull

@@ -11,6 +11,10 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Mixin class used to insert our resourcepack provided by {@link ResourcePackHandler},
+ * so that the datapack can be loaded.
+ * */
 @Mixin(ReloadableResourceManager.class)
 public abstract class ReloadableResourceManagerImplMixin implements ResourceManager, AutoCloseable {
     @ModifyVariable(method = "createReload", at = @At("HEAD"), argsOnly = true)
