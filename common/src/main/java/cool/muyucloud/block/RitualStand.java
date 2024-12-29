@@ -6,6 +6,7 @@ import cool.muyucloud.entity.FakePlayer;
 import cool.muyucloud.recipe.RitualStructure;
 import cool.muyucloud.registry.RecipeTypes;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -21,6 +22,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
@@ -44,9 +46,8 @@ public class RitualStand extends Block {
                 RitualContainer container = this.getRitualContainer(stack, inputBlock);
                 this.tryCraft(container, serverWorld, pos);
             }, () -> {
-                Entity thrower = itemEntity.getOwner();
-                Player player = thrower instanceof Player ? (Player) thrower : null;
-                if (player != null) {
+                @Nullable Entity thrower = itemEntity.getOwner();
+                if (thrower instanceof Player player) {
                     this.bad(player, "chat.croparia.ritual.bad");
                 }
             });
@@ -79,7 +80,7 @@ public class RitualStand extends Block {
     }
 
     public void bad(Player player, String translationKey) {
-
+        player.displayClientMessage(Component.translatable(translationKey), true);
     }
 
     public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {

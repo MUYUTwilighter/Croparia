@@ -1,7 +1,7 @@
 package cool.muyucloud.item;
 
-import cool.muyucloud.data.crop.Crop;
 import cool.muyucloud.CropariaIf;
+import cool.muyucloud.data.crop.Crop;
 import cool.muyucloud.registry.Tabs;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -20,13 +20,19 @@ public class CropFruit extends Item {
         this.crop = crop;
     }
 
-    public InteractionResult useOn(UseOnContext context) {
-//        if (!Croparia.CONFIG.getFruitUse()) {
-//            return InteractionResult.PASS;
-//        }
+    public @NotNull InteractionResult useOn(@NotNull UseOnContext context) {
+        if (!CropariaIf.CONFIG.getFruitUse()) {
+            return InteractionResult.PASS;
+        }
         if (!context.getLevel().isClientSide) {
-            context.getLevel().addFreshEntity(new ItemEntity(context.getLevel(), (double) context.getClickedPos().getX() + 0.5, context.getClickedPos().getY() + 1, (double) context.getClickedPos().getZ() + 0.5, new ItemStack(crop.getMaterialItem(), 2)));
-            context.getPlayer().getMainHandItem().shrink(1);
+            context.getLevel().addFreshEntity(new ItemEntity(
+                context.getLevel(),
+                context.getClickedPos().getX() + 0.5,
+                context.getClickedPos().getY() + 1,
+                context.getClickedPos().getZ() + 0.5,
+                new ItemStack(crop.getMaterialItem(), 2)
+            ));
+            context.getItemInHand().shrink(1);
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.FAIL;

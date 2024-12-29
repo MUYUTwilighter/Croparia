@@ -7,6 +7,7 @@ import cool.muyucloud.predicate.BlockStatePredicate;
 import cool.muyucloud.registry.RecipeSerializers;
 import cool.muyucloud.registry.RecipeTypes;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -15,11 +16,14 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 public class RitualRecipe implements Recipe<RitualContainer> {
-
     @NotNull
     private final ResourceLocation id;
     private final int tier;
@@ -75,6 +79,10 @@ public class RitualRecipe implements Recipe<RitualContainer> {
 
     protected @NotNull ItemStack getIngredient() {
         return ingredient;
+    }
+
+    protected @NotNull BlockStatePredicate getBlock() {
+        return block;
     }
 
     protected @NotNull ItemStack getResult() {
