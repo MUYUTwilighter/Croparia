@@ -7,7 +7,6 @@ import cool.muyucloud.recipe.container.InfusorContainer;
 import cool.muyucloud.registry.CropariaItems;
 import cool.muyucloud.registry.RecipeTypes;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
