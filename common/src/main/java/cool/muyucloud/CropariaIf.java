@@ -27,8 +27,10 @@ public class CropariaIf {
     }
 
     public static void afterDataPackLoaded() {
-        LootTableGenerator.init();
-        RecipeGenerator.init();
+        new Thread(() -> {
+            LootTableGenerator.init();
+            RecipeGenerator.init();
+        }, "CropariaIf Generator").start();
     }
 
     public static void onServerStarting() {

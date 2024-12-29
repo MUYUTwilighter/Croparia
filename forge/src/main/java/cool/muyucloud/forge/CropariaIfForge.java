@@ -14,7 +14,6 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 @Mod.EventBusSubscriber
 public class CropariaIfForge {
     public CropariaIfForge() {
-        // Submit our event bus to let architectury register our content on the right time
         EventBuses.registerModEventBus(CropariaIf.MOD_ID, FMLJavaModLoadingContext.get().getModEventBus());
         CropariaIf.init();
     }

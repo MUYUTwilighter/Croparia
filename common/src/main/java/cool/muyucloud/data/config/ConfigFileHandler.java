@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import cool.muyucloud.CropariaIf;
 import dev.architectury.platform.Platform;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.nio.file.Path;
@@ -13,6 +14,10 @@ public class ConfigFileHandler {
     public static final Path CONFIG_PATH = Platform.getGameFolder().resolve("config/croparia.json");
 
     public static void save(Config config) {
+        File parent = CONFIG_PATH.getParent().toFile();
+        if (!parent.exists()) {
+            parent.mkdirs();
+        }
         try (FileWriter writer = new FileWriter(CONFIG_PATH.toFile())) {
             GSON.toJson(config.toRaw(), writer);
         } catch (Throwable e) {

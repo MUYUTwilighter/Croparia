@@ -2,6 +2,7 @@ package cool.muyucloud.data.crop;
 
 import cool.muyucloud.CropariaIf;
 import cool.muyucloud.block.CropariaCropBlock;
+import cool.muyucloud.util.BiOptional;
 import cool.muyucloud.util.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -13,12 +14,11 @@ import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class Crop {
+
     @NotNull
     private final String name;
     @NotNull
@@ -39,16 +39,16 @@ public class Crop {
     private transient final ResourceLocation fruitId;
     private transient final boolean tag;
 
-    private Crop(@NotNull RawCrop raw) {
+    private Crop(@NotNull RawCrop raw) throws RuntimeException {
         if (Util.hasNull(raw.name(), raw.material())) {
             throw new IllegalArgumentException("Crop name and material ID cannot be null");
         }
         this.name = parseName(raw.name());
-        this.materialId = parseMaterialId(raw.material());
+        this.materialId = parseMaterialId(raw.material(), raw.tag());
         this.type = parseType(raw.type());
         this.translations = parseTranslation(raw.translations(), parseDefaultTranslation(this.name));
         this.translationKey = raw.translationKey() == null ? "crop.croparia." + this.name : raw.translationKey();
-        this.color = raw.color();
+        this.color = Integer.parseInt(raw.color());
         this.tier = raw.tier();
         this.tag = raw.material().trim().startsWith("#");
         this.blockId = CropariaIf.of("block_crop_" + this.name);
@@ -56,17 +56,9 @@ public class Crop {
         this.fruitId = CropariaIf.of("fruit_" + this.name);
     }
 
-    private Crop(
-        @NotNull String name,
-        @NotNull String materialId,
-        int color,
-        int tier,
-        @Nullable CropType type,
-        @Nullable Map<String, String> translations,
-        @Nullable String translationKey
-    ) {
+    private Crop(@NotNull String name, @NotNull String materialId, int color, int tier, @Nullable CropType type, @Nullable Map<String, String> translations, @Nullable String translationKey) throws RuntimeException {
         this.name = parseName(name);
-        this.materialId = parseMaterialId(materialId);
+        this.materialId = parseMaterialId(materialId, null);
         this.color = color;
         this.tier = tier;
         this.type = type == null ? CropType.CROP : type;
@@ -87,10 +79,7 @@ public class Crop {
         }
     }
 
-    public static Optional<Crop> create(
-        @NotNull String name, @NotNull String materialId, int color, int tier, @Nullable CropType type,
-        @Nullable String translationKey, @Nullable Map<String, String> translations
-    ) {
+    public static Optional<Crop> create(@NotNull String name, @NotNull String materialId, int color, int tier, @Nullable CropType type, @Nullable String translationKey, @Nullable Map<String, String> translations) {
         try {
             return Optional.of(new Crop(name, materialId, color, tier, type, translations, translationKey));
         } catch (Throwable e) {
@@ -114,10 +103,21 @@ public class Crop {
     }
 
     @NotNull
-    protected static ResourceLocation parseMaterialId(@NotNull String materialId) {
-        materialId = materialId.trim().toLowerCase();
-        materialId = materialId.startsWith("#") ? materialId.substring(1).trim() : materialId;
-        return new ResourceLocation(materialId);
+    protected static ResourceLocation parseMaterialId(@Nullable String material, @Nullable String tag) {
+        AtomicReference<ResourceLocation> id = new AtomicReference<>();
+        BiOptional.of(material, tag).ifEither(
+            l -> {
+                if (l.startsWith("#")) {
+                    l = l.substring(1);
+                }
+                id.set(new ResourceLocation(l));
+            },
+            r -> id.set(new ResourceLocation(r)),
+            () -> {
+                throw new IllegalArgumentException("Ambiguous material, should declare either material or tag");
+            }
+        );
+        return id.get();
     }
 
     @NotNull
@@ -144,9 +144,7 @@ public class Crop {
         name = name.replaceAll("_", " ").trim();
         StringBuilder builder = new StringBuilder();
         for (String token : name.split(" ")) {
-            builder.append(Character.toUpperCase(token.charAt(0))).
-                append(token.substring(1)).
-                append(" ");
+            builder.append(Character.toUpperCase(token.charAt(0))).append(token.substring(1)).append(" ");
         }
         return builder.toString().trim();
     }
