@@ -44,26 +44,41 @@ public class Config {
     private Boolean override;
     @NotNull
     private Boolean fruitUse;
+    @NotNull
+    private Boolean infusor;
+    @NotNull
+    private Boolean ritual;
+    @NotNull
+    private Boolean cauldron;
 
     /**
      * Default config
-     * */
+     */
     public Config() {
         this.cropPath = Platform.getGameFolder().resolve("crops");
         this.packPath = Platform.getGameFolder().resolve("config/croparia");
         this.override = true;
         this.fruitUse = true;
+        this.infusor = true;
+        this.ritual = true;
+        this.cauldron = true;
     }
 
+    /**
+     * Deserialize config
+     */
     public Config(RawConfig raw) {
         this.cropPath = parsePath(raw.cropPath()).orElse(Platform.getGameFolder().resolve("crops"));
         this.packPath = parsePath(raw.packPath()).orElse(Platform.getGameFolder().resolve("config/croparia"));
         this.override = raw.override() != null ? raw.override() : true;
         this.fruitUse = raw.fruitUse() != null ? raw.fruitUse() : true;
+        this.infusor = raw.infusor() != null ? raw.infusor() : true;
+        this.ritual = raw.ritual() != null ? raw.ritual() : true;
+        this.cauldron = raw.cauldron() != null ? raw.cauldron() : true;
     }
 
     public RawConfig toRaw() {
-        return new RawConfig(resolvePath(cropPath), resolvePath(packPath), override, fruitUse);
+        return new RawConfig(resolvePath(cropPath), resolvePath(packPath), override, fruitUse, infusor, ritual, cauldron);
     }
 
     public void save() {
@@ -105,4 +120,29 @@ public class Config {
     public void setFruitUse(@NotNull Boolean fruitUse) {
         this.fruitUse = fruitUse;
     }
+
+    public @NotNull Boolean getInfusor() {
+        return infusor;
+    }
+
+    public void setInfusor(@NotNull Boolean infusor) {
+        this.infusor = infusor;
+    }
+
+    public @NotNull Boolean getRitual() {
+        return ritual;
+    }
+
+    public void setRitual(@NotNull Boolean ritual) {
+        this.ritual = ritual;
+    }
+
+    public @NotNull Boolean getCauldron() {
+        return cauldron;
+    }
+
+    public void setCauldron(@NotNull Boolean cauldron) {
+        this.cauldron = cauldron;
+    }
+
 }

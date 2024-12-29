@@ -1,5 +1,6 @@
 package cool.muyucloud.block;
 
+import cool.muyucloud.CropariaIf;
 import cool.muyucloud.container.RitualContainer;
 import cool.muyucloud.container.RitualStructureContainer;
 import cool.muyucloud.entity.FakePlayer;
@@ -37,7 +38,7 @@ public class RitualStand extends Block {
     }
 
     public void stepOn(Level world, BlockPos pos, BlockState state, Entity entity) {
-        if (entity instanceof ItemEntity itemEntity && world instanceof ServerLevel serverWorld) {
+        if (entity instanceof ItemEntity itemEntity && world instanceof ServerLevel serverWorld && CropariaIf.CONFIG.getRitual()) {
             ItemStack stack = itemEntity.getItem();
             RecipeManager recipeManager = serverWorld.getServer().getRecipeManager();
             this.getRitualStructure(recipeManager).flatMap(

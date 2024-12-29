@@ -4,6 +4,7 @@ import com.mojang.logging.LogUtils;
 import cool.muyucloud.data.config.Config;
 import cool.muyucloud.data.config.ConfigFileHandler;
 import cool.muyucloud.registry.*;
+import cool.muyucloud.util.CropariaCauldronInteraction;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 
@@ -20,6 +21,7 @@ public class CropariaIf {
         BlockEntities.register();
         CropariaItems.register();
         Tabs.register();
+        CropariaCauldronInteraction.bootStrap();
     }
 
     public static ResourceLocation of(String path) {

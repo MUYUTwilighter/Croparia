@@ -1,5 +1,6 @@
 package cool.muyucloud.util;
 
+import cool.muyucloud.CropariaIf;
 import cool.muyucloud.registry.CropariaItems;
 import net.minecraft.core.cauldron.CauldronInteraction;
 import net.minecraft.sounds.SoundEvents;
@@ -22,7 +23,7 @@ public interface CropariaCauldronInteraction extends CauldronInteraction {
 
     static void bootStrap() {
         ELEMATILIUS.put(Items.GLASS_BOTTLE, (blockState, level, blockPos, player, hand, stack) -> {
-            if (!level.isClientSide) {
+            if (!level.isClientSide && CropariaIf.CONFIG.getCauldron()) {
                 player.getItemInHand(hand).shrink(1);
                 level.addFreshEntity(new ItemEntity(
                     level,
@@ -38,7 +39,7 @@ public interface CropariaCauldronInteraction extends CauldronInteraction {
             return InteractionResult.sidedSuccess(level.isClientSide);
         });
         WATER_CAULDRON.put(Items.GLASS_BOTTLE, (blockState, level, blockPos, player, hand, stack) -> {
-            if (!level.isClientSide) {
+            if (!level.isClientSide && CropariaIf.CONFIG.getCauldron()) {
                 player.getItemInHand(hand).shrink(1);
                 level.addFreshEntity(new ItemEntity(
                     level,
@@ -54,7 +55,7 @@ public interface CropariaCauldronInteraction extends CauldronInteraction {
             return InteractionResult.sidedSuccess(level.isClientSide);
         });
         FIRE_CAULDRON.put(Items.GLASS_BOTTLE, (blockState, level, blockPos, player, hand, stack) -> {
-            if (!level.isClientSide) {
+            if (!level.isClientSide && CropariaIf.CONFIG.getCauldron()) {
                 player.getItemInHand(hand).shrink(1);
                 level.addFreshEntity(new ItemEntity(
                     level,
@@ -70,7 +71,7 @@ public interface CropariaCauldronInteraction extends CauldronInteraction {
             return InteractionResult.sidedSuccess(level.isClientSide);
         });
         EARTH_CAULDRON.put(Items.GLASS_BOTTLE, (blockState, level, blockPos, player, hand, stack) -> {
-            if (!level.isClientSide) {
+            if (!level.isClientSide && CropariaIf.CONFIG.getCauldron()) {
                 player.getItemInHand(hand).shrink(1);
                 level.addFreshEntity(new ItemEntity(
                     level,
@@ -86,7 +87,7 @@ public interface CropariaCauldronInteraction extends CauldronInteraction {
             return InteractionResult.sidedSuccess(level.isClientSide);
         });
         AIR_CAULDRON.put(Items.GLASS_BOTTLE, (blockState, level, blockPos, player, hand, stack) -> {
-            if (!level.isClientSide) {
+            if (!level.isClientSide && CropariaIf.CONFIG.getCauldron()) {
                 player.getItemInHand(hand).shrink(1);
                 level.addFreshEntity(new ItemEntity(
                     level,

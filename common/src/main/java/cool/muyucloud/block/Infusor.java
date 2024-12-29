@@ -1,5 +1,6 @@
 package cool.muyucloud.block;
 
+import cool.muyucloud.CropariaIf;
 import cool.muyucloud.container.InfusorContainer;
 import cool.muyucloud.data.ElementsEnum;
 import cool.muyucloud.recipe.InfusorRecipe;
@@ -40,7 +41,7 @@ public class Infusor extends Block {
     }
 
     public @NotNull InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        if (world.isClientSide) {
+        if (world.isClientSide || !CropariaIf.CONFIG.getInfusor()) {
             return InteractionResult.FAIL;
         } else {
             ItemStack itemstack = player.getItemInHand(hand);
