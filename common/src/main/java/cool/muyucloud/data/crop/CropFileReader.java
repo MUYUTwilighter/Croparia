@@ -2,6 +2,7 @@ package cool.muyucloud.data.crop;
 
 import com.google.gson.Gson;
 import cool.muyucloud.CropariaIf;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileReader;
@@ -12,7 +13,7 @@ import java.util.Optional;
 public class CropFileReader {
     private static final Gson GSON = new Gson();
 
-    public static List<RawCrop> readCrops() {
+    public static @NotNull List<RawCrop> readCrops() {
         List<RawCrop> crops = new LinkedList<>();
         File folder = CropariaIf.CONFIG.getCropPath().toFile();
         if (folder.exists() && folder.isDirectory()) {

@@ -1,13 +1,14 @@
 package cool.muyucloud.block;
 
 import cool.muyucloud.CropariaIf;
-import cool.muyucloud.recipe.container.InfusorContainer;
 import cool.muyucloud.data.ElementsEnum;
 import cool.muyucloud.recipe.InfusorRecipe;
+import cool.muyucloud.recipe.container.InfusorContainer;
 import cool.muyucloud.registry.CropariaItems;
 import cool.muyucloud.registry.RecipeTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -30,6 +31,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class Infusor extends Block {
     protected final VoxelShape SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 8.0, 16.0);
@@ -40,7 +42,7 @@ public class Infusor extends Block {
         this.registerDefaultState(this.defaultBlockState().setValue(TYPE, ElementsEnum.EMPTY));
     }
 
-    public @NotNull InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    public @NotNull InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, @Nullable BlockHitResult hit) {
         if (world.isClientSide || !CropariaIf.CONFIG.getInfusor()) {
             return InteractionResult.FAIL;
         } else {
@@ -54,13 +56,15 @@ public class Infusor extends Block {
                     world, (double) pos.getX() + 0.5, (double) pos.getY() + 0.5, (double) pos.getZ() + 0.5,
                     new ItemStack(Items.GLASS_BOTTLE)
                 ));
-                world.getEntities(
-                    EntityTypeTest.forClass(ItemEntity.class),
-                    AABB.of(new BoundingBox(pos)), entity -> !entity.getItem().isEmpty()
-                ).forEach(entity -> {
-                    ItemStack input = entity.getItem();
-                    this.tryCraft(world, pos, input, element);
-                });
+                if (world instanceof ServerLevel serverWorld) {
+                    world.getEntities(
+                        EntityTypeTest.forClass(ItemEntity.class),
+                        AABB.of(new BoundingBox(pos)), entity -> !entity.getItem().isEmpty()
+                    ).forEach(entity -> {
+                        ItemStack input = entity.getItem();
+                        this.tryCraft(serverWorld, pos, input, element);
+                    });
+                }
             } else if (state.getValue(TYPE) != ElementsEnum.EMPTY && player.getMainHandItem().getItem() == Items.GLASS_BOTTLE) {
                 world.setBlockAndUpdate(pos, this.defaultBlockState().setValue(TYPE, ElementsEnum.EMPTY));
                 player.getMainHandItem().shrink(1);
@@ -78,23 +82,20 @@ public class Infusor extends Block {
         world.setBlockAndUpdate(pos, this.defaultBlockState());
     }
 
-    public void tryCraft(Level world, BlockPos pos, ItemStack input, ElementsEnum element) {
-        MinecraftServer server = world.getServer();
-        if (server == null) {
-            return;
-        }
-        RecipeManager manager = server.getRecipeManager();
+    public void tryCraft(ServerLevel world, BlockPos pos, ItemStack input, ElementsEnum element) {
+        RecipeManager manager = world.getServer().getRecipeManager();
         InfusorContainer container = InfusorContainer.of(element, input);
         manager.getRecipeFor(RecipeTypes.INFUSOR, container, world).ifPresent(
             recipe -> onCrafting(recipe, container, world, pos)
         );
     }
 
+    @Override
     public void stepOn(Level world, BlockPos pos, BlockState state, Entity entity) {
-        if (entity instanceof ItemEntity itemEntity && !world.isClientSide) {
+        if (entity instanceof ItemEntity itemEntity && world instanceof ServerLevel serverWorld) {
             ItemStack input = itemEntity.getItem();
             ElementsEnum element = state.getValue(TYPE);
-            this.tryCraft(world, pos, input, element);
+            this.tryCraft(serverWorld, pos, input, element);
         }
     }
 

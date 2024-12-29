@@ -7,6 +7,7 @@ import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
@@ -18,7 +19,8 @@ public class BlockEntities {
         () -> BlockEntityType.Builder.of(GreenhouseBlockEntity::new, CropariaBlocks.GREENHOUSE.get()).build(null)
     );
 
-    public static <T extends BlockEntity> RegistrySupplier<BlockEntityType<T>> register(String name, Supplier<BlockEntityType<T>> supplier) {
+    @NotNull
+    public static <T extends BlockEntity> RegistrySupplier<BlockEntityType<T>> register(@NotNull String name, @NotNull Supplier<BlockEntityType<T>> supplier) {
         return BLOCK_ENTITIES.register(name, supplier);
     }
 

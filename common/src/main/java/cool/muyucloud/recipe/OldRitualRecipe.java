@@ -15,7 +15,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
-import java.util.Optional;
 
 public class OldRitualRecipe extends RitualRecipe {
     public OldRitualRecipe(

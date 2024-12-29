@@ -21,11 +21,25 @@ public class ConfigFileHandler {
     }
 
     public static Config load() {
+        Config config;
         try (FileReader reader = new FileReader(CONFIG_PATH.toFile())) {
-            return new Config(GSON.fromJson(reader, RawConfig.class));
+            config = new Config(GSON.fromJson(reader, RawConfig.class));
         } catch (Exception e) {
             CropariaIf.LOGGER.warn("Config file not found or could not be read, creating a new one");
-            return new Config();
+            config = new Config();
         }
+        save(config);
+        return config;
+    }
+
+    public static void reload(Config config) {
+        Config newConfig = load();
+        config.setCropPath(newConfig.getCropPath());
+        config.setPackPath(newConfig.getPackPath());
+        config.setOverride(newConfig.getOverride());
+        config.setFruitUse(newConfig.getFruitUse());
+        config.setInfusor(newConfig.getInfusor());
+        config.setRitual(newConfig.getRitual());
+        config.setCauldron(newConfig.getCauldron());
     }
 }

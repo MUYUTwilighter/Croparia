@@ -104,12 +104,13 @@ public class CropariaItems {
         CROPARIA, CROPARIA2, CROPARIA3, CROPARIA4, CROPARIA5, CROPARIA6, CROPARIA7
     );
 
-    public static void registerCrop(Crop crop) {
+    public static void registerCrop(@NotNull Crop crop) {
         ITEMS.register(crop.getSeedId(), () -> new CropSeed(crop));
         ITEMS.register(crop.getFruitId(), () -> new CropFruit(crop));
     }
 
-    public static <T extends Item> RegistrySupplier<T> registerItem(String name, Supplier<T> supplier) {
+    @NotNull
+    public static <T extends Item> RegistrySupplier<T> registerItem(@NotNull String name, @NotNull Supplier<T> supplier) {
         return ITEMS.register(name, supplier);
     }
 
@@ -117,6 +118,7 @@ public class CropariaItems {
         ITEMS.register();
     }
 
+    @NotNull
     public static ElementsEnum elementFromPotion(@NotNull Item item) {
         if (item == POTION_ELEMATILIUS.get()) return ElementsEnum.ELEMENTAL;
         else if (item == POTION_WATER.get()) return ElementsEnum.WATER;

@@ -1,7 +1,7 @@
 package cool.muyucloud.recipe;
 
-import cool.muyucloud.recipe.container.InfusorContainer;
 import cool.muyucloud.data.ElementsEnum;
+import cool.muyucloud.recipe.container.InfusorContainer;
 import cool.muyucloud.recipe.serializer.InfusorRecipeSerializer;
 import cool.muyucloud.registry.RecipeSerializers;
 import cool.muyucloud.registry.RecipeTypes;

@@ -31,6 +31,14 @@ public class CropariaIf {
         RecipeGenerator.init();
     }
 
+    public static void onServerStarting() {
+        ConfigFileHandler.reload(CONFIG);
+    }
+
+    public static void onServerStopping() {
+        ConfigFileHandler.save(CONFIG);
+    }
+
     public static ResourceLocation of(String path) {
         return new ResourceLocation(MOD_ID, path);
     }

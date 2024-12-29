@@ -105,12 +105,12 @@ public class Crops {
         }
     }
 
-    public static boolean shouldLoad(List<List<String>> dependencies) {
+    public static boolean shouldLoad(@NotNull List<List<String>> dependencies) {
         return dependencies.stream().allMatch(list -> list.isEmpty() || list.stream().anyMatch(Platform::isModLoaded));
     }
 
     @SafeVarargs
-    public static boolean shouldLoad(List<String>... dependencies) {
+    public static boolean shouldLoad(@NotNull List<String>... dependencies) {
         return Arrays.stream(dependencies).allMatch(list -> list.isEmpty() || list.stream().anyMatch(Platform::isModLoaded));
     }
 
@@ -122,7 +122,7 @@ public class Crops {
         }
     }
 
-    private static void registerFileCrop(RawCrop raw) {
+    private static void registerFileCrop(@NotNull RawCrop raw) {
         if (raw.dependencies() == null || shouldLoad(raw.dependencies())) {
             Crop.of(raw).ifPresentOrElse(
                 CROPS::add,

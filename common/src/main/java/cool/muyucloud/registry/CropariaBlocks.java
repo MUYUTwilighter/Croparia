@@ -7,7 +7,6 @@ import cool.muyucloud.block.Infusor;
 import cool.muyucloud.block.RitualStand;
 import cool.muyucloud.data.ElementsEnum;
 import cool.muyucloud.data.crop.Crop;
-import cool.muyucloud.recipe.RitualStructure;
 import cool.muyucloud.util.CropariaCauldronInteraction;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
@@ -105,11 +104,12 @@ public class CropariaBlocks {
         )
     );
 
-    public static <T extends Block> RegistrySupplier<T> registerBlock(String name, Supplier<T> supplier) {
+    @NotNull
+    public static <T extends Block> RegistrySupplier<T> registerBlock(@NotNull String name, @NotNull Supplier<T> supplier) {
         return BLOCKS.register(name, supplier);
     }
 
-    public static void registerCrop(Crop crop) {
+    public static void registerCrop(@NotNull Crop crop) {
         BLOCKS.register(crop.getBlockId(), () -> new CropariaCropBlock(crop));
     }
 
@@ -133,7 +133,7 @@ public class CropariaBlocks {
     /**
      *
      * */
-    public static RegistrySupplier<RitualStand> getRitualStand(int tier) {
+    public static @NotNull RegistrySupplier<RitualStand> getRitualStand(int tier) throws IndexOutOfBoundsException {
         return RITUAL_STANDS.get(tier - 1);
     }
 }

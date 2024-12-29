@@ -1,10 +1,10 @@
 package cool.muyucloud.block;
 
 import cool.muyucloud.CropariaIf;
-import cool.muyucloud.recipe.container.RitualContainer;
-import cool.muyucloud.recipe.container.RitualStructureContainer;
 import cool.muyucloud.entity.FakePlayer;
 import cool.muyucloud.recipe.RitualStructure;
+import cool.muyucloud.recipe.container.RitualContainer;
+import cool.muyucloud.recipe.container.RitualStructureContainer;
 import cool.muyucloud.registry.RecipeTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;

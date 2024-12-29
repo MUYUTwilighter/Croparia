@@ -66,7 +66,7 @@ public class Greenhouse extends BaseEntityBlock {
         return InteractionResult.SUCCESS;
     }
 
-    public void randomTick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
+    public void randomTick(@Nullable BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
         if (world.getBlockState(pos.below()).getBlock() instanceof CropBlock) {
             world.getBlockState(pos.below()).randomTick(world, pos.below(), random);
         }

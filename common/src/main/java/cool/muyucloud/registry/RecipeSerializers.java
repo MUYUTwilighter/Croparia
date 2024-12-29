@@ -2,7 +2,6 @@ package cool.muyucloud.registry;
 
 import cool.muyucloud.CropariaIf;
 import cool.muyucloud.recipe.serializer.InfusorRecipeSerializer;
-import cool.muyucloud.recipe.serializer.OldInfusorRecipeSerializer;
 import cool.muyucloud.recipe.serializer.RitualRecipeSerializer;
 import cool.muyucloud.recipe.serializer.RitualStructureSerializer;
 import dev.architectury.registry.registries.DeferredRegister;
@@ -18,8 +17,6 @@ public class RecipeSerializers {
     public static RegistrySupplier<InfusorRecipeSerializer> INFUSOR = register("infusor", InfusorRecipeSerializer::new);
     public static RegistrySupplier<RitualRecipeSerializer> RITUAL = register("ritual", RitualRecipeSerializer::new);
     public static RegistrySupplier<RitualStructureSerializer> RITUAL_STRUCTURE = register("ritual_structure", RitualStructureSerializer::new);
-
-    public static RegistrySupplier<OldInfusorRecipeSerializer> INFUSOR_OLD = register("infusor_recipe", OldInfusorRecipeSerializer::new);
 
     public static <T extends RecipeSerializer<?>> RegistrySupplier<T> register(String id, Supplier<T> supplier) {
         return SERIALIZERS.register(id, supplier);

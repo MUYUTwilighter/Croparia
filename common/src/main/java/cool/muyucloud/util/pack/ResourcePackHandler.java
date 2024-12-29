@@ -6,7 +6,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PathPackResources;
 
-import java.io.File;
 import java.nio.file.Path;
 
 public class ResourcePackHandler extends PackHandler {

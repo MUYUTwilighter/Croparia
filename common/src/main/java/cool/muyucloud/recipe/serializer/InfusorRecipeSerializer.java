@@ -10,8 +10,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Optional;
-
 public class InfusorRecipeSerializer implements RecipeSerializer<InfusorRecipe> {
     @Override
     public @NotNull InfusorRecipe fromJson(ResourceLocation id, JsonObject jsonObject) {
