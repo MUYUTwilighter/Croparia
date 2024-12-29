@@ -26,10 +26,7 @@ public interface CropariaCauldronInteraction extends CauldronInteraction {
             if (!level.isClientSide && CropariaIf.CONFIG.getCauldron()) {
                 player.getItemInHand(hand).shrink(1);
                 level.addFreshEntity(new ItemEntity(
-                    level,
-                    blockPos.getX() + 0.5D,
-                    blockPos.getY() + 1,
-                    blockPos.getZ() + 0.5D,
+                    level, blockPos.getX() + 0.5D, blockPos.getY() + 1, blockPos.getZ() + 0.5D,
                     CropariaItems.POTION_ELEMATILIUS.get().getDefaultInstance()
                 ));
                 LayeredCauldronBlock.lowerFillLevel(blockState, level, blockPos);
@@ -42,10 +39,7 @@ public interface CropariaCauldronInteraction extends CauldronInteraction {
             if (!level.isClientSide && CropariaIf.CONFIG.getCauldron()) {
                 player.getItemInHand(hand).shrink(1);
                 level.addFreshEntity(new ItemEntity(
-                    level,
-                    blockPos.getX() + 0.5D,
-                    blockPos.getY() + 1,
-                    blockPos.getZ() + 0.5D,
+                    level, blockPos.getX() + 0.5D, blockPos.getY() + 1, blockPos.getZ() + 0.5D,
                     CropariaItems.POTION_WATER.get().getDefaultInstance()
                 ));
                 LayeredCauldronBlock.lowerFillLevel(blockState, level, blockPos);
@@ -58,10 +52,7 @@ public interface CropariaCauldronInteraction extends CauldronInteraction {
             if (!level.isClientSide && CropariaIf.CONFIG.getCauldron()) {
                 player.getItemInHand(hand).shrink(1);
                 level.addFreshEntity(new ItemEntity(
-                    level,
-                    blockPos.getX() + 0.5D,
-                    blockPos.getY() + 1,
-                    blockPos.getZ() + 0.5D,
+                    level, blockPos.getX() + 0.5D, blockPos.getY() + 1, blockPos.getZ() + 0.5D,
                     CropariaItems.POTION_FIRE.get().getDefaultInstance()
                 ));
                 LayeredCauldronBlock.lowerFillLevel(blockState, level, blockPos);
@@ -74,10 +65,7 @@ public interface CropariaCauldronInteraction extends CauldronInteraction {
             if (!level.isClientSide && CropariaIf.CONFIG.getCauldron()) {
                 player.getItemInHand(hand).shrink(1);
                 level.addFreshEntity(new ItemEntity(
-                    level,
-                    blockPos.getX() + 0.5D,
-                    blockPos.getY() + 1,
-                    blockPos.getZ() + 0.5D,
+                    level, blockPos.getX() + 0.5D, blockPos.getY() + 1, blockPos.getZ() + 0.5D,
                     CropariaItems.POTION_EARTH.get().getDefaultInstance()
                 ));
                 LayeredCauldronBlock.lowerFillLevel(blockState, level, blockPos);
@@ -90,10 +78,7 @@ public interface CropariaCauldronInteraction extends CauldronInteraction {
             if (!level.isClientSide && CropariaIf.CONFIG.getCauldron()) {
                 player.getItemInHand(hand).shrink(1);
                 level.addFreshEntity(new ItemEntity(
-                    level,
-                    blockPos.getX() + 0.5D,
-                    blockPos.getY() + 1,
-                    blockPos.getZ() + 0.5D,
+                    level, blockPos.getX() + 0.5D, blockPos.getY() + 1, blockPos.getZ() + 0.5D,
                     CropariaItems.POTION_AIR.get().getDefaultInstance()
                 ));
                 LayeredCauldronBlock.lowerFillLevel(blockState, level, blockPos);

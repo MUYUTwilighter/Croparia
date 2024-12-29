@@ -1,4 +1,4 @@
-package cool.muyucloud.container;
+package cool.muyucloud.recipe.container;
 
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;

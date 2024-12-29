@@ -7,6 +7,7 @@ import cool.muyucloud.block.Infusor;
 import cool.muyucloud.block.RitualStand;
 import cool.muyucloud.data.ElementsEnum;
 import cool.muyucloud.data.crop.Crop;
+import cool.muyucloud.recipe.RitualStructure;
 import cool.muyucloud.util.CropariaCauldronInteraction;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
@@ -36,9 +37,15 @@ public class CropariaBlocks {
         )
     );
     public static final RegistrySupplier<Infusor> INFUSOR = registerBlock("infusor", Infusor::new);
-    public static final RegistrySupplier<RitualStand> RITUAL_STAND = registerBlock("ritual_stand", () -> new RitualStand(0));
-    public static final RegistrySupplier<RitualStand> RITUAL_STAND_1 = registerBlock("ritual_stand_1", () -> new RitualStand(1));
-    public static final RegistrySupplier<RitualStand> RITUAL_STAND_2 = registerBlock("ritual_stand-2", () -> new RitualStand(2));
+    public static final RegistrySupplier<RitualStand> RITUAL_STAND = registerBlock(
+        "ritual_stand", () -> new RitualStand(0)
+    );
+    public static final RegistrySupplier<RitualStand> RITUAL_STAND_2 = registerBlock(
+        "ritual_stand_2", () -> new RitualStand(1)
+    );
+    public static final RegistrySupplier<RitualStand> RITUAL_STAND_3 = registerBlock(
+        "ritual_stand_3", () -> new RitualStand(2)
+    );
     public static final RegistrySupplier<Block> ELEMENTAL_STONE = registerBlock(
         "elemental_stone",
         () -> new DropExperienceBlock(
@@ -97,7 +104,6 @@ public class CropariaBlocks {
             LayeredCauldronBlock.RAIN, CropariaCauldronInteraction.AIR_CAULDRON
         )
     );
-    public static final List<RegistrySupplier<RitualStand>> RITUAL_STANDS = List.of(RITUAL_STAND, RITUAL_STAND_1, RITUAL_STAND_2);
 
     public static <T extends Block> RegistrySupplier<T> registerBlock(String name, Supplier<T> supplier) {
         return BLOCKS.register(name, supplier);
@@ -120,5 +126,14 @@ public class CropariaBlocks {
             case ELEMENTAL -> CAULDRON;
             case EMPTY -> null;
         };
+    }
+
+    protected static final List<RegistrySupplier<RitualStand>> RITUAL_STANDS = List.of(RITUAL_STAND, RITUAL_STAND_2, RITUAL_STAND_3);
+
+    /**
+     *
+     * */
+    public static RegistrySupplier<RitualStand> getRitualStand(int tier) {
+        return RITUAL_STANDS.get(tier - 1);
     }
 }

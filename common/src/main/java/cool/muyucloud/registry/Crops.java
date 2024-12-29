@@ -35,7 +35,7 @@ public class Crops {
         return crop;
     }
 
-    public static final Crop ELEMATILIUS = registerCrop("elematilius", "croparia:elematilius", 0x7F7F00, 3, CropType.ELEMENTAL);
+    public static final Crop ELEMATILIUS = registerCrop("elematilius", "croparia:elematilius", 0x7F7F00, 3, CropType.CROP);
 
     /**
      * Add a simple crop with specified translation key. Mainly used for vanilla crops.

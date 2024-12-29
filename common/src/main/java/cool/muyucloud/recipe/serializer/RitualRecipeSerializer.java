@@ -1,4 +1,4 @@
-package cool.muyucloud.serializer;
+package cool.muyucloud.recipe.serializer;
 
 import com.google.gson.JsonObject;
 import cool.muyucloud.recipe.RitualRecipe;

@@ -1,4 +1,4 @@
-package cool.muyucloud.serializer;
+package cool.muyucloud.recipe.serializer;
 
 import com.google.gson.JsonObject;
 import cool.muyucloud.data.ElementsEnum;
@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 public class OldInfusorRecipeSerializer implements RecipeSerializer<OldInfusorRecipe> {
     @Override
     public @NotNull OldInfusorRecipe fromJson(ResourceLocation id, JsonObject json) {
-        String input = GsonHelper.getAsString(json, "item");
+        String input = GsonHelper.getAsString(json, "input");
         String output = GsonHelper.getAsString(json, "output");
         ElementsEnum element = ElementsEnum.valueOf(GsonHelper.getAsString(json, "element").toUpperCase());
         int count = GsonHelper.getAsInt(json, "count");

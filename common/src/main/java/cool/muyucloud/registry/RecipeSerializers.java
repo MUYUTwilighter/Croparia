@@ -1,10 +1,10 @@
 package cool.muyucloud.registry;
 
 import cool.muyucloud.CropariaIf;
-import cool.muyucloud.serializer.InfusorRecipeSerializer;
-import cool.muyucloud.serializer.OldInfusorRecipeSerializer;
-import cool.muyucloud.serializer.RitualRecipeSerializer;
-import cool.muyucloud.serializer.RitualStructureSerializer;
+import cool.muyucloud.recipe.serializer.InfusorRecipeSerializer;
+import cool.muyucloud.recipe.serializer.OldInfusorRecipeSerializer;
+import cool.muyucloud.recipe.serializer.RitualRecipeSerializer;
+import cool.muyucloud.recipe.serializer.RitualStructureSerializer;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;

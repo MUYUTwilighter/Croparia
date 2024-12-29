@@ -3,6 +3,8 @@ package cool.muyucloud;
 import com.mojang.logging.LogUtils;
 import cool.muyucloud.data.config.Config;
 import cool.muyucloud.data.config.ConfigFileHandler;
+import cool.muyucloud.generator.LootTableGenerator;
+import cool.muyucloud.generator.RecipeGenerator;
 import cool.muyucloud.registry.*;
 import cool.muyucloud.util.CropariaCauldronInteraction;
 import net.minecraft.resources.ResourceLocation;
@@ -22,6 +24,11 @@ public class CropariaIf {
         CropariaItems.register();
         Tabs.register();
         CropariaCauldronInteraction.bootStrap();
+    }
+
+    public static void afterDataPackLoaded() {
+        LootTableGenerator.init();
+        RecipeGenerator.init();
     }
 
     public static ResourceLocation of(String path) {

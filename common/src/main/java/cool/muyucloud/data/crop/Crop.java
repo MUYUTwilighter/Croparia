@@ -1,6 +1,7 @@
 package cool.muyucloud.data.crop;
 
 import cool.muyucloud.CropariaIf;
+import cool.muyucloud.block.CropariaCropBlock;
 import cool.muyucloud.util.Util;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -38,8 +39,6 @@ public class Crop {
     @NotNull
     private transient final ResourceLocation fruitId;
     private transient final boolean tag;
-    @NotNull
-    private transient Item material = Items.AIR;
 
     private Crop(@NotNull RawCrop raw) {
         if (Util.hasNull(raw.name(), raw.material())) {
@@ -74,10 +73,9 @@ public class Crop {
         this.type = type == null ? CropType.CROP : type;
         this.translations = parseTranslation(translations, parseDefaultTranslation(this.name));
         this.translationKey = translationKey == null ? "croparia.crop." + this.name : translationKey;
-
         this.tag = materialId.trim().startsWith("#");
-        this.blockId = CropariaIf.of("block_" + this.name);
-        this.seedId = CropariaIf.of("seed_" + this.name);
+        this.blockId = CropariaIf.of("block_crop_" + this.name);
+        this.seedId = CropariaIf.of("seed_crop_" + this.name);
         this.fruitId = CropariaIf.of("fruit_" + this.name);
     }
 
@@ -161,22 +159,16 @@ public class Crop {
 
     @NotNull
     public Item getMaterialItem() {
-        if (material == Items.AIR && !this.materialId.equals(Items.AIR.arch$registryName())) {
-            this.initMaterial();
-        }
-        return material;
-    }
-
-    private void initMaterial() {
         if (this.tag) {
             TagKey<Item> tag = TagKey.create(Registries.ITEM, this.materialId);
             Iterable<Holder<Item>> set = BuiltInRegistries.ITEM.getTagOrEmpty(tag);
             if (set.iterator().hasNext()) {
-                this.material = set.iterator().next().value();
+                return set.iterator().next().value();
             }
         } else {
-            this.material = BuiltInRegistries.ITEM.get(this.materialId);
+            return BuiltInRegistries.ITEM.get(this.materialId);
         }
+        return Items.AIR;
     }
 
     @NotNull
@@ -203,8 +195,8 @@ public class Crop {
     }
 
     @NotNull
-    public Block getCropBlock() {
-        return BuiltInRegistries.BLOCK.get(blockId);
+    public CropariaCropBlock getCropBlock() {
+        return (CropariaCropBlock) BuiltInRegistries.BLOCK.get(blockId);
     }
 
     @NotNull
@@ -235,5 +227,14 @@ public class Crop {
     @NotNull
     public String translate(@Nullable String lang) {
         return translations.getOrDefault(lang, translations.get("en_us"));
+    }
+
+    @NotNull
+    public ResourceLocation getMaterialId() {
+        return materialId;
+    }
+
+    public boolean isTag() {
+        return tag;
     }
 }

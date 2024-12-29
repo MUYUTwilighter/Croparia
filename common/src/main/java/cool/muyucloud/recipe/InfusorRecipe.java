@@ -1,7 +1,8 @@
 package cool.muyucloud.recipe;
 
-import cool.muyucloud.container.InfusorContainer;
+import cool.muyucloud.recipe.container.InfusorContainer;
 import cool.muyucloud.data.ElementsEnum;
+import cool.muyucloud.recipe.serializer.InfusorRecipeSerializer;
 import cool.muyucloud.registry.RecipeSerializers;
 import cool.muyucloud.registry.RecipeTypes;
 import net.minecraft.core.RegistryAccess;
@@ -16,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
 
 /**
  * Recipe data entity for the infusor.<br/>
- * For serialization, see {@link cool.muyucloud.serializer.InfusorRecipeSerializer}.<br/>
+ * For serialization, see {@link InfusorRecipeSerializer}.<br/>
  * For old version of infusor recipe formed by Dalarion, see {@link OldInfusorRecipe}.
  */
 public class InfusorRecipe implements Recipe<InfusorContainer> {

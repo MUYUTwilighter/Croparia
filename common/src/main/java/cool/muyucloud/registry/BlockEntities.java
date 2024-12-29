@@ -1,7 +1,7 @@
 package cool.muyucloud.registry;
 
 import cool.muyucloud.CropariaIf;
-import cool.muyucloud.blockentity.GreenhouseBlockEntity;
+import cool.muyucloud.block.entity.GreenhouseBlockEntity;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;

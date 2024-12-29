@@ -1,4 +1,4 @@
-package cool.muyucloud.data;
+package cool.muyucloud.util;
 
 import net.minecraft.core.Vec3i;
 

@@ -1,5 +1,6 @@
 package cool.muyucloud.recipe;
 
+import cool.muyucloud.recipe.serializer.OldInfusorRecipeSerializer;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
@@ -10,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Old infusor recipe data entity formed by Dalarion.<br/>
- * Once this object is deserialized by {@link cool.muyucloud.serializer.OldInfusorRecipeSerializer},
+ * Once this object is deserialized by {@link OldInfusorRecipeSerializer},
  * it should be treated as the new version of {@link InfusorRecipe}. <br/>
  * The instances of this class are merged with the new infusor recipe data entities by invoking
  * {@link net.minecraft.world.item.crafting.RecipeManager#getRecipeFor(RecipeType, Container, Level)}.

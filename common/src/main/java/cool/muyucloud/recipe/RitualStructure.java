@@ -3,10 +3,10 @@ package cool.muyucloud.recipe;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
-import cool.muyucloud.container.RitualStructureContainer;
-import cool.muyucloud.data.Char3D;
-import cool.muyucloud.data.Char3DWithMark;
-import cool.muyucloud.predicate.BlockStatePredicate;
+import cool.muyucloud.recipe.container.RitualStructureContainer;
+import cool.muyucloud.util.Char3D;
+import cool.muyucloud.util.Char3DWithMark;
+import cool.muyucloud.util.BlockStatePredicate;
 import cool.muyucloud.registry.RecipeSerializers;
 import cool.muyucloud.registry.RecipeTypes;
 import net.minecraft.core.BlockPos;
@@ -22,6 +22,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -59,7 +60,7 @@ public class RitualStructure implements Recipe<RitualStructureContainer> {
         this.keys = keys;
     }
 
-    public BlockState matchTransformed(BlockPos start, Level level, Char3D pattern, BlockState ritualBlock) {
+    public @Nullable BlockState matchTransformed(BlockPos start, Level level, Char3D pattern, BlockState ritualBlock) {
         BlockState inputBlock = null;
         for (int x = 0; x < pattern.size().getX(); x++) {
             for (int y = 0; y < pattern.size().getX(); y++) {
@@ -104,7 +105,7 @@ public class RitualStructure implements Recipe<RitualStructureContainer> {
         for (Char3DWithMark pattern : patterns) {
             BlockPos start = ritualPos.subtract(pattern.mark());
             BlockState inputBlock = matchTransformed(start, level, pattern, ritualBlock);
-            return Optional.of(inputBlock);
+            return Optional.ofNullable(inputBlock);
         }
         return Optional.empty();
     }

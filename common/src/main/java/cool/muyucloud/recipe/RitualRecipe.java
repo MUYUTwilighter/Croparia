@@ -2,12 +2,11 @@ package cool.muyucloud.recipe;
 
 import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
-import cool.muyucloud.container.RitualContainer;
-import cool.muyucloud.predicate.BlockStatePredicate;
+import cool.muyucloud.recipe.container.RitualContainer;
+import cool.muyucloud.util.BlockStatePredicate;
 import cool.muyucloud.registry.RecipeSerializers;
 import cool.muyucloud.registry.RecipeTypes;
 import net.minecraft.core.RegistryAccess;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -16,12 +15,8 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Optional;
 
 public class RitualRecipe implements Recipe<RitualContainer> {
     @NotNull

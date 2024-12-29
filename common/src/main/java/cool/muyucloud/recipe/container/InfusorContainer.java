@@ -1,4 +1,4 @@
-package cool.muyucloud.container;
+package cool.muyucloud.recipe.container;
 
 import cool.muyucloud.data.ElementsEnum;
 import net.minecraft.world.Container;

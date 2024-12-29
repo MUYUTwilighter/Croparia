@@ -1,4 +1,4 @@
-package cool.muyucloud.data;
+package cool.muyucloud.util;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;

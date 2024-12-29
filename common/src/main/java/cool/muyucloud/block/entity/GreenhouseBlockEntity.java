@@ -3,7 +3,7 @@
 // (powered by FernFlower decompiler)
 //
 
-package cool.muyucloud.blockentity;
+package cool.muyucloud.block.entity;
 
 import cool.muyucloud.access.CropBlockAccess;
 import cool.muyucloud.registry.BlockEntities;

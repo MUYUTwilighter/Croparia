@@ -15,6 +15,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 public class CropariaItems {
@@ -99,6 +100,10 @@ public class CropariaItems {
     public static final RegistrySupplier<Item> CROPARIA7 = registerItem(
         "croparia7", () -> new Item(new Item.Properties().arch$tab(Tabs.MAIN)));
 
+    protected static final List<RegistrySupplier<Item>> CROPARIAS = List.of(
+        CROPARIA, CROPARIA2, CROPARIA3, CROPARIA4, CROPARIA5, CROPARIA6, CROPARIA7
+    );
+
     public static void registerCrop(Crop crop) {
         ITEMS.register(crop.getSeedId(), () -> new CropSeed(crop));
         ITEMS.register(crop.getFruitId(), () -> new CropFruit(crop));
@@ -141,5 +146,9 @@ public class CropariaItems {
             case ELEMENTAL -> ELEMATILIUS.get();
             case EMPTY -> Items.AIR;
         };
+    }
+
+    public static @NotNull RegistrySupplier<Item> getCroparia(int tier) {
+        return CROPARIAS.get(tier - 1);
     }
 }

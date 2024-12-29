@@ -5,7 +5,7 @@
 
 package cool.muyucloud.block;
 
-import cool.muyucloud.blockentity.GreenhouseBlockEntity;
+import cool.muyucloud.block.entity.GreenhouseBlockEntity;
 import cool.muyucloud.registry.BlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;

@@ -1,4 +1,4 @@
-package cool.muyucloud.data;
+package cool.muyucloud.util;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.ListCodec;

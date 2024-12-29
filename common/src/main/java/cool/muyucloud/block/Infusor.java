@@ -1,7 +1,7 @@
 package cool.muyucloud.block;
 
 import cool.muyucloud.CropariaIf;
-import cool.muyucloud.container.InfusorContainer;
+import cool.muyucloud.recipe.container.InfusorContainer;
 import cool.muyucloud.data.ElementsEnum;
 import cool.muyucloud.recipe.InfusorRecipe;
 import cool.muyucloud.registry.CropariaItems;

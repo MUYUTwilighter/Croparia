@@ -1,8 +1,8 @@
 package cool.muyucloud.block;
 
 import cool.muyucloud.CropariaIf;
-import cool.muyucloud.container.RitualContainer;
-import cool.muyucloud.container.RitualStructureContainer;
+import cool.muyucloud.recipe.container.RitualContainer;
+import cool.muyucloud.recipe.container.RitualStructureContainer;
 import cool.muyucloud.entity.FakePlayer;
 import cool.muyucloud.recipe.RitualStructure;
 import cool.muyucloud.registry.RecipeTypes;
@@ -60,7 +60,7 @@ public class RitualStand extends Block {
         recipeManager.getRecipeFor(
             RecipeTypes.RITUAL_STRUCTURE, RitualStructureContainer.INSTANCE, null, this.arch$registryName()
         ).ifPresent(result -> recipe.set(result.getSecond()));
-        return Optional.of(recipe.get());
+        return Optional.ofNullable(recipe.get());
     }
 
     protected void tryCraft(@NotNull RitualContainer container, @NotNull ServerLevel world, @NotNull BlockPos pos) {

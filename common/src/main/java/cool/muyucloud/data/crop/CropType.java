@@ -3,7 +3,6 @@ package cool.muyucloud.data.crop;
 public enum CropType {
     ANIMAL,
     CROP,
-    ELEMENTAL,
     FOOD,
     MONSTER,
     NATURE;

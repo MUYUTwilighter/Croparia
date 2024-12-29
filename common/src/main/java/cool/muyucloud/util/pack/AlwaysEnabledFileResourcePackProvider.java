@@ -44,8 +44,6 @@ public class AlwaysEnabledFileResourcePackProvider extends FolderRepositorySourc
         }
     }
 
-
-
     private static String nameFromPath(Path path) {
         return path.getFileName().toString();
     }

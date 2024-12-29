@@ -1,13 +1,16 @@
 package cool.muyucloud.recipe;
 
 import com.google.gson.JsonObject;
-import cool.muyucloud.predicate.BlockStatePredicate;
+import cool.muyucloud.util.BlockStatePredicate;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -25,13 +28,12 @@ public class OldRitualRecipe extends RitualRecipe {
         super(id, tier, state, ingredient, result);
     }
 
-    public Optional<Block> extractBlock() {
+    public Block extractBlock() {
         if (this.getStateBuilder().isSpecified()) {
             @Nullable ResourceLocation id = ResourceLocation.tryParse(this.getBlock().getBuilder().getBlock());
-            @Nullable Block block = BuiltInRegistries.BLOCK.get(id);
-            return Optional.of(block);
+            return BuiltInRegistries.BLOCK.get(id);
         } else {
-            return Optional.empty();
+            return Blocks.AIR;
         }
     }
 
@@ -39,16 +41,16 @@ public class OldRitualRecipe extends RitualRecipe {
         int tier = GsonHelper.getAsInt(json, "tier");
         BlockStatePredicate block = BlockStatePredicate.Builder.create()
             .block(GsonHelper.getAsString(json, "block")).build();
-        ItemStack ingredient = Optional.of(
-            BuiltInRegistries.ITEM.get(ResourceLocation.tryParse(GsonHelper.getAsString(json, "input")))
-        ).orElseThrow(
-            () -> new IllegalArgumentException("Invalid or missing input item in recipe %s".formatted(id))
-        ).getDefaultInstance();
-        ItemStack result = Optional.of(
-            BuiltInRegistries.ITEM.get(ResourceLocation.tryParse(GsonHelper.getAsString(json, "output")))
-        ).orElseThrow(
-            () -> new IllegalArgumentException("Invalid or missing input item in recipe %s".formatted(id))
-        ).getDefaultInstance();
+        Item item = BuiltInRegistries.ITEM.get(ResourceLocation.tryParse(GsonHelper.getAsString(json, "input")));
+        if (item == Items.AIR) {
+            throw new IllegalArgumentException("Invalid or missing input item in recipe %s".formatted(id));
+        }
+        ItemStack ingredient = item.getDefaultInstance();
+        item = BuiltInRegistries.ITEM.get(ResourceLocation.tryParse(GsonHelper.getAsString(json, "output")));
+        if (item == Items.AIR) {
+            throw new IllegalArgumentException("Invalid or missing input item in recipe %s".formatted(id));
+        }
+        ItemStack result = item.getDefaultInstance();
         int count = GsonHelper.getAsInt(json, "count");
         result.setCount(count);
         return new OldRitualRecipe(id, tier, block, ingredient, result);
@@ -74,9 +76,10 @@ public class OldRitualRecipe extends RitualRecipe {
         if (this.getBlock().isSpecified()) {
             buf.writeInt(this.getTier());
             buf.writeItem(this.getIngredient());
-            this.extractBlock().ifPresentOrElse(block -> buf.writeItem(new ItemStack(block)), () -> {
-                throw new AssertionError("The block specified in the block predicate is invalid");
-            });
+            Block block = this.extractBlock();
+            if (block == Blocks.AIR) {
+                throw new AssertionError("The specified block does not exist, or declared as AIR");
+            }
             buf.writeItem(this.getResult());
             buf.writeInt(this.getResultCount());
         } else {

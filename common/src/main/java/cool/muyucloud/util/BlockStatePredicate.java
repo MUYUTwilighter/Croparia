@@ -1,4 +1,4 @@
-package cool.muyucloud.predicate;
+package cool.muyucloud.util;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -8,6 +8,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -93,6 +94,9 @@ public class BlockStatePredicate implements Predicate<BlockState> {
                 blockPredicate = b -> b.is(tag);
             } else {
                 Block block = BuiltInRegistries.BLOCK.get(ResourceLocation.tryParse(this.block));
+                if (block == Blocks.AIR) {
+                    throw new IllegalArgumentException("Invalid block: " + this.block);
+                }
                 blockPredicate = b -> b.is(block);
             }
             Predicate<BlockState> propertiesPredicate = this.properties.isEmpty() ? b -> true : b -> {
