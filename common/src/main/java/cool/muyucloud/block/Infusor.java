@@ -49,8 +49,14 @@ public class Infusor extends Block {
             if (state.getValue(TYPE) == ElementsEnum.EMPTY && element != ElementsEnum.EMPTY) {
                 world.setBlockAndUpdate(pos, this.defaultBlockState().setValue(TYPE, element));
                 player.getMainHandItem().shrink(1);
-                world.addFreshEntity(new ItemEntity(world, (double) pos.getX() + 0.5, (double) pos.getY() + 0.5, (double) pos.getZ() + 0.5, new ItemStack(Items.GLASS_BOTTLE)));
-                world.getEntities(EntityTypeTest.forClass(ItemEntity.class), AABB.of(new BoundingBox(pos)), entity -> !entity.getItem().isEmpty()).forEach(entity -> {
+                world.addFreshEntity(new ItemEntity(
+                    world, (double) pos.getX() + 0.5, (double) pos.getY() + 0.5, (double) pos.getZ() + 0.5,
+                    new ItemStack(Items.GLASS_BOTTLE)
+                ));
+                world.getEntities(
+                    EntityTypeTest.forClass(ItemEntity.class),
+                    AABB.of(new BoundingBox(pos)), entity -> !entity.getItem().isEmpty()
+                ).forEach(entity -> {
                     ItemStack input = entity.getItem();
                     this.tryCraft(world, pos, input, element);
                 });

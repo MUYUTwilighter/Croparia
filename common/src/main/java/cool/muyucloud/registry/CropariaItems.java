@@ -1,8 +1,8 @@
 package cool.muyucloud.registry;
 
-import cool.muyucloud.data.crop.Crop;
 import cool.muyucloud.CropariaIf;
 import cool.muyucloud.data.ElementsEnum;
+import cool.muyucloud.data.crop.Crop;
 import cool.muyucloud.item.CropFruit;
 import cool.muyucloud.item.CropSeed;
 import cool.muyucloud.item.Elematilius;
@@ -14,7 +14,6 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
 
@@ -28,6 +27,10 @@ public class CropariaItems {
     public static final RegistrySupplier<BlockItem> INFUSOR = registerItem(
         "infusor",
         () -> new BlockItem(CropariaBlocks.INFUSOR.get(), new Item.Properties().arch$tab(Tabs.MAIN))
+    );
+    public static final RegistrySupplier<BlockItem> RITUAL_STAND = registerItem(
+        "ritual_stand",
+        () -> new BlockItem(CropariaBlocks.RITUAL_STAND.get(), new Item.Properties().arch$tab(Tabs.MAIN))
     );
     public static final RegistrySupplier<BlockItem> ELEMENTAL_STONE = registerItem(
         "elemental_stone",

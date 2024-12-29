@@ -19,14 +19,6 @@ import java.util.Map;
  *
  * @see Crop
  */
-public record RawCrop(
-    String name,
-    String material,
-    String type,
-    String translationKey,
-    int color,
-    int tier,
-    Map<String, String> translations,
-    List<List<String>> dependencies
-) {
+public record RawCrop(String name, String material, String type, String translationKey, int color, int tier,
+                      Map<String, String> translations, List<List<String>> dependencies) {
 }

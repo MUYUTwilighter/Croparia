@@ -15,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 public class Crop {
@@ -80,17 +81,34 @@ public class Crop {
         this.fruitId = CropariaIf.of("fruit_" + this.name);
     }
 
-    @NotNull
-    public static Crop of(@NotNull RawCrop raw) {
-        return new Crop(raw);
+    public static Optional<Crop> of(@NotNull RawCrop raw) {
+        try {
+            return Optional.of(new Crop(raw));
+        } catch (Throwable e) {
+            CropariaIf.LOGGER.error("Failed to create crop %s".formatted(raw.name()), e);
+            return Optional.empty();
+        }
     }
 
-    public static Crop create(@NotNull String name, @NotNull String materialId, int color, int tier, @NotNull CropType type, @NotNull String translationKey, @NotNull Map<String, String> translations) {
-        return new Crop(name, materialId, color, tier, type, translations, translationKey);
+    public static Optional<Crop> create(
+        @NotNull String name, @NotNull String materialId, int color, int tier, @Nullable CropType type,
+        @Nullable String translationKey, @Nullable Map<String, String> translations
+    ) {
+        try {
+            return Optional.of(new Crop(name, materialId, color, tier, type, translations, translationKey));
+        } catch (Throwable e) {
+            CropariaIf.LOGGER.error("Failed to create crop %s".formatted(name), e);
+            return Optional.empty();
+        }
     }
 
-    public static Crop create(@NotNull String name, @NotNull String materialId, int color, int tier, @NotNull CropType type) {
-        return new Crop(name, materialId, color, tier, type, null, null);
+    public static Optional<Crop> create(@NotNull String name, @NotNull String materialId, int color, int tier, @Nullable CropType type) {
+        try {
+            return Optional.of(new Crop(name, materialId, color, tier, type, null, null));
+        } catch (Throwable e) {
+            CropariaIf.LOGGER.error("Failed to create crop %s".formatted(name), e);
+            return Optional.empty();
+        }
     }
 
     @NotNull

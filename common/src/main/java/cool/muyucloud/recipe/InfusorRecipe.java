@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
  * Recipe data entity for the infusor.<br/>
  * For serialization, see {@link cool.muyucloud.serializer.InfusorRecipeSerializer}.<br/>
  * For old version of infusor recipe formed by Dalarion, see {@link OldInfusorRecipe}.
- * */
+ */
 public class InfusorRecipe implements Recipe<InfusorContainer> {
     protected ResourceLocation id;
     protected ElementsEnum element = ElementsEnum.ELEMENTAL;
@@ -26,7 +26,7 @@ public class InfusorRecipe implements Recipe<InfusorContainer> {
     protected ItemStack result = ItemStack.EMPTY;
 
     public ItemStack getResult() {
-        return result.copy();
+        return result;
     }
 
     public void setResult(ItemStack result) {
@@ -50,7 +50,7 @@ public class InfusorRecipe implements Recipe<InfusorContainer> {
 
     public void setIngredient(ItemStack ingredient) {
         if (ingredient.isEmpty()) {
-            throw new IllegalArgumentException("Empty input item %s in recipe %s".formatted(ingredient, this.getId()));
+            throw new IllegalArgumentException("Empty item item %s in recipe %s".formatted(ingredient, this.getId()));
         }
         this.ingredient = ingredient;
     }
@@ -64,7 +64,7 @@ public class InfusorRecipe implements Recipe<InfusorContainer> {
         if (matches(container)) {
             ItemStack input = container.getItem(0);
             input.shrink(ingredient.getCount());
-            return getResult();
+            return getResult().copy();
         } else {
             return ItemStack.EMPTY;
         }

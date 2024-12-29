@@ -24,7 +24,7 @@ public class OldInfusorRecipe extends InfusorRecipe {
         this.setIngredient(BuiltInRegistries.ITEM.getOptional(
             ResourceLocation.tryParse(input)
         ).orElseThrow(
-            () -> new IllegalArgumentException("Invalid input item in recipe %s".formatted(this.getId()))
+            () -> new IllegalArgumentException("Invalid item item in recipe %s".formatted(this.getId()))
         ).getDefaultInstance());
     }
 

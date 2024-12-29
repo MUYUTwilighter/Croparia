@@ -1,4 +1,4 @@
-package cool.muyucloud;
+package cool.muyucloud.client;
 
 import cool.muyucloud.registry.CropariaBlocks;
 import dev.architectury.registry.client.rendering.RenderTypeRegistry;

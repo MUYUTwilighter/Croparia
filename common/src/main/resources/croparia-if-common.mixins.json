@@ -8,7 +8,8 @@
   "mixins": [
     "CropBlockMixin",
     "ReloadableResourceManagerImplMixin",
-    "ResourcePackManagerMixin"
+    "ResourcePackManagerMixin",
+    "StateHolderMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -1,9 +1,8 @@
 package cool.muyucloud.forge;
 
-import com.mojang.authlib.minecraft.client.MinecraftClient;
-import cool.muyucloud.CropariaIfClient;
-import dev.architectury.platform.forge.EventBuses;
 import cool.muyucloud.CropariaIf;
+import cool.muyucloud.client.CropariaIfClient;
+import dev.architectury.platform.forge.EventBuses;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;

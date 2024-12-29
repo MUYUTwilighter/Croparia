@@ -1,7 +1,7 @@
 package cool.muyucloud.block;
 
-import cool.muyucloud.data.crop.Crop;
 import cool.muyucloud.CropariaIf;
+import cool.muyucloud.data.crop.Crop;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.level.ItemLike;
@@ -31,5 +31,9 @@ public class CropariaCropBlock extends CropBlock {
     @Override
     public @NotNull String getDescriptionId() {
         return "block." + CropariaIf.MOD_ID + ".crop.block";
+    }
+
+    public int getTier() {
+        return this.crop.getTier();
     }
 }

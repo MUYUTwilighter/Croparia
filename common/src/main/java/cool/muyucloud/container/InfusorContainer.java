@@ -10,7 +10,6 @@ public class InfusorContainer implements Container {
     @NotNull
     private ElementsEnum element = ElementsEnum.EMPTY;
     private ItemStack item = ItemStack.EMPTY;
-    private transient boolean dirty = false;
 
     public static InfusorContainer of(ElementsEnum element, ItemStack item) {
         InfusorContainer container = new InfusorContainer();
@@ -73,7 +72,6 @@ public class InfusorContainer implements Container {
 
     @Override
     public void setChanged() {
-        this.dirty = true;
     }
 
     @Override
