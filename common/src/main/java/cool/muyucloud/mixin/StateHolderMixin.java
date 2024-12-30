@@ -19,9 +19,6 @@ import java.util.Map;
 @Mixin(StateHolder.class)
 public abstract class StateHolderMixin<O, S> implements StateHolderAccess {
     @Shadow
-    public abstract <T extends Comparable<T>> T getValue(Property<T> arg);
-
-    @Shadow
     @Final
     private ImmutableMap<Property<?>, Comparable<?>> values;
     @Unique

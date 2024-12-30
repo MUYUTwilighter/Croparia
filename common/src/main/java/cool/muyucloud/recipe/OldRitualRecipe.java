@@ -1,6 +1,7 @@
 package cool.muyucloud.recipe;
 
 import com.google.gson.JsonObject;
+import cool.muyucloud.registry.RecipeSerializers;
 import cool.muyucloud.util.BlockStatePredicate;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
@@ -9,6 +10,7 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.NotNull;
@@ -84,5 +86,10 @@ public class OldRitualRecipe extends RitualRecipe {
         } else {
             throw new AssertionError("The block predicate does not specify a block");
         }
+    }
+
+    @Override
+    public @NotNull RecipeSerializer<?> getSerializer() {
+        return RecipeSerializers.RITUAL_OLD.get();
     }
 }

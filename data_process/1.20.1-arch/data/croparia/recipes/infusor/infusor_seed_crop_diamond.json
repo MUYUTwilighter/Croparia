@@ -1,0 +1,12 @@
+{
+  "type": "croparia:infusor",
+  "element": "elemental",
+  "ingredient": {
+    "id": "croparia:seed_crop_lapis",
+    "Count": 1
+  },
+  "result": {
+    "id": "croparia:seed_crop_diamond",
+    "Count": 1
+  }
+}

@@ -1,8 +1,11 @@
 package cool.muyucloud.registry;
 
-import cool.muyucloud.recipe.InfusorRecipe;
-import cool.muyucloud.recipe.RitualRecipe;
-import cool.muyucloud.recipe.RitualStructure;
+import cool.muyucloud.CropariaIf;
+import cool.muyucloud.recipe.*;
+import dev.architectury.registry.registries.DeferredRegister;
+import dev.architectury.registry.registries.RegistrySupplier;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 
 /**
@@ -10,22 +13,35 @@ import net.minecraft.world.item.crafting.RecipeType;
  * <br/>
  *
  * @see RecipeSerializers
- * @see cool.muyucloud.serializer
+ * @see cool.muyucloud.recipe.serializer
  */
 public class RecipeTypes {
+    public static DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(CropariaIf.MOD_ID, Registries.RECIPE_TYPE);
+
     /**
      * This is new recipe types after porting to architectury
      */
-    public static final RecipeType<InfusorRecipe> INFUSOR = RecipeType.register("infusor");
-    public static final RecipeType<RitualRecipe> RITUAL = RecipeType.register("ritual");
-    public static final RecipeType<RitualStructure> RITUAL_STRUCTURE = RecipeType.register("ritual_structure");
+    public static final RegistrySupplier<RecipeType<InfusorRecipe>> INFUSOR = register("infusor");
+    public static final RegistrySupplier<RecipeType<RitualRecipe>> RITUAL = register("ritual");
+    public static final RegistrySupplier<RecipeType<RitualStructure>> RITUAL_STRUCTURE = register("ritual_structure");
 
     /**
      * Old recipe types formed by Dalarion.
      * Used for compatibility.
      */
-    public static final RecipeType<InfusorRecipe> INFUSOR_OLD = RecipeType.register("infusor_recipe");
+    public static final RegistrySupplier<RecipeType<OldInfusorRecipe>> INFUSOR_OLD = register("infusion_recipe");
+    public static final RegistrySupplier<RecipeType<OldRitualRecipe>> RITUAL_OLD = register("ritual_recipe");
+
+    public static <T extends Recipe<?>> RegistrySupplier<RecipeType<T>> register(String id) {
+        return RECIPE_TYPES.register(id, () -> new RecipeType<>() {
+            @Override
+            public String toString() {
+                return id;
+            }
+        });
+    }
 
     public static void register() {
+        RECIPE_TYPES.register();
     }
 }

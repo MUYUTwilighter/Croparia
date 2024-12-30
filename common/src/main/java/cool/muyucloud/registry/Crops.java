@@ -6,6 +6,7 @@ import cool.muyucloud.data.crop.CropFileReader;
 import cool.muyucloud.data.crop.CropType;
 import cool.muyucloud.data.crop.RawCrop;
 import dev.architectury.platform.Platform;
+import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -35,7 +36,6 @@ public class Crops {
         return crop;
     }
 
-    public static final Crop ELEMATILIUS = registerCrop("elematilius", "croparia:elematilius", 0x7F7F00, 3, CropType.CROP);
 
     /**
      * Add a simple crop with specified translation key. Mainly used for vanilla crops.
@@ -58,8 +58,15 @@ public class Crops {
         return crop;
     }
 
-    public static final Crop APPLE = registerCrop("apple", "minecraft:apple", 0x7F7F00, 0, CropType.FOOD, "item.minecraft.apple");
-    public static final Crop IRON = registerCrop("iron", "minecraft:iron_ingot", 0x7F7F00, 0, CropType.CROP, "item.minecraft.iron_ingot");
+    public static final Crop ELEMATILIUS = registerCrop("elemental", "croparia:elematilius", 0x712389, 3, CropType.CROP, "item.croparia.elematilius");
+    public static final Crop APPLE = registerCrop("apple", "minecraft:apple", 0xFF1C2B, 1, CropType.NATURE, "item.minecraft.apple");
+    public static final Crop COAL = registerCrop("coal", "minecraft:coal", 0x333333, 1, CropType.CROP, "item.minecraft.coal");
+    public static final Crop IRON = registerCrop("iron", "minecraft:iron_ingot", 0xD8D8D8, 2, CropType.CROP, "item.minecraft.iron_ingot");
+    public static final Crop GOLD = registerCrop("gold", "minecraft:gold_ingot", 0xFFFF8B, 2, CropType.CROP, "item.minecraft.gold_ingot");
+    public static final Crop LAPIS = registerCrop("lapis", "minecraft:lapis_lazuli", 0x7497EA, 3, CropType.CROP, "item.minecraft.lapis_lazuli");
+    public static final Crop REDSTONE = registerCrop("redstone", "minecraft:redstone", 0xFF2626, 3, CropType.CROP, "item.minecraft.redstone");
+    public static final Crop DIAMOND = registerCrop("diamond", "minecraft:diamond", 0x7F7F00, 4, CropType.CROP, "item.minecraft.diamond");
+    public static final Crop EMERALD = registerCrop("emerald", "minecraft:emerald", 0x17DD62, 4, CropType.CROP, "item.minecraft.emerald");
 
     /**
      * Add a crop from other mods which should be loaded. Mainly used for crops modded only by 1 mod.

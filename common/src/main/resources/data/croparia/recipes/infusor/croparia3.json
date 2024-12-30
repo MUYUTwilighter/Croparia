@@ -2,9 +2,11 @@
   "type": "croparia:infusor",
   "element": "elemental",
   "ingredient": {
-    "id": "croparia:seed_crop_lapis"
+    "id": "croparia:croparia2",
+    "Count": 1
   },
   "result": {
-    "id": "croparia:seed_crop_diamond"
+    "id": "croparia:croparia3",
+    "Count": 1
   }
 }

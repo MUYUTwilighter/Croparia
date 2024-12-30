@@ -27,9 +27,9 @@ public class RecipeGenerator {
         root.addProperty("type", "minecraft:crafting_shaped");
 
         JsonObject croparia = new JsonObject();
-        croparia.addProperty("item", CropariaItems.getCroparia(crop.getTier()).getRegistryId().toString());
+        croparia.addProperty("item", CropariaItems.getCroparia(crop.getTier()).getId().toString());
         JsonObject material = new JsonObject();
-        material.addProperty(crop.isTag() ? "tag" : "item", crop.getMaterialId().toString());
+        material.addProperty(crop.isTag() ? "tag" : "item", crop.getMaterial().toString());
         JsonObject seed = new JsonObject();
         seed.addProperty("tag", "minecraft:seeds");
         JsonObject keys = new JsonObject();

@@ -7,6 +7,10 @@ import cool.muyucloud.item.CropFruit;
 import cool.muyucloud.item.CropSeed;
 import cool.muyucloud.item.Elematilius;
 import cool.muyucloud.item.GreenhouseItem;
+import cool.muyucloud.item.relic.HornPlenty;
+import cool.muyucloud.item.relic.InfiniteApple;
+import cool.muyucloud.item.relic.MagicRope;
+import cool.muyucloud.item.relic.MidasHand;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
@@ -99,6 +103,10 @@ public class CropariaItems {
         "croparia6", () -> new Item(new Item.Properties().arch$tab(Tabs.MAIN)));
     public static final RegistrySupplier<Item> CROPARIA7 = registerItem(
         "croparia7", () -> new Item(new Item.Properties().arch$tab(Tabs.MAIN)));
+    public static final RegistrySupplier<HornPlenty> HORN = registerItem("horn_plenty", HornPlenty::new);
+    public static final RegistrySupplier<InfiniteApple> INFINITE_APPLE = registerItem("infinite_apple", InfiniteApple::new);
+    public static final RegistrySupplier<MagicRope> MAGIC_ROPE = registerItem("magic_rope", MagicRope::new);
+    public static final RegistrySupplier<MidasHand> MIDAS_HAND = registerItem("midas_hand", MidasHand::new);
 
     protected static final List<RegistrySupplier<Item>> CROPARIAS = List.of(
         CROPARIA, CROPARIA2, CROPARIA3, CROPARIA4, CROPARIA5, CROPARIA6, CROPARIA7

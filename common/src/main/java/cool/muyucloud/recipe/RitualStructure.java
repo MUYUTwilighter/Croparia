@@ -157,7 +157,7 @@ public class RitualStructure implements Recipe<RitualStructureContainer> {
 
     @Override
     public @NotNull RecipeType<?> getType() {
-        return RecipeTypes.RITUAL_STRUCTURE;
+        return RecipeTypes.RITUAL_STRUCTURE.get();
     }
 
     /**

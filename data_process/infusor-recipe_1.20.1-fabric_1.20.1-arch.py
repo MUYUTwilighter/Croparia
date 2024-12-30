@@ -3,7 +3,7 @@ from os import listdir, makedirs
 from os.path import exists
 
 src = "./1.20.1-fabric/data/croparia/recipes/"
-output = "./1.20.1-arch/data/croparia/recipes/"
+output = "./1.20.1-arch/data/croparia/recipes/infusor/"
 
 if not exists(output):
     makedirs(output)

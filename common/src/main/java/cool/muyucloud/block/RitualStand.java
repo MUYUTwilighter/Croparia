@@ -58,13 +58,13 @@ public class RitualStand extends Block {
     protected Optional<RitualStructure> getRitualStructure(@NotNull RecipeManager recipeManager) {
         AtomicReference<RitualStructure> recipe = new AtomicReference<>();
         recipeManager.getRecipeFor(
-            RecipeTypes.RITUAL_STRUCTURE, RitualStructureContainer.INSTANCE, null, this.arch$registryName()
+            RecipeTypes.RITUAL_STRUCTURE.get(), RitualStructureContainer.INSTANCE, null, this.arch$registryName()
         ).ifPresent(result -> recipe.set(result.getSecond()));
         return Optional.ofNullable(recipe.get());
     }
 
     protected void tryCraft(@NotNull RitualContainer container, @NotNull ServerLevel world, @NotNull BlockPos pos) {
-        world.getServer().getRecipeManager().getRecipeFor(RecipeTypes.RITUAL, container, world).ifPresent(recipe -> {
+        world.getServer().getRecipeManager().getRecipeFor(RecipeTypes.RITUAL.get(), container, world).ifPresent(recipe -> {
             ItemStack result = recipe.assemble(container, world.registryAccess());
             if (result.getItem() instanceof SpawnEggItem) {
                 FakePlayer.useAllItemsOn(world, pos, result);

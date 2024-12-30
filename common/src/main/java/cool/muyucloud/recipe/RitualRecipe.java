@@ -134,6 +134,6 @@ public class RitualRecipe implements Recipe<RitualContainer> {
 
     @Override
     public @NotNull RecipeType<?> getType() {
-        return RecipeTypes.RITUAL;
+        return RecipeTypes.RITUAL.get();
     }
 }

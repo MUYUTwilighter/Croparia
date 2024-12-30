@@ -6,6 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PathPackResources;
 
+import java.io.File;
 import java.nio.file.Path;
 
 public class ResourcePackHandler extends PackHandler {
@@ -13,13 +14,19 @@ public class ResourcePackHandler extends PackHandler {
 
     private final PathPackResources resourcePack = new PathPackResources("croparia", root, true);
 
-    public ResourcePackHandler(Path path) {
-        super(path);
+    @Override
+    public boolean beforeLoad() {
+        this.dump();
+        return true;
     }
 
     @Override
-    protected void clear() {
-        this.root.resolve("assets").toFile().deleteOnExit();
+    public boolean afterLoad() {
+        return false;
+    }
+
+    public ResourcePackHandler(Path path) {
+        super(path);
     }
 
     public PackResources getResourcePack() {
@@ -39,5 +46,13 @@ public class ResourcePackHandler extends PackHandler {
     public void addLang(ResourceLocation location, JsonObject lang) {
         String path = "assets/%s/lang/%s.json".formatted(location.getNamespace(), location.getPath());
         this.addFile(path, lang);
+    }
+
+    @Override
+    public void clear() {
+        File file = this.root.resolve("assets").toFile();
+        if (file.isDirectory()) {
+            file.delete();
+        }
     }
 }

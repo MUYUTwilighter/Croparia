@@ -2,9 +2,11 @@
   "type": "croparia:infusor",
   "element": "elemental",
   "ingredient": {
-    "id": "croparia:seed_crop_gold"
+    "id": "croparia:croparia5",
+    "Count": 1
   },
   "result": {
-    "id": "croparia:seed_crop_redstone"
+    "id": "croparia:croparia6",
+    "Count": 1
   }
 }

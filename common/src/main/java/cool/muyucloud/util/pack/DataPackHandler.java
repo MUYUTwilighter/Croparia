@@ -6,6 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.PackSource;
 
+import java.io.File;
 import java.nio.file.Path;
 
 public class DataPackHandler extends PackHandler {
@@ -14,17 +15,28 @@ public class DataPackHandler extends PackHandler {
     private final AlwaysEnabledFileResourcePackProvider datapack = new AlwaysEnabledFileResourcePackProvider(
         root, PackType.SERVER_DATA, PackSource.BUILT_IN
     );
+    private boolean generated = false;
 
-    public DataPackHandler(Path path) {
-        super(path);
+    @Override
+    public boolean beforeLoad() {
+        super.beforeLoad();
+        return generated;
     }
 
     @Override
-    protected void clear() {
-        boolean deleted = this.root.resolve("data").toFile().delete();
-        if (!deleted) {
-            CropariaIf.LOGGER.warn("Failed to delete data folder");
+    public boolean afterLoad() {
+        if (generated) {
+            generated = false;
+        } else {
+            this.generate();
+            this.dump();
+            generated = true;
         }
+        return generated;
+    }
+
+    public DataPackHandler(Path path) {
+        super(path);
     }
 
     public AlwaysEnabledFileResourcePackProvider getDatapack() {
@@ -39,5 +51,13 @@ public class DataPackHandler extends PackHandler {
     public void addLootTable(ResourceLocation location, JsonObject lootTable) {
         String path = "data/%s/loot_tables/%s.json".formatted(location.getNamespace(), location.getPath());
         this.addFile(path, lootTable);
+    }
+
+    @Override
+    public void clear() {
+        File file = this.root.resolve("data").toFile();
+        if (file.isDirectory()) {
+            file.delete();
+        }
     }
 }

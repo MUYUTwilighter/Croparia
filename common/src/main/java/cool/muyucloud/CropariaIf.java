@@ -7,7 +7,10 @@ import cool.muyucloud.generator.LootTableGenerator;
 import cool.muyucloud.generator.RecipeGenerator;
 import cool.muyucloud.registry.*;
 import cool.muyucloud.util.CropariaCauldronInteraction;
+import cool.muyucloud.util.pack.DataPackHandler;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 
 public class CropariaIf {
@@ -24,13 +27,14 @@ public class CropariaIf {
         CropariaItems.register();
         Tabs.register();
         CropariaCauldronInteraction.bootStrap();
+        DataPackHandler.INSTANCE.registerGenerator(RecipeGenerator::init);
+        DataPackHandler.INSTANCE.registerGenerator(LootTableGenerator::init);
     }
 
-    public static void afterDataPackLoaded() {
-        new Thread(() -> {
-            LootTableGenerator.init();
-            RecipeGenerator.init();
-        }, "CropariaIf Generator").start();
+    public static void onDataPackLoaded(@NotNull MinecraftServer server) {
+        if (DataPackHandler.INSTANCE.afterLoad()) {
+            server.getCommands().performPrefixedCommand(server.createCommandSourceStack(), "reload");
+        }
     }
 
     public static void onServerStarting() {

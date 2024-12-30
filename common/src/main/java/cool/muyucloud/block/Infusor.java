@@ -84,7 +84,7 @@ public class Infusor extends Block {
     public void tryCraft(ServerLevel world, BlockPos pos, ItemStack input, ElementsEnum element) {
         RecipeManager manager = world.getServer().getRecipeManager();
         InfusorContainer container = InfusorContainer.of(element, input);
-        manager.getRecipeFor(RecipeTypes.INFUSOR, container, world).ifPresent(
+        manager.getRecipeFor(RecipeTypes.INFUSOR.get(), container, world).ifPresent(
             recipe -> onCrafting(recipe, container, world, pos)
         );
     }

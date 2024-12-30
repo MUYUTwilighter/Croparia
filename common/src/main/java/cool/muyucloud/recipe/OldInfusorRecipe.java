@@ -1,10 +1,12 @@
 package cool.muyucloud.recipe;
 
 import cool.muyucloud.recipe.serializer.OldInfusorRecipeSerializer;
+import cool.muyucloud.registry.RecipeSerializers;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
@@ -47,5 +49,10 @@ public class OldInfusorRecipe extends InfusorRecipe {
 
     public void setCount(int count) {
         this.result.setCount(Math.max(count, 1));
+    }
+
+    @Override
+    public @NotNull RecipeSerializer<?> getSerializer() {
+        return RecipeSerializers.INFUSOR_OLD.get();
     }
 }

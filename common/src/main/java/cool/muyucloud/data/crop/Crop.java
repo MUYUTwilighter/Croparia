@@ -21,11 +21,10 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class Crop {
-
     @NotNull
     private final String name;
     @NotNull
-    private final ResourceLocation materialId;
+    private final ResourceLocation material;
     @NotNull
     private final CropType type;
     @NotNull
@@ -47,7 +46,7 @@ public class Crop {
             throw new IllegalArgumentException("Crop name and material ID cannot be null");
         }
         this.name = parseName(raw.name());
-        this.materialId = parseMaterialId(raw.material(), raw.tag());
+        this.material = parseMaterialId(raw.material(), raw.tag());
         this.type = parseType(raw.type());
         this.translations = parseTranslation(raw.translations(), parseDefaultTranslation(this.name));
         this.translationKey = raw.translationKey() == null ? "crop.croparia." + this.name : raw.translationKey();
@@ -59,15 +58,15 @@ public class Crop {
         this.fruitId = CropariaIf.of("fruit_" + this.name);
     }
 
-    private Crop(@NotNull String name, @NotNull String materialId, int color, int tier, @Nullable CropType type, @Nullable Map<String, String> translations, @Nullable String translationKey) throws RuntimeException {
+    private Crop(@NotNull String name, @NotNull String material, int color, int tier, @Nullable CropType type, @Nullable Map<String, String> translations, @Nullable String translationKey) throws RuntimeException {
         this.name = parseName(name);
-        this.materialId = parseMaterialId(materialId, null);
+        this.material = parseMaterialId(material, null);
         this.color = color;
         this.tier = tier;
         this.type = type == null ? CropType.CROP : type;
         this.translations = parseTranslation(translations, parseDefaultTranslation(this.name));
         this.translationKey = translationKey == null ? "croparia.crop." + this.name : translationKey;
-        this.tag = materialId.trim().startsWith("#");
+        this.tag = material.trim().startsWith("#");
         this.blockId = CropariaIf.of("block_crop_" + this.name);
         this.seedId = CropariaIf.of("seed_crop_" + this.name);
         this.fruitId = CropariaIf.of("fruit_" + this.name);
@@ -160,13 +159,13 @@ public class Crop {
     @NotNull
     public Item getMaterialItem() {
         if (this.tag) {
-            TagKey<Item> tag = TagKey.create(Registries.ITEM, this.materialId);
+            TagKey<Item> tag = TagKey.create(Registries.ITEM, this.material);
             Iterable<Holder<Item>> set = BuiltInRegistries.ITEM.getTagOrEmpty(tag);
             if (set.iterator().hasNext()) {
                 return set.iterator().next().value();
             }
         } else {
-            return BuiltInRegistries.ITEM.get(this.materialId);
+            return BuiltInRegistries.ITEM.get(this.material);
         }
         return Items.AIR;
     }
@@ -230,8 +229,8 @@ public class Crop {
     }
 
     @NotNull
-    public ResourceLocation getMaterialId() {
-        return materialId;
+    public ResourceLocation getMaterial() {
+        return material;
     }
 
     public boolean isTag() {

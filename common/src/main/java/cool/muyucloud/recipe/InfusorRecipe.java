@@ -107,6 +107,6 @@ public class InfusorRecipe implements Recipe<InfusorContainer> {
 
     @Override
     public @NotNull RecipeType<?> getType() {
-        return RecipeTypes.INFUSOR;
+        return RecipeTypes.INFUSOR.get();
     }
 }

@@ -11,22 +11,33 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public abstract class PackHandler {
     public static final Gson GSON = new Gson();
 
     protected final Path root;
     protected final Map<Path, JsonElement> cache = new HashMap<>();
+    protected final Set<Runnable> GENERATORS = new HashSet<>();
+
+    public boolean beforeLoad() {
+        try {
+            File file = this.root.resolve("pack.mcmeta").toFile();
+            this.writeJson(this.generateMetaFile(), file);
+        } catch (Exception e) {
+            throw new AssertionError(e);
+        }
+        return true;
+    }
+
+    public abstract boolean afterLoad();
+
+    public abstract void clear();
 
     public PackHandler(Path path) {
         this.root = path;
-        this.addMetaFile();
-    }
-
-    protected void addMetaFile() {
-        Path path = this.root.resolve("pack.mcmeta");
-        this.addFile(path.toString(), this.generateMetaFile());
     }
 
     protected JsonObject generateMetaFile() {
@@ -43,15 +54,16 @@ public abstract class PackHandler {
         if (!file.getParentFile().exists()) {
             file.getParentFile().mkdirs();
         }
-        FileWriter writer = new FileWriter(file);   // FileWriter will auto create the file if it doesn't exist
-        GSON.toJson(element, writer);
-        writer.close();
+        if (!file.exists() || file.exists() && CropariaIf.CONFIG.getOverride()) {
+            FileWriter writer = new FileWriter(file);   // FileWriter will auto create the file if it doesn't exist
+            GSON.toJson(element, writer);
+            writer.close();
+        }
     }
 
-    protected abstract void clear();
-
-    public void flushCache() {
+    public void dump() {
         try {
+            this.generate();
             if (CropariaIf.CONFIG.getOverride()) {
                 this.clear();
             }
@@ -67,5 +79,16 @@ public abstract class PackHandler {
     public void addFile(String relative, JsonElement element) {
         Path path = this.root.resolve(relative);
         this.cache.put(path, element);
+    }
+
+    protected void generate() {
+        this.cache.clear();
+        for (Runnable generator : this.GENERATORS) {
+            generator.run();
+        }
+    }
+
+    public void registerGenerator(Runnable generator) {
+        this.GENERATORS.add(generator);
     }
 }
