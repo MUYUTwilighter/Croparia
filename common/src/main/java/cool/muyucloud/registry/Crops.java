@@ -6,7 +6,6 @@ import cool.muyucloud.data.crop.CropFileReader;
 import cool.muyucloud.data.crop.CropType;
 import cool.muyucloud.data.crop.RawCrop;
 import dev.architectury.platform.Platform;
-import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

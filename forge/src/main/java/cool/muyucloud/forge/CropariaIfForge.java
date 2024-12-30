@@ -3,6 +3,7 @@ package cool.muyucloud.forge;
 import cool.muyucloud.CropariaIf;
 import cool.muyucloud.client.CropariaIfClient;
 import dev.architectury.platform.forge.EventBuses;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
@@ -16,17 +17,11 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import java.util.Optional;
 
 @Mod(CropariaIf.MOD_ID)
-@Mod.EventBusSubscriber
+@Mod.EventBusSubscriber(modid = CropariaIf.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.DEDICATED_SERVER)
 public class CropariaIfForge {
-    private static final IEventBus EVENT_BUS = MinecraftForge.EVENT_BUS;
-
     public CropariaIfForge() {
         EventBuses.registerModEventBus(CropariaIf.MOD_ID, FMLJavaModLoadingContext.get().getModEventBus());
         CropariaIf.init();
-        EVENT_BUS.addListener(CropariaIfForge::onClientSetup);
-        EVENT_BUS.addListener(CropariaIfForge::onServerStarting);
-        EVENT_BUS.addListener(CropariaIfForge::onServerStopping);
-        EVENT_BUS.addListener(CropariaIfForge::onDataPackLoaded);
     }
 
     @SubscribeEvent
@@ -44,10 +39,5 @@ public class CropariaIfForge {
     @SubscribeEvent
     public static void onServerStopping(ServerStoppingEvent event) {
         CropariaIf.onServerStopping();
-    }
-
-    @SubscribeEvent
-    public static void onClientSetup(FMLClientSetupEvent event) {
-        CropariaIfClient.init();
     }
 }

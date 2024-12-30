@@ -1,6 +1,9 @@
 package cool.muyucloud;
 
 import com.mojang.logging.LogUtils;
+import cool.muyucloud.client.generator.BlockStateModelGenerator;
+import cool.muyucloud.client.generator.ItemModelGenerator;
+import cool.muyucloud.client.generator.LangGenerator;
 import cool.muyucloud.data.config.Config;
 import cool.muyucloud.data.config.ConfigFileHandler;
 import cool.muyucloud.generator.LootTableGenerator;
@@ -8,6 +11,7 @@ import cool.muyucloud.generator.RecipeGenerator;
 import cool.muyucloud.registry.*;
 import cool.muyucloud.util.CropariaCauldronInteraction;
 import cool.muyucloud.util.pack.DataPackHandler;
+import cool.muyucloud.util.pack.ResourcePackHandler;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import org.jetbrains.annotations.NotNull;
@@ -29,6 +33,9 @@ public class CropariaIf {
         CropariaCauldronInteraction.bootStrap();
         DataPackHandler.INSTANCE.registerGenerator(RecipeGenerator::init);
         DataPackHandler.INSTANCE.registerGenerator(LootTableGenerator::init);
+        ResourcePackHandler.INSTANCE.registerGenerator(ItemModelGenerator::init);
+        ResourcePackHandler.INSTANCE.registerGenerator(BlockStateModelGenerator::init);
+        ResourcePackHandler.INSTANCE.registerGenerator(LangGenerator::init);
     }
 
     public static void onDataPackLoaded(@NotNull MinecraftServer server) {

@@ -1,20 +1,13 @@
 package cool.muyucloud.client;
 
-import cool.muyucloud.client.generator.BlockStateModelGenerator;
-import cool.muyucloud.client.generator.ItemModelGenerator;
-import cool.muyucloud.client.generator.LangGenerator;
 import cool.muyucloud.registry.CropariaBlocks;
 import cool.muyucloud.registry.Crops;
-import cool.muyucloud.util.pack.ResourcePackHandler;
 import dev.architectury.registry.client.rendering.ColorHandlerRegistry;
 import dev.architectury.registry.client.rendering.RenderTypeRegistry;
 import net.minecraft.client.renderer.RenderType;
 
 public class CropariaIfClient {
     public static void init() {
-        ResourcePackHandler.INSTANCE.registerGenerator(ItemModelGenerator::init);
-        ResourcePackHandler.INSTANCE.registerGenerator(BlockStateModelGenerator::init);
-        ResourcePackHandler.INSTANCE.registerGenerator(LangGenerator::init);
         Crops.CROPS.forEach(crop -> {
             ColorHandlerRegistry.registerBlockColors((blockState, blockAndTintGetter, blockPos, i) -> crop.getColor(), crop.getCropBlock());
             ColorHandlerRegistry.registerItemColors((itemStack, i) -> crop.getColor(), crop.getFruitItem());
