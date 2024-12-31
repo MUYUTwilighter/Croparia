@@ -1,6 +1,7 @@
 package cool.muyucloud.data.config;
 
 import com.google.gson.Gson;
+import com.google.gson.stream.JsonWriter;
 import cool.muyucloud.CropariaIf;
 import dev.architectury.platform.Platform;
 
@@ -18,8 +19,9 @@ public class ConfigFileHandler {
         if (!parent.exists()) {
             parent.mkdirs();
         }
-        try (FileWriter writer = new FileWriter(CONFIG_PATH.toFile())) {
-            GSON.toJson(config.toRaw(), writer);
+        try (JsonWriter writer = new JsonWriter(new FileWriter(CONFIG_PATH.toFile()))) {
+            writer.setIndent("  ");
+            GSON.toJson(config.toRaw(), RawConfig.class, writer);
         } catch (Throwable e) {
             CropariaIf.LOGGER.error("Failed to save config", e);
         }
