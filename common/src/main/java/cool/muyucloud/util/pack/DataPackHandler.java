@@ -2,15 +2,13 @@ package cool.muyucloud.util.pack;
 
 import com.google.gson.JsonObject;
 import cool.muyucloud.CropariaIf;
+import cool.muyucloud.util.Util;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.PackSource;
 
 import java.io.File;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Comparator;
-import java.util.stream.Stream;
 
 public class DataPackHandler extends PackHandler {
     public static final DataPackHandler INSTANCE = new DataPackHandler(CropariaIf.CONFIG.getPackPath());
@@ -23,6 +21,9 @@ public class DataPackHandler extends PackHandler {
     @Override
     public boolean beforeLoad() {
         super.beforeLoad();
+        if (!generated && CropariaIf.CONFIG.getOverride()) {
+            this.clear();
+        }
         return generated;
     }
 
@@ -67,15 +68,9 @@ public class DataPackHandler extends PackHandler {
         File file = path.toFile();
         if (file.isDirectory()) {
             CropariaIf.LOGGER.info("Clearing data pack directory");
-            try (Stream<Path> stream = Files.walk(path)) {
-                stream.sorted(Comparator.reverseOrder()).forEach(f -> {
-                    try {
-                        Files.delete(f);
-                    } catch (Exception e) {
-                        CropariaIf.LOGGER.error("Failed to delete file", e);
-                    }
-                });
-            } catch (Exception e) {
+            try {
+                Util.deleteDir(file);
+            } catch (Throwable e) {
                 CropariaIf.LOGGER.error("Failed to clear data pack directory", e);
             }
         }

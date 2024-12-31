@@ -2,6 +2,7 @@ package cool.muyucloud.util.pack;
 
 import com.google.gson.JsonObject;
 import cool.muyucloud.CropariaIf;
+import cool.muyucloud.util.Util;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PathPackResources;
@@ -16,6 +17,9 @@ public class ResourcePackHandler extends PackHandler {
 
     @Override
     public boolean beforeLoad() {
+        if (CropariaIf.CONFIG.getOverride()) {
+            this.clear();
+        }
         this.dump();
         return true;
     }
@@ -52,7 +56,12 @@ public class ResourcePackHandler extends PackHandler {
     public void clear() {
         File file = this.root.resolve("assets").toFile();
         if (file.isDirectory()) {
-            file.delete();
+            CropariaIf.LOGGER.info("Clearing resource pack directory");
+            try {
+                Util.deleteDir(file);
+            } catch (Throwable e) {
+                CropariaIf.LOGGER.error("Failed to clear resource pack directory", e);
+            }
         }
     }
 }

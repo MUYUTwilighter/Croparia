@@ -40,6 +40,10 @@ public class CropFileHandler {
     }
 
     public static void saveCrop(Crop crop, List<List<String>> dependencies) {
+        File cropPath = CropariaIf.CONFIG.getCropPath().toFile();
+        if (!cropPath.exists() || !cropPath.isDirectory()) {
+            cropPath.mkdirs();
+        }
         File file = CropariaIf.CONFIG.getCropPath().resolve(crop.getName() + ".json").toFile();
         if (file.exists() && !CropariaIf.CONFIG.getOverride()) {
             return;
@@ -47,8 +51,8 @@ public class CropFileHandler {
         try (JsonWriter writer = new JsonWriter(new FileWriter(file))) {
             writer.setIndent("  ");
             RawCrop raw = new RawCrop(
-                crop.getName(), crop.getMaterial().toString(), null, crop.getType().getModelName(),
-                crop.getTranslationKey(), "0x%X%n".formatted(crop.getColor()), crop.getTier(), crop.getTranslations(),
+                crop.getName(), (crop.isTag() ? "#" : "") + crop.getMaterial(), null, crop.getType().getModelName(),
+                crop.getTranslationKey(), "0x%X".formatted(crop.getColor()), crop.getTier(), crop.getTranslations(),
                 dependencies
             );
             GSON.toJson(raw, raw.getClass(), writer);

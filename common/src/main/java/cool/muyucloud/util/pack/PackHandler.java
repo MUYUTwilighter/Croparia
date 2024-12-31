@@ -64,9 +64,6 @@ public abstract class PackHandler {
     public void dump() {
         try {
             this.generate();
-            if (CropariaIf.CONFIG.getOverride()) {
-                this.clear();
-            }
             for (Map.Entry<Path, JsonElement> entry : this.cache.entrySet()) {
                 this.writeJson(entry.getValue(), entry.getKey().toFile());
             }

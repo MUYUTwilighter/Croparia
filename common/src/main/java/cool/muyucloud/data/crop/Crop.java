@@ -50,7 +50,7 @@ public class Crop {
         this.type = parseType(raw.type());
         this.translations = parseTranslation(raw.translations(), parseDefaultTranslation(this.name));
         this.translationKey = raw.translationKey() == null ? "crop.croparia." + this.name : raw.translationKey();
-        this.color = Integer.parseInt(raw.color());
+        this.color = raw.color().startsWith("0x") ? Integer.parseInt(raw.color().substring(2), 16) : Integer.parseInt(raw.color());
         this.tier = raw.tier();
         this.tag = raw.material().trim().startsWith("#");
         this.blockId = CropariaIf.of("block_crop_" + this.name);
@@ -81,18 +81,18 @@ public class Crop {
         }
     }
 
-    public static Optional<Crop> create(@NotNull String name, @NotNull String materialId, int color, int tier, @Nullable CropType type, @Nullable String translationKey, @Nullable Map<String, String> translations) {
+    public static Optional<Crop> create(@NotNull String name, @NotNull String material, int color, int tier, @Nullable CropType type, @Nullable String translationKey, @Nullable Map<String, String> translations) {
         try {
-            return Optional.of(new Crop(name, materialId, color, tier, type, translations, translationKey));
+            return Optional.of(new Crop(name, material, color, tier, type, translations, translationKey));
         } catch (Throwable e) {
             CropariaIf.LOGGER.error("Failed to create crop %s".formatted(name), e);
             return Optional.empty();
         }
     }
 
-    public static Optional<Crop> create(@NotNull String name, @NotNull String materialId, int color, int tier, @Nullable CropType type) {
+    public static Optional<Crop> create(@NotNull String name, @NotNull String material, int color, int tier, @Nullable CropType type) {
         try {
-            return Optional.of(new Crop(name, materialId, color, tier, type, null, null));
+            return Optional.of(new Crop(name, material, color, tier, type, null, null));
         } catch (Throwable e) {
             CropariaIf.LOGGER.error("Failed to create crop %s".formatted(name), e);
             return Optional.empty();
@@ -132,7 +132,7 @@ public class Crop {
         Map<String, String> map = new HashMap<>();
         if (translation != null) {
             for (Map.Entry<String, String> entry : translation.entrySet()) {
-                String key = entry.getKey().trim().toUpperCase();
+                String key = entry.getKey().trim().toLowerCase();
                 String value = entry.getValue();
                 map.put(key, value);
             }
