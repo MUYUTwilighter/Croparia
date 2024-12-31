@@ -16,27 +16,19 @@ public class DataPackHandler extends PackHandler {
     private final AlwaysEnabledFileResourcePackProvider datapack = new AlwaysEnabledFileResourcePackProvider(
         root, PackType.SERVER_DATA, PackSource.BUILT_IN
     );
-    private boolean generated = false;
 
     @Override
-    public boolean beforeLoad() {
-        super.beforeLoad();
-        if (!generated && CropariaIf.CONFIG.getOverride()) {
+    public void onInitial() {
+        super.onInitial();
+        if (CropariaIf.CONFIG.getOverride()) {
             this.clear();
         }
-        return generated;
     }
 
     @Override
-    public boolean afterLoad() {
-        if (generated) {
-            generated = false;
-        } else {
-            this.generate();
-            this.dump();
-            generated = true;
-        }
-        return generated;
+    public void onSecondary() {
+        this.generate();
+        this.dump();
     }
 
     public DataPackHandler(Path path) {

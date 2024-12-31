@@ -16,17 +16,15 @@ public class ResourcePackHandler extends PackHandler {
     private final PathPackResources resourcePack = new PathPackResources("croparia", root, true);
 
     @Override
-    public boolean beforeLoad() {
+    public void onInitial() {
         if (CropariaIf.CONFIG.getOverride()) {
             this.clear();
         }
         this.dump();
-        return true;
     }
 
     @Override
-    public boolean afterLoad() {
-        return false;
+    public void onSecondary() {
     }
 
     public ResourcePackHandler(Path path) {

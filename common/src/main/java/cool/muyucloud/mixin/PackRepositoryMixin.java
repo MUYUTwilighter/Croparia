@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class PackRepositoryMixin {
     @Inject(method = "reload", at = @At("HEAD"))
     private void onReload(CallbackInfo ci) {
-        DataPackHandler.INSTANCE.beforeLoad();
+        DataPackHandler.INSTANCE.onInitial();
     }
 
     @ModifyVariable(method = "<init>", at = @At("HEAD"), argsOnly = true)
