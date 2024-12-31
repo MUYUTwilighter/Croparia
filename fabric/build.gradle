@@ -79,3 +79,7 @@ publishing {
         // Add repositories to publish to here.
     }
 }
+
+base {
+    archivesName = rootProject.archives_base_name + "-fabric"
+}

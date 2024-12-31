@@ -41,7 +41,8 @@ public class RitualStand extends Block {
     }
 
     public void stepOn(Level world, BlockPos pos, BlockState state, Entity entity) {
-        if (entity instanceof ItemEntity itemEntity && itemEntity != this.lastStand && world instanceof ServerLevel serverWorld && CropariaIf.CONFIG.getRitual()) {
+        if (entity instanceof ItemEntity itemEntity && itemEntity != this.lastStand
+            && world instanceof ServerLevel serverWorld && CropariaIf.CONFIG.getRitual()) {
             this.lastStand = itemEntity;
             ItemStack stack = itemEntity.getItem();
             RecipeManager recipeManager = serverWorld.getServer().getRecipeManager();

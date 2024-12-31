@@ -27,7 +27,7 @@ public class Tabs {
         "main",
         () -> CreativeTabRegistry.create(
             Component.translatable("tab." + CropariaIf.MOD_ID + ".main"),
-            Items.APPLE::getDefaultInstance
+            CropariaItems.ELEMATILIUS.get()::getDefaultInstance
         )
     );
 
