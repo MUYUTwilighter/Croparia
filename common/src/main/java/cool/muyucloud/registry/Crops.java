@@ -102,8 +102,8 @@ public class Crops {
     public static final Crop LILY_PAD = registerCrop("lilypad", Objects.requireNonNull(Items.LILY_PAD.arch$registryName()).toString(), 0xc5f14, 1, CropType.NATURE, Items.LILY_PAD.getDescriptionId());
     public static final Crop BUSH = registerCrop("bush", Objects.requireNonNull(Items.DEAD_BUSH.arch$registryName()).toString(), 0x946428, 1, CropType.NATURE, Items.DEAD_BUSH.getDescriptionId());
     public static final Crop GRASS = registerCrop("grass", Objects.requireNonNull(Items.GRASS.arch$registryName()).toString(), 0x820510b, 1, CropType.NATURE, Items.GRASS.getDescriptionId());
-    public static final Crop LARGE_FERN = registerCrop("largefern", Objects.requireNonNull(Items.LARGE_FERN.arch$registryName()).toString(), 0x4a7240, 1, CropType.NATURE, Items.LARGE_FERN.getDescriptionId());
-    public static final Crop TALL_GRASS = registerCrop("tallgrass", Objects.requireNonNull(Items.TALL_GRASS.arch$registryName()).toString(), 0x2f4728, 1, CropType.NATURE, Items.TALL_GRASS.getDescriptionId());
+    public static final Crop LARGE_FERN = registerCrop("large_fern", Objects.requireNonNull(Items.LARGE_FERN.arch$registryName()).toString(), 0x4a7240, 1, CropType.NATURE, Items.LARGE_FERN.getDescriptionId());
+    public static final Crop TALL_GRASS = registerCrop("tall_grass", Objects.requireNonNull(Items.TALL_GRASS.arch$registryName()).toString(), 0x2f4728, 1, CropType.NATURE, Items.TALL_GRASS.getDescriptionId());
     public static final Crop FERN = registerCrop("fern", Objects.requireNonNull(Items.FERN.arch$registryName()).toString(), 0x1b4509, 1, CropType.NATURE, Items.FERN.getDescriptionId());
     public static final Crop OAK = registerCrop("oak", Objects.requireNonNull(Items.OAK_PLANKS.arch$registryName()).toString(), 0x9d824c, 1, CropType.NATURE, Items.OAK_PLANKS.getDescriptionId());
     public static final Crop SPRUCE = registerCrop("spruce", Objects.requireNonNull(Items.SPRUCE_PLANKS.arch$registryName()).toString(), 0x795933, 1, CropType.NATURE, Items.SPRUCE_PLANKS.getDescriptionId());
