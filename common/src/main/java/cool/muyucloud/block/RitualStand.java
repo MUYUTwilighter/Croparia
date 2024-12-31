@@ -21,9 +21,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
@@ -47,7 +49,11 @@ public class RitualStand extends Block {
                 structure -> structure.matches(pos, world)
             ).ifPresentOrElse(inputBlock -> {
                 RitualContainer container = this.getRitualContainer(stack, inputBlock);
-                this.tryCraft(container, serverWorld, pos);
+                if (itemEntity.getOwner() instanceof Player player) {
+                    this.tryCraft(container, serverWorld, pos, player);
+                } else {
+                    this.tryCraft(container, serverWorld, pos, null);
+                }
             }, () -> this.bad("chat.croparia.ritual.bad"));
         }
     }
@@ -61,19 +67,21 @@ public class RitualStand extends Block {
         return Optional.ofNullable(recipe.get());
     }
 
-    protected void tryCraft(@NotNull RitualContainer container, @NotNull ServerLevel world, @NotNull BlockPos pos) {
+    protected void tryCraft(@NotNull RitualContainer container, @NotNull ServerLevel world, @NotNull BlockPos pos, @Nullable Player player) {
         world.getServer().getRecipeManager().getRecipeFor(RecipeTypes.RITUAL.get(), container, world).ifPresentOrElse(recipe -> {
             ItemStack result = recipe.assemble(container, world.registryAccess());
             if (result.getItem() instanceof SpawnEggItem) {
                 FakePlayer.useAllItemsOn(world, pos, result);
             } else {
+                Vec3 itemPos = new Vec3(pos.getX() - 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+                if (player != null) {
+                    itemPos = player.position();
+                }
                 world.addFreshEntity(new ItemEntity(
-                    world, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, result
+                    world, itemPos.x, itemPos.y, itemPos.z, result, 0, 0, 0
                 ));
             }
-        }, () -> {
-            this.bad("chat.croparia.ritual.rejected");
-        });
+        }, () -> this.bad("chat.croparia.ritual.rejected"));
     }
 
     public Optional<Player> getInputItemOwner() {

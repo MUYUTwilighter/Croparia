@@ -1,0 +1,15 @@
+{
+  "type": "croparia:ritual",
+  "tier": 1,
+  "ingredient": {
+    "id": "minecraft:nether_wart_block",
+    "Count": 1
+  },
+  "block": {
+    "block": "minecraft:spruce_wood"
+  },
+  "result": {
+    "id": "croparia:horn_plenty",
+    "Count": 1
+  }
+}

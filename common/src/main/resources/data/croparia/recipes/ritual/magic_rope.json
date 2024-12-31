@@ -1,0 +1,15 @@
+{
+  "type": "croparia:ritual",
+  "tier": 1,
+  "ingredient": {
+    "id": "minecraft:lead",
+    "Count": 1
+  },
+  "block": {
+    "block": "croparia:elemental_stone"
+  },
+  "result": {
+    "id": "croparia:magic_rope",
+    "Count": 1
+  }
+}

@@ -37,13 +37,13 @@ public class CropariaBlocks {
     );
     public static final RegistrySupplier<Infusor> INFUSOR = registerBlock("infusor", Infusor::new);
     public static final RegistrySupplier<RitualStand> RITUAL_STAND = registerBlock(
-        "ritual_stand", () -> new RitualStand(0)
+        "ritual_stand", () -> new RitualStand(1)
     );
     public static final RegistrySupplier<RitualStand> RITUAL_STAND_2 = registerBlock(
-        "ritual_stand_2", () -> new RitualStand(1)
+        "ritual_stand_2", () -> new RitualStand(2)
     );
     public static final RegistrySupplier<RitualStand> RITUAL_STAND_3 = registerBlock(
-        "ritual_stand_3", () -> new RitualStand(2)
+        "ritual_stand_3", () -> new RitualStand(3)
     );
     public static final RegistrySupplier<Block> ELEMENTAL_STONE = registerBlock(
         "elemental_stone",

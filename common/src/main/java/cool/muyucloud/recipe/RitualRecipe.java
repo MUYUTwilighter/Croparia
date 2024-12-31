@@ -114,7 +114,12 @@ public class RitualRecipe implements Recipe<RitualContainer> {
 
     @Override
     public @NotNull ItemStack assemble(@NotNull RitualContainer container, @NotNull RegistryAccess registryAccess) {
-        return matches(container) ? getResult().copy() : ItemStack.EMPTY;
+        if (matches(container)) {
+            container.item().shrink(this.getIngredient().getCount());
+            return getResult().copy();
+        } else {
+            return ItemStack.EMPTY;
+        }
     }
 
     @Override
