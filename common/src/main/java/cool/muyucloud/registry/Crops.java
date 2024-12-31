@@ -1,6 +1,7 @@
 package cool.muyucloud.registry;
 
 import cool.muyucloud.CropariaIf;
+import cool.muyucloud.data.config.Config;
 import cool.muyucloud.data.crop.Crop;
 import cool.muyucloud.data.crop.CropFileHandler;
 import cool.muyucloud.data.crop.CropType;
@@ -170,6 +171,22 @@ public class Crops {
     public static final Crop AMETHYST = registerCrop("amethyst", Objects.requireNonNull(Items.AMETHYST_SHARD.arch$registryName()).toString(), 0xd9cbf2, 3, CropType.CROP, Items.AMETHYST_SHARD.getDescriptionId());
     public static final Crop ECHO_SHARD = registerCrop("echo_shard", Objects.requireNonNull(Items.ECHO_SHARD.arch$registryName()).toString(), 0x3404f, 4, CropType.CROP, Items.ECHO_SHARD.getDescriptionId());
 
+    /**
+     * Add a crop from a modded material.
+     * This method does not register the crop directly, but will save the crop in {@link Config#getCropPath()}<br/>
+     * The crop registration is handled by {@code CropFileHandler.readCrops().forEach(Crops::registerFileCrop);}
+     * in {@link #register()}<br/>
+     *
+     * @param name            crop name, used to generate identifiers
+     * @param material        material which the crop grows, could be item ID or item tag (# + id).<br/>
+     *                        If the tag with namespace {@code c} is used, the corresponding {@code forge} tag will be generated and included
+     * @param color           int value of color
+     * @param tier            croparia tier
+     * @param type            crop type that specifies the textures. See also {@link CropType}
+     * @param translationKeys The mod dependencies with corresponding translation keys.
+     *                        The translation key for the first existing mod will be used.
+     * @return the created crop, or {@code null} if <b>ALL</b> mods are missing
+     */
     @Nullable
     public static Crop compatCrop(
         String name, String material, int color, int tier, CropType type, @NotNull Map<String, String> translationKeys
@@ -393,15 +410,15 @@ public class Crops {
     ));
     @Nullable
     public static final Crop CERTUS = compatCrop("certus", "#c:certus_quartz", 0xB8D8FC, 3, CropType.CROP, Map.of(
-        "ae2", ""
+        "ae2", "item.ae2.certus_quartz_crystal"
     ));
     @Nullable
     public static final Crop FLUIX = compatCrop("fluix", "#c:fluix", 0x8F5CCB, 3, CropType.CROP, Map.of(
-        "ae2", ""
+        "ae2", "item.ae2.fluix_crystal"
     ));
     @Nullable
     public static final Crop SILICON = compatCrop("silicon", "#c:silicon", 0x66546D, 3, CropType.CROP, Map.of(
-        "ae2", ""
+        "ae2", "item.ae2.silicon"
     ));
 
     public static boolean shouldLoad(@NotNull List<List<String>> dependencies) {
