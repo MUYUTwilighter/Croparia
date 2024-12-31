@@ -1,5 +1,6 @@
 package cool.muyucloud.util;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 
 import java.util.List;
@@ -8,12 +9,14 @@ public class Char3DWithMark extends Char3D {
     private final Vec3i mark;
 
     public Char3DWithMark(Char3D pattern, Vec3i mark) {
-        super(pattern.structure());
-        this.mark = mark;
+        this(pattern.structure(), mark);
     }
 
     public Char3DWithMark(List<Char2D> structure, Vec3i mark) {
         super(structure);
+        if (mark.getX() >= this.maxX() || mark.getY() >= this.maxY() || mark.getZ() >= this.maxZ() || mark.getX() < 0 || mark.getY() < 0 || mark.getZ() < 0) {
+            throw new IllegalArgumentException("Mark position out of bounds");
+        }
         this.mark = mark;
     }
 
@@ -22,16 +25,20 @@ public class Char3DWithMark extends Char3D {
     }
 
     public Char3DWithMark rotate() {
-        int newX = mark.getY();
-        int newY = rows() - 1 - mark.getY();
-        Vec3i rotatedMark = new Vec3i(newX, newY, mark.getZ());
+        int newX = mark.getZ();
+        int newZ = maxZ() - 1 - mark.getX();
+        Vec3i rotatedMark = new Vec3i(newX, mark.getY(), newZ);
         return new Char3DWithMark(super.rotate(), rotatedMark);
     }
 
     public Char3DWithMark mirror() {
-        int newX = cols() - 1 - mark.getX();
-        int newY = mark.getY();
-        Vec3i mirroredMark = new Vec3i(newX, newY, mark.getZ());
+        int newX = maxX() - 1 - mark.getX();
+        int newZ = mark.getZ();
+        Vec3i mirroredMark = new Vec3i(newX, mark.getY(), newZ);
         return new Char3DWithMark(super.mirror(), mirroredMark);
+    }
+
+    public BlockPos getOriginInWorld(BlockPos markInWorld) {
+        return markInWorld.subtract(mark);
     }
 }

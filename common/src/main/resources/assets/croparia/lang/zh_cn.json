@@ -32,5 +32,6 @@
   "item.croparia.potion_elematilius": "瓶装元素",
   "tab.croparia.crops": "矿石魔种：作物",
   "tab.croparia.main": "矿石魔种",
-  "chat.croparia.ritual.bad": "魔素并未响应祭坛的召唤"
+  "chat.croparia.ritual.bad": "魔素并未响应祭坛的召唤",
+  "chat.croparia.ritual.rejected": "魔素拒绝了你的供品"
 }

@@ -57,45 +57,42 @@ public class RitualStructure implements Recipe<RitualStructureContainer> {
                 throw new IllegalArgumentException("Invalid key '%s' in %s, must be uppercase letter".formatted(c, id));
             }
         }
+        keys = new HashMap<>(keys);
+        keys.put(' ', BlockStatePredicate.ANY);
+        keys.put('.', BlockStatePredicate.AIR);
         this.keys = keys;
     }
 
-    public @Nullable BlockState matchTransformed(BlockPos start, Level level, Char3D pattern, BlockState ritualBlock) {
+    public @Nullable BlockState matchTransformed(BlockPos origin, Level level, Char3D pattern, BlockState ritualBlock) {
+        List<BlockPos> inputPositions = new LinkedList<>();
         BlockState inputBlock = null;
-        for (int x = 0; x < pattern.size().getX(); x++) {
-            for (int y = 0; y < pattern.size().getX(); y++) {
-                for (int z = 0; z < pattern.size().getX(); z++) {
-                    BlockPos pos = start.offset(x, y, z);
+        for (int x = 0; x < pattern.maxX(); x++) {
+            for (int y = 0; y < pattern.maxY(); y++) {
+                for (int z = 0; z < pattern.maxZ(); z++) {
+                    BlockPos pos = origin.offset(x, y, z);
                     BlockState state = level.getBlockState(pos);
                     char key = pattern.get(x, y, z);
-                    switch (key) {
-                        case '$':
-                            if (inputBlock != null && !state.equals(inputBlock)) {
-                                return null;
-                            }
-                            inputBlock = ritualBlock;
-                            break;
-                        case ' ':
-                            break;
-                        case '.':
-                            if (!state.isAir()) {
-                                return null;
-                            }
-                            break;
-                        case '*':
-                            if (!state.equals(ritualBlock)) {
-                                return null;
-                            }
-                            break;
-                        default:
-                            BlockStatePredicate predicate = this.keys.get(key);
-                            if (predicate == null || !predicate.test(state)) {
-                                return null;
-                            }
-                            break;
+                    if (key == '$') {
+                        if (inputBlock != null && !state.equals(inputBlock)) {
+                            return null;
+                        }
+                        inputPositions.add(pos);
+                        inputBlock = state;
+                    } else if (key == '*') {
+                        if (!state.equals(ritualBlock)) {
+                            return null;
+                        }
+                    } else {
+                        BlockStatePredicate predicate = this.keys.get(key);
+                        if (predicate == null || !predicate.test(state)) {
+                            return null;
+                        }
                     }
                 }
             }
+        }
+        for (BlockPos pos : inputPositions) {
+            level.destroyBlock(pos, false);
         }
         return inputBlock;
     }
@@ -103,8 +100,7 @@ public class RitualStructure implements Recipe<RitualStructureContainer> {
     public Optional<BlockState> matches(BlockPos ritualPos, Level level) {
         BlockState ritualBlock = level.getBlockState(ritualPos);
         for (Char3DWithMark pattern : patterns) {
-            BlockPos start = ritualPos.subtract(pattern.mark());
-            BlockState inputBlock = matchTransformed(start, level, pattern, ritualBlock);
+            BlockState inputBlock = matchTransformed(pattern.getOriginInWorld(ritualPos), level, pattern, ritualBlock);
             return Optional.ofNullable(inputBlock);
         }
         return Optional.empty();
@@ -127,7 +123,9 @@ public class RitualStructure implements Recipe<RitualStructureContainer> {
         }
         keys = Map.copyOf(keys);
 
-        Char3D pattern = Char3D.CODEC.parse(JsonOps.INSTANCE, GsonHelper.getAsJsonObject(json, "pattern")).getOrThrow(false, msg -> {
+        Char3D pattern = Char3D.CODEC.parse(
+            JsonOps.INSTANCE, GsonHelper.getAsJsonArray(json, "pattern")
+        ).getOrThrow(false, msg -> {
             throw new IllegalArgumentException(msg);
         });
         return new RitualStructure(resourceLocation, keys, pattern);

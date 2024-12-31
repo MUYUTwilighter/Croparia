@@ -32,5 +32,6 @@
   "item.croparia.potion_elematilius": "Elematilius Potion",
   "tab.croparia.crops": "Croparia : Crops",
   "tab.croparia.main": "Croparia",
-  "chat.croparia.ritual.bad": "The elematilius does not respond to the ritual"
+  "chat.croparia.ritual.bad": "The elematilius does not respond to the ritual",
+  "chat.croparia.ritual.rejected": "The elematilius rejects your offerings"
 }

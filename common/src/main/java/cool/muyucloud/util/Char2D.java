@@ -2,7 +2,6 @@ package cool.muyucloud.util;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.ListCodec;
-import net.minecraft.world.phys.Vec2;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -22,54 +21,54 @@ public class Char2D implements Iterable<Character> {
             int cols = surface.get(0).length();
             int rows = surface.size();
             this.chars = new char[rows][cols];
-            for (int i = 0; i < rows; i++) {
-                String row = surface.get(i);
+            for (int z = 0; z < rows; z++) {
+                String row = surface.get(z);
                 if (row.length() != cols) {
                     throw new IllegalArgumentException("Varying length: " + surface);
                 }
-                this.chars[i] = row.toCharArray();
+                this.chars[z] = row.toCharArray();
             }
         }
     }
 
-    public Char2D(int rows, int cols) {
-        this.chars = new char[rows][cols];
+    public Char2D(int maxX, int maxZ) {
+        this.chars = new char[maxZ][maxX];
     }
 
     public List<String> surface() {
         return Arrays.stream(chars).map(String::new).toList();
     }
 
-    public int rows() {
+    public int maxZ() {
         return chars.length;
     }
 
-    public int cols() {
-        return chars[0].length;
+    public int maxX() {
+        return chars.length == 0 ? 0 : chars[0].length;
     }
 
     public Char2D rotate() {
-        Char2D rotated = new Char2D(cols(), rows());
-        for (int i = 0; i < rows(); i++) {
-            for (int j = 0; j < cols(); j++) {
-                rotated.chars[j][rows() - i - 1] = chars[i][j];
+        Char2D rotated = new Char2D(maxX(), maxZ());
+        for (int z = 0; z < maxZ(); z++) {
+            for (int x = 0; x < maxX(); x++) {
+                rotated.chars[x][maxZ() - z - 1] = chars[z][x];
             }
         }
         return rotated;
     }
 
     public Char2D mirror() {
-        Char2D mirrored = new Char2D(rows(), cols());
-        for (int i = 0; i < rows(); i++) {
-            for (int j = 0; j < cols(); j++) {
-                mirrored.chars[i][cols() - j - 1] = chars[i][j];
+        Char2D mirrored = new Char2D(maxZ(), maxX());
+        for (int z = 0; z < maxZ(); z++) {
+            for (int x = 0; x < maxX(); x++) {
+                mirrored.chars[z][maxX() - x - 1] = chars[z][x];
             }
         }
         return mirrored;
     }
 
-    public char get(int i, int j) {
-        return chars[i][j];
+    public char get(int x, int z) {
+        return chars[z][x];
     }
 
     public boolean contains(char c) {
@@ -91,11 +90,11 @@ public class Char2D implements Iterable<Character> {
         return count;
     }
 
-    public Optional<Vec2> find(char c) {
-        for (int i = 0; i < rows(); i++) {
-            for (int j = 0; j < cols(); j++) {
-                if (get(i, j) == c) {
-                    return Optional.of(new Vec2(j, i));
+    public Optional<Vec2i> find(char c) {
+        for (int z = 0; z < maxZ(); z++) {
+            for (int x = 0; x < maxX(); x++) {
+                if (get(x, z) == c) {
+                    return Optional.of(Vec2i.of(x, z));
                 }
             }
         }
@@ -109,7 +108,7 @@ public class Char2D implements Iterable<Character> {
 
     public static class Char2DIterator implements Iterator<Character> {
         private final Char2D char2D;
-        private int i = 0, j = 0;
+        private int z = 0, x = 0;
 
         public Char2DIterator(Char2D surface) {
             this.char2D = surface;
@@ -117,7 +116,7 @@ public class Char2D implements Iterable<Character> {
 
         @Override
         public boolean hasNext() {
-            return i > char2D.rows();
+            return z >= char2D.maxZ();
         }
 
         @Override
@@ -125,11 +124,11 @@ public class Char2D implements Iterable<Character> {
             if (!hasNext()) {
                 return null;
             }
-            char result = char2D.get(i, j);
-            j++;
-            if (j == char2D.cols()) {
-                j = 0;
-                i += 1;
+            char result = char2D.get(z, x);
+            x++;
+            if (x == char2D.maxX()) {
+                x = 0;
+                z++;
             }
             return result;
         }

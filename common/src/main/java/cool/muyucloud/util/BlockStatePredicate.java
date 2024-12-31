@@ -9,6 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -21,6 +22,7 @@ import java.util.function.Predicate;
 
 public class BlockStatePredicate implements Predicate<BlockState> {
     public static final BlockStatePredicate ANY = new BlockStatePredicate(b -> true, b -> true, 0, Builder.create());
+    public static final BlockStatePredicate AIR = new BlockStatePredicate(BlockBehaviour.BlockStateBase::isAir, b -> true, 0, Builder.create());
 
     @NotNull
     private transient final Predicate<BlockState> block;
@@ -108,7 +110,7 @@ public class BlockStatePredicate implements Predicate<BlockState> {
                     if (value == null && blockVal != null) {
                         continue;
                     }
-                    if (Objects.equals(blockVal, value)) {
+                    if (!Objects.equals(blockVal, value)) {
                         return false;
                     }
                 }
@@ -128,7 +130,7 @@ public class BlockStatePredicate implements Predicate<BlockState> {
             if (built) {
                 throw new IllegalStateException("Builder already built");
             }
-            this.properties.putAll(properties);
+            properties.forEach(this::property);
             return this;
         }
 
@@ -141,11 +143,11 @@ public class BlockStatePredicate implements Predicate<BlockState> {
             return this;
         }
 
-        public Builder property(@NotNull String property, @Nullable String value) {
+        public Builder property(@NotNull String property, @Nullable Object value) {
             if (built) {
                 throw new IllegalStateException("Builder already built");
             }
-            this.properties.put(property, value);
+            this.properties.put(property, value == null ? null : value.toString());
             return this;
         }
 

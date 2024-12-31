@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.ListCodec;
 import net.minecraft.core.Vec3i;
-import net.minecraft.world.phys.Vec2;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -19,11 +18,11 @@ public class Char3D implements Iterable<Character> {
 
     public Char3D(List<Char2D> structure) {
         int height = structure.size();
-        int rows = structure.get(0).rows();
-        int cols = structure.get(0).cols();
+        int maxZ = structure.get(0).maxZ();
+        int maxX = structure.get(0).maxX();
         this.pattern = new ArrayList<>(height);
         for (Char2D surface : structure) {
-            if (surface.rows() != rows || surface.cols() != cols) {
+            if (surface.maxZ() != maxZ || surface.maxX() != maxX) {
                 throw new IllegalArgumentException("Varying size: " + structure);
             }
             this.pattern.add(surface);
@@ -35,7 +34,7 @@ public class Char3D implements Iterable<Character> {
     }
 
     public Vec3i size() {
-        return new Vec3i(cols(), rows(), height());
+        return new Vec3i(maxX(), maxY(), maxZ());
     }
 
     protected Char3D rotate() {
@@ -54,35 +53,20 @@ public class Char3D implements Iterable<Character> {
         return new Char3D(mirrored);
     }
 
-    public int height() {
+    public int maxY() {
         return pattern.size();
     }
 
-    public int rows() {
-        if (pattern.isEmpty()) {
-            return 0;
-        }
-        return pattern.get(0).rows();
+    public int maxZ() {
+        return pattern.isEmpty() ? 0 : pattern.get(0).maxZ();
     }
 
-    public int cols() {
-        if (pattern.isEmpty()) {
-            return 0;
-        }
-        return pattern.get(0).cols();
+    public int maxX() {
+        return pattern.isEmpty() ? 0 : pattern.get(0).maxX();
     }
 
     public char get(int x, int y, int z) {
-        return pattern.get(z).get(x, y);
-    }
-
-    public boolean contains(char c) {
-        for (char ch : this) {
-            if (ch == c) {
-                return true;
-            }
-        }
-        return false;
+        return pattern.get(y).get(x, z);
     }
 
     public int count(char c) {
@@ -96,20 +80,14 @@ public class Char3D implements Iterable<Character> {
     }
 
     public @NotNull Optional<Vec3i> find(char c) {
-        for (int z = 0; z < height(); z++) {
-            Optional<Vec2> result = pattern.get(z).find(c);
+        for (int y = 0; y < maxY(); y++) {
+            Optional<Vec2i> result = pattern.get(y).find(c);
             if (result.isPresent()) {
-                Vec2 pos = result.get();
-                return Optional.of(new Vec3i((int) pos.x, (int) pos.y, z));
+                Vec2i pos = result.get();
+                return Optional.of(pos.toVec3i(y));
             }
         }
         return Optional.empty();
-    }
-
-    public Vec3i mirror(Vec3i mark) {
-        int newX = mark.getX();
-        int newY = cols() - 1 - mark.getY();
-        return new Vec3i(newX, newY, mark.getZ());
     }
 
     @Override
@@ -127,7 +105,7 @@ public class Char3D implements Iterable<Character> {
 
         @Override
         public boolean hasNext() {
-            return z > char3D.height();
+            return z > char3D.maxY();
         }
 
         @Override
@@ -137,10 +115,10 @@ public class Char3D implements Iterable<Character> {
             }
             char result = char3D.get(x, y, z);
             x++;
-            if (x == char3D.cols()) {
+            if (x == char3D.maxX()) {
                 x = 0;
                 y += 1;
-                if (y == char3D.rows()) {
+                if (y == char3D.maxZ()) {
                     y = 0;
                     z += 1;
                 }

@@ -15,7 +15,7 @@ public class LootTableGenerator {
     }
 
     public static void addCropBlock(Crop crop) {
-        ResourceLocation id = crop.getBlockId().withPrefix("blocks");
+        ResourceLocation id = crop.getBlockId().withPrefix("blocks/");
         // 1. Pools
         // 1.1 Seed Pool
         // 1.1.1 Seed entry

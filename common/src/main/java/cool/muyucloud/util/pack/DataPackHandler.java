@@ -7,7 +7,10 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.PackSource;
 
 import java.io.File;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Comparator;
+import java.util.stream.Stream;
 
 public class DataPackHandler extends PackHandler {
     public static final DataPackHandler INSTANCE = new DataPackHandler(CropariaIf.CONFIG.getPackPath());
@@ -53,11 +56,28 @@ public class DataPackHandler extends PackHandler {
         this.addFile(path, lootTable);
     }
 
+    public void addTag(ResourceLocation location, JsonObject tag) {
+        String path = "data/%s/tags/%s.json".formatted(location.getNamespace(), location.getPath());
+        this.addFile(path, tag);
+    }
+
     @Override
     public void clear() {
-        File file = this.root.resolve("data").toFile();
+        Path path = this.root.resolve("data");
+        File file = path.toFile();
         if (file.isDirectory()) {
-            file.delete();
+            CropariaIf.LOGGER.info("Clearing data pack directory");
+            try (Stream<Path> stream = Files.walk(path)) {
+                stream.sorted(Comparator.reverseOrder()).forEach(f -> {
+                    try {
+                        Files.delete(f);
+                    } catch (Exception e) {
+                        CropariaIf.LOGGER.error("Failed to delete file", e);
+                    }
+                });
+            } catch (Exception e) {
+                CropariaIf.LOGGER.error("Failed to clear data pack directory", e);
+            }
         }
     }
 }
