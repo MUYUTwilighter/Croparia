@@ -22,8 +22,17 @@ public class TagGenerator {
             addSeed(crop);
             addFruit(crop);
             addCropBlock(crop);
+            addPlatformCompat(crop);
         }
         TAGS.forEach(DataPackHandler.INSTANCE::addTag);
+    }
+
+    public static void addPlatformCompat(Crop crop) {
+        ResourceLocation material = crop.getMaterial();
+        if (crop.isTag() && material.getNamespace().equals("c")) {
+            JsonObject tag = getTag(material);
+            addValue(tag, "#forge:" + material.getPath());
+        }
     }
 
     public static void addFruit(Crop crop) {

@@ -28,7 +28,6 @@ public class Config {
     public static @NotNull String resolvePath(@NotNull Path path) {
         Path normalizedPath = path.normalize();
         Path normalizedBasePath = Platform.getGameFolder().normalize();
-
         if (normalizedPath.startsWith(normalizedBasePath)) {
             return normalizedBasePath.relativize(normalizedPath).toString();
         } else {
@@ -50,6 +49,8 @@ public class Config {
     private Boolean ritual;
     @NotNull
     private Boolean cauldron;
+    @NotNull
+    private Boolean compatGen;
 
     /**
      * Default config
@@ -62,6 +63,7 @@ public class Config {
         this.infusor = true;
         this.ritual = true;
         this.cauldron = true;
+        this.compatGen = true;
     }
 
     /**
@@ -75,10 +77,11 @@ public class Config {
         this.infusor = raw.infusor() != null ? raw.infusor() : true;
         this.ritual = raw.ritual() != null ? raw.ritual() : true;
         this.cauldron = raw.cauldron() != null ? raw.cauldron() : true;
+        this.compatGen = raw.compatGen() != null ? raw.compatGen() : true;
     }
 
     public RawConfig toRaw() {
-        return new RawConfig(resolvePath(cropPath), resolvePath(packPath), override, fruitUse, infusor, ritual, cauldron);
+        return new RawConfig(resolvePath(cropPath), resolvePath(packPath), override, fruitUse, infusor, ritual, cauldron, compatGen);
     }
 
     public void save() {
@@ -145,4 +148,11 @@ public class Config {
         this.cauldron = cauldron;
     }
 
+    public @NotNull Boolean getCompatGen() {
+        return compatGen;
+    }
+
+    public void setCompatGen(@NotNull Boolean compatGen) {
+        this.compatGen = compatGen;
+    }
 }

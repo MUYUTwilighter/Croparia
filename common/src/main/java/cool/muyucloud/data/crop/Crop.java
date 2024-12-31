@@ -236,4 +236,8 @@ public class Crop {
     public boolean isTag() {
         return tag;
     }
+
+    protected Map<String, String> getTranslations() {
+        return Map.copyOf(translations);
+    }
 }
