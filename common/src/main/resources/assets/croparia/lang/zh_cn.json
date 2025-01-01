@@ -30,6 +30,7 @@
   "item.croparia.magic_rope": "魔力绳",
   "item.croparia.midas_hand": "点金之手",
   "item.croparia.potion_elematilius": "瓶装元素",
+  "item.croparia.placeholder": "任意匹配 NBT 的物品",
   "tab.croparia.crops": "矿石魔种：作物",
   "tab.croparia.main": "矿石魔种",
   "chat.croparia.ritual.bad": "魔素并未响应祭坛的召唤",

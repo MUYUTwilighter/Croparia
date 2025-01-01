@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "cool.muyucloud.fabric.mixin",
+  "package": "cool.muyucloud.croparia.fabric.mixin",
   "compatibilityLevel": "JAVA_17",
   "minVersion": "0.8",
   "client": [

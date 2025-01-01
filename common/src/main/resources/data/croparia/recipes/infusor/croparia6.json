@@ -3,7 +3,7 @@
   "element": "elemental",
   "ingredient": {
     "id": "croparia:croparia5",
-    "Count": 1
+    "count": 1
   },
   "result": {
     "id": "croparia:croparia6",

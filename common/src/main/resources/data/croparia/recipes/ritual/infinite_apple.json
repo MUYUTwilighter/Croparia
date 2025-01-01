@@ -2,8 +2,7 @@
   "type": "croparia:ritual",
   "tier": 1,
   "ingredient": {
-    "id": "minecraft:golden_apple",
-    "Count": 1
+    "id": "minecraft:golden_apple"
   },
   "block": {
     "block": "minecraft:nether_wart_block"

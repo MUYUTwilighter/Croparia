@@ -30,6 +30,7 @@
   "item.croparia.magic_rope": "Magic Rope",
   "item.croparia.midas_hand": "Midas Hand",
   "item.croparia.potion_elematilius": "Elematilius Potion",
+  "item.croparia.placeholder": "Any item with matching tag",
   "tab.croparia.crops": "Croparia : Crops",
   "tab.croparia.main": "Croparia",
   "chat.croparia.ritual.bad": "The elematilius does not respond to the ritual",

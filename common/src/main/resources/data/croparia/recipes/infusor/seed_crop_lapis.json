@@ -3,7 +3,7 @@
   "element": "elemental",
   "ingredient": {
     "id": "croparia:seed_crop_redstone",
-    "Count": 1
+    "count": 1
   },
   "result": {
     "id": "croparia:seed_crop_lapis",

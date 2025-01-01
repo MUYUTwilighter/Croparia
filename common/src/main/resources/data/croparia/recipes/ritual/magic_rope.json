@@ -2,8 +2,7 @@
   "type": "croparia:ritual",
   "tier": 1,
   "ingredient": {
-    "id": "minecraft:lead",
-    "Count": 1
+    "id": "minecraft:lead"
   },
   "block": {
     "block": "croparia:elemental_stone"

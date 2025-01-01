@@ -2,8 +2,7 @@
   "type": "croparia:ritual",
   "tier": 1,
   "ingredient": {
-    "id": "minecraft:nether_wart_block",
-    "Count": 1
+    "id": "minecraft:nether_wart_block"
   },
   "block": {
     "block": "minecraft:spruce_wood"

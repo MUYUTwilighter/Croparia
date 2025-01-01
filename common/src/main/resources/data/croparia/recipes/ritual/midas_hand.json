@@ -2,8 +2,7 @@
   "type": "croparia:ritual",
   "tier": 1,
   "ingredient": {
-    "id": "minecraft:stick",
-    "Count": 1
+    "id": "minecraft:stick"
   },
   "block": {
     "block": "minecraft:gold_block"

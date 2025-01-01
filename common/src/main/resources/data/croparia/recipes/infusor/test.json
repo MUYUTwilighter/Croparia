@@ -1,0 +1,14 @@
+{
+  "type": "croparia:infusor",
+  "element": "elemental",
+  "ingredient": {
+    "count": 65,
+    "tag": {
+      "test": true
+    }
+  },
+  "result": {
+    "id": "minecraft:bedrock",
+    "Count": 1
+  }
+}w
