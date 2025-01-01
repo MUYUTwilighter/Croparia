@@ -9,6 +9,6 @@ public class ReiServer {
     public static EntryType<BlockState> BLOCK_STATE = EntryType.deferred(ResourceLocation.tryParse("croparia:block"));
 
     public static void registerEntryTypes(EntryTypeRegistry registry) {
-        BLOCK_STATE = registry.register(ResourceLocation.tryParse("croparia:block"), );
+//        BLOCK_STATE = registry.register(ResourceLocation.tryParse("croparia:block"), );
     }
 }
