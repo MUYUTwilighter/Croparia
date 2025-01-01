@@ -7,6 +7,7 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 public class CropariaIfFabric implements ModInitializer {
     @Override
     public void onInitialize() {
+        CompatCrops.init();
         CropariaIf.init();
         ServerLifecycleEvents.SERVER_STARTING.register(server -> CropariaIf.onServerStarting());
         ServerLifecycleEvents.SERVER_STOPPING.register(server -> CropariaIf.onServerStopping());

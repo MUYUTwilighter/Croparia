@@ -49,8 +49,13 @@ public class DataPackHandler extends PackHandler {
         this.addFile(path, lootTable);
     }
 
-    public void addTag(ResourceLocation location, JsonObject tag) {
-        String path = "data/%s/tags/%s.json".formatted(location.getNamespace(), location.getPath());
+    public void addItemTag(ResourceLocation location, JsonObject tag) {
+        String path = "data/%s/tags/items/%s.json".formatted(location.getNamespace(), location.getPath());
+        this.addFile(path, tag);
+    }
+
+    public void addBlockTag(ResourceLocation location, JsonObject tag) {
+        String path = "data/%s/tags/blocks/%s.json".formatted(location.getNamespace(), location.getPath());
         this.addFile(path, tag);
     }
 

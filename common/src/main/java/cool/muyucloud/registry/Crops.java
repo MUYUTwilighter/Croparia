@@ -2,11 +2,11 @@ package cool.muyucloud.registry;
 
 import cool.muyucloud.CropariaIf;
 import cool.muyucloud.data.config.Config;
-import cool.muyucloud.data.crop.Crop;
-import cool.muyucloud.data.crop.CropFileHandler;
-import cool.muyucloud.data.crop.CropType;
-import cool.muyucloud.data.crop.RawCrop;
+import cool.muyucloud.data.crop.*;
 import dev.architectury.platform.Platform;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -171,6 +171,8 @@ public class Crops {
     public static final Crop AMETHYST = registerCrop("amethyst", Objects.requireNonNull(Items.AMETHYST_SHARD.arch$registryName()).toString(), 0xd9cbf2, 3, CropType.CROP, Items.AMETHYST_SHARD.getDescriptionId());
     public static final Crop ECHO_SHARD = registerCrop("echo_shard", Objects.requireNonNull(Items.ECHO_SHARD.arch$registryName()).toString(), 0x3404f, 4, CropType.CROP, Items.ECHO_SHARD.getDescriptionId());
 
+    private static final Map<String, CompatCrop> COMPAT_CROPS = new HashMap<>();
+
     /**
      * Add a crop from a modded material.
      * This method does not register the crop directly, but will save the crop in {@link Config#getCropPath()}<br/>
@@ -185,241 +187,20 @@ public class Crops {
      * @param type            crop type that specifies the textures. See also {@link CropType}
      * @param translationKeys The mod dependencies with corresponding translation keys.
      *                        The translation key for the first existing mod will be used.
-     * @return the created crop, or {@code null} if <b>ALL</b> mods are missing
+     * @return the intermediate data entity of the crop
      */
-    @Nullable
-    public static Crop compatCrop(
+    public static @NotNull CompatCrop compatCrop(
         String name, String material, int color, int tier, CropType type, @NotNull Map<String, String> translationKeys
     ) {
-        for (Map.Entry<String, String> entry : translationKeys.entrySet()) {
-            String mod = entry.getKey();
-            String key = entry.getValue();
-            if (Platform.isModLoaded(mod)) {
-                Optional<Crop> optionalCrop = Crop.create(name, material, color, tier, type, key, Map.of());
-                optionalCrop.ifPresent(crop -> {
-                    List<List<String>> dependencies = List.of(List.copyOf(translationKeys.keySet()));
-                    CropFileHandler.saveCrop(crop, dependencies);
-                });
-                return optionalCrop.orElse(null);
-            }
+        CompatCrop crop = COMPAT_CROPS.get(material);
+        if (crop == null) {
+            crop = new CompatCrop(name, material, type, color, tier, translationKeys);
+            COMPAT_CROPS.put(material, crop);
+        } else {
+            CropariaIf.LOGGER.info("Registered compat crop {} of material {}, merge with existing crops {}", name, material, crop.getName());
         }
-        return null;
+        return crop;
     }
-
-    @Nullable
-    public static final Crop TIN = compatCrop("tin", "#c:tin_ingots", 0xE3E3E0, 3, CropType.CROP, Map.of(
-        "techreborn", "item.techreborn.tin_ingot",
-        "indrev", "item.indrev.tin_ingot",
-        "modern_industrialization", "item.modern_industrialization.tin_ingot",
-        "mythicmetals", "item.mythicmetals.tin_ingot"
-    ));
-    @Nullable
-    public static final Crop ZINC = compatCrop("zinc", "#c:zinc_ingots", 0xEDEEEC, 3, CropType.CROP, Map.of(
-        "techreborn", "item.techreborn.zinc_ingot"
-    ));
-    @Nullable
-    public static final Crop NICKEL = compatCrop("nickel", "#c:nickel_ingots", 0xAEAC8C, 3, CropType.CROP, Map.of(
-        "techreborn", "item.techreborn.nickel_ingot",
-        "modern_industrialization", "item.modern_industrialization.nickel_ingot"
-    ));
-    @Nullable
-    public static final Crop BRONZE = compatCrop("bronze", "#c:bronze_ingots", 0xC48553, 3, CropType.CROP, Map.of(
-        "techreborn", "item.techreborn.bronze_ingot",
-        "indrev", "item.indrev.bronze_ingot",
-        "modern_industrialization", "item.modern_industrialization.bronze_ingot",
-        "mythicmetals", "item.mythicmetals.bronze_ingot"
-    ));
-    @Nullable
-    public static final Crop ADVANCED_ALLOY = compatCrop("advanced_alloy", "#c:advanced_alloy_ingots", 0xDBA182, 3, CropType.CROP, Map.of(
-        "techreborn", "item.techreborn.advanced_alloy_ingot"
-    ));
-    @Nullable
-    public static final Crop REFINED_IRON = compatCrop("refined_iron", "#c:refined_iron_ingots", 0xD5DBDE, 3, CropType.CROP, Map.of(
-        "techreborn", "item.techreborn.refined_iron_ingot"
-    ));
-    @Nullable
-    public static final Crop STEEL = compatCrop("steel", "#c:steel_ingots", 0xA0A0A0, 3, CropType.CROP, Map.of(
-        "techreborn", "item.techreborn.steel_ingot",
-        "indrev", "item.indrev.steel_ingot",
-        "modern_industrialization", "item.modern_industrialization.steel_ingot",
-        "mythicmetals", "item.mythicmetals.steel_ingot",
-        "ad_astra", ""
-    ));
-    @Nullable
-    public static final Crop LEAD = compatCrop("lead", "#c:lead_ingots", 0x6F6B77, 3, CropType.CROP, Map.of(
-        "techreborn", "item.techreborn.lead_ingot",
-        "indrev", "item.indrev.lead_ingot",
-        "modern_industrialization", "item.modern_industrialization.lead_ingot"
-    ));
-    @Nullable
-    public static final Crop SILVER = compatCrop("silver", "#c:silver_ingots", 0xD4E1E2, 3, CropType.CROP, Map.of(
-        "techreborn", "item.techreborn.silver_ingot",
-        "indrev", "item.indrev.silver_ingot",
-        "modern_industrialization", "item.modern_industrialization.silver_ingot",
-        "mythicmetals", "item.mythicmetals.silver_ingot"
-    ));
-    @Nullable
-    public static final Crop ELECTRUM = compatCrop("electrum", "#c:electrum_ingots", 0xCCB36E, 3, CropType.CROP, Map.of(
-        "techreborn", "item.techreborn.electrum_ingot",
-        "indrev", "item.indrev.electrum_ingot",
-        "modern_industrialization", "item.modern_industrialization.electrum_ingot"
-    ));
-    @Nullable
-    public static final Crop IRIDIUM = compatCrop("iridium", "#c:iridium_ingots", 0x8F9E9A, 3, CropType.CROP, Map.of(
-        "techreborn", "item.techreborn.iridium_ingot",
-        "modern_industrialization", "item.modern_industrialization.iridium_ingot"
-    ));
-    @Nullable
-    public static final Crop PLATINUM = compatCrop("platinum", "#c:platinum_ingots", 0xAABBC7, 3, CropType.CROP, Map.of(
-        "techreborn", "item.techreborn.platinum_ingot",
-        "mythicmetals", "item.mythicmetals.platinum_ingot"
-    ));
-    @Nullable
-    public static final Crop TUNGSTEN = compatCrop("tungsten", "#c:tungsten_ingots", 0x797D80, 3, CropType.CROP, Map.of(
-        "techreborn", "item.techreborn.tungsten_ingot",
-        "indrev", "item.indrev.tungsten_ingot",
-        "modern_industrialization", "item.modern_industrialization.tungsten_ingot"
-    ));
-    @Nullable
-    public static final Crop HOT_TUNGSTENSTEEL = compatCrop("hot_tungstensteel", "#c:hot_tungstensteel_ingots", 0xEBCF8E, 3, CropType.CROP, Map.of(
-        "techreborn", "item.techreborn.hot_tungstensteel_ingot"
-    ));
-    @Nullable
-    public static final Crop ALUMINIUM = compatCrop("aluminum", "#c:aluminum_ingots", 0xD9DCDC, 3, CropType.CROP, Map.of(
-        "techreborn", "item.techreborn.aluminum_ingot",
-        "modern_industrialization", "item.modern_industrialization.aluminum_ingot"
-    ));
-    @Nullable
-    public static final Crop TITANIUM = compatCrop("titanium", "#c:titanium_ingots", 0xDDDDE3, 3, CropType.CROP, Map.of(
-        "techreborn", "item.techreborn.titanium_ingot",
-        "modern_industrialization", "item.modern_industrialization.titanium_ingot"
-    ));
-    @Nullable
-    public static final Crop CHROMIUM = compatCrop("chromium", "#c:chromium_ingots", 0xDDCFD2, 3, CropType.CROP, Map.of(
-        "techreborn", "item.techreborn.chromium_ingot",
-        "modern_industrialization", "item.modern_industrialization.chromium_ingot"
-    ));
-    @Nullable
-    public static final Crop SAPPHIRE = compatCrop("sapphire", "#c:sapphires", 0x6D9BEC, 3, CropType.CROP, Map.of(
-        "techreborn", "item.techreborn.sapphire_gem"
-    ));
-    @Nullable
-    public static final Crop RED_GARNET = compatCrop("red_garnet", "#c:red_garnet_gems", 0xE66C67, 3, CropType.CROP, Map.of(
-        "techreborn", "item.techreborn.red_garnet_gem"
-    ));
-    @Nullable
-    public static final Crop YELLOW_GARNET = compatCrop("yellow_garnet", "#c:yellow_garnet_gems", 0xEACB5F, 3, CropType.CROP, Map.of(
-        "techreborn", "item.techreborn.yellow_garnet_gem"
-    ));
-    @Nullable
-    public static final Crop RUBY = compatCrop("ruby", "#c:rubies", 0xC45E68, 3, CropType.CROP, Map.of(
-        "techreborn", "item.techreborn.ruby_gem"
-    ));
-    @Nullable
-    public static final Crop INVAR = compatCrop("invar", "#c:invar_ingots", 0x86928C, 3, CropType.CROP, Map.of(
-        "techreborn", "item.techreborn.invar_ingot",
-        "modern_industrialization", "item.modern_industrialization.invar_ingot"
-    ));
-    @Nullable
-    public static final Crop TUNGSTENSTEEL = compatCrop("tungstensteel", "#c:tungstensteel_ingots", 0x4E5D68, 3, CropType.CROP, Map.of(
-        "techreborn", "item.techreborn.tungstensteel_ingot"
-    ));
-    @Nullable
-    public static final Crop PERIDOT = compatCrop("peridot", "#c:peridot_gems", 0xAAD26F, 3, CropType.CROP, Map.of(
-        "techreborn", "item.techreborn.peridot_gem"
-    ));
-    @Nullable
-    public static final Crop ADAMANTITE = compatCrop("adamantite", "#c:adamantite_ingots", 0xAD0E19, 3, CropType.CROP, Map.of(
-        "mythicmetals", "item.mythicmetals.adamantite_ingot"
-    ));
-    @Nullable
-    public static final Crop AQUARIUM = compatCrop("aquarium", "#c:aquarium_ingots", 0x4392DC, 3, CropType.CROP, Map.of(
-        "mythicmetals", "item.mythicmetals.aquarium_ingot"
-    ));
-    @Nullable
-    public static final Crop BANGLUM = compatCrop("banglum", "#c:banglum_ingots", 0x734C28, 3, CropType.CROP, Map.of(
-        "mythicmetals", "item.mythicmetals.banglum_ingot"
-    ));
-    @Nullable
-    public static final Crop CARMOT = compatCrop("carmot", "#c:carmot_ingots", 0xC1283F, 3, CropType.CROP, Map.of(
-        "mythicmetals", "item.mythicmetals.carmot_ingot"
-    ));
-    @Nullable
-    public static final Crop CELESTIUM = compatCrop("celestium", "#c:celestium_ingots", 0xF7D3B6, 3, CropType.CROP, Map.of(
-        "mythicmetals", "item.mythicmetals.celestium_ingot"
-    ));
-    @Nullable
-    public static final Crop DURASTEEL = compatCrop("durasteel", "#c:durasteel_ingots", 0x4B4B4B, 3, CropType.CROP, Map.of(
-        "mythicmetals", "item.mythicmetals.durasteel_ingot"
-    ));
-    @Nullable
-    public static final Crop HALLOWED = compatCrop("hallowed", "#c:hallowed_ingots", 0xFCF899, 3, CropType.CROP, Map.of(
-        "mythicmetals", "item.mythicmetals.hallowed_ingot"
-    ));
-    @Nullable
-    public static final Crop KYBER = compatCrop("kyber", "#c:kyber_ingots", 0xB275D7, 3, CropType.CROP, Map.of(
-        "mythicmetals", "item.mythicmetals.kyber_ingot"
-    ));
-    @Nullable
-    public static final Crop MANGANESE = compatCrop("manganese", "#c:manganese_ingots", 0xEBBED6, 3, CropType.CROP, Map.of(
-        "mythicmetals", "item.mythicmetals.manganese_ingot"
-    ));
-    @Nullable
-    public static final Crop METALLURGIUM = compatCrop("metallurgium", "#c:metallurgium_ingots", 0x5417B4, 3, CropType.CROP, Map.of(
-        "mythicmetals", "item.mythicmetals.metallurgium_ingot"
-    ));
-    @Nullable
-    public static final Crop MIDAS_GOLD = compatCrop("midas_gold", "#c:midas_gold_ingots", 0xFCDE80, 3, CropType.CROP, Map.of(
-        "mythicmetals", "item.mythicmetals.midas_gold_ingot"
-    ));
-    @Nullable
-    public static final Crop MYTHRIL = compatCrop("mythril", "#c:mythril_ingots", 0x63E7F8, 3, CropType.CROP, Map.of(
-        "mythicmetals", "item.mythicmetals.mythril_ingot"
-    ));
-    @Nullable
-    public static final Crop ORICHALCUM = compatCrop("orichalcum", "#c:orichalcum_ingots", 0x9EF1A5, 3, CropType.CROP, Map.of(
-        "mythicmetals", "item.mythicmetals.orichalcum_ingot"
-    ));
-    @Nullable
-    public static final Crop OSMIUM = compatCrop("osmium", "#c:osmium_ingots", 0x9EB1C8, 3, CropType.CROP, Map.of(
-        "mythicmetals", "item.mythicmetals.osmium_ingot"
-    ));
-    @Nullable
-    public static final Crop PALLADIUM = compatCrop("palladium", "#c:palladium_ingots", 0xED9926, 3, CropType.CROP, Map.of(
-        "mythicmetals", "item.mythicmetals.palladium_ingot"
-    ));
-    @Nullable
-    public static final Crop PROMETHEUM = compatCrop("prometheum", "#c:prometheum_ingots", 0x396955, 3, CropType.CROP, Map.of(
-        "mythicmetals", "item.mythicmetals.prometheum_ingot"
-    ));
-    @Nullable
-    public static final Crop QUADRILLUM = compatCrop("quadrillum", "#c:quadrillum_ingots", 0x626E6E, 3, CropType.CROP, Map.of(
-        "mythicmetals", "item.mythicmetals.quadrillum_ingot"
-    ));
-    @Nullable
-    public static final Crop RUNITE = compatCrop("runite", "#c:runite_ingots", 0x00AECE, 3, CropType.CROP, Map.of(
-        "mythicmetals", "item.mythicmetals.runite_ingot"
-    ));
-    @Nullable
-    public static final Crop STAR_PLATINUM = compatCrop("star_platinum", "#c:star_platinum", 0xA199D3, 3, CropType.CROP, Map.of(
-        "mythicmetals", "item.mythicmetals.star_platinum"
-    ));
-    @Nullable
-    public static final Crop STORMYX = compatCrop("stormyx", "#c:stormyx_ingots", 0xE366DC, 3, CropType.CROP, Map.of(
-        "mythicmetals", "item.mythicmetals.stormyx_ingot"
-    ));
-    @Nullable
-    public static final Crop CERTUS = compatCrop("certus", "#c:certus_quartz", 0xB8D8FC, 3, CropType.CROP, Map.of(
-        "ae2", "item.ae2.certus_quartz_crystal"
-    ));
-    @Nullable
-    public static final Crop FLUIX = compatCrop("fluix", "#c:fluix", 0x8F5CCB, 3, CropType.CROP, Map.of(
-        "ae2", "item.ae2.fluix_crystal"
-    ));
-    @Nullable
-    public static final Crop SILICON = compatCrop("silicon", "#c:silicon", 0x66546D, 3, CropType.CROP, Map.of(
-        "ae2", "item.ae2.silicon"
-    ));
 
     public static boolean shouldLoad(@NotNull List<List<String>> dependencies) {
         return dependencies.stream().allMatch(list -> list.isEmpty() || list.stream().anyMatch(Platform::isModLoaded));
@@ -431,6 +212,7 @@ public class Crops {
     }
 
     public static void register() {
+        COMPAT_CROPS.forEach((material, crop) -> CropFileHandler.saveCompatCrop(crop));
         CropFileHandler.readCrops().forEach(Crops::registerFileCrop);
         for (Crop crop : CROPS) {
             CropariaItems.registerCrop(crop);

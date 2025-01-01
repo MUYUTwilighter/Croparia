@@ -6,6 +6,7 @@ import cool.muyucloud.annotation.PostGen;
 import cool.muyucloud.data.crop.Crop;
 import cool.muyucloud.registry.CropariaItems;
 import cool.muyucloud.registry.Crops;
+import cool.muyucloud.util.TagUtil;
 import cool.muyucloud.util.pack.DataPackHandler;
 import net.minecraft.resources.ResourceLocation;
 
@@ -31,7 +32,7 @@ public class RecipeGenerator {
         JsonObject material = new JsonObject();
         material.addProperty(crop.isTag() ? "tag" : "item", crop.getMaterial().toString());
         JsonObject seed = new JsonObject();
-        seed.addProperty("tag", "minecraft:seeds");
+        seed.addProperty("tag", TagUtil.compatId("seeds").toString());
         JsonObject keys = new JsonObject();
         keys.add("C", croparia);
         keys.add("M", material);

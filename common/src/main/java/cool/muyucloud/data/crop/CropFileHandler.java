@@ -1,7 +1,9 @@
 package cool.muyucloud.data.crop;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonWriter;
+import com.mojang.serialization.JsonOps;
 import cool.muyucloud.CropariaIf;
 import org.jetbrains.annotations.NotNull;
 
@@ -39,7 +41,7 @@ public class CropFileHandler {
         }
     }
 
-    public static void saveCrop(Crop crop, List<List<String>> dependencies) {
+    public static void saveCompatCrop(CompatCrop crop) {
         File cropPath = CropariaIf.CONFIG.getCropPath().toFile();
         if (!cropPath.exists() || !cropPath.isDirectory()) {
             cropPath.mkdirs();
@@ -50,12 +52,10 @@ public class CropFileHandler {
         }
         try (JsonWriter writer = new JsonWriter(new FileWriter(file))) {
             writer.setIndent("  ");
-            RawCrop raw = new RawCrop(
-                crop.getName(), (crop.isTag() ? "#" : "") + crop.getMaterial(), null, crop.getType().getModelName(),
-                crop.getTranslationKey(), "0x%X".formatted(crop.getColor()), crop.getTier(), crop.getTranslations(),
-                dependencies
-            );
-            GSON.toJson(raw, raw.getClass(), writer);
+            JsonObject json = CompatCrop.CODEC.encodeStart(JsonOps.INSTANCE, crop).getOrThrow(false, msg -> {
+                throw new RuntimeException(msg);
+            }).getAsJsonObject();
+            GSON.toJson(json, writer);
         } catch (Exception e) {
             CropariaIf.LOGGER.error("Failed to save crop {}", crop.getName(), e);
         }
