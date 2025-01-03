@@ -21,6 +21,9 @@ public abstract class StateHolderMixin<O, S> implements StateHolderAccess {
     @Shadow
     @Final
     private ImmutableMap<Property<?>, Comparable<?>> values;
+
+    @Shadow public abstract <T extends Comparable<T>, V extends T> S setValue(Property<T> arg, V comparable);
+
     @Unique
     private Map<String, Property<?>> croparia_if$properties;
 

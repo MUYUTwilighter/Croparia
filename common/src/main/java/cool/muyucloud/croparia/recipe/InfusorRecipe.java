@@ -3,11 +3,13 @@ package cool.muyucloud.croparia.recipe;
 import cool.muyucloud.croparia.data.ElementsEnum;
 import cool.muyucloud.croparia.recipe.container.InfusorContainer;
 import cool.muyucloud.croparia.recipe.serializer.InfusorRecipeSerializer;
+import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.registry.RecipeSerializers;
 import cool.muyucloud.croparia.registry.RecipeTypes;
-import cool.muyucloud.croparia.util.GenericIngredient;
+import cool.muyucloud.croparia.util.predicate.GenericIngredient;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -67,6 +69,10 @@ public class InfusorRecipe implements Recipe<InfusorContainer> {
         } else {
             return ItemStack.EMPTY;
         }
+    }
+
+    public Item getPotion() {
+        return CropariaItems.getPotion(this.getElement());
     }
 
     @Override

@@ -2,8 +2,8 @@ package cool.muyucloud.croparia.recipe;
 
 import com.google.gson.JsonObject;
 import cool.muyucloud.croparia.registry.RecipeSerializers;
-import cool.muyucloud.croparia.util.BlockStatePredicate;
-import cool.muyucloud.croparia.util.GenericIngredient;
+import cool.muyucloud.croparia.util.predicate.BlockStatePredicate;
+import cool.muyucloud.croparia.util.predicate.GenericIngredient;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;

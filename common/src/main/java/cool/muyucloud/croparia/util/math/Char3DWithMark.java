@@ -1,4 +1,4 @@
-package cool.muyucloud.croparia.util;
+package cool.muyucloud.croparia.util.math;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;

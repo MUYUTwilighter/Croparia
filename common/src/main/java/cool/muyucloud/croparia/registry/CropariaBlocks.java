@@ -4,7 +4,6 @@ import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.block.*;
 import cool.muyucloud.croparia.data.ElementsEnum;
 import cool.muyucloud.croparia.data.crop.Crop;
-import cool.muyucloud.croparia.util.CropariaCauldronInteraction;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
@@ -24,7 +23,7 @@ import java.util.function.Supplier;
 public class CropariaBlocks {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(CropariaIf.MOD_ID, Registries.BLOCK);
 
-    public static final RegistrySupplier<Placeholder> PLACEHOLDER = registerBlock("placeholder", Placeholder::new);
+    public static final RegistrySupplier<Placeholder> PLACEHOLDER = registerBlock("placeholder_block", Placeholder::new);
     public static final RegistrySupplier<Greenhouse> GREENHOUSE = registerBlock(
         "greenhouse",
         () -> new Greenhouse(

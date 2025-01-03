@@ -1,4 +1,4 @@
-package cool.muyucloud.croparia.util;
+package cool.muyucloud.croparia.util.math;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.ListCodec;

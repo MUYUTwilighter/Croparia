@@ -3,7 +3,7 @@
   "id": "croparia",
   "version": "${version}",
   "name": "Croparia-If",
-  "description": "A forked project from Dalarion's Croparia 4.5",
+  "description": "A completely rewritten project from Dalarion's Croparia 4.5.\nYou should only install either Croparia or Croparia-If at the same time.",
   "authors": [
     "MUYU_Twilighter"
   ],

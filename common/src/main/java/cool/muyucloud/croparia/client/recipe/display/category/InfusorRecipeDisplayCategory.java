@@ -2,6 +2,7 @@ package cool.muyucloud.croparia.client.recipe.display.category;
 
 import cool.muyucloud.croparia.client.recipe.display.InfusorRecipeDisplay;
 import cool.muyucloud.croparia.registry.CropariaItems;
+import cool.muyucloud.croparia.util.Constants;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.gui.Renderer;
@@ -13,7 +14,6 @@ import me.shedaniel.rei.api.common.entry.EntryStack;
 import me.shedaniel.rei.api.common.entry.type.VanillaEntryTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
-import org.apache.commons.compress.utils.Lists;
 
 import java.util.List;
 
@@ -28,7 +28,7 @@ public class InfusorRecipeDisplayCategory implements DisplayCategory<InfusorReci
 
     @Override
     public Component getTitle() {
-        return Component.translatable("block.croparia.infusor");
+        return Constants.INFUSOR_TITLE;
     }
 
     @Override
@@ -38,30 +38,28 @@ public class InfusorRecipeDisplayCategory implements DisplayCategory<InfusorReci
 
     @Override
     public List<Widget> setupDisplay(InfusorRecipeDisplay display, Rectangle bounds) {
-        List<Widget> widgets = Lists.newArrayList();
-        widgets.add(Widgets.createRecipeBase(bounds));
-
-        Point infusor = new Point(bounds.getCenterX() - 6, bounds.getCenterY() + 5);
-        widgets.add(Widgets.createSlot(infusor).entry(INFUSOR).disableBackground().markInput());
-
-        Point ingredient = new Point(infusor.getX(), infusor.getY() - 30);
-        widgets.add(Widgets.createSlot(ingredient).entry(display.getIngredient()).markInput().disableBackground());
-
-        Point element = new Point(infusor.getX() - 45, infusor.getY());
-        widgets.add(Widgets.createSlot(element).entry(display.getElement()).markInput().disableBackground());
-
-        Point result = new Point(infusor.getX() + 45, infusor.getY());
-        widgets.add(Widgets.createSlot(result).entry(display.getResult()).markOutput().disableBackground());
-
-        widgets.add(Widgets.createFilledRectangle(new Rectangle(infusor.getX() + 5, infusor.getY() - 13, 1, 11), 0xFF8b8b8b));
-        widgets.add(Widgets.createFilledRectangle(new Rectangle(infusor.getX() + 10, infusor.getY() - 13, 1, 11), 0xFF8b8b8b));
-
-        Point elementArrow = new Point(infusor.getX() - 27, infusor.getY());
-        widgets.add(Widgets.createArrow(elementArrow));
-
-        Point resultArrow = new Point(infusor.getX() + 19, infusor.getY());
-        widgets.add(Widgets.createArrow(resultArrow));
-
-        return widgets;
+        Widget background = Widgets.createRecipeBase(bounds);
+        Widget infusor = Widgets.createSlot(
+            new Point(bounds.getCenterX() - 8, bounds.getCenterY() + 8)
+        ).entry(INFUSOR).disableBackground().markInput().disableHighlight();
+        Widget ingredient = Widgets.createSlot(
+            new Point(bounds.getCenterX() - 8, bounds.getCenterY() - 24)
+        ).entries(display.getIngredient()).markInput().disableBackground();
+        Widget element = Widgets.createSlot(
+            new Point(bounds.getCenterX() - 40, bounds.getCenterY() + 8)
+        ).entry(display.getElement()).markInput().disableBackground();
+        Widget result = Widgets.createSlot(
+            new Point(bounds.getCenterX() + 34, bounds.getCenterY() + 8)
+        ).entry(display.getResult()).markOutput().disableBackground();
+        Widget itemDrop = Widgets.createTexturedWidget(
+            Constants.ITEM_DROP, bounds.getCenterX() - 8, bounds.getCenterY() - 8,
+            0, 0, 16, 16, 16, 16
+        );
+        Widget elemInfuse = Widgets.createTexturedWidget(
+            Constants.ELEM_INFUSE, bounds.getCenterX() - 24, bounds.getCenterY() + 8,
+            0, 0, 16, 16, 16, 16
+        );
+        Widget arrow = Widgets.createArrow(new Point(bounds.getCenterX() + 8, bounds.getCenterY() + 8));
+        return List.of(background, infusor, ingredient, element, result, itemDrop, elemInfuse, arrow);
     }
 }

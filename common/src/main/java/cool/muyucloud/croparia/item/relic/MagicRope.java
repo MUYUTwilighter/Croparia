@@ -33,7 +33,7 @@ public class MagicRope extends Item {
 
             if (tag.contains("targetPos")) {
                 position = tag.getIntArray("targetPos");
-                player.teleportToWithTicket((double)position[0] + 0.5, (double)position[1], (double)position[2] + 0.5);
+                player.teleportToWithTicket(position[0] + 0.5, position[1], position[2] + 0.5);
                 return InteractionResult.SUCCESS;
             }
         }

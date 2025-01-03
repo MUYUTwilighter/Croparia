@@ -9,7 +9,7 @@ version = "${version}"
 displayName = "Croparia-If"
 authors = "MUYU_Twilighter"
 description = '''
-A forked project from Dalarion's Croparia 4.5.
+A completely rewritten project from Dalarion's Croparia 4.5.
 You should only install either Croparia or Croparia-If at the same time.
 '''
 logoFile = "assets/croparia/icon.png"
@@ -35,3 +35,9 @@ versionRange = "*"
 ordering = "AFTER"
 side = "BOTH"
 
+[[dependencies.croparia]]
+modId = "rei"
+mandatory = false
+versionRange = "*"
+ordering = "AFTER"
+side = "CLIENT"

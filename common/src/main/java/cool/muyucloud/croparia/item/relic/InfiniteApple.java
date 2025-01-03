@@ -1,27 +1,38 @@
 package cool.muyucloud.croparia.item.relic;
 
 import cool.muyucloud.croparia.registry.Tabs;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.food.Foods;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 public class InfiniteApple extends Item {
+
     public InfiniteApple() {
-        super((new Properties()).food(Foods.GOLDEN_CARROT).stacksTo(1).arch$tab(Tabs.MAIN));
+        super((new Properties()).food(
+            new FoodProperties.Builder().alwaysEat().nutrition(5).saturationMod(4.0F)
+                .effect(new MobEffectInstance(MobEffects.REGENERATION, 100, 1), 1.0F)
+                .effect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 100, 0), 1.0F)
+                .effect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 100, 0), 1.0F)
+                .effect(new MobEffectInstance(MobEffects.ABSORPTION, 100, 3), 1.0F)
+                .build()
+        ).stacksTo(1).arch$tab(Tabs.MAIN));
     }
 
     public @NotNull ItemStack finishUsingItem(ItemStack stack, Level world, LivingEntity user) {
-        super.finishUsingItem(stack, world, user);
-        if (user instanceof Player entityplayer) {
-            world.playSound(null, entityplayer.getX(), entityplayer.getY(), entityplayer.getZ(), SoundEvents.PLAYER_BURP, SoundSource.PLAYERS, 0.5F, world.random.nextFloat() * 0.1F + 0.9F);
+        if (user instanceof Player player) {
+            player.getAbilities().instabuild = true;
+            super.finishUsingItem(stack, world, user);
+            player.getAbilities().instabuild = false;
+            if (!world.isClientSide) {
+                player.getCooldowns().addCooldown(this, 200);
+            }
         }
-
         return stack;
     }
 }

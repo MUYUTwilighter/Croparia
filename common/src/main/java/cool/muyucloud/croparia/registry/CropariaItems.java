@@ -22,6 +22,9 @@ import java.util.function.Supplier;
 public class CropariaItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(CropariaIf.MOD_ID, Registries.ITEM);
 
+    public static final RegistrySupplier<BlockItem> PLACEHOLDER_BLOCK = registerItem(
+        "placeholder_block", () -> new BlockItem(CropariaBlocks.PLACEHOLDER.get(), new Item.Properties())
+    );
     public static final RegistrySupplier<Placeholder> PLACEHOLDER = registerItem("placeholder", Placeholder::new);
     public static final RegistrySupplier<BlockItem> GREENHOUSE = registerItem(
         "greenhouse",
@@ -34,6 +37,14 @@ public class CropariaItems {
     public static final RegistrySupplier<BlockItem> RITUAL_STAND = registerItem(
         "ritual_stand",
         () -> new BlockItem(CropariaBlocks.RITUAL_STAND.get(), new Item.Properties().arch$tab(Tabs.MAIN))
+    );
+    public static final RegistrySupplier<BlockItem> RITUAL_STAND_2 = registerItem(
+        "ritual_stand_2",
+        () -> new BlockItem(CropariaBlocks.RITUAL_STAND_2.get(), new Item.Properties().arch$tab(Tabs.MAIN))
+    );
+    public static final RegistrySupplier<BlockItem> RITUAL_STAND_3 = registerItem(
+        "ritual_stand_3",
+        () -> new BlockItem(CropariaBlocks.RITUAL_STAND_3.get(), new Item.Properties().arch$tab(Tabs.MAIN))
     );
     public static final RegistrySupplier<BlockItem> ELEMENTAL_STONE = registerItem(
         "elemental_stone",
@@ -109,6 +120,9 @@ public class CropariaItems {
     protected static final List<RegistrySupplier<Item>> CROPARIAS = List.of(
         CROPARIA, CROPARIA2, CROPARIA3, CROPARIA4, CROPARIA5, CROPARIA6, CROPARIA7
     );
+    protected static final List<RegistrySupplier<BlockItem>> RITUAL_STANDS = List.of(
+        RITUAL_STAND, RITUAL_STAND_2, RITUAL_STAND_3
+    );
 
     public static void registerCrop(@NotNull Crop crop) {
         ITEMS.register(crop.getSeedId(), () -> new CropSeed(crop));
@@ -158,5 +172,9 @@ public class CropariaItems {
 
     public static @NotNull RegistrySupplier<Item> getCroparia(int tier) {
         return CROPARIAS.get(tier - 1);
+    }
+
+    public static @NotNull RegistrySupplier<BlockItem> getRitualStand(int tier) {
+        return RITUAL_STANDS.get(tier - 1);
     }
 }

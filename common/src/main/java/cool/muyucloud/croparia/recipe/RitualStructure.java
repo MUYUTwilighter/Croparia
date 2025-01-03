@@ -6,9 +6,9 @@ import com.mojang.serialization.JsonOps;
 import cool.muyucloud.croparia.recipe.container.RitualStructureContainer;
 import cool.muyucloud.croparia.registry.RecipeSerializers;
 import cool.muyucloud.croparia.registry.RecipeTypes;
-import cool.muyucloud.croparia.util.BlockStatePredicate;
-import cool.muyucloud.croparia.util.Char3D;
-import cool.muyucloud.croparia.util.Char3DWithMark;
+import cool.muyucloud.croparia.util.math.Char3D;
+import cool.muyucloud.croparia.util.math.Char3DWithMark;
+import cool.muyucloud.croparia.util.predicate.BlockStatePredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.Vec3i;
@@ -61,6 +61,30 @@ public class RitualStructure implements Recipe<RitualStructureContainer> {
         keys.put(' ', BlockStatePredicate.ANY);
         keys.put('.', BlockStatePredicate.AIR);
         this.keys = keys;
+    }
+
+    public Collection<BlockStatePredicate> getPredicates() {
+        return this.keys.values();
+    }
+
+    public Optional<BlockStatePredicate> getPredicate(char key) {
+        return Optional.ofNullable(this.keys.get(key));
+    }
+
+    public char getChar(int x, int y, int z) {
+        return this.patterns.get(0).get(x, y, z);
+    }
+
+    public int maxX() {
+        return this.patterns.get(0).maxX();
+    }
+
+    public int maxY() {
+        return this.patterns.get(0).maxY();
+    }
+
+    public int maxZ() {
+        return this.patterns.get(0).maxZ();
     }
 
     public @Nullable BlockState matchTransformed(BlockPos origin, Level level, Char3D pattern, BlockState ritualBlock) {
@@ -185,7 +209,6 @@ public class RitualStructure implements Recipe<RitualStructureContainer> {
         return ItemStack.EMPTY;
     }
 
-    @Deprecated
     @Override
     public @NotNull ResourceLocation getId() {
         return id;

@@ -1,4 +1,4 @@
-package cool.muyucloud.croparia.util;
+package cool.muyucloud.croparia.util.math;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;

@@ -1,14 +1,17 @@
-package cool.muyucloud.croparia.util;
+package cool.muyucloud.croparia.util.predicate;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import cool.muyucloud.croparia.access.StateHolderAccess;
-import cool.muyucloud.croparia.registry.CropariaBlocks;
+import cool.muyucloud.croparia.registry.CropariaItems;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -20,6 +23,10 @@ import java.util.*;
 import java.util.function.Predicate;
 
 public class BlockStatePredicate implements Predicate<BlockState> {
+    public static final ItemStack STACK_UNKNOWN = Items.BEDROCK.getDefaultInstance().setHoverName(Component.translatable("tooltip.croparia.unknown"));
+    public static final ItemStack STACK_AIR = Items.BARRIER.getDefaultInstance().setHoverName(Component.translatable("tooltip.croparia.air"));
+    public static final ItemStack STACK_ANY = Items.LIGHT_GRAY_STAINED_GLASS_PANE.getDefaultInstance().setHoverName(Component.translatable("tooltip.croparia.any"));
+
     public static final BlockStatePredicate ANY = new BlockStatePredicate(b -> true, b -> true, 0, Builder.create());
     public static final BlockStatePredicate AIR = new BlockStatePredicate(BlockBehaviour.BlockStateBase::isAir, b -> true, 0, Builder.create());
 
@@ -56,34 +63,51 @@ public class BlockStatePredicate implements Predicate<BlockState> {
         return builder.isTag();
     }
 
-    public List<Block> availableBlocks() {
+    public Collection<ItemStack> availableBlockItems() {
         if (this.builder.isBlock()) {
-            @Nullable Block block = BuiltInRegistries.BLOCK.getOptional(ResourceLocation.tryParse(this.builder.getBlock())).orElse(null);
-            if (block == null) {
-                return List.of(CropariaBlocks.PLACEHOLDER.get());
-            }
-            return List.of(block);
+            return Collections.singleton(getBlockItem(ResourceLocation.tryParse(this.builder.getBlock())));
         } else if (this.builder.isTag()) {
             Iterator<Holder<Block>> blocks = BuiltInRegistries.BLOCK.getTagOrEmpty(
                 TagKey.create(Registries.BLOCK, ResourceLocation.tryParse(builder.getBlock()))
             ).iterator();
             if (!blocks.hasNext()) {
-                return List.of(CropariaBlocks.PLACEHOLDER.get());
+                return builder.properties.isEmpty() ? Collections.singleton(STACK_UNKNOWN)
+                    : Collections.singleton(CropariaItems.PLACEHOLDER_BLOCK.get().getDefaultInstance());
             } else {
-                List<Block> list = new ArrayList<>();
-                while (blocks.hasNext()) {
-                    list.add(blocks.next().value());
-                }
+                List<ItemStack> list = new ArrayList<>();
+                blocks.forEachRemaining(
+                    holder -> list.add(holder.value().asItem().getDefaultInstance()
+                        .setHoverName(Component.literal("#" + builder.block)))
+                );
                 return list;
             }
         } else {
-            return List.of(CropariaBlocks.PLACEHOLDER.get());
+            return builder.properties.isEmpty() ? Collections.singleton(STACK_UNKNOWN)
+                : Collections.singleton(CropariaItems.PLACEHOLDER_BLOCK.get().getDefaultInstance());
+        }
+    }
+
+    public static ItemStack getBlockItem(ResourceLocation id) {
+        Block block = BuiltInRegistries.BLOCK.getOptional(id).orElse(null);
+        if (block != null) {
+            return block.asItem().getDefaultInstance();
+        } else {
+            return STACK_UNKNOWN;
         }
     }
 
     @Override
     public int hashCode() {
         return hashCode;
+    }
+
+    public List<Component> tooltip() {
+        if (this.builder.properties.isEmpty()) {
+            return List.of();
+        }
+        List<Component> components = new LinkedList<>();
+        this.builder.properties.forEach((property, value) -> components.add(Component.literal("%s=%s".formatted(property, value))));
+        return components;
     }
 
     public static class Builder {

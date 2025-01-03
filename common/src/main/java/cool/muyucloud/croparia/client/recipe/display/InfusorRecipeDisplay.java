@@ -1,52 +1,65 @@
 package cool.muyucloud.croparia.client.recipe.display;
 
-import cool.muyucloud.croparia.client.ReiClient;
 import cool.muyucloud.croparia.client.recipe.display.category.InfusorRecipeDisplayCategory;
 import cool.muyucloud.croparia.recipe.InfusorRecipe;
+import cool.muyucloud.croparia.registry.CropariaItems;
+import cool.muyucloud.croparia.util.Constants;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.display.Display;
 import me.shedaniel.rei.api.common.entry.EntryIngredient;
 import me.shedaniel.rei.api.common.entry.EntryStack;
 import me.shedaniel.rei.api.common.entry.type.VanillaEntryTypes;
+import me.shedaniel.rei.api.common.util.EntryIngredients;
+import me.shedaniel.rei.api.common.util.EntryStacks;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
 public class InfusorRecipeDisplay implements Display {
-    private final ResourceLocation id;
-    private final EntryIngredient ingredient;
-    private final EntryIngredient element;
-    private final EntryIngredient result;
+    private final InfusorRecipe recipe;
 
     public InfusorRecipeDisplay(InfusorRecipe recipe) {
-        this.id = recipe.getId();
-        this.ingredient = ReiClient.ofIngredient(recipe.getIngredient());
-        this.element = ReiClient.ofElement(recipe.getElement());
-        this.result = EntryIngredient.of(EntryStack.of(VanillaEntryTypes.ITEM, recipe.getResult()));
+        this.recipe = recipe;
     }
 
-    public EntryStack<?> getIngredient() {
-        return ingredient.isEmpty() ? EntryStack.of(VanillaEntryTypes.ITEM, ItemStack.EMPTY) : ingredient.get(0);
+    public Collection<EntryStack<ItemStack>> getIngredient() {
+        return recipe.getIngredient().availableStacks().stream().map(stack -> {
+            List<Component> tooltips = new LinkedList<>();
+            tooltips.add(Constants.ITEM_DROP_TOOLTIP);
+            recipe.getIngredient().nbtTooltip().ifPresent(tooltips::add);
+            return EntryStacks.of(stack).tooltip(tooltips);
+        }).toList();
     }
 
-    public EntryStack<?> getElement() {
-        return element.isEmpty() ? EntryStack.of(VanillaEntryTypes.ITEM, ItemStack.EMPTY) : element.get(0);
+    public EntryStack<ItemStack> getElement() {
+        ItemStack potion = recipe.getPotion().getDefaultInstance();
+        List<Component> tooltips = new LinkedList<>(potion.getTooltipLines(null, TooltipFlag.NORMAL));
+        tooltips.set(0, Constants.ELEM_INFUSE_TOOLTIP);
+        return EntryStacks.of(recipe.getPotion()).tooltip(tooltips);
     }
 
-    public EntryStack<?> getResult() {
-        return result.isEmpty() ? EntryStack.of(VanillaEntryTypes.ITEM, ItemStack.EMPTY) : result.get(0);
+    public EntryStack<ItemStack> getResult() {
+        return EntryStacks.of(this.recipe.getResult());
     }
 
     @Override
     public List<EntryIngredient> getInputEntries() {
-        return List.of(this.ingredient, this.element);
+        return List.of(
+            EntryIngredients.of(VanillaEntryTypes.ITEM, recipe.getIngredient().availableStacks()),
+            EntryIngredients.of(recipe.getPotion()),
+            EntryIngredients.of(CropariaItems.INFUSOR.get())
+        );
     }
 
     @Override
     public List<EntryIngredient> getOutputEntries() {
-        return List.of(this.result);
+        return List.of(EntryIngredients.of(recipe.getResult()));
     }
 
     @Override
@@ -56,6 +69,6 @@ public class InfusorRecipeDisplay implements Display {
 
     @Override
     public Optional<ResourceLocation> getDisplayLocation() {
-        return Optional.ofNullable(this.id);
+        return Optional.of(recipe.getId());
     }
 }

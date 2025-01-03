@@ -3,10 +3,11 @@ package cool.muyucloud.croparia.recipe;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
 import cool.muyucloud.croparia.recipe.container.RitualContainer;
+import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.registry.RecipeSerializers;
 import cool.muyucloud.croparia.registry.RecipeTypes;
-import cool.muyucloud.croparia.util.BlockStatePredicate;
-import cool.muyucloud.croparia.util.GenericIngredient;
+import cool.muyucloud.croparia.util.predicate.BlockStatePredicate;
+import cool.muyucloud.croparia.util.predicate.GenericIngredient;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -18,6 +19,8 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Collection;
 
 public class RitualRecipe implements Recipe<RitualContainer> {
     @NotNull
@@ -35,6 +38,9 @@ public class RitualRecipe implements Recipe<RitualContainer> {
         @NotNull GenericIngredient ingredient, @NotNull ItemStack result
     ) {
         this.id = id;
+        if (tier < 1) {
+            throw new IllegalArgumentException("Tier must be at least 1");
+        }
         this.tier = tier;
         this.block = state;
         this.ingredient = ingredient;
@@ -43,6 +49,9 @@ public class RitualRecipe implements Recipe<RitualContainer> {
 
     public static RitualRecipe fromJson(@NotNull ResourceLocation id, @NotNull JsonObject jsonObject) {
         int tier = GsonHelper.getAsInt(jsonObject, "tier");
+        if (tier < 1) {
+            throw new IllegalArgumentException("Tier must be at least 1");
+        }
         BlockStatePredicate block = BlockStatePredicate.Builder.CODEC.parse(
             JsonOps.INSTANCE, jsonObject.get("block")
         ).getOrThrow(false, msg -> {
@@ -63,6 +72,9 @@ public class RitualRecipe implements Recipe<RitualContainer> {
 
     public static RitualRecipe fromNetwork(@NotNull ResourceLocation id, @NotNull FriendlyByteBuf buf) {
         int tier = buf.readInt();
+        if (tier < 1) {
+            throw new IllegalArgumentException("Tier must be at least 1");
+        }
         BlockStatePredicate block = buf.readJsonWithCodec(BlockStatePredicate.Builder.CODEC).build();
         GenericIngredient ingredient = buf.readJsonWithCodec(GenericIngredient.CODEC);
         ItemStack result = buf.readItem();
@@ -74,6 +86,14 @@ public class RitualRecipe implements Recipe<RitualContainer> {
         buf.writeJsonWithCodec(BlockStatePredicate.Builder.CODEC, this.getStateBuilder());
         buf.writeJsonWithCodec(GenericIngredient.CODEC, this.getIngredient());
         buf.writeItem(this.getResult());
+    }
+
+    public @NotNull ItemStack getRitualItem() {
+        return CropariaItems.getRitualStand(this.tier).get().getDefaultInstance();
+    }
+
+    public @NotNull Collection<ItemStack> extractBlockItems() {
+        return this.block.availableBlockItems();
     }
 
     public @NotNull GenericIngredient getIngredient() {

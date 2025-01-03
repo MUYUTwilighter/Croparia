@@ -11,7 +11,6 @@ import cool.muyucloud.croparia.generator.ItemTagGenerator;
 import cool.muyucloud.croparia.generator.LootTableGenerator;
 import cool.muyucloud.croparia.generator.RecipeGenerator;
 import cool.muyucloud.croparia.registry.*;
-import cool.muyucloud.croparia.util.CropariaCauldronInteraction;
 import cool.muyucloud.croparia.util.pack.DataPackHandler;
 import cool.muyucloud.croparia.util.pack.ResourcePackHandler;
 import net.minecraft.resources.ResourceLocation;
@@ -38,6 +37,7 @@ public class CropariaIf {
         ResourcePackHandler.INSTANCE.registerGenerator(ItemModelGenerator::init);
         ResourcePackHandler.INSTANCE.registerGenerator(BlockStateModelGenerator::init);
         ResourcePackHandler.INSTANCE.registerGenerator(LangGenerator::init);
+        PlacedFeatures.register();
     }
 
     public static void onServerStarting() {

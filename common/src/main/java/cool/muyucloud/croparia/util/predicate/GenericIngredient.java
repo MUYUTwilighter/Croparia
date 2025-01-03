@@ -1,14 +1,16 @@
-package cool.muyucloud.croparia.util;
+package cool.muyucloud.croparia.util.predicate;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import cool.muyucloud.croparia.registry.CropariaItems;
+import cool.muyucloud.croparia.util.TagUtil;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CollectionTag;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -140,6 +142,13 @@ public class GenericIngredient implements Predicate<ItemStack> {
 
     public Optional<CompoundTag> getNbt() {
         return Optional.ofNullable(this.nbt);
+    }
+
+    public Optional<Component> nbtTooltip() {
+        if (this.nbt == null) {
+            return Optional.empty();
+        }
+        return Optional.of(Component.literal(this.nbt.toString()));
     }
 
     public @NotNull List<ItemStack> availableStacks() {

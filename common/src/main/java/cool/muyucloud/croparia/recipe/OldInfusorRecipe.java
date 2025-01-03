@@ -3,7 +3,7 @@ package cool.muyucloud.croparia.recipe;
 import cool.muyucloud.croparia.recipe.serializer.OldInfusorRecipeSerializer;
 import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.registry.RecipeSerializers;
-import cool.muyucloud.croparia.util.GenericIngredient;
+import cool.muyucloud.croparia.util.predicate.GenericIngredient;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;

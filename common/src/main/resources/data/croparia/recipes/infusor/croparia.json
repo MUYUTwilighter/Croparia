@@ -2,11 +2,11 @@
   "type": "croparia:infusor",
   "element": "elemental",
   "ingredient": {
-    "id": "croparia:seed_crop_lapis",
-    "count": 1
+    "id": "minecraft:wheat_seeds",
+    "count": 4
   },
   "result": {
-    "id": "croparia:seed_crop_diamond",
+    "id": "croparia:croparia",
     "Count": 1
   }
 }
