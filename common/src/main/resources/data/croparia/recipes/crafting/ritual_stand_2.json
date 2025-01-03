@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "minecraft:gold_block"
+    },
+    "P": {
+      "item": "croparia:ritual_stand"
+    }
+  },
+  "pattern": [
+    "B",
+    "P"
+  ],
+  "result": {
+    "item": "croparia:ritual_stand_2"
+  },
+  "show_notification": true
+}
