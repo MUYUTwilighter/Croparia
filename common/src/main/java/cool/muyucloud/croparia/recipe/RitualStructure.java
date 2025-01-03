@@ -125,7 +125,9 @@ public class RitualStructure implements Recipe<RitualStructureContainer> {
         BlockState ritualBlock = level.getBlockState(ritualPos);
         for (Char3DWithMark pattern : patterns) {
             BlockState inputBlock = matchTransformed(pattern.getOriginInWorld(ritualPos), level, pattern, ritualBlock);
-            return Optional.ofNullable(inputBlock);
+            if (inputBlock != null) {
+                return Optional.of(inputBlock);
+            }
         }
         return Optional.empty();
     }

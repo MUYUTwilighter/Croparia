@@ -126,4 +126,13 @@ public class Char3D implements Iterable<Character> {
             return result;
         }
     }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder("[");
+        for (Char2D layer : pattern) {
+            builder.append(layer).append(",\n");
+        }
+        return builder.substring(0, builder.length() - 2) + "]";
+    }
 }

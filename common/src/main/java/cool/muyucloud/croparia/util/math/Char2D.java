@@ -133,4 +133,13 @@ public class Char2D implements Iterable<Character> {
             return result;
         }
     }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder("[");
+        for (char[] row : chars) {
+            builder.append(String.valueOf(row)).append(",\n");
+        }
+        return builder.substring(0, builder.length() - 2) + "]";
+    }
 }

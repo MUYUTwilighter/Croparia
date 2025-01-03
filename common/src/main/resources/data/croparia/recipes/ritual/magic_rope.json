@@ -1,11 +1,11 @@
 {
   "type": "croparia:ritual",
-  "tier": 1,
+  "tier": 2,
   "ingredient": {
     "id": "minecraft:lead"
   },
   "block": {
-    "block": "croparia:elemental_stone"
+    "block": "minecraft:calibrated_sculk_sensor"
   },
   "result": {
     "id": "croparia:magic_rope",

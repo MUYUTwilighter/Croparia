@@ -56,7 +56,11 @@ public class Crops {
         return crop;
     }
 
-    public static final Crop ELEMENTAL = registerCrop("elemental", "croparia:elematilius", 0x712389, 3, CropType.CROP, "item.croparia.elematilius");
+    public static final Crop ELEMENTAL = registerCrop("elemental", "croparia:elematilius", 0x712389, 2, CropType.CROP, "item.croparia.elematilius");
+    public static final Crop EARTH = registerCrop("earth", "croparia:elemental_earth", 0xe5c8bb, 3, CropType.CROP, "item.croparia.elemental_earth");
+    public static final Crop WATER = registerCrop("water", "croparia:elemental_water", 0x2a5ab2, 4, CropType.CROP, "item.croparia.elemental_water");
+    public static final Crop FIRE = registerCrop("fire", "croparia:elemental_fire", 0xc65957, 6, CropType.CROP, "item.croparia.elemental_fire");
+    public static final Crop AIR = registerCrop("air", "croparia:elemental_air", 0xa2a9b5, 7, CropType.CROP, "item.croparia.elemental_air");
     public static final Crop COAL = registerCrop("coal", Objects.requireNonNull(Items.COAL.arch$registryName()).toString(), 0x333333, 1, CropType.CROP, Items.COAL.getDescriptionId());
     public static final Crop IRON = registerCrop("iron", Objects.requireNonNull(Items.IRON_INGOT.arch$registryName()).toString(), 0xd8d8d8, 2, CropType.CROP, Items.IRON_INGOT.getDescriptionId());
     public static final Crop GOLD = registerCrop("gold", Objects.requireNonNull(Items.GOLD_INGOT.arch$registryName()).toString(), 0xffff8b, 2, CropType.CROP, Items.GOLD_INGOT.getDescriptionId());

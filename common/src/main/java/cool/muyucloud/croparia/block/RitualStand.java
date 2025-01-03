@@ -5,7 +5,6 @@ import cool.muyucloud.croparia.entity.FakePlayer;
 import cool.muyucloud.croparia.recipe.RitualStructure;
 import cool.muyucloud.croparia.recipe.container.RitualContainer;
 import cool.muyucloud.croparia.recipe.container.RitualStructureContainer;
-import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.registry.RecipeTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -13,7 +12,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.item.crafting.RecipeManager;
@@ -28,14 +26,14 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
+import java.util.LinkedList;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class RitualStand extends Block {
     protected final VoxelShape SHAPE = Block.box(0.0, 0.3, 0.0, 16.0, 6.0, 16.0);
     private final int tier;
-    private List<ItemEntity> items = List.of();
+    private LinkedList<ItemEntity> items = new LinkedList<>();
 
     public RitualStand(int tier) {
         super(Properties.of().strength(1.0F, 1.0F).sound(SoundType.ANVIL).requiresCorrectToolForDrops());
@@ -43,7 +41,9 @@ public class RitualStand extends Block {
     }
 
     public void stepOn(Level world, BlockPos pos, BlockState state, Entity entity) {
-        this.items = items.stream().filter(item -> !item.isRemoved()).toList();
+        LinkedList<ItemEntity> filtered = new LinkedList<>();
+        items.stream().filter(item -> !item.isRemoved()).forEach(filtered::add);
+        items = filtered;
         if (entity instanceof ItemEntity itemEntity && !this.items.contains(itemEntity)
             && world instanceof ServerLevel serverWorld && CropariaIf.CONFIG.getRitual()) {
             this.items.add(itemEntity);

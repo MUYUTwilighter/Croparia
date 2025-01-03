@@ -1,8 +1,8 @@
 {
   "type": "croparia:ritual",
-  "tier": 1,
+  "tier": 3,
   "ingredient": {
-    "id": "minecraft:stick"
+    "id": "minecraft:brewing_stand"
   },
   "block": {
     "block": "minecraft:gold_block"

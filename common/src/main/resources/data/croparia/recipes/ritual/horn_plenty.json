@@ -1,11 +1,14 @@
 {
   "type": "croparia:ritual",
-  "tier": 1,
+  "tier": 2,
   "ingredient": {
-    "id": "minecraft:nether_wart_block"
+    "id": "minecraft:goat_horn"
   },
   "block": {
-    "block": "minecraft:spruce_wood"
+    "block": "minecraft:cake",
+    "properties": {
+      "bites": "0"
+    }
   },
   "result": {
     "id": "croparia:horn_plenty",
