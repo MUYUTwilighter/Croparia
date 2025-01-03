@@ -1,0 +1,38 @@
+{
+  "parent": "croparia:croparia/ritual_stand_3",
+  "criteria": {
+    "infinite_apple": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "croparia:infinite_apple"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.croparia.infinite_apple.description"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "croparia:infinite_apple"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.croparia.infinite_apple.title"
+    }
+  },
+  "requirements": [
+    [
+      "infinite_apple"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

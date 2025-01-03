@@ -1,0 +1,38 @@
+{
+  "criteria": {
+    "elematilius": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "croparia:elematilius"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "title": {
+      "translate": "advancements.croparia.root.title"
+    },
+    "background": "croparia:textures/block/elematilius_ore.png",
+    "description": {
+      "translate": "advancements.croparia.root.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "croparia:elematilius"
+    },
+    "show_toast": true
+  },
+  "requirements": [
+    [
+      "elematilius"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,38 @@
+{
+  "parent": "croparia:croparia/ritual_stand",
+  "criteria": {
+    "elemental_water": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "croparia:elemental_water"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.croparia.elemental_water.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "croparia:elemental_water"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.croparia.elemental_water.title"
+    }
+  },
+  "requirements": [
+    [
+      "elemental_water"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

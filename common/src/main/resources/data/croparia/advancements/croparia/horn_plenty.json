@@ -1,0 +1,38 @@
+{
+  "parent": "croparia:croparia/ritual_stand_2",
+  "criteria": {
+    "horn_plenty": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "croparia:horn_plenty"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.croparia.horn_plenty.description"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "croparia:horn_plenty"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.croparia.horn_plenty.title"
+    }
+  },
+  "requirements": [
+    [
+      "horn_plenty"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

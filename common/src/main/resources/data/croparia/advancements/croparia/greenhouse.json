@@ -1,0 +1,38 @@
+{
+  "parent": "croparia:croparia/root",
+  "criteria": {
+    "greenhouse": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "croparia:greenhouse"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.croparia.greenhouse.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "croparia:greenhouse"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.croparia.greenhouse.title"
+    }
+  },
+  "requirements": [
+    [
+      "greenhouse"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

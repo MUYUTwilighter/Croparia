@@ -1,0 +1,38 @@
+{
+  "parent": "croparia:croparia/elemental_fire",
+  "criteria": {
+    "croparia4": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "croparia:croparia4"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.croparia.croparia4.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "croparia:croparia4"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.croparia.croparia4.title"
+    }
+  },
+  "requirements": [
+    [
+      "croparia4"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

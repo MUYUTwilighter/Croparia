@@ -1,0 +1,38 @@
+{
+  "parent": "croparia:croparia/ritual_stand_2",
+  "criteria": {
+    "magic_rope": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "croparia:magic_rope"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.croparia.magic_rope.description"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "croparia:magic_rope"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.croparia.magic_rope.title"
+    }
+  },
+  "requirements": [
+    [
+      "magic_rope"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

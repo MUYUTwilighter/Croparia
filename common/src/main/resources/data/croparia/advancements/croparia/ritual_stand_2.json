@@ -1,0 +1,38 @@
+{
+  "parent": "croparia:croparia/ritual_stand",
+  "criteria": {
+    "ritual_stand_2": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "croparia:ritual_stand_2"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.croparia.ritual_stand_2.description"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "croparia:ritual_stand_2"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.croparia.ritual_stand_2.title"
+    }
+  },
+  "requirements": [
+    [
+      "ritual_stand_2"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

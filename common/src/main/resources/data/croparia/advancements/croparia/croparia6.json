@@ -1,0 +1,38 @@
+{
+  "parent": "croparia:croparia/elemental_air",
+  "criteria": {
+    "croparia6": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "croparia:croparia6"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.croparia.croparia6.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "croparia:croparia6"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.croparia.croparia6.title"
+    }
+  },
+  "requirements": [
+    [
+      "croparia6"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

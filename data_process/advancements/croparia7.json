@@ -1,0 +1,38 @@
+{
+  "parent": "croparia:root",
+  "criteria": {
+    "croparia7": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "croparia:croparia7"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.croparia.croparia7.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "croparia:croparia7"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.croparia.croparia7.title"
+    }
+  },
+  "requirements": [
+    [
+      "croparia7"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,38 @@
+{
+  "parent": "croparia:croparia/infusor",
+  "criteria": {
+    "croparia": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "croparia:croparia"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.croparia.croparia.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "croparia:croparia"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.croparia.croparia.title"
+    }
+  },
+  "requirements": [
+    [
+      "croparia"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

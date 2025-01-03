@@ -1,0 +1,38 @@
+{
+  "parent": "croparia:croparia/ritual_stand_3",
+  "criteria": {
+    "midas_hand": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "croparia:midas_hand"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.croparia.midas_hand.description"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "croparia:midas_hand"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.croparia.midas_hand.title"
+    }
+  },
+  "requirements": [
+    [
+      "midas_hand"
+    ]
+  ],
+  "sends_telemetry_event": true
+}
