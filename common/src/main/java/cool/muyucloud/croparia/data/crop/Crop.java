@@ -51,7 +51,7 @@ public class Crop {
         this.translations = parseTranslation(raw.translations(), parseDefaultTranslation(this.name));
         this.translationKey = raw.translationKey() == null ? "crop.croparia." + this.name : raw.translationKey();
         this.color = raw.color().startsWith("0x") ? Integer.parseInt(raw.color().substring(2), 16) : Integer.parseInt(raw.color());
-        this.tier = raw.tier();
+        this.tier = raw.tier() <= 0 ? 1 : raw.tier();
         this.tag = raw.material().trim().startsWith("#");
         this.blockId = CropariaIf.of("block_crop_" + this.name);
         this.seedId = CropariaIf.of("seed_crop_" + this.name);
