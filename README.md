@@ -25,3 +25,5 @@ Including:
 - Recipes of crop seeds can be replaced by datapack. (The original project would overwrite the recipes in datapacks)
 - Auto generate recipes for botany pots
 - Auto generate recipes converting fruits to resources on crafting table
+
+For more information, see [wiki](https://github.com/MUYUTwilighter/Croparia-IF/wiki).
