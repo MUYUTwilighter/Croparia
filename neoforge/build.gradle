@@ -63,5 +63,5 @@ remapJar {
 }
 
 base {
-    archivesName = rootProject.archives_name + "-forge"
+    archivesName = rootProject.archives_name + "-neoforge"
 }
