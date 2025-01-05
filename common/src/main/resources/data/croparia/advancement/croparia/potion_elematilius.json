@@ -1,12 +1,12 @@
 {
   "parent": "croparia:croparia/root",
   "criteria": {
-    "ritual_stand": {
+    "potion_elematilius": {
       "conditions": {
         "items": [
           {
             "items": [
-              "croparia:ritual_stand"
+              "croparia:potion_elematilius"
             ]
           }
         ]
@@ -17,21 +17,21 @@
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancements.croparia.ritual_stand.description"
+      "translate": "advancements.croparia.potion_elematilius.description"
     },
-    "frame": "goal",
+    "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "croparia:ritual_stand"
+      "id": "croparia:potion_elematilius"
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.croparia.ritual_stand.title"
+      "translate": "advancements.croparia.potion_elematilius.title"
     }
   },
   "requirements": [
     [
-      "ritual_stand"
+      "potion_elematilius"
     ]
   ],
   "sends_telemetry_event": true

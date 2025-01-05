@@ -1,11 +1,12 @@
 {
+  "parent": "croparia:croparia/croparia6",
   "criteria": {
-    "elematilius": {
+    "croparia7": {
       "conditions": {
         "items": [
           {
             "items": [
-              "croparia:elematilius"
+              "croparia:croparia7"
             ]
           }
         ]
@@ -15,23 +16,22 @@
   },
   "display": {
     "announce_to_chat": true,
-    "title": {
-      "translate": "advancements.croparia.root.title"
-    },
-    "background": "croparia:textures/block/elematilius_ore.png",
     "description": {
-      "translate": "advancements.croparia.root.description"
+      "translate": "advancements.croparia.croparia7.description"
     },
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "croparia:elematilius"
+      "id": "croparia:croparia7"
     },
-    "show_toast": true
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.croparia.croparia7.title"
+    }
   },
   "requirements": [
     [
-      "elematilius"
+      "croparia7"
     ]
   ],
   "sends_telemetry_event": true

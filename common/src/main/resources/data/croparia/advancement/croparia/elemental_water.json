@@ -1,12 +1,12 @@
 {
-  "parent": "croparia:croparia/root",
+  "parent": "croparia:croparia/ritual_stand",
   "criteria": {
-    "greenhouse": {
+    "elemental_water": {
       "conditions": {
         "items": [
           {
             "items": [
-              "croparia:greenhouse"
+              "croparia:elemental_water"
             ]
           }
         ]
@@ -17,21 +17,21 @@
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancements.croparia.greenhouse.description"
+      "translate": "advancements.croparia.elemental_water.description"
     },
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "croparia:greenhouse"
+      "id": "croparia:elemental_water"
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.croparia.greenhouse.title"
+      "translate": "advancements.croparia.elemental_water.title"
     }
   },
   "requirements": [
     [
-      "greenhouse"
+      "elemental_water"
     ]
   ],
   "sends_telemetry_event": true

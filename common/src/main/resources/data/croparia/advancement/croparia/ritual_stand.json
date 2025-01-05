@@ -1,12 +1,12 @@
 {
-  "parent": "croparia:croparia/elemental_water",
+  "parent": "croparia:croparia/root",
   "criteria": {
-    "croparia3": {
+    "ritual_stand": {
       "conditions": {
         "items": [
           {
             "items": [
-              "croparia:croparia3"
+              "croparia:ritual_stand"
             ]
           }
         ]
@@ -17,21 +17,21 @@
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancements.croparia.croparia3.description"
+      "translate": "advancements.croparia.ritual_stand.description"
     },
-    "frame": "task",
+    "frame": "goal",
     "hidden": false,
     "icon": {
-      "item": "croparia:croparia3"
+      "id": "croparia:ritual_stand"
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.croparia.croparia3.title"
+      "translate": "advancements.croparia.ritual_stand.title"
     }
   },
   "requirements": [
     [
-      "croparia3"
+      "ritual_stand"
     ]
   ],
   "sends_telemetry_event": true

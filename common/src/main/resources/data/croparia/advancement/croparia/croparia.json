@@ -1,12 +1,12 @@
 {
-  "parent": "croparia:croparia/croparia6",
+  "parent": "croparia:croparia/infusor",
   "criteria": {
-    "croparia7": {
+    "croparia": {
       "conditions": {
         "items": [
           {
             "items": [
-              "croparia:croparia7"
+              "croparia:croparia"
             ]
           }
         ]
@@ -17,21 +17,21 @@
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancements.croparia.croparia7.description"
+      "translate": "advancements.croparia.croparia.description"
     },
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "croparia:croparia7"
+      "id": "croparia:croparia"
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.croparia.croparia7.title"
+      "translate": "advancements.croparia.croparia.title"
     }
   },
   "requirements": [
     [
-      "croparia7"
+      "croparia"
     ]
   ],
   "sends_telemetry_event": true

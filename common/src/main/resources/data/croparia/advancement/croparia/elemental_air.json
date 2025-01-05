@@ -1,12 +1,12 @@
 {
   "parent": "croparia:croparia/ritual_stand",
   "criteria": {
-    "elemental_earth": {
+    "elemental_air": {
       "conditions": {
         "items": [
           {
             "items": [
-              "croparia:elemental_earth"
+              "croparia:elemental_air"
             ]
           }
         ]
@@ -17,21 +17,21 @@
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancements.croparia.elemental_earth.description"
+      "translate": "advancements.croparia.elemental_air.description"
     },
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "croparia:elemental_earth"
+      "id": "croparia:elemental_air"
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.croparia.elemental_earth.title"
+      "translate": "advancements.croparia.elemental_air.title"
     }
   },
   "requirements": [
     [
-      "elemental_earth"
+      "elemental_air"
     ]
   ],
   "sends_telemetry_event": true

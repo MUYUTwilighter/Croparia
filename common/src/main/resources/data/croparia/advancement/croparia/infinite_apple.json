@@ -1,12 +1,12 @@
 {
-  "parent": "croparia:croparia/ritual_stand_2",
+  "parent": "croparia:croparia/ritual_stand_3",
   "criteria": {
-    "horn_plenty": {
+    "infinite_apple": {
       "conditions": {
         "items": [
           {
             "items": [
-              "croparia:horn_plenty"
+              "croparia:infinite_apple"
             ]
           }
         ]
@@ -17,21 +17,21 @@
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancements.croparia.horn_plenty.description"
+      "translate": "advancements.croparia.infinite_apple.description"
     },
     "frame": "challenge",
     "hidden": false,
     "icon": {
-      "item": "croparia:horn_plenty"
+      "id": "croparia:infinite_apple"
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.croparia.horn_plenty.title"
+      "translate": "advancements.croparia.infinite_apple.title"
     }
   },
   "requirements": [
     [
-      "horn_plenty"
+      "infinite_apple"
     ]
   ],
   "sends_telemetry_event": true

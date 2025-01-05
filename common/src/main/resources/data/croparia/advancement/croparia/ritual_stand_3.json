@@ -1,12 +1,12 @@
 {
-  "parent": "croparia:croparia/elemental_fire",
+  "parent": "croparia:croparia/ritual_stand_2",
   "criteria": {
-    "croparia4": {
+    "ritual_stand_3": {
       "conditions": {
         "items": [
           {
             "items": [
-              "croparia:croparia4"
+              "croparia:ritual_stand_3"
             ]
           }
         ]
@@ -17,21 +17,21 @@
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancements.croparia.croparia4.description"
+      "translate": "advancements.croparia.ritual_stand_3.description"
     },
-    "frame": "task",
+    "frame": "goal",
     "hidden": false,
     "icon": {
-      "item": "croparia:croparia4"
+      "id": "croparia:ritual_stand_3"
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.croparia.croparia4.title"
+      "translate": "advancements.croparia.ritual_stand_3.title"
     }
   },
   "requirements": [
     [
-      "croparia4"
+      "ritual_stand_3"
     ]
   ],
   "sends_telemetry_event": true

@@ -1,12 +1,12 @@
 {
-  "parent": "croparia:croparia/elemental_earth",
+  "parent": "croparia:croparia/ritual_stand_2",
   "criteria": {
-    "croparia2": {
+    "magic_rope": {
       "conditions": {
         "items": [
           {
             "items": [
-              "croparia:croparia2"
+              "croparia:magic_rope"
             ]
           }
         ]
@@ -17,21 +17,21 @@
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancements.croparia.croparia2.description"
+      "translate": "advancements.croparia.magic_rope.description"
     },
-    "frame": "task",
+    "frame": "challenge",
     "hidden": false,
     "icon": {
-      "item": "croparia:croparia2"
+      "id": "croparia:magic_rope"
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.croparia.croparia2.title"
+      "translate": "advancements.croparia.magic_rope.title"
     }
   },
   "requirements": [
     [
-      "croparia2"
+      "magic_rope"
     ]
   ],
   "sends_telemetry_event": true

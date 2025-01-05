@@ -1,12 +1,12 @@
 {
-  "parent": "croparia:croparia/elemental_air",
+  "parent": "croparia:croparia/elemental_earth",
   "criteria": {
-    "croparia6": {
+    "croparia2": {
       "conditions": {
         "items": [
           {
             "items": [
-              "croparia:croparia6"
+              "croparia:croparia2"
             ]
           }
         ]
@@ -17,21 +17,21 @@
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancements.croparia.croparia6.description"
+      "translate": "advancements.croparia.croparia2.description"
     },
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "croparia:croparia6"
+      "id": "croparia:croparia2"
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.croparia.croparia6.title"
+      "translate": "advancements.croparia.croparia2.title"
     }
   },
   "requirements": [
     [
-      "croparia6"
+      "croparia2"
     ]
   ],
   "sends_telemetry_event": true

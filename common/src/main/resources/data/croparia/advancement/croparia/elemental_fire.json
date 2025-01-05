@@ -1,12 +1,12 @@
 {
-  "parent": "croparia:croparia/ritual_stand_3",
+  "parent": "croparia:croparia/ritual_stand",
   "criteria": {
-    "infinite_apple": {
+    "elemental_fire": {
       "conditions": {
         "items": [
           {
             "items": [
-              "croparia:infinite_apple"
+              "croparia:elemental_fire"
             ]
           }
         ]
@@ -17,21 +17,21 @@
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancements.croparia.infinite_apple.description"
+      "translate": "advancements.croparia.elemental_fire.description"
     },
-    "frame": "challenge",
+    "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "croparia:infinite_apple"
+      "id": "croparia:elemental_fire"
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.croparia.infinite_apple.title"
+      "translate": "advancements.croparia.elemental_fire.title"
     }
   },
   "requirements": [
     [
-      "infinite_apple"
+      "elemental_fire"
     ]
   ],
   "sends_telemetry_event": true

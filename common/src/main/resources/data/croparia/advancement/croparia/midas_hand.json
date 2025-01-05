@@ -1,12 +1,12 @@
 {
-  "parent": "croparia:croparia/root",
+  "parent": "croparia:croparia/ritual_stand_3",
   "criteria": {
-    "potion_elematilius": {
+    "midas_hand": {
       "conditions": {
         "items": [
           {
             "items": [
-              "croparia:potion_elematilius"
+              "croparia:midas_hand"
             ]
           }
         ]
@@ -17,21 +17,21 @@
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancements.croparia.potion_elematilius.description"
+      "translate": "advancements.croparia.midas_hand.description"
     },
-    "frame": "task",
+    "frame": "challenge",
     "hidden": false,
     "icon": {
-      "item": "croparia:potion_elematilius"
+      "id": "croparia:midas_hand"
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.croparia.potion_elematilius.title"
+      "translate": "advancements.croparia.midas_hand.title"
     }
   },
   "requirements": [
     [
-      "potion_elematilius"
+      "midas_hand"
     ]
   ],
   "sends_telemetry_event": true

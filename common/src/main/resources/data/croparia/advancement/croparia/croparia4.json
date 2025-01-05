@@ -1,12 +1,12 @@
 {
-  "parent": "croparia:croparia/root",
+  "parent": "croparia:croparia/elemental_fire",
   "criteria": {
-    "infusor": {
+    "croparia4": {
       "conditions": {
         "items": [
           {
             "items": [
-              "croparia:infusor"
+              "croparia:croparia4"
             ]
           }
         ]
@@ -17,21 +17,21 @@
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancements.croparia.infusor.description"
+      "translate": "advancements.croparia.croparia4.description"
     },
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "croparia:infusor"
+      "id": "croparia:croparia4"
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.croparia.infusor.title"
+      "translate": "advancements.croparia.croparia4.title"
     }
   },
   "requirements": [
     [
-      "infusor"
+      "croparia4"
     ]
   ],
   "sends_telemetry_event": true

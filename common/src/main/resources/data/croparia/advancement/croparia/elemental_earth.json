@@ -1,12 +1,12 @@
 {
-  "parent": "croparia:croparia/ritual_stand_3",
+  "parent": "croparia:croparia/ritual_stand",
   "criteria": {
-    "midas_hand": {
+    "elemental_earth": {
       "conditions": {
         "items": [
           {
             "items": [
-              "croparia:midas_hand"
+              "croparia:elemental_earth"
             ]
           }
         ]
@@ -17,21 +17,21 @@
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancements.croparia.midas_hand.description"
+      "translate": "advancements.croparia.elemental_earth.description"
     },
-    "frame": "challenge",
+    "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "croparia:midas_hand"
+      "id": "croparia:elemental_earth"
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.croparia.midas_hand.title"
+      "translate": "advancements.croparia.elemental_earth.title"
     }
   },
   "requirements": [
     [
-      "midas_hand"
+      "elemental_earth"
     ]
   ],
   "sends_telemetry_event": true

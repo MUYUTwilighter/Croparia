@@ -1,12 +1,11 @@
 {
-  "parent": "croparia:croparia/ritual_stand",
   "criteria": {
-    "elemental_air": {
+    "elematilius": {
       "conditions": {
         "items": [
           {
             "items": [
-              "croparia:elemental_air"
+              "croparia:elematilius"
             ]
           }
         ]
@@ -16,22 +15,23 @@
   },
   "display": {
     "announce_to_chat": true,
+    "title": {
+      "translate": "advancements.croparia.root.title"
+    },
+    "background": "croparia:textures/block/elematilius_ore.png",
     "description": {
-      "translate": "advancements.croparia.elemental_air.description"
+      "translate": "advancements.croparia.root.description"
     },
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "croparia:elemental_air"
+      "id": "croparia:elematilius"
     },
-    "show_toast": true,
-    "title": {
-      "translate": "advancements.croparia.elemental_air.title"
-    }
+    "show_toast": true
   },
   "requirements": [
     [
-      "elemental_air"
+      "elematilius"
     ]
   ],
   "sends_telemetry_event": true

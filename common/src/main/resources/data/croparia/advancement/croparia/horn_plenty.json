@@ -1,12 +1,12 @@
 {
-  "parent": "croparia:croparia/infusor",
+  "parent": "croparia:croparia/ritual_stand_2",
   "criteria": {
-    "croparia": {
+    "horn_plenty": {
       "conditions": {
         "items": [
           {
             "items": [
-              "croparia:croparia"
+              "croparia:horn_plenty"
             ]
           }
         ]
@@ -17,21 +17,21 @@
   "display": {
     "announce_to_chat": true,
     "description": {
-      "translate": "advancements.croparia.croparia.description"
+      "translate": "advancements.croparia.horn_plenty.description"
     },
-    "frame": "task",
+    "frame": "challenge",
     "hidden": false,
     "icon": {
-      "item": "croparia:croparia"
+      "id": "croparia:horn_plenty"
     },
     "show_toast": true,
     "title": {
-      "translate": "advancements.croparia.croparia.title"
+      "translate": "advancements.croparia.horn_plenty.title"
     }
   },
   "requirements": [
     [
-      "croparia"
+      "horn_plenty"
     ]
   ],
   "sends_telemetry_event": true
