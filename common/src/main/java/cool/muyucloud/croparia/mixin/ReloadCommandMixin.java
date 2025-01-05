@@ -23,4 +23,9 @@ public class ReloadCommandMixin {
             return null;
         });
     }
+
+    @Inject(method = "reloadPacks", at = @At("HEAD"))
+    private static void beforeReload(Collection<String> collection, CommandSourceStack commandSourceStack, CallbackInfo ci) {
+        DataPackHandler.INSTANCE.onInitial();
+    }
 }

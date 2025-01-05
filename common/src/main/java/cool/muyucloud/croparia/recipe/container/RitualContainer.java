@@ -20,7 +20,7 @@ public record RitualContainer(
 
     @Override
     public boolean isEmpty() {
-        return true;
+        return false;
     }
 
     @Override

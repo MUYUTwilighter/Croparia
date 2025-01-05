@@ -139,8 +139,7 @@ public class BlockStatePredicate implements Predicate<BlockState> {
             if (block == null) {
                 blockPredicate = b -> true;
             } else if (tag) {
-                block = block.substring(1);
-                TagKey<Block> tag = TagKey.create(Registries.BLOCK, ResourceLocation.tryParse(block));
+                TagKey<Block> tag = TagKey.create(Registries.BLOCK, ResourceLocation.tryParse(block.substring(1)));
                 blockPredicate = b -> b.is(tag);
             } else {
                 Block block = BuiltInRegistries.BLOCK.get(ResourceLocation.tryParse(this.block));

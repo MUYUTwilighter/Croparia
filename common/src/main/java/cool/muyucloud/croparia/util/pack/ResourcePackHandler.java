@@ -17,6 +17,7 @@ public class ResourcePackHandler extends PackHandler {
 
     @Override
     public void onInitial() {
+        super.onInitial();
         if (CropariaIf.CONFIG.getOverride()) {
             this.clear();
         }

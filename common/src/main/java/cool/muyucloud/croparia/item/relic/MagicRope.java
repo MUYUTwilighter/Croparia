@@ -1,14 +1,17 @@
 package cool.muyucloud.croparia.item.relic;
 
 import cool.muyucloud.croparia.registry.Tabs;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 public class MagicRope extends Item {
@@ -17,23 +20,23 @@ public class MagicRope extends Item {
     }
 
     public @NotNull InteractionResult useOn(UseOnContext context) {
-        Level level = context.getLevel();
-        if (!level.isClientSide) {
-            Player player = context.getPlayer();
+        if (context.getLevel() instanceof ServerLevel world && context.getPlayer() instanceof ServerPlayer player) {
             ItemStack itemStack = context.getItemInHand();
             CompoundTag tag = itemStack.getOrCreateTag();
             int[] position;
-            assert player != null;
             if (player.isShiftKeyDown()) {
                 position = new int[]{player.blockPosition().getX(), player.blockPosition().getY(), player.blockPosition().getZ()};
+                String targetWorld = world.dimension().location().toString();
                 tag.putIntArray("targetPos", position);
-                player.displayClientMessage(Component.nullToEmpty("x = " + position[0] + " y = " + position[1] + " z = " + position[2]), true);
+                tag.putString("targetWorld", targetWorld);
+                player.displayClientMessage(Component.literal("%s[x=%d y=%d z=%d]".formatted(targetWorld, position[0], position[1], position[2])), true);
                 return InteractionResult.SUCCESS;
             }
-
             if (tag.contains("targetPos")) {
+                String targetWorld = tag.contains("targetWorld") ? tag.getString("targetWorld") : "minecraft:overworld";
+                world = world.getServer().getLevel(ResourceKey.create(Registries.DIMENSION, ResourceLocation.tryParse(targetWorld)));
                 position = tag.getIntArray("targetPos");
-                player.teleportToWithTicket(position[0] + 0.5, position[1], position[2] + 0.5);
+                player.teleportTo(world, position[0], position[1], position[2], 0, 0);
                 return InteractionResult.SUCCESS;
             }
         }

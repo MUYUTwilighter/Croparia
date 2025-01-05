@@ -17,7 +17,7 @@ public class RitualStructureContainer implements Container {
 
     @Override
     public boolean isEmpty() {
-        return true;
+        return false;
     }
 
     @Override

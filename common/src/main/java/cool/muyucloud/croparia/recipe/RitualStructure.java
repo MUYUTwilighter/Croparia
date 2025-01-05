@@ -58,8 +58,6 @@ public class RitualStructure implements Recipe<RitualStructureContainer> {
             }
         }
         keys = new HashMap<>(keys);
-        keys.put(' ', BlockStatePredicate.ANY);
-        keys.put('.', BlockStatePredicate.AIR);
         this.keys = keys;
     }
 
@@ -104,6 +102,12 @@ public class RitualStructure implements Recipe<RitualStructureContainer> {
                         inputBlock = state;
                     } else if (key == '*') {
                         if (!state.equals(ritualBlock)) {
+                            return null;
+                        }
+                    } else if (key == ' ') {
+                        continue;
+                    } else if (key == '.') {
+                        if (!state.isAir()) {
                             return null;
                         }
                     } else {
