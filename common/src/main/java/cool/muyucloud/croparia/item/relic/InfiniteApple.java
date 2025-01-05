@@ -15,7 +15,7 @@ public class InfiniteApple extends Item {
 
     public InfiniteApple() {
         super((new Properties()).food(
-            new FoodProperties.Builder().alwaysEat().nutrition(5).saturationMod(4.0F)
+            new FoodProperties.Builder().alwaysEdible().nutrition(5).saturationModifier(4.0F)
                 .effect(new MobEffectInstance(MobEffects.REGENERATION, 100, 1), 1.0F)
                 .effect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 100, 0), 1.0F)
                 .effect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 100, 0), 1.0F)

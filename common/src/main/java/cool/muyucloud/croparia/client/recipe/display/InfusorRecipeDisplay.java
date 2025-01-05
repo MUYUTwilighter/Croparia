@@ -14,7 +14,6 @@ import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -23,9 +22,11 @@ import java.util.Optional;
 
 public class InfusorRecipeDisplay implements Display {
     private final InfusorRecipe recipe;
+    private final ResourceLocation id;
 
-    public InfusorRecipeDisplay(InfusorRecipe recipe) {
+    public InfusorRecipeDisplay(InfusorRecipe recipe, ResourceLocation id) {
         this.recipe = recipe;
+        this.id = id;
     }
 
     public Collection<EntryStack<ItemStack>> getIngredient() {
@@ -38,10 +39,7 @@ public class InfusorRecipeDisplay implements Display {
     }
 
     public EntryStack<ItemStack> getElement() {
-        ItemStack potion = recipe.getPotion().getDefaultInstance();
-        List<Component> tooltips = new LinkedList<>(potion.getTooltipLines(null, TooltipFlag.NORMAL));
-        tooltips.set(0, Constants.ELEM_INFUSE_TOOLTIP);
-        return EntryStacks.of(recipe.getPotion()).tooltip(tooltips);
+        return EntryStacks.of(recipe.getPotion()).tooltip(Constants.ELEM_INFUSE_TOOLTIP);
     }
 
     public EntryStack<ItemStack> getResult() {
@@ -69,6 +67,6 @@ public class InfusorRecipeDisplay implements Display {
 
     @Override
     public Optional<ResourceLocation> getDisplayLocation() {
-        return Optional.of(recipe.getId());
+        return Optional.of(id);
     }
 }

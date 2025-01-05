@@ -112,9 +112,9 @@ public class Crop {
                 if (l.startsWith("#")) {
                     l = l.substring(1);
                 }
-                id.set(new ResourceLocation(l));
+                id.set(ResourceLocation.parse(l));
             },
-            r -> id.set(new ResourceLocation(r)),
+            r -> id.set(ResourceLocation.parse(r)),
             () -> {
                 throw new IllegalArgumentException("Ambiguous material, should declare either material or tag");
             }

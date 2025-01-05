@@ -1,0 +1,46 @@
+modLoader = "javafml"
+loaderVersion = "*"
+issueTrackerURL = "https://github.com/MUYUTwilighter/Croparia/issues"
+license = "MIT"
+
+[[mods]]
+modId = "croparia"
+version = "${version}"
+displayName = "Croparia-If"
+authors = "MUYU_Twilighter"
+description = '''
+A completely rewritten project from Dalarion's Croparia 4.5.
+You should only install either Croparia or Croparia-If at the same time.
+'''
+logoFile = "assets/croparia/icon.png"
+
+[[dependencies.croparia]]
+modId = "neoforge"
+type = "required"
+versionRange = "*"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.croparia]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21,1.22)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.croparia]]
+modId = "architectury"
+type = "required"
+versionRange = "*"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.croparia]]
+modId = "rei"
+type = "optional"
+versionRange = "*"
+ordering = "AFTER"
+side = "CLIENT"
+
+[[mixins]]
+config = "croparia-if-common.mixins.json"

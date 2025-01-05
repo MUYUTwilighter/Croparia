@@ -10,8 +10,8 @@ public class CropariaIfClient {
     public static void init() {
         Crops.CROPS.forEach(crop -> {
             ColorHandlerRegistry.registerBlockColors((blockState, blockAndTintGetter, blockPos, i) -> crop.getColor(), crop.getCropBlock());
-            ColorHandlerRegistry.registerItemColors((itemStack, i) -> crop.getColor(), crop.getFruitItem());
-            ColorHandlerRegistry.registerItemColors((itemStack, i) -> crop.getColor(), crop.getSeedItem());
+            ColorHandlerRegistry.registerItemColors((itemStack, i) -> i == 1 ? crop.getColor() | 0xFF000000 : -1, crop.getFruitItem());
+            ColorHandlerRegistry.registerItemColors((itemStack, i) -> crop.getColor() | 0xFF000000, crop.getSeedItem());
             RenderTypeRegistry.register(RenderType.cutoutMipped(), crop.getCropBlock());
         });
         RenderTypeRegistry.register(RenderType.cutout(), CropariaBlocks.GREENHOUSE.get());

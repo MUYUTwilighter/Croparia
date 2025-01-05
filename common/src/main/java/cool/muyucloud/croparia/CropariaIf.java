@@ -22,6 +22,7 @@ public class CropariaIf {
     public static final Config CONFIG = ConfigFileHandler.load();
 
     public static void init() {
+        CropariaComponents.register();
         RecipeTypes.register();
         RecipeSerializers.register();
         Crops.register();
@@ -49,6 +50,6 @@ public class CropariaIf {
     }
 
     public static ResourceLocation of(String path) {
-        return new ResourceLocation(MOD_ID, path);
+        return ResourceLocation.tryBuild(MOD_ID, path);
     }
 }

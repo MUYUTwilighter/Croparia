@@ -4,11 +4,13 @@ import cool.muyucloud.croparia.recipe.serializer.OldInfusorRecipeSerializer;
 import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.registry.RecipeSerializers;
 import cool.muyucloud.croparia.util.predicate.GenericIngredient;
+import jdk.jfr.Experimental;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.Container;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
@@ -21,8 +23,9 @@ import java.util.List;
  * Once this object is deserialized by {@link OldInfusorRecipeSerializer},
  * it should be treated as the new version of {@link InfusorRecipe}. <br/>
  * The instances of this class are merged with the new infusor recipe data entities by invoking
- * {@link net.minecraft.world.item.crafting.RecipeManager#getRecipeFor(RecipeType, Container, Level)}.
+ * {@link net.minecraft.world.item.crafting.RecipeManager#getRecipeFor(RecipeType, RecipeInput, Level, RecipeHolder)}.
  */
+@Experimental
 public class OldInfusorRecipe extends InfusorRecipe {
     public int getCount() {
         return this.getResult().getCount();
@@ -32,14 +35,14 @@ public class OldInfusorRecipe extends InfusorRecipe {
         this.setIngredient(new GenericIngredient(BuiltInRegistries.ITEM.getOptional(
             ResourceLocation.tryParse(input)
         ).orElseThrow(
-            () -> new IllegalArgumentException("Invalid item item in recipe %s".formatted(this.getId()))
+            () -> new IllegalArgumentException("Invalid item item in recipe %s".formatted(this))
         )));
     }
 
     public @NotNull ItemStack getInput() {
         List<ItemStack> stacks = this.getIngredient().availableStacks();
         if (stacks.isEmpty()) {
-            throw new AssertionError("Empty input item in recipe %s".formatted(this.getId()));
+            throw new AssertionError("Empty input item in recipe %s".formatted(this));
         } else {
             return stacks.get(0);
         }
@@ -47,7 +50,7 @@ public class OldInfusorRecipe extends InfusorRecipe {
 
     public void setInput(@NotNull Item input) {
         if (input == CropariaItems.PLACEHOLDER.get()) {
-            throw new IllegalArgumentException("Invalid input item in recipe %s".formatted(this.getId()));
+            throw new IllegalArgumentException("Invalid input item in recipe %s".formatted(this));
         }
         this.setIngredient(new GenericIngredient(input));
     }
@@ -56,7 +59,7 @@ public class OldInfusorRecipe extends InfusorRecipe {
         this.setResult(BuiltInRegistries.ITEM.getOptional(
             ResourceLocation.tryParse(output)
         ).orElseThrow(
-            () -> new IllegalArgumentException("Invalid output item in recipe %s".formatted(this.getId()))
+            () -> new IllegalArgumentException("Invalid output item in recipe %s".formatted(this))
         ).getDefaultInstance());
     }
 

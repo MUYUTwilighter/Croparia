@@ -5,11 +5,11 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.util.TagUtil;
 import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.TypedDataComponent;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.nbt.CollectionTag;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -21,6 +21,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Predicate;
@@ -30,10 +31,10 @@ public class GenericIngredient implements Predicate<ItemStack> {
         ResourceLocation.CODEC.optionalFieldOf("id").forGetter(GenericIngredient::getId),
         ResourceLocation.CODEC.optionalFieldOf("tag").forGetter(GenericIngredient::getTag),
         Codec.INT.optionalFieldOf("count").forGetter(ingredient -> Optional.of(ingredient.getCount())),
-        CompoundTag.CODEC.optionalFieldOf("nbt").forGetter(GenericIngredient::getNbt)
+        DataComponentMap.CODEC.optionalFieldOf("nbt").forGetter(GenericIngredient::getNbt)
     ).apply(instance, (id, rawTag, optionalCount, optionalNbt) -> {
         int count = optionalCount.orElse(1);
-        CompoundTag nbt = optionalNbt.orElse(null);
+        DataComponentMap nbt = optionalNbt.orElse(null);
         AtomicReference<GenericIngredient> ingredient = new AtomicReference<>();
         id.map(BuiltInRegistries.ITEM::get).map(item -> new GenericIngredient(item, count, nbt)).ifPresentOrElse(
             ingredient::set, () -> rawTag.map(raw -> TagKey.create(Registries.ITEM, raw)).ifPresentOrElse(
@@ -49,9 +50,9 @@ public class GenericIngredient implements Predicate<ItemStack> {
     private final TagKey<Item> tag;
     private final int count;
     @Nullable
-    private final CompoundTag nbt;
+    private final DataComponentMap nbt;
 
-    public GenericIngredient(int count, @Nullable CompoundTag nbt) {
+    public GenericIngredient(int count, @Nullable DataComponentMap nbt) {
         if (count <= 0) {
             throw new IllegalArgumentException("Invalid count: " + count);
         }
@@ -102,10 +103,10 @@ public class GenericIngredient implements Predicate<ItemStack> {
     }
 
     public GenericIngredient(@NotNull ItemStack stack) {
-        this(stack.getItem(), stack.getCount(), stack.getTag());
+        this(stack.getItem(), stack.getCount(), stack.getComponents());
     }
 
-    public GenericIngredient(@NotNull Item item, int count, @Nullable CompoundTag tag) {
+    public GenericIngredient(@NotNull Item item, int count, @Nullable DataComponentMap tag) {
         if (count <= 0) {
             throw new IllegalArgumentException("Invalid count: " + count);
         }
@@ -118,7 +119,7 @@ public class GenericIngredient implements Predicate<ItemStack> {
         this.nbt = tag;
     }
 
-    public GenericIngredient(@NotNull TagKey<Item> tag, int count, @Nullable CompoundTag nbt) {
+    public GenericIngredient(@NotNull TagKey<Item> tag, int count, @Nullable DataComponentMap nbt) {
         if (count <= 0) {
             throw new IllegalArgumentException("Invalid count: " + count);
         }
@@ -140,7 +141,7 @@ public class GenericIngredient implements Predicate<ItemStack> {
         return this.count;
     }
 
-    public Optional<CompoundTag> getNbt() {
+    public Optional<DataComponentMap> getNbt() {
         return Optional.ofNullable(this.nbt);
     }
 
@@ -148,24 +149,22 @@ public class GenericIngredient implements Predicate<ItemStack> {
         if (this.nbt == null) {
             return Optional.empty();
         }
-        return Optional.of(Component.literal(this.nbt.toString()));
+        return Optional.of(Component.literal(DataComponentMap.CODEC.encodeStart(NbtOps.INSTANCE, this.nbt).getOrThrow().getAsString()));
     }
 
     public @NotNull List<ItemStack> availableStacks() {
         List<ItemStack> stacks = new LinkedList<>();
         if (this.item != null) {
             ItemStack stack = new ItemStack(this.item, this.count);
-            stack.setTag(this.nbt);
+            ;
             stacks.add(stack);
         } else if (this.tag != null) {
             for (Holder<Item> holder : TagUtil.forItems(this.tag)) {
                 ItemStack stack = new ItemStack(holder.value(), this.count);
-                stack.setTag(this.nbt);
                 stacks.add(stack);
             }
         } else {
             ItemStack stack = new ItemStack(CropariaItems.PLACEHOLDER.get(), this.count);
-            stack.setTag(this.nbt);
             stacks.add(stack);
         }
         return stacks;
@@ -182,44 +181,23 @@ public class GenericIngredient implements Predicate<ItemStack> {
         if (this.tag != null && !itemStack.is(this.tag)) {
             return false;
         }
-        return matchNbt(this.nbt, itemStack.getTag());
+        return matchNbt(this.nbt, itemStack.getComponents());
     }
 
-    private static boolean matchNbt(@Nullable Tag primary, @Nullable Tag secondary) {
+    private static boolean matchNbt(@Nullable DataComponentMap primary, @Nullable DataComponentMap secondary) {
         if (primary == null) {
             return true;
         } else if (secondary == null) {
             return false;
         }
-        if (primary instanceof CompoundTag primaryCompound) {
-            if (secondary instanceof CompoundTag secondaryCompound) {
-                for (String key : primaryCompound.getAllKeys()) {
-                    Tag primaryTag = primaryCompound.get(key);
-                    Tag secondaryTag = secondaryCompound.get(key);
-                    if (!matchNbt(primaryTag, secondaryTag)) {
-                        return false;
-                    }
-                }
-                return true;
-            } else {
+        for (TypedDataComponent<?> component : primary) {
+            if (!secondary.has(component.type())) {
                 return false;
             }
-        } else if (primary instanceof CollectionTag<?> primaryCollection) {
-            if (secondary instanceof CollectionTag<?> secondaryCollection) {
-                for (int i = 0; i < primaryCollection.size(); i++) {
-                    Tag primaryTag = primaryCollection.get(i);
-                    Tag secondaryTag = secondaryCollection.get(i);
-                    if (!matchNbt(primaryTag, secondaryTag)) {
-                        return false;
-                    }
-                }
-                return true;
-            } else {
+            if (!Objects.equals(component.value(), secondary.get(component.type()))) {
                 return false;
             }
-        } else {
-            return primary.equals(secondary);
         }
+        return true;
     }
-
 }

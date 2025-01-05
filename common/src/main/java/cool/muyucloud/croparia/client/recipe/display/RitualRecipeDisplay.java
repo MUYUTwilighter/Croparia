@@ -21,9 +21,11 @@ import java.util.Optional;
 
 public class RitualRecipeDisplay implements Display {
     private final RitualRecipe recipe;
+    private final ResourceLocation id;
 
-    public RitualRecipeDisplay(RitualRecipe recipe) {
+    public RitualRecipeDisplay(RitualRecipe recipe, ResourceLocation id) {
         this.recipe = recipe;
+        this.id = id;
     }
 
     public Collection<EntryStack<ItemStack>> getIngredient() {
@@ -73,6 +75,6 @@ public class RitualRecipeDisplay implements Display {
 
     @Override
     public Optional<ResourceLocation> getDisplayLocation() {
-        return Optional.of(recipe.getId());
+        return Optional.of(id);
     }
 }

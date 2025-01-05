@@ -1,12 +1,11 @@
 package cool.muyucloud.croparia.recipe.container;
 
 import cool.muyucloud.croparia.data.ElementsEnum;
-import net.minecraft.world.Container;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeInput;
 import org.jetbrains.annotations.NotNull;
 
-public class InfusorContainer implements Container {
+public class InfusorContainer implements RecipeInput {
     @NotNull
     private ElementsEnum element = ElementsEnum.EMPTY;
     private ItemStack item = ItemStack.EMPTY;
@@ -27,61 +26,17 @@ public class InfusorContainer implements Container {
     }
 
     @Override
-    public int getContainerSize() {
+    public @NotNull ItemStack getItem(int i) {
+        return i == 0 ? item : ItemStack.EMPTY;
+    }
+
+    @Override
+    public int size() {
         return 1;
     }
 
     @Override
     public boolean isEmpty() {
-        return this.item.isEmpty();
-    }
-
-    @Override
-    public int getMaxStackSize() {
-        return this.item.getMaxStackSize();
-    }
-
-    @Override
-    public @NotNull ItemStack getItem(int i) {
-        return i == 0 ? this.item : ItemStack.EMPTY;
-    }
-
-    @Override
-    public @NotNull ItemStack removeItem(int i, int count) {
-        return i == 0 ? this.item.split(count) : ItemStack.EMPTY;
-    }
-
-    @Override
-    public @NotNull ItemStack removeItemNoUpdate(int i) {
-        return i == 0 ? this.item : ItemStack.EMPTY;
-    }
-
-    @Override
-    public void setItem(int i, @NotNull ItemStack itemStack) {
-        if (i != 0 || itemStack.isEmpty() || this.item.getCount() >= this.item.getMaxStackSize()) {
-            return;
-        }
-        if (this.item.isEmpty()) {
-            this.item = itemStack;
-            this.setChanged();
-        } else if (ItemStack.isSameItemSameTags(this.item, itemStack)) {
-            itemStack = itemStack.split(this.item.getMaxStackSize() - this.item.getCount());
-            this.item.setCount(this.item.getCount() + itemStack.getCount());
-        }
-    }
-
-    @Override
-    public void setChanged() {
-    }
-
-    @Override
-    public boolean stillValid(Player player) {
-        return true;
-    }
-
-    @Override
-    public void clearContent() {
-        this.setItem(0, ItemStack.EMPTY);
-        this.setElement(ElementsEnum.EMPTY);
+        return false;
     }
 }

@@ -29,7 +29,7 @@ public class LangGenerator {
     public static void addCrop(Crop crop) {
         String key = crop.getTranslationKey();
         for (String lang : crop.availableLangs()) {
-            ResourceLocation id = new ResourceLocation(CropariaIf.MOD_ID, lang);
+            ResourceLocation id = ResourceLocation.tryBuild(CropariaIf.MOD_ID, lang);
             Map<String, String> map = CACHE.getOrDefault(id, new HashMap<>());
             map.put(key, crop.translate(lang));
             CACHE.put(id, map);

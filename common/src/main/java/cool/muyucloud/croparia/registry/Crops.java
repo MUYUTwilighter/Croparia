@@ -102,7 +102,7 @@ public class Crops {
     public static final Crop TWISTING_VINES = registerCrop("twisting_vines", Objects.requireNonNull(Items.TWISTING_VINES.arch$registryName()).toString(), 0x14b283, 1, CropType.NATURE, Items.TWISTING_VINES.getDescriptionId());
     public static final Crop LILY_PAD = registerCrop("lilypad", Objects.requireNonNull(Items.LILY_PAD.arch$registryName()).toString(), 0xc5f14, 1, CropType.NATURE, Items.LILY_PAD.getDescriptionId());
     public static final Crop BUSH = registerCrop("bush", Objects.requireNonNull(Items.DEAD_BUSH.arch$registryName()).toString(), 0x946428, 1, CropType.NATURE, Items.DEAD_BUSH.getDescriptionId());
-    public static final Crop GRASS = registerCrop("grass", Objects.requireNonNull(Items.GRASS.arch$registryName()).toString(), 0x820510b, 1, CropType.NATURE, Items.GRASS.getDescriptionId());
+    public static final Crop GRASS = registerCrop("grass", Objects.requireNonNull(Items.SHORT_GRASS.arch$registryName()).toString(), 0x820510b, 1, CropType.NATURE, Items.SHORT_GRASS.getDescriptionId());
     public static final Crop LARGE_FERN = registerCrop("large_fern", Objects.requireNonNull(Items.LARGE_FERN.arch$registryName()).toString(), 0x4a7240, 1, CropType.NATURE, Items.LARGE_FERN.getDescriptionId());
     public static final Crop TALL_GRASS = registerCrop("tall_grass", Objects.requireNonNull(Items.TALL_GRASS.arch$registryName()).toString(), 0x2f4728, 1, CropType.NATURE, Items.TALL_GRASS.getDescriptionId());
     public static final Crop FERN = registerCrop("fern", Objects.requireNonNull(Items.FERN.arch$registryName()).toString(), 0x1b4509, 1, CropType.NATURE, Items.FERN.getDescriptionId());
@@ -157,7 +157,7 @@ public class Crops {
     public static final Crop NAME_TAG = registerCrop("name_tag", Objects.requireNonNull(Items.NAME_TAG.arch$registryName()).toString(), 0x7a7162, 1, CropType.CROP, Items.NAME_TAG.getDescriptionId());
     public static final Crop XP = registerCrop("xp", Objects.requireNonNull(Items.EXPERIENCE_BOTTLE.arch$registryName()).toString(), 0xbaff49, 4, CropType.CROP, Items.EXPERIENCE_BOTTLE.getDescriptionId());
     public static final Crop SEA = registerCrop("sea", Objects.requireNonNull(Items.HEART_OF_THE_SEA.arch$registryName()).toString(), 0x1f96b1, 4, CropType.CROP, Items.HEART_OF_THE_SEA.getDescriptionId());
-    public static final Crop SCUTE = registerCrop("scute", Objects.requireNonNull(Items.SCUTE.arch$registryName()).toString(), 0x47bf4a, 2, CropType.ANIMAL, Items.SCUTE.getDescriptionId());
+    public static final Crop SCUTE = registerCrop("scute", Objects.requireNonNull(Items.TURTLE_SCUTE.arch$registryName()).toString(), 0x47bf4a, 2, CropType.ANIMAL, Items.TURTLE_SCUTE.getDescriptionId());
     public static final Crop NAUTILUS = registerCrop("nautilus", Objects.requireNonNull(Items.NAUTILUS_SHELL.arch$registryName()).toString(), 0xd4ccc3, 3, CropType.CROP, Items.NAUTILUS_SHELL.getDescriptionId());
     public static final Crop PHANTOM = registerCrop("phantom", Objects.requireNonNull(Items.PHANTOM_MEMBRANE.arch$registryName()).toString(), 0xdcd9c0, 2, CropType.MONSTER, Items.PHANTOM_MEMBRANE.getDescriptionId());
     public static final Crop WITHER = registerCrop("wither", Objects.requireNonNull(Items.WITHER_ROSE.arch$registryName()).toString(), 0x2a1f19, 5, CropType.MONSTER, Items.WITHER_ROSE.getDescriptionId());

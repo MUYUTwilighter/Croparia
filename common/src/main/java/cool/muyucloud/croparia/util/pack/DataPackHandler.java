@@ -27,6 +27,7 @@ public class DataPackHandler extends PackHandler {
 
     @Override
     public void onSecondary() {
+        super.onInitial();
         this.generate();
         this.dump();
     }
@@ -40,22 +41,22 @@ public class DataPackHandler extends PackHandler {
     }
 
     public void addRecipe(ResourceLocation location, JsonObject recipe) {
-        String path = "data/%s/recipes/%s.json".formatted(location.getNamespace(), location.getPath());
+        String path = "data/%s/recipe/%s.json".formatted(location.getNamespace(), location.getPath());
         this.addFile(path, recipe);
     }
 
     public void addLootTable(ResourceLocation location, JsonObject lootTable) {
-        String path = "data/%s/loot_tables/%s.json".formatted(location.getNamespace(), location.getPath());
+        String path = "data/%s/loot_table/%s.json".formatted(location.getNamespace(), location.getPath());
         this.addFile(path, lootTable);
     }
 
     public void addItemTag(ResourceLocation location, JsonObject tag) {
-        String path = "data/%s/tags/items/%s.json".formatted(location.getNamespace(), location.getPath());
+        String path = "data/%s/tags/item/%s.json".formatted(location.getNamespace(), location.getPath());
         this.addFile(path, tag);
     }
 
     public void addBlockTag(ResourceLocation location, JsonObject tag) {
-        String path = "data/%s/tags/blocks/%s.json".formatted(location.getNamespace(), location.getPath());
+        String path = "data/%s/tags/block/%s.json".formatted(location.getNamespace(), location.getPath());
         this.addFile(path, tag);
     }
 

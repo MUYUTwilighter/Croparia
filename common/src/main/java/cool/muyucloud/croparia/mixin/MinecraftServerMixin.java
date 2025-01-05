@@ -28,7 +28,7 @@ public abstract class MinecraftServerMixin extends ReentrantBlockableEventLoop<T
         super(string);
     }
 
-    @Inject(method = "runServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/Util;getMillis()J", ordinal = 0))
+    @Inject(method = "runServer", at = @At(value = "INVOKE", target = "Lnet/minecraft/Util;getNanos()J", ordinal = 0))
     private void onServerInitialized(CallbackInfo ci) {
         DataPackHandler.INSTANCE.onSecondary();
         // No need to collect new data packs again, as they are added on initial reload

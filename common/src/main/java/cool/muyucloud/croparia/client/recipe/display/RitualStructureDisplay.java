@@ -12,6 +12,7 @@ import me.shedaniel.rei.api.common.entry.type.VanillaEntryTypes;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.core.Vec3i;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -26,9 +27,13 @@ public class RitualStructureDisplay implements Display {
     private static final EntryStack<ItemStack> AIR = EntryStacks.of(BlockStatePredicate.STACK_AIR);
     private static final EntryStack<ItemStack> ANY = EntryStacks.of(BlockStatePredicate.STACK_ANY);
     private static final EntryStack<ItemStack> UNKNOWN = EntryStacks.of(BlockStatePredicate.STACK_UNKNOWN);
-    private static final EntryStack<ItemStack> INPUT = EntryStacks.of(
-        CropariaItems.PLACEHOLDER.get().getDefaultInstance().setHoverName(Component.translatable("tooltip.croparia.input"))
-    );
+    private static final EntryStack<ItemStack> INPUT;
+
+    static {
+        ItemStack stack = CropariaItems.PLACEHOLDER.get().getDefaultInstance();
+        stack.set(DataComponents.CUSTOM_NAME, Component.translatable("tooltip.croparia.input"));
+        INPUT = EntryStacks.of(stack);
+    }
 
     private final List<EntryIngredient> input;
     private final Collection<EntryStack<ItemStack>>[][][] structure;
@@ -36,11 +41,11 @@ public class RitualStructureDisplay implements Display {
     private final ResourceLocation id;
     private int lastRead = 0;
 
-    public RitualStructureDisplay(RitualStructure structure) {
+    public RitualStructureDisplay(RitualStructure structure, ResourceLocation id) {
         this.structure = new Collection[structure.maxY()][structure.maxZ()][structure.maxX()];
         this.input = structure.getPredicates().stream().map(predicate -> EntryIngredients.of(VanillaEntryTypes.ITEM, predicate.availableBlockItems())).toList();
-        this.id = structure.getId();
-        this.ritual = EntryStacks.of(BuiltInRegistries.ITEM.get(structure.getId()));
+        this.id = id;
+        this.ritual = EntryStacks.of(BuiltInRegistries.ITEM.get(id));
         this.extractStructure(structure);
     }
 

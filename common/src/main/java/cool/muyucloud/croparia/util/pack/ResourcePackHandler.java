@@ -3,20 +3,31 @@ package cool.muyucloud.croparia.util.pack;
 import com.google.gson.JsonObject;
 import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.util.Util;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.PathPackResources;
+import net.minecraft.server.packs.repository.PackSource;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.util.Optional;
 
 public class ResourcePackHandler extends PackHandler {
     public static final ResourcePackHandler INSTANCE = new ResourcePackHandler(CropariaIf.CONFIG.getPackPath());
 
-    private final PathPackResources resourcePack = new PathPackResources("croparia", root, true);
+    private final PathPackResources resourcePack = new PathPackResources(
+        new PackLocationInfo(
+            "file/croparia",
+            Component.literal("croparia"),
+            PackSource.BUILT_IN,
+            Optional.empty()
+        ), root);
 
     @Override
     public void onInitial() {
+        super.onInitial();
         if (CropariaIf.CONFIG.getOverride()) {
             this.clear();
         }

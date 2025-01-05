@@ -3,7 +3,10 @@ package cool.muyucloud.croparia.util.pack;
 import com.mojang.logging.LogUtils;
 import net.minecraft.FileUtil;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.packs.PackLocationInfo;
+import net.minecraft.server.packs.PackSelectionConfig;
 import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.PathPackResources;
 import net.minecraft.server.packs.repository.FolderRepositorySource;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
@@ -11,6 +14,7 @@ import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 public class AlwaysEnabledFileResourcePackProvider extends FolderRepositorySource {
@@ -20,7 +24,7 @@ public class AlwaysEnabledFileResourcePackProvider extends FolderRepositorySourc
     private final PackSource source;
 
     public AlwaysEnabledFileResourcePackProvider(Path packsDir, PackType type, PackSource source) {
-        super(packsDir, type, source);
+        super(packsDir, type, source, null);
         this.packsDir = packsDir;
         this.type = type;
         this.source = source;
@@ -30,12 +34,11 @@ public class AlwaysEnabledFileResourcePackProvider extends FolderRepositorySourc
     public void loadPacks(Consumer<Pack> profileAdder) {
         try {
             FileUtil.createDirectoriesSafe(this.packsDir);
-            Pack.ResourcesSupplier packFactory = detectPackResources(this.packsDir, true);
             String fileName = nameFromPath(this.packsDir);
-            Pack datapackProfile = Pack.readMetaAndCreate(
-                "file/" + fileName, Component.literal(fileName),
-                true, packFactory, this.type,
-                Pack.Position.BOTTOM, this.source);
+            Pack.ResourcesSupplier packFactory = new PathPackResources.PathResourcesSupplier(this.packsDir);
+            PackLocationInfo info = new PackLocationInfo("file/" + fileName, Component.literal(fileName), this.source, Optional.empty());
+            PackSelectionConfig config = new PackSelectionConfig(true, Pack.Position.BOTTOM, false);
+            Pack datapackProfile = Pack.readMetaAndCreate(info, packFactory, this.type, config);
             if (datapackProfile != null) {
                 profileAdder.accept(datapackProfile);
             }

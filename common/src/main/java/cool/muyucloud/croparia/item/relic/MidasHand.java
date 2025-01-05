@@ -66,7 +66,7 @@ public class MidasHand extends Item {
             player.getCooldowns().addCooldown(this, cooldown);
             ServerLevel world = (ServerLevel) entity.getCommandSenderWorld();
             world.destroyBlock(entity.blockPosition(), true);
-            world.setBlock(entity.blockPosition(), Blocks.GOLD_BLOCK.defaultBlockState(), 1);
+            world.setBlock(entity.blockPosition(), Blocks.GOLD_BLOCK.defaultBlockState(), 2);
             entity.remove(RemovalReason.KILLED);
             return InteractionResult.SUCCESS;
         } else {

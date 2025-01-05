@@ -1,6 +1,5 @@
 package cool.muyucloud.croparia.fabric;
 
-import cool.muyucloud.croparia.ExpectPlatform;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.nio.file.Path;

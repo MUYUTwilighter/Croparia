@@ -2,7 +2,6 @@ package cool.muyucloud.croparia.util.math;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.ListCodec;
 import net.minecraft.core.Vec3i;
 import org.jetbrains.annotations.NotNull;
 
@@ -12,14 +11,14 @@ import java.util.List;
 import java.util.Optional;
 
 public class Char3D implements Iterable<Character> {
-    public static final Codec<Char3D> CODEC = new ListCodec<>(Char2D.CODEC).xmap(Char3D::new, Char3D::structure);
+    public static final Codec<Char3D> CODEC = Char2D.CODEC.listOf().xmap(Char3D::new, Char3D::structure);
 
     private final List<Char2D> pattern;
 
     public Char3D(List<Char2D> structure) {
         int height = structure.size();
-        int maxZ = structure.get(0).maxZ();
-        int maxX = structure.get(0).maxX();
+        int maxZ = structure.getFirst().maxZ();
+        int maxX = structure.getFirst().maxX();
         this.pattern = new ArrayList<>(height);
         for (Char2D surface : structure) {
             if (surface.maxZ() != maxZ || surface.maxX() != maxX) {

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": {
+      "item": "minecraft:diamond"
+    },
+    "P": {
+      "item": "minecraft:lapis_lazuli"
+    },
+    "R": {
+      "item": "minecraft:emerald"
+    }
+  },
+  "pattern": [
+    "PIP",
+    "IRI",
+    "PIP"
+  ],
+  "result": {
+    "id": "croparia:elematilius"
+  },
+  "show_notification": true
+}

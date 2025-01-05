@@ -26,9 +26,9 @@ public class TagUtil {
     }
 
     public static ResourceLocation compatId(@NotNull String name) {
-        if (Platform.isFabric()) return new ResourceLocation("c", name);
-        else if (Platform.isForge()) return new ResourceLocation("forge", name);
-        else return new ResourceLocation("minecraft", name);
+        if (Platform.isFabric()) return ResourceLocation.tryBuild("c", name);
+        else if (Platform.isNeoForge()) return ResourceLocation.tryBuild("forge", name);
+        else return ResourceLocation.tryBuild("minecraft", name);
     }
 
     public static Iterable<Holder<Item>> forItems(TagKey<Item> tag) {

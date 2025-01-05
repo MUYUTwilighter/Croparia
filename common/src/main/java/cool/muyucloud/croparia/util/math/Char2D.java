@@ -1,7 +1,6 @@
 package cool.muyucloud.croparia.util.math;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.ListCodec;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -10,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class Char2D implements Iterable<Character> {
-    public static final Codec<Char2D> CODEC = new ListCodec<>(Codec.STRING).xmap(Char2D::new, Char2D::surface);
+    public static final Codec<Char2D> CODEC = Codec.STRING.listOf().xmap(Char2D::new, Char2D::surface);
 
     private final char[][] chars;
 

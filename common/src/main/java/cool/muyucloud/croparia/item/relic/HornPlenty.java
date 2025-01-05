@@ -3,9 +3,11 @@ package cool.muyucloud.croparia.item.relic;
 import cool.muyucloud.croparia.registry.Tabs;
 import cool.muyucloud.croparia.util.Constants;
 import cool.muyucloud.croparia.util.PostConstants;
+import cool.muyucloud.croparia.util.Util;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
@@ -38,7 +40,8 @@ public class HornPlenty extends Item {
         if (food == null) {
             return InteractionResult.FAIL;
         }
-        int xp = Objects.requireNonNull(food.getItem().getFoodProperties()).getNutrition();
+        @NotNull FoodProperties properties = Objects.requireNonNull(Util.getFoodProperties(food));
+        int xp = properties.nutrition();
         if (xp > player.totalExperience) {
             player.displayClientMessage(Constants.INSUFFICIENT_XP, true);
             return InteractionResult.FAIL;

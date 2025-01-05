@@ -1,8 +1,5 @@
 package cool.muyucloud.croparia.recipe;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.mojang.serialization.JsonOps;
 import cool.muyucloud.croparia.recipe.container.RitualStructureContainer;
 import cool.muyucloud.croparia.registry.RecipeSerializers;
 import cool.muyucloud.croparia.registry.RecipeTypes;
@@ -10,11 +7,8 @@ import cool.muyucloud.croparia.util.math.Char3D;
 import cool.muyucloud.croparia.util.math.Char3DWithMark;
 import cool.muyucloud.croparia.util.predicate.BlockStatePredicate;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Vec3i;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -28,14 +22,11 @@ import java.util.*;
 
 public class RitualStructure implements Recipe<RitualStructureContainer> {
     @NotNull
-    private final ResourceLocation id;
-    @NotNull
     private final Map<Character, BlockStatePredicate> keys;
     @NotNull
     protected final List<Char3DWithMark> patterns;
 
-    protected RitualStructure(@NotNull ResourceLocation id, @NotNull Map<Character, BlockStatePredicate> keys, Char3D rawPattern) {
-        this.id = id;
+    public RitualStructure(@NotNull Map<String, BlockStatePredicate.Builder> keys, Char3D rawPattern) {
         this.patterns = new ArrayList<>(8);
         Vec3i ritualOffset = rawPattern.find('*').orElseThrow(() -> new IllegalArgumentException("Invalid pattern, missing ritual marker"));
         Char3DWithMark pattern = new Char3DWithMark(rawPattern, ritualOffset);
@@ -52,15 +43,25 @@ public class RitualStructure implements Recipe<RitualStructureContainer> {
             pattern = pattern.rotate();
             i++;
         } while (i < 4);
-        for (Character c : keys.keySet()) {
+        HashMap<Character, BlockStatePredicate> raw = new HashMap<>();
+        keys.forEach((string, builder) -> {
+            char c = string.charAt(0);
             if (!Character.isUpperCase(c) || !Character.isAlphabetic(c) || c == '*' || c == '$' || c == ' ' || c == '.') {
-                throw new IllegalArgumentException("Invalid key '%s' in %s, must be uppercase letter".formatted(c, id));
+                throw new IllegalArgumentException("Invalid key '%s' in %s, must be uppercase letter".formatted(c, this));
             }
-        }
-        keys = new HashMap<>(keys);
-        keys.put(' ', BlockStatePredicate.ANY);
-        keys.put('.', BlockStatePredicate.AIR);
-        this.keys = keys;
+            raw.put(string.charAt(0), builder.build());
+        });
+        this.keys = Map.copyOf(raw);
+    }
+
+    public Map<String, BlockStatePredicate.Builder> getKeys() {
+        Map<String, BlockStatePredicate.Builder> map = new HashMap<>();
+        this.keys.forEach((character, predicate) -> map.put(character.toString(), predicate.getBuilder()));
+        return map;
+    }
+
+    public Char3DWithMark getPattern() {
+        return this.patterns.get(0);
     }
 
     public Collection<BlockStatePredicate> getPredicates() {
@@ -76,15 +77,15 @@ public class RitualStructure implements Recipe<RitualStructureContainer> {
     }
 
     public int maxX() {
-        return this.patterns.get(0).maxX();
+        return this.patterns.getFirst().maxX();
     }
 
     public int maxY() {
-        return this.patterns.get(0).maxY();
+        return this.patterns.getFirst().maxY();
     }
 
     public int maxZ() {
-        return this.patterns.get(0).maxZ();
+        return this.patterns.getFirst().maxZ();
     }
 
     public @Nullable BlockState matchTransformed(BlockPos origin, Level level, Char3D pattern, BlockState ritualBlock) {
@@ -106,6 +107,11 @@ public class RitualStructure implements Recipe<RitualStructureContainer> {
                         if (!state.equals(ritualBlock)) {
                             return null;
                         }
+                    } else if (key == '.') {
+                        if (!state.isAir()) {
+                            return null;
+                        }
+                    } else if (key == ' ') {
                     } else {
                         BlockStatePredicate predicate = this.keys.get(key);
                         if (predicate == null || !predicate.test(state)) {
@@ -132,87 +138,39 @@ public class RitualStructure implements Recipe<RitualStructureContainer> {
         return Optional.empty();
     }
 
-    public static RitualStructure fromJson(ResourceLocation resourceLocation, JsonObject json) {
-        JsonObject rawKeys = GsonHelper.getAsJsonObject(json, "keys");
-        Map<Character, BlockStatePredicate> keys = new HashMap<>();
-        for (Map.Entry<String, JsonElement> entry : rawKeys.entrySet()) {
-            String rawKey = entry.getKey();
-            if (rawKey.length() != 1) {
-                throw new IllegalArgumentException("Invalid key: " + rawKey);
-            }
-            Character key = rawKey.charAt(0);
-            JsonObject rawPredicate = entry.getValue().getAsJsonObject();
-            BlockStatePredicate predicate = BlockStatePredicate.Builder.CODEC.parse(JsonOps.INSTANCE, rawPredicate).getOrThrow(false, msg -> {
-                throw new IllegalArgumentException(msg);
-            }).build();
-            keys.put(key, predicate);
-        }
-        keys = Map.copyOf(keys);
-
-        Char3D pattern = Char3D.CODEC.parse(
-            JsonOps.INSTANCE, GsonHelper.getAsJsonArray(json, "pattern")
-        ).getOrThrow(false, msg -> {
-            throw new IllegalArgumentException(msg);
-        });
-        return new RitualStructure(resourceLocation, keys, pattern);
-    }
-
-    public static RitualStructure fromNetwork(ResourceLocation resourceLocation, FriendlyByteBuf inputBuf) {
-        Map<Character, BlockStatePredicate> keys = inputBuf.readMap(
-            FriendlyByteBuf::readChar, buf -> buf.readJsonWithCodec(BlockStatePredicate.Builder.CODEC).build()
-        );
-        keys = Map.copyOf(keys);
-        Char3D pattern = inputBuf.readJsonWithCodec(Char3D.CODEC);
-        return new RitualStructure(resourceLocation, keys, pattern);
-    }
-
-    public void toNetwork(FriendlyByteBuf outputBuf) {
-        outputBuf.writeMap(this.keys,
-            (buf, character) -> buf.writeChar(character),
-            (buf, predicate) -> buf.writeJsonWithCodec(BlockStatePredicate.Builder.CODEC, predicate.getBuilder())
-        );
-        outputBuf.writeJsonWithCodec(Char3D.CODEC, this.patterns.get(0));
+    @Override
+    @Deprecated
+    public boolean matches(RitualStructureContainer recipeInput, Level level) {
+        return true;
     }
 
     @Override
+    @Deprecated
+    public ItemStack assemble(RitualStructureContainer recipeInput, HolderLookup.Provider provider) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    @Deprecated
+    public boolean canCraftInDimensions(int i, int j) {
+        return true;
+    }
+
+    @Override
+    @Deprecated
+    public @NotNull ItemStack getResultItem(HolderLookup.Provider provider) {
+        return ItemStack.EMPTY;
+    }
+
+    @Override
+    @Deprecated
     public @NotNull RecipeSerializer<?> getSerializer() {
         return RecipeSerializers.RITUAL_STRUCTURE.get();
     }
 
     @Override
+    @Deprecated
     public @NotNull RecipeType<?> getType() {
         return RecipeTypes.RITUAL_STRUCTURE.get();
-    }
-
-    /**
-     * Please use {@link #matches(BlockPos, Level)} instead
-     */
-    @Deprecated
-    @Override
-    public boolean matches(RitualStructureContainer container, Level level) {
-        return true;
-    }
-
-    @Deprecated
-    @Override
-    public @NotNull ItemStack assemble(RitualStructureContainer container, RegistryAccess registryAccess) {
-        return ItemStack.EMPTY;
-    }
-
-    @Deprecated
-    @Override
-    public boolean canCraftInDimensions(int i, int j) {
-        return false;
-    }
-
-    @Deprecated
-    @Override
-    public @NotNull ItemStack getResultItem(RegistryAccess registryAccess) {
-        return ItemStack.EMPTY;
-    }
-
-    @Override
-    public @NotNull ResourceLocation getId() {
-        return id;
     }
 }

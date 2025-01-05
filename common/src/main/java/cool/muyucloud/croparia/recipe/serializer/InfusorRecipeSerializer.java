@@ -1,56 +1,56 @@
 package cool.muyucloud.croparia.recipe.serializer;
 
-import com.google.gson.JsonObject;
-import com.mojang.serialization.JsonOps;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import cool.muyucloud.croparia.data.ElementsEnum;
 import cool.muyucloud.croparia.recipe.InfusorRecipe;
 import cool.muyucloud.croparia.util.predicate.GenericIngredient;
-import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import org.jetbrains.annotations.NotNull;
 
 public class InfusorRecipeSerializer implements RecipeSerializer<InfusorRecipe> {
-    @Override
-    public @NotNull InfusorRecipe fromJson(ResourceLocation id, JsonObject jsonObject) {
-        ElementsEnum element = ElementsEnum.valueOf(jsonObject.get("element").getAsString().toUpperCase());
-        GenericIngredient ingredient = GenericIngredient.CODEC.parse(
-            JsonOps.INSTANCE, jsonObject.get("ingredient")
-        ).getOrThrow(false, msg -> {
-            throw new IllegalArgumentException(msg);
-        });
-        ItemStack result = ItemStack.CODEC.parse(
-            JsonOps.INSTANCE, jsonObject.get("result")
-        ).getOrThrow(false, msg -> {
-            throw new IllegalArgumentException(msg);
-        });
+    public static final MapCodec<InfusorRecipe> CODEC = RecordCodecBuilder.mapCodec(instance ->
+        instance.group(
+            Codec.STRING.fieldOf("element").forGetter(InfusorRecipe::getElementName),
+            GenericIngredient.CODEC.fieldOf("ingredient").forGetter(InfusorRecipe::getIngredient),
+            ItemStack.CODEC.fieldOf("result").forGetter(InfusorRecipe::getResult)
+        ).apply(instance, (element, ingredient, result) -> {
+            InfusorRecipe recipe = new InfusorRecipe();
+            recipe.setElement(ElementsEnum.valueOf(element.toUpperCase()));
+            recipe.setIngredient(ingredient);
+            recipe.setResult(result);
+            return recipe;
+        })
+    );
+    public static final StreamCodec<RegistryFriendlyByteBuf, InfusorRecipe> STREAM_CODEC = StreamCodec.ofMember(
+        (recipe, buf) -> {
+            buf.writeEnum(recipe.getElement());
+            buf.writeJsonWithCodec(GenericIngredient.CODEC, recipe.getIngredient());
+            buf.writeJsonWithCodec(ItemStack.CODEC, recipe.getResult());
+        },
+        (buf) -> {
+            ElementsEnum element = buf.readEnum(ElementsEnum.class);
+            GenericIngredient ingredient = buf.readJsonWithCodec(GenericIngredient.CODEC);
+            ItemStack result = buf.readJsonWithCodec(ItemStack.CODEC);
 
-        InfusorRecipe recipe = new InfusorRecipe();
-        recipe.setId(id);
-        recipe.setElement(element);
-        recipe.setIngredient(ingredient);
-        recipe.setResult(result);
-        return recipe;
+            InfusorRecipe recipe = new InfusorRecipe();
+            recipe.setElement(element);
+            recipe.setIngredient(ingredient);
+            recipe.setResult(result);
+            return recipe;
+        }
+    );
+
+    @Override
+    public MapCodec<InfusorRecipe> codec() {
+        return CODEC;
     }
 
     @Override
-    public @NotNull InfusorRecipe fromNetwork(ResourceLocation resourceLocation, FriendlyByteBuf buf) {
-        ElementsEnum element = buf.readEnum(ElementsEnum.class);
-        GenericIngredient ingredient = buf.readJsonWithCodec(GenericIngredient.CODEC);
-        ItemStack result = buf.readItem();
-
-        InfusorRecipe recipe = new InfusorRecipe();
-        recipe.setElement(element);
-        recipe.setIngredient(ingredient);
-        recipe.setResult(result);
-        return recipe;
-    }
-
-    @Override
-    public void toNetwork(FriendlyByteBuf friendlyByteBuf, InfusorRecipe recipe) {
-        friendlyByteBuf.writeEnum(recipe.getElement());
-        friendlyByteBuf.writeJsonWithCodec(GenericIngredient.CODEC, recipe.getIngredient());
-        friendlyByteBuf.writeItem(recipe.getResult());
+    public StreamCodec<RegistryFriendlyByteBuf, InfusorRecipe> streamCodec() {
+        return STREAM_CODEC;
     }
 }

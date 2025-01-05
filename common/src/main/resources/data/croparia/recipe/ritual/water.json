@@ -1,0 +1,14 @@
+{
+  "type": "croparia:ritual",
+  "tier": 1,
+  "ingredient": {
+    "id": "croparia:elematilius"
+  },
+  "block": {
+    "block": "minecraft:prismarine"
+  },
+  "result": {
+    "id": "croparia:elemental_water",
+    "Count": 1
+  }
+}

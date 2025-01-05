@@ -46,7 +46,7 @@ public class RecipeGenerator {
         root.add("pattern", pattern);
 
         JsonObject result = new JsonObject();
-        result.addProperty("item", crop.getSeedId().toString());
+        result.addProperty("id", crop.getSeedId().toString());
         result.addProperty("count", 1);
         root.add("result", result);
 
@@ -67,8 +67,8 @@ public class RecipeGenerator {
         root.add("ingredients", ingredients);
 
         JsonObject result = new JsonObject();
-        result.addProperty("item", Objects.requireNonNull(crop.getMaterialItem().arch$registryName()).toString());
-        result.addProperty("count", 2);
+        result.addProperty("id", Objects.requireNonNull(crop.getMaterialItem().arch$registryName()).toString());
+        result.addProperty("count", Math.max(crop.getMaterialItem().getDefaultMaxStackSize(), 1));
         root.add("result", result);
 
         DataPackHandler.INSTANCE.addRecipe(Objects.requireNonNull(id), root);

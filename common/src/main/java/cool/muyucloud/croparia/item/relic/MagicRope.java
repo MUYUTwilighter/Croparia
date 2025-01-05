@@ -1,15 +1,21 @@
 package cool.muyucloud.croparia.item.relic;
 
+import cool.muyucloud.croparia.registry.CropariaComponents;
 import cool.muyucloud.croparia.registry.Tabs;
-import net.minecraft.nbt.CompoundTag;
+import cool.muyucloud.croparia.util.Util;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class MagicRope extends Item {
     public MagicRope() {
@@ -18,22 +24,25 @@ public class MagicRope extends Item {
 
     public @NotNull InteractionResult useOn(UseOnContext context) {
         Level level = context.getLevel();
-        if (!level.isClientSide) {
-            Player player = context.getPlayer();
+        if (!level.isClientSide && context.getPlayer() instanceof ServerPlayer player) {
+            ServerLevel world = (ServerLevel) player.level();
+            MinecraftServer server = player.getServer();
             ItemStack itemStack = context.getItemInHand();
-            CompoundTag tag = itemStack.getOrCreateTag();
-            int[] position;
-            assert player != null;
             if (player.isShiftKeyDown()) {
-                position = new int[]{player.blockPosition().getX(), player.blockPosition().getY(), player.blockPosition().getZ()};
-                tag.putIntArray("targetPos", position);
-                player.displayClientMessage(Component.nullToEmpty("x = " + position[0] + " y = " + position[1] + " z = " + position[2]), true);
+                BlockPos targetPos = player.blockPosition();
+                ResourceLocation targetWorld = world.dimension().location();
+                itemStack.set(CropariaComponents.TARGET_WORLD.get(), targetWorld);
+                itemStack.set(CropariaComponents.TARGET_POSITION.get(), targetPos);
+                player.displayClientMessage(Component.literal("x=%s, y=%s, z=%s in %s".formatted(targetPos.getX(), targetPos.getY(), targetPos.getZ(), targetWorld)), true);
                 return InteractionResult.SUCCESS;
             }
-
-            if (tag.contains("targetPos")) {
-                position = tag.getIntArray("targetPos");
-                player.teleportToWithTicket(position[0] + 0.5, position[1], position[2] + 0.5);
+            @NotNull ResourceLocation targetWorld = itemStack.getOrDefault(
+                CropariaComponents.TARGET_WORLD.get(), ResourceLocation.tryParse("minecraft:overworld")
+            );
+            @Nullable BlockPos targetPos = itemStack.getOrDefault(CropariaComponents.TARGET_POSITION.get(), null);
+            if (targetPos != null) {
+                ServerLevel target = Util.getLevel(targetWorld, server);
+                player.teleportTo(target, targetPos.getX(), targetPos.getY(), targetPos.getZ(), 0.0F, 0.0F);
                 return InteractionResult.SUCCESS;
             }
         }

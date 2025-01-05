@@ -9,7 +9,7 @@ import cool.muyucloud.croparia.registry.RecipeTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -30,7 +30,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class Infusor extends Block {
     protected final VoxelShape SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 8.0, 16.0);
@@ -41,9 +40,10 @@ public class Infusor extends Block {
         this.registerDefaultState(this.defaultBlockState().setValue(TYPE, ElementsEnum.EMPTY));
     }
 
-    public @NotNull InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, @Nullable BlockHitResult hit) {
+    @Override
+    protected @NotNull ItemInteractionResult useItemOn(ItemStack itemStack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
         if (world.isClientSide || !CropariaIf.CONFIG.getInfusor()) {
-            return InteractionResult.FAIL;
+            return ItemInteractionResult.FAIL;
         } else {
             ItemStack itemstack = player.getItemInHand(hand);
             Item item = itemstack.getItem();
@@ -69,7 +69,7 @@ public class Infusor extends Block {
                 player.getMainHandItem().shrink(1);
                 world.addFreshEntity(new ItemEntity(world, (double) pos.getX() + 0.5, (double) pos.getY() + 0.5, (double) pos.getZ() + 0.5, new ItemStack(CropariaItems.getPotion(state.getValue(TYPE)))));
             }
-            return InteractionResult.PASS;
+            return ItemInteractionResult.SUCCESS;
         }
     }
 
@@ -85,7 +85,7 @@ public class Infusor extends Block {
         RecipeManager manager = world.getServer().getRecipeManager();
         InfusorContainer container = InfusorContainer.of(element, input);
         manager.getRecipeFor(RecipeTypes.INFUSOR.get(), container, world).ifPresent(
-            recipe -> onCrafting(recipe, container, world, pos)
+            recipe -> onCrafting(recipe.value(), container, world, pos)
         );
     }
 

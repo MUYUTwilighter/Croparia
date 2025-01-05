@@ -5,6 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import cool.muyucloud.croparia.access.StateHolderAccess;
 import cool.muyucloud.croparia.registry.CropariaItems;
 import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -23,9 +24,15 @@ import java.util.*;
 import java.util.function.Predicate;
 
 public class BlockStatePredicate implements Predicate<BlockState> {
-    public static final ItemStack STACK_UNKNOWN = Items.BEDROCK.getDefaultInstance().setHoverName(Component.translatable("tooltip.croparia.unknown"));
-    public static final ItemStack STACK_AIR = Items.BARRIER.getDefaultInstance().setHoverName(Component.translatable("tooltip.croparia.air"));
-    public static final ItemStack STACK_ANY = Items.LIGHT_GRAY_STAINED_GLASS_PANE.getDefaultInstance().setHoverName(Component.translatable("tooltip.croparia.any"));
+    public static final ItemStack STACK_UNKNOWN = Items.BEDROCK.getDefaultInstance();
+    public static final ItemStack STACK_AIR = Items.BARRIER.getDefaultInstance();
+    public static final ItemStack STACK_ANY = Items.LIGHT_GRAY_STAINED_GLASS_PANE.getDefaultInstance();
+
+    static {
+        STACK_UNKNOWN.set(DataComponents.CUSTOM_NAME, Component.translatable("tooltip.croparia.unknown"));
+        STACK_AIR.set(DataComponents.CUSTOM_NAME, Component.translatable("tooltip.croparia.air"));
+        STACK_ANY.set(DataComponents.CUSTOM_NAME, Component.translatable("tooltip.croparia.any"));
+    }
 
     public static final BlockStatePredicate ANY = new BlockStatePredicate(b -> true, b -> true, 0, Builder.create());
     public static final BlockStatePredicate AIR = new BlockStatePredicate(BlockBehaviour.BlockStateBase::isAir, b -> true, 0, Builder.create());
@@ -76,8 +83,11 @@ public class BlockStatePredicate implements Predicate<BlockState> {
             } else {
                 List<ItemStack> list = new ArrayList<>();
                 blocks.forEachRemaining(
-                    holder -> list.add(holder.value().asItem().getDefaultInstance()
-                        .setHoverName(Component.literal("#" + builder.block)))
+                    holder -> {
+                        ItemStack item = holder.value().asItem().getDefaultInstance();
+                        item.set(DataComponents.CUSTOM_NAME, Component.literal(builder.block));
+                        list.add(item);
+                    }
                 );
                 return list;
             }
@@ -122,13 +132,12 @@ public class BlockStatePredicate implements Predicate<BlockState> {
             return builder;
         }));
 
-
-        private boolean built = false;
         @Nullable
         private String block = null;
         @NotNull
         private final Map<String, String> properties = new HashMap<>();
         private transient boolean tag = false;
+        private transient boolean built = false;
 
         public static Builder create() {
             return new Builder();
@@ -138,9 +147,8 @@ public class BlockStatePredicate implements Predicate<BlockState> {
             Predicate<BlockState> blockPredicate;
             if (block == null) {
                 blockPredicate = b -> true;
-            } else if (tag) {
-                block = block.substring(1);
-                TagKey<Block> tag = TagKey.create(Registries.BLOCK, ResourceLocation.tryParse(block));
+            } else if (block.startsWith("#")) {
+                TagKey<Block> tag = TagKey.create(Registries.BLOCK, ResourceLocation.tryParse(block.substring(1)));
                 blockPredicate = b -> b.is(tag);
             } else {
                 Block block = BuiltInRegistries.BLOCK.get(ResourceLocation.tryParse(this.block));

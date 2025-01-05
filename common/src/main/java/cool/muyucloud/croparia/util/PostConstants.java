@@ -13,8 +13,8 @@ import java.util.List;
 
 @PostGen
 public class PostConstants {
-    public static final List<Item> FOODS = BuiltInRegistries.ITEM.stream().filter(Item::isEdible).toList();
-    public static final TagKey<Block> MIDAS_HAND_IMMUNE_BLOCKS = TagKey.create(Registries.BLOCK, new ResourceLocation("croparia", "midas_hand_immune"));
-    public static final TagKey<EntityType<?>> MIDAS_HAND_IMMUNE_ENTITIES = TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("croparia", "midas_hand_immune"));
-    public static final TagKey<Item> HORN_PLENTY_BLACKLIST = TagKey.create(Registries.ITEM, new ResourceLocation("croparia", "horn_plenty_blacklist"));
+    public static final List<Item> FOODS = BuiltInRegistries.ITEM.stream().filter(item -> Util.isEdible(item.getDefaultInstance())).toList();
+    public static final TagKey<Block> MIDAS_HAND_IMMUNE_BLOCKS = TagKey.create(Registries.BLOCK, ResourceLocation.tryBuild("croparia", "midas_hand_immune"));
+    public static final TagKey<EntityType<?>> MIDAS_HAND_IMMUNE_ENTITIES = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.tryBuild("croparia", "midas_hand_immune"));
+    public static final TagKey<Item> HORN_PLENTY_BLACKLIST = TagKey.create(Registries.ITEM, ResourceLocation.tryBuild("croparia", "horn_plenty_blacklist"));
 }

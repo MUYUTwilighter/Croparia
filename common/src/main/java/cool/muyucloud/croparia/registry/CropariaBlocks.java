@@ -8,6 +8,7 @@ import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.LayeredCauldronBlock;
@@ -45,59 +46,63 @@ public class CropariaBlocks {
     public static final RegistrySupplier<Block> ELEMENTAL_STONE = registerBlock(
         "elemental_stone",
         () -> new DropExperienceBlock(
-            BlockBehaviour.Properties.of().strength(1.0F, 1.0F).requiresCorrectToolForDrops(),
-            UniformInt.of(0, 2)
+            UniformInt.of(0, 2),
+            BlockBehaviour.Properties.of().strength(1.0F, 1.0F).requiresCorrectToolForDrops()
         )
     );
     public static final RegistrySupplier<DropExperienceBlock> ELEMATILIUS_ORE = registerBlock(
         "elematilius_ore",
         () -> new DropExperienceBlock(
-            BlockBehaviour.Properties.of().strength(1.0F, 1.0F).requiresCorrectToolForDrops(),
-            UniformInt.of(0, 2)
+            UniformInt.of(0, 2),
+            BlockBehaviour.Properties.of().strength(1.0F, 1.0F).requiresCorrectToolForDrops()
         )
     );
     public static final RegistrySupplier<DropExperienceBlock> DEEPSLATE_ELEMATILIUS_ORE = registerBlock(
         "deepslate_elematilius_ore",
         () -> new DropExperienceBlock(
+            UniformInt.of(0, 2),
             BlockBehaviour.Properties.of().strength(1.0F, 1.0F).requiresCorrectToolForDrops().
-                mapColor(MapColor.DEEPSLATE).sound(SoundType.DEEPSLATE).requiresCorrectToolForDrops(),
-            UniformInt.of(0, 2)
+                mapColor(MapColor.DEEPSLATE).sound(SoundType.DEEPSLATE).requiresCorrectToolForDrops()
         )
     );
     public static final RegistrySupplier<LayeredCauldronBlock> CAULDRON = registerBlock(
         "elematilius_cauldron",
         () -> new LayeredCauldronBlock(
-            BlockBehaviour.Properties.copy(net.minecraft.world.level.block.Blocks.CAULDRON),
-            LayeredCauldronBlock.RAIN, CropariaCauldronInteraction.ELEMATILIUS
+            Biome.Precipitation.RAIN,
+            CropariaCauldronInteraction.ELEMATILIUS,
+            BlockBehaviour.Properties.ofFullCopy(net.minecraft.world.level.block.Blocks.CAULDRON)
         )
     );
     public static final RegistrySupplier<LayeredCauldronBlock> WATER_CAULDRON = registerBlock(
         "water_cauldron",
         () -> new LayeredCauldronBlock(
-            BlockBehaviour.Properties.copy(net.minecraft.world.level.block.Blocks.CAULDRON),
-            LayeredCauldronBlock.RAIN,
-            CropariaCauldronInteraction.WATER_CAULDRON
+            Biome.Precipitation.RAIN,
+            CropariaCauldronInteraction.WATER_CAULDRON,
+            BlockBehaviour.Properties.ofFullCopy(net.minecraft.world.level.block.Blocks.CAULDRON)
         )
     );
     public static final RegistrySupplier<LayeredCauldronBlock> FIRE_CAULDRON = registerBlock(
         "fire_cauldron",
         () -> new LayeredCauldronBlock(
-            BlockBehaviour.Properties.copy(net.minecraft.world.level.block.Blocks.CAULDRON),
-            LayeredCauldronBlock.RAIN, CropariaCauldronInteraction.FIRE_CAULDRON
+            Biome.Precipitation.RAIN,
+            CropariaCauldronInteraction.FIRE_CAULDRON,
+            BlockBehaviour.Properties.ofFullCopy(net.minecraft.world.level.block.Blocks.CAULDRON)
         )
     );
     public static final RegistrySupplier<LayeredCauldronBlock> EARTH_CAULDRON = registerBlock(
         "earth_cauldron",
         () -> new LayeredCauldronBlock(
-            BlockBehaviour.Properties.copy(net.minecraft.world.level.block.Blocks.CAULDRON),
-            LayeredCauldronBlock.RAIN, CropariaCauldronInteraction.EARTH_CAULDRON
+            Biome.Precipitation.RAIN,
+            CropariaCauldronInteraction.EARTH_CAULDRON,
+            BlockBehaviour.Properties.ofFullCopy(net.minecraft.world.level.block.Blocks.CAULDRON)
         )
     );
     public static final RegistrySupplier<LayeredCauldronBlock> AIR_CAULDRON = registerBlock(
         "air_cauldron",
         () -> new LayeredCauldronBlock(
-            BlockBehaviour.Properties.copy(net.minecraft.world.level.block.Blocks.CAULDRON),
-            LayeredCauldronBlock.RAIN, CropariaCauldronInteraction.AIR_CAULDRON
+            Biome.Precipitation.RAIN,
+            CropariaCauldronInteraction.AIR_CAULDRON,
+            BlockBehaviour.Properties.ofFullCopy(net.minecraft.world.level.block.Blocks.CAULDRON)
         )
     );
 

@@ -8,6 +8,7 @@ package cool.muyucloud.croparia.block.entity;
 import cool.muyucloud.croparia.access.CropBlockAccess;
 import cool.muyucloud.croparia.registry.BlockEntities;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -44,7 +45,7 @@ public class GreenhouseBlockEntity extends BlockEntity implements MenuProvider, 
         if (!level.isClientSide) {
             BlockState belowState = level.getBlockState(worldPosition.below());
             if (belowState.getBlock() instanceof CropBlock block) {
-                Item seed = block.getCloneItemStack(level, worldPosition, belowState).getItem();
+                Item seed = block.asItem();
                 if (block.isMaxAge(belowState)) {
                     List<ItemStack> droppedStacks = Block.getDrops(belowState, Objects.requireNonNull(level.getServer()).getLevel(level.dimension()), worldPosition.below(), level.getBlockEntity(worldPosition.below()));
                     boolean decreased = false;
@@ -77,14 +78,16 @@ public class GreenhouseBlockEntity extends BlockEntity implements MenuProvider, 
 
     }
 
-    public void load(CompoundTag nbt) {
-        super.load(nbt);
-        ContainerHelper.loadAllItems(nbt, this.inventory);
+    @Override
+    protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider provider) {
+        super.loadAdditional(nbt, provider);
+        ContainerHelper.loadAllItems(nbt, this.inventory, provider);
     }
 
-    protected void saveAdditional(CompoundTag nbt) {
-        ContainerHelper.saveAllItems(nbt, this.inventory);
-        super.saveAdditional(nbt);
+    @Override
+    protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider provider) {
+        ContainerHelper.saveAllItems(nbt, this.inventory, provider);
+        super.saveAdditional(nbt, provider);
     }
 
     public int getContainerSize() {

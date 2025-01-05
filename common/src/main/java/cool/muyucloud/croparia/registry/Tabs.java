@@ -39,6 +39,6 @@ public class Tabs {
     }
 
     public static CreativeModeTab get(String id) {
-        return BuiltInRegistries.CREATIVE_MODE_TAB.get(new ResourceLocation(CropariaIf.MOD_ID, id));
+        return BuiltInRegistries.CREATIVE_MODE_TAB.get(ResourceLocation.tryBuild(CropariaIf.MOD_ID, id));
     }
 }

@@ -70,13 +70,13 @@ public class RitualStand extends Block {
         AtomicReference<RitualStructure> recipe = new AtomicReference<>();
         recipeManager.getRecipeFor(
             RecipeTypes.RITUAL_STRUCTURE.get(), RitualStructureContainer.INSTANCE, null, this.arch$registryName()
-        ).ifPresent(result -> recipe.set(result.getSecond()));
+        ).ifPresent(result -> recipe.set(result.value()));
         return Optional.ofNullable(recipe.get());
     }
 
     protected void tryCraft(@NotNull RitualContainer container, @NotNull ServerLevel world, @NotNull BlockPos pos, @Nullable Player player) {
         world.getServer().getRecipeManager().getRecipeFor(RecipeTypes.RITUAL.get(), container, world).ifPresentOrElse(recipe -> {
-            ItemStack result = recipe.assemble(container, world.registryAccess());
+            ItemStack result = recipe.value().assemble(container);
             if (result.getItem() instanceof SpawnEggItem) {
                 FakePlayer.useAllItemsOn(world, pos, result);
             } else {

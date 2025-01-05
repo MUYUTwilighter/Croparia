@@ -52,7 +52,7 @@ public class CropFileHandler {
         }
         try (JsonWriter writer = new JsonWriter(new FileWriter(file))) {
             writer.setIndent("  ");
-            JsonObject json = CompatCrop.CODEC.encodeStart(JsonOps.INSTANCE, crop).getOrThrow(false, msg -> {
+            JsonObject json = CompatCrop.CODEC.encodeStart(JsonOps.INSTANCE, crop).getOrThrow(msg -> {
                 throw new RuntimeException(msg);
             }).getAsJsonObject();
             GSON.toJson(json, writer);

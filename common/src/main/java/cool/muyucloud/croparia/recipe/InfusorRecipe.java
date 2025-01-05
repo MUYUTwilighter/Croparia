@@ -7,8 +7,7 @@ import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.registry.RecipeSerializers;
 import cool.muyucloud.croparia.registry.RecipeTypes;
 import cool.muyucloud.croparia.util.predicate.GenericIngredient;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
@@ -24,7 +23,6 @@ import org.jetbrains.annotations.Nullable;
  * For old version of infusor recipe formed by Dalarion, see {@link OldInfusorRecipe}.
  */
 public class InfusorRecipe implements Recipe<InfusorContainer> {
-    protected ResourceLocation id;
     protected ElementsEnum element = ElementsEnum.ELEMENTAL;
     protected GenericIngredient ingredient;
     protected ItemStack result = ItemStack.EMPTY;
@@ -35,13 +33,17 @@ public class InfusorRecipe implements Recipe<InfusorContainer> {
 
     public void setResult(ItemStack result) {
         if (result.isEmpty()) {
-            throw new IllegalArgumentException("Empty result item %s in recipe %s".formatted(result, this.getId()));
+            throw new IllegalArgumentException("Empty result item %s in recipe %s".formatted(result, this));
         }
         this.result = result;
     }
 
     public ElementsEnum getElement() {
         return element;
+    }
+
+    public String getElementName() {
+        return element.getSerializedName();
     }
 
     public void setElement(ElementsEnum element) {
@@ -81,8 +83,8 @@ public class InfusorRecipe implements Recipe<InfusorContainer> {
     }
 
     @Override
-    public @NotNull ItemStack assemble(InfusorContainer container, RegistryAccess registryAccess) {
-        return assemble(container);
+    public @NotNull ItemStack assemble(InfusorContainer recipeInput, HolderLookup.Provider provider) {
+        return assemble(recipeInput);
     }
 
     @Override
@@ -91,17 +93,8 @@ public class InfusorRecipe implements Recipe<InfusorContainer> {
     }
 
     @Override
-    public @NotNull ItemStack getResultItem(@Nullable RegistryAccess registryAccess) {
+    public @NotNull ItemStack getResultItem(HolderLookup.Provider provider) {
         return result.copy();
-    }
-
-    public void setId(ResourceLocation id) {
-        this.id = id;
-    }
-
-    @Override
-    public @NotNull ResourceLocation getId() {
-        return id;
     }
 
     @Override

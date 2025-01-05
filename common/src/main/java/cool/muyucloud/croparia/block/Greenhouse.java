@@ -5,6 +5,7 @@
 
 package cool.muyucloud.croparia.block;
 
+import com.mojang.serialization.MapCodec;
 import cool.muyucloud.croparia.block.entity.GreenhouseBlockEntity;
 import cool.muyucloud.croparia.registry.BlockEntities;
 import cool.muyucloud.croparia.registry.CropariaItems;
@@ -13,10 +14,11 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -37,12 +39,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Greenhouse extends BaseEntityBlock {
+    public static final MapCodec<Greenhouse> CODEC = simpleCodec(Greenhouse::new);
     public static List<Greenhouse> blockGreenhouse = new ArrayList<>();
     protected final VoxelShape SHAPE = Block.box(1.0, 1.0, 0.0, 15.0, 3.0, 15.0);
 
     public Greenhouse(Properties settings) {
         super(settings);
         blockGreenhouse.add(this);
+    }
+
+    @Override
+    protected @NotNull MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
     }
 
     public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
@@ -57,7 +65,8 @@ public class Greenhouse extends BaseEntityBlock {
         return false;
     }
 
-    public @NotNull InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    @Override
+    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (!world.isClientSide) {
             MenuProvider screenHandlerFactory = state.getMenuProvider(world, pos);
             if (screenHandlerFactory != null) {
@@ -65,7 +74,7 @@ public class Greenhouse extends BaseEntityBlock {
             }
         }
 
-        return InteractionResult.SUCCESS;
+        return ItemInteractionResult.SUCCESS;
     }
 
     public void randomTick(@Nullable BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
