@@ -5,7 +5,7 @@
       "block": "croparia:elemental_stone"
     },
     "S": {
-      "block": "minecraft:sculk_shrieker"
+      "block": "croparia:activated_shrieker"
     },
     "T": {
       "block": "minecraft:tuff"

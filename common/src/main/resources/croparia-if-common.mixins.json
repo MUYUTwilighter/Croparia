@@ -11,6 +11,7 @@
     "PackRepositoryMixin",
     "ReloadableResourceManagerImplMixin",
     "ReloadCommandMixin",
+    "BlockMixin",
     "StateHolderMixin"
   ],
   "injectors": {

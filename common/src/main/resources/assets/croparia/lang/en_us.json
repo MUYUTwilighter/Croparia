@@ -61,6 +61,7 @@
   "block.croparia.ritual_stand_2": "Ritual Stand T2",
   "block.croparia.ritual_stand_3": "Ritual Stand T3",
   "block.croparia.placeholder_block": "Any block matching following properties",
+  "block.croparia.activated_shrieker": "Activated Shrieker",
   "container.greenhouse": "Greenhouse",
   "item.croparia.croparia": "Croparia",
   "item.croparia.croparia2": "Croparia T2",

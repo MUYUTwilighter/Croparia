@@ -1,0 +1,12 @@
+{
+  "type": "croparia:infusor",
+  "element": "elemental",
+  "ingredient": {
+    "id": "minecraft:sculk_shrieker",
+    "count": 1
+  },
+  "result": {
+    "id": "croparia:activated_shrieker",
+    "Count": 1
+  }
+}

@@ -22,6 +22,9 @@ import java.util.function.Supplier;
 public class CropariaItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(CropariaIf.MOD_ID, Registries.ITEM);
 
+    public static final RegistrySupplier<BlockItem> ACTIVATED_SHRIEKER = registerItem(
+        "activated_shrieker", () -> new BlockItem(CropariaBlocks.ACTIVATED_SHRIEKER.get(), new Item.Properties().arch$tab(Tabs.MAIN))
+    );
     public static final RegistrySupplier<BlockItem> PLACEHOLDER_BLOCK = registerItem(
         "placeholder_block", () -> new BlockItem(CropariaBlocks.PLACEHOLDER.get(), new Item.Properties())
     );

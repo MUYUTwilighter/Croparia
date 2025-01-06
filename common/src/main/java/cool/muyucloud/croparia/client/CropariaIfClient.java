@@ -15,5 +15,6 @@ public class CropariaIfClient {
             RenderTypeRegistry.register(RenderType.cutoutMipped(), crop.getCropBlock());
         });
         RenderTypeRegistry.register(RenderType.cutout(), CropariaBlocks.GREENHOUSE.get());
+        RenderTypeRegistry.register(RenderType.cutout(), CropariaBlocks.ACTIVATED_SHRIEKER.get());
     }
 }
