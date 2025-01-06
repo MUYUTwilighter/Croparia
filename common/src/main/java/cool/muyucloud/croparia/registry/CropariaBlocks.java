@@ -23,6 +23,12 @@ import java.util.function.Supplier;
 public class CropariaBlocks {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(CropariaIf.MOD_ID, Registries.BLOCK);
 
+    public static final RegistrySupplier<ActivatedShrieker> ACTIVATED_SHRIEKER = registerBlock(
+        "activated_shrieker",
+        () -> new ActivatedShrieker(
+            BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK).strength(3.0F, 3.0F).sound(SoundType.SCULK_SHRIEKER)
+        )
+    );
     public static final RegistrySupplier<Placeholder> PLACEHOLDER = registerBlock("placeholder_block", Placeholder::new);
     public static final RegistrySupplier<Greenhouse> GREENHOUSE = registerBlock(
         "greenhouse",

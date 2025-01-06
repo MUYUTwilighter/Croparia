@@ -1,6 +1,7 @@
 package cool.muyucloud.croparia.registry;
 
 import cool.muyucloud.croparia.CropariaIf;
+import cool.muyucloud.croparia.block.entity.ActivatedShriekerBlockEntity;
 import cool.muyucloud.croparia.block.entity.GreenhouseBlockEntity;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
@@ -17,6 +18,10 @@ public class BlockEntities {
     public static final RegistrySupplier<BlockEntityType<GreenhouseBlockEntity>> GREENHOUSE_BE = register(
         "greenhouse",
         () -> BlockEntityType.Builder.of(GreenhouseBlockEntity::new, CropariaBlocks.GREENHOUSE.get()).build(null)
+    );
+    public static final RegistrySupplier<BlockEntityType<ActivatedShriekerBlockEntity>> ACTIVATED_SHRIEKER = register(
+        "activated_shrieker",
+        () -> BlockEntityType.Builder.of(ActivatedShriekerBlockEntity::new, CropariaBlocks.ACTIVATED_SHRIEKER.get()).build(null)
     );
 
     @NotNull

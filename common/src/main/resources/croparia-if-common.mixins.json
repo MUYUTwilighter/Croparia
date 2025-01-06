@@ -6,6 +6,7 @@
   "client": [
   ],
   "mixins": [
+    "BlockMixin",
     "CropBlockMixin",
     "MinecraftServerMixin",
     "PackRepositoryMixin",
