@@ -29,6 +29,10 @@ public class InfusorRecipe implements Recipe<InfusorContainer> {
     protected GenericIngredient ingredient;
     protected ItemStack result = ItemStack.EMPTY;
 
+    public ItemStack getElementPotion() {
+        return CropariaItems.getPotion(this.element).getDefaultInstance();
+    }
+
     public ItemStack getResult() {
         return result;
     }

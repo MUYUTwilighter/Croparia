@@ -38,6 +38,7 @@ dependencies {
     modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-forge:$rei_version"
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-forge:$rei_version"
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-default-plugin-forge:$rei_version"
+    modCompileOnly "dev.emi:emi-xplat-intermediary:${emi_version}:api"
 }
 
 processResources {

@@ -1,8 +1,7 @@
-package cool.muyucloud.croparia.client.recipe.display;
+package cool.muyucloud.croparia.rei.display;
 
-import cool.muyucloud.croparia.client.recipe.display.category.InfusorRecipeDisplayCategory;
-import cool.muyucloud.croparia.recipe.InfusorRecipe;
-import cool.muyucloud.croparia.registry.CropariaItems;
+import cool.muyucloud.croparia.recipe.RitualRecipe;
+import cool.muyucloud.croparia.rei.display.category.RitualRecipeDisplayCategory;
 import cool.muyucloud.croparia.util.Constants;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.display.Display;
@@ -14,17 +13,16 @@ import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
 
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
-public class InfusorRecipeDisplay implements Display {
-    private final InfusorRecipe recipe;
+public class RitualRecipeDisplay implements Display {
+    private final RitualRecipe recipe;
 
-    public InfusorRecipeDisplay(InfusorRecipe recipe) {
+    public RitualRecipeDisplay(RitualRecipe recipe) {
         this.recipe = recipe;
     }
 
@@ -37,23 +35,29 @@ public class InfusorRecipeDisplay implements Display {
         }).toList();
     }
 
-    public EntryStack<ItemStack> getElement() {
-        ItemStack potion = recipe.getPotion().getDefaultInstance();
-        List<Component> tooltips = new LinkedList<>(potion.getTooltipLines(null, TooltipFlag.NORMAL));
-        tooltips.set(0, Constants.ELEM_INFUSE_TOOLTIP);
-        return EntryStacks.of(recipe.getPotion()).tooltip(tooltips);
+    public Collection<EntryStack<ItemStack>> getBlockItems() {
+        return recipe.extractBlockItems().stream().map(item -> {
+            List<Component> tooltips = new LinkedList<>();
+            tooltips.add(Constants.BLOCK_PLACE_TOOLTIP);
+            tooltips.addAll(recipe.getBlock().tooltip());
+            return EntryStacks.of(item).tooltip(tooltips);
+        }).toList();
     }
 
     public EntryStack<ItemStack> getResult() {
-        return EntryStacks.of(this.recipe.getResult());
+        return EntryStacks.of(recipe.getResult());
+    }
+
+    public EntryStack<ItemStack> getRitual() {
+        return EntryStacks.of(recipe.getRitualItem());
     }
 
     @Override
     public List<EntryIngredient> getInputEntries() {
         return List.of(
+            EntryIngredients.of(VanillaEntryTypes.ITEM, recipe.extractBlockItems()),
             EntryIngredients.of(VanillaEntryTypes.ITEM, recipe.getIngredient().availableStacks()),
-            EntryIngredients.of(recipe.getPotion()),
-            EntryIngredients.of(CropariaItems.INFUSOR.get())
+            EntryIngredients.of(recipe.getRitualItem())
         );
     }
 
@@ -64,7 +68,7 @@ public class InfusorRecipeDisplay implements Display {
 
     @Override
     public CategoryIdentifier<?> getCategoryIdentifier() {
-        return InfusorRecipeDisplayCategory.ID;
+        return RitualRecipeDisplayCategory.ID;
     }
 
     @Override

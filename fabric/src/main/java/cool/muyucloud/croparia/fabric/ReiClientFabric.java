@@ -1,6 +1,6 @@
 package cool.muyucloud.croparia.fabric;
 
-import cool.muyucloud.croparia.client.ReiClient;
+import cool.muyucloud.croparia.rei.ReiClient;
 import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
 import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
 import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;

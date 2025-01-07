@@ -7,7 +7,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.SculkShriekerBlock;
@@ -47,6 +49,14 @@ public class ActivatedShrieker extends SculkShriekerBlock {
             }
         }
         super.onRemove(blockState, level, blockPos, blockState2, bl);
+    }
+
+    @Override
+    protected void popExperience(ServerLevel serverLevel, BlockPos blockPos, int i) {
+    }
+
+    @Override
+    protected void tryDropExperience(ServerLevel serverLevel, BlockPos blockPos, ItemStack itemStack, IntProvider intProvider) {
     }
 
     @Nullable

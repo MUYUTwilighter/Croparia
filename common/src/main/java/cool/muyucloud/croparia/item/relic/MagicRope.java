@@ -1,5 +1,6 @@
 package cool.muyucloud.croparia.item.relic;
 
+import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.registry.Tabs;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
@@ -22,16 +23,20 @@ public class MagicRope extends Item {
     public @NotNull InteractionResult useOn(UseOnContext context) {
         if (context.getLevel() instanceof ServerLevel world && context.getPlayer() instanceof ServerPlayer player) {
             ItemStack itemStack = context.getItemInHand();
-            CompoundTag tag = itemStack.getOrCreateTag();
             int[] position;
             if (player.isShiftKeyDown()) {
+                player.getMainHandItem().shrink(1);
+                ItemStack newStack = CropariaItems.MAGIC_ROPE.get().getDefaultInstance();
+                CompoundTag tag = newStack.getOrCreateTag();
                 position = new int[]{player.blockPosition().getX(), player.blockPosition().getY(), player.blockPosition().getZ()};
                 String targetWorld = world.dimension().location().toString();
                 tag.putIntArray("targetPos", position);
                 tag.putString("targetWorld", targetWorld);
                 player.displayClientMessage(Component.literal("%s[x=%d y=%d z=%d]".formatted(targetWorld, position[0], position[1], position[2])), true);
-                return InteractionResult.SUCCESS;
+                player.addItem(newStack);
+                return InteractionResult.CONSUME;
             }
+            CompoundTag tag = itemStack.getOrCreateTag();
             if (tag.contains("targetPos")) {
                 String targetWorld = tag.contains("targetWorld") ? tag.getString("targetWorld") : "minecraft:overworld";
                 world = world.getServer().getLevel(ResourceKey.create(Registries.DIMENSION, ResourceLocation.tryParse(targetWorld)));

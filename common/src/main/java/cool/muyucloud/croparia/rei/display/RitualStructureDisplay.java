@@ -1,8 +1,8 @@
-package cool.muyucloud.croparia.client.recipe.display;
+package cool.muyucloud.croparia.rei.display;
 
-import cool.muyucloud.croparia.client.recipe.display.category.RitualStructureDisplayCategory;
 import cool.muyucloud.croparia.recipe.RitualStructure;
 import cool.muyucloud.croparia.registry.CropariaItems;
+import cool.muyucloud.croparia.rei.display.category.RitualStructureDisplayCategory;
 import cool.muyucloud.croparia.util.predicate.BlockStatePredicate;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.display.Display;

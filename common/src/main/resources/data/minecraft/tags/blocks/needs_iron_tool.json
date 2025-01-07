@@ -10,6 +10,8 @@
     "croparia:water_cauldron",
     "croparia:fire_cauldron",
     "croparia:earth_cauldron",
-    "croparia:air_cauldron"
+    "croparia:air_cauldron",
+    "croparia:ritual_stand_2",
+    "croparia:ritual_stand_3"
   ]
 }

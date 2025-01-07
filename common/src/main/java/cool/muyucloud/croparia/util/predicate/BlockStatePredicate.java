@@ -68,7 +68,7 @@ public class BlockStatePredicate implements Predicate<BlockState> {
             return Collections.singleton(getBlockItem(ResourceLocation.tryParse(this.builder.getBlock())));
         } else if (this.builder.isTag()) {
             Iterator<Holder<Block>> blocks = BuiltInRegistries.BLOCK.getTagOrEmpty(
-                TagKey.create(Registries.BLOCK, ResourceLocation.tryParse(builder.getBlock()))
+                TagKey.create(Registries.BLOCK, ResourceLocation.tryParse(builder.getBlock().substring(1)))
             ).iterator();
             if (!blocks.hasNext()) {
                 return builder.properties.isEmpty() ? Collections.singleton(STACK_UNKNOWN)
@@ -77,7 +77,7 @@ public class BlockStatePredicate implements Predicate<BlockState> {
                 List<ItemStack> list = new ArrayList<>();
                 blocks.forEachRemaining(
                     holder -> list.add(holder.value().asItem().getDefaultInstance()
-                        .setHoverName(Component.literal("#" + builder.block)))
+                        .setHoverName(Component.literal(builder.block)))
                 );
                 return list;
             }

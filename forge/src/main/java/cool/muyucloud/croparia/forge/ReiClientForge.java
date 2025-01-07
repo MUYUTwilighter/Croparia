@@ -1,13 +1,13 @@
 package cool.muyucloud.croparia.forge;
 
-import cool.muyucloud.croparia.client.ReiClient;
+import cool.muyucloud.croparia.rei.ReiClient;
 import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
 import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
 import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
 import me.shedaniel.rei.forge.REIPluginClient;
 
 @REIPluginClient
-public class CropariaClientReiPlugin implements REIClientPlugin {
+public class ReiClientForge implements REIClientPlugin {
     @Override
     public void registerCategories(CategoryRegistry registry) {
         ReiClient.registerCategories(registry);
