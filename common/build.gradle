@@ -16,7 +16,8 @@ dependencies {
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-api:$rei_version"
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-default-plugin:$rei_version"
 
-    compileOnly "dev.emi:emi-xplat-mojmap:${emi_version}:api"
+//    compileOnly "dev.emi:emi-xplat-mojmap:${emi_version}:api"
+    modCompileOnly "dev.emi:emi-xplat-intermediary:${emi_version}:api"
 }
 
 publishing {

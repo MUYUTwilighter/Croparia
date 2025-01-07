@@ -151,7 +151,8 @@ public class EmiRitualStructure implements EmiRecipe {
                             .render(graphics, mouseX, mouseY, delta);
                     }
                 }
-            });
+            }
+        );
         widgets.add(new Button(
             (SLOT_SIZE - BUTTON_SIZE) / 2, displaySize.getZ() * SLOT_SIZE / 2 + SLOT_SIZE - BUTTON_SIZE / 2,
             BUTTON_SIZE, BUTTON_SIZE, Constants.LEFT_DARK, Constants.LEFT_WHITE,
@@ -175,7 +176,7 @@ public class EmiRitualStructure implements EmiRecipe {
             () -> true, (mouseX, mouseY, button) -> this.backward()
         ));
         widgets.add(new Button(
-            SLOT_SIZE, this.getDisplayHeight() - SLOT_SIZE + (SLOT_SIZE - BUTTON_SIZE) / 2,
+            SLOT_SIZE, this.getDisplayHeight() - BUTTON_SIZE - SLOT_SIZE / 2,
             BUTTON_SIZE, BUTTON_SIZE, Constants.LEFT_DARK, Constants.LEFT_WHITE,
             () -> true, (mouseX, mouseY, button) -> this.down()
         ));
@@ -185,19 +186,13 @@ public class EmiRitualStructure implements EmiRecipe {
             BUTTON_SIZE, BUTTON_SIZE, Constants.RIGHT_DARK, Constants.RIGHT_WHITE,
             () -> true, (mouseX, mouseY, button) -> this.up()
         ));
-        widgets.addText(
-            Component.translatable("gui.croparia.ritual_structure.label", cursor.getY()),
-            displaySize.getX() * SLOT_SIZE / 2 + 18 - BUTTON_SIZE / 2,
-            displaySize.getZ() * SLOT_SIZE + 36 + (18 - BUTTON_SIZE) / 2,
-            0x8b8b8b, true
-        );
-        widgets.addText(Component.translatable("gui.croparia.ritual_structure.label", cursor.getY()), 20, 0, 0xFF000000, true);
+        int labelWidth = this.getDisplayWidth() - (SLOT_SIZE + BUTTON_SIZE) * 2;
         widgets.addDrawable(
-            20, 0,
-            this.getDisplayWidth(), this.getDisplayHeight(),
+            SLOT_SIZE + BUTTON_SIZE, this.getDisplayHeight() - SLOT_SIZE,
+            labelWidth, SLOT_SIZE,
             (graphics, mouseX, mouseY, delta) -> new TextWidget(
-                Component.translatable("gui.croparia.ritual_structure.label", cursor.getY()).getVisualOrderText(),
-                0, 0, 0x8b8b8b, true
+                Component.translatable("gui.croparia.ritual_structure.label", cursor.getY() + 1).getVisualOrderText(),
+                labelWidth / 2 - SLOT_SIZE, 0, 0xFF3F3F3F, false
             ).render(graphics, mouseX, mouseY, delta)
         );
     }
