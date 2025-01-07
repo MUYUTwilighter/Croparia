@@ -116,25 +116,25 @@ public class EmiRitualStructure implements EmiRecipe {
         }
     }
 
-    public void up() {
+    public void forward() {
         if (cursor.getZ() > 0) {
             cursor = cursor.offset(0, 0, -1);
         }
     }
 
-    public void down() {
+    public void backward() {
         if (cursor.getZ() < size.getZ() - displaySize.getZ()) {
             cursor = cursor.offset(0, 0, 1);
         }
     }
 
-    public void lower() {
+    public void down() {
         if (cursor.getY() > 0) {
             cursor = cursor.offset(0, -1, 0);
         }
     }
 
-    public void higher() {
+    public void up() {
         if (cursor.getY() < structure.length - 1) {
             cursor = cursor.offset(0, 1, 0);
         }
@@ -147,7 +147,7 @@ public class EmiRitualStructure implements EmiRecipe {
             (graphics, mouseX, mouseY, delta) -> {
                 for (int z = cursor.getZ(), displayZ = 0; z < Math.min(structure[cursor.getY()].length, cursor.getZ() + displaySize.getZ()); z++, displayZ++) {
                     for (int x = cursor.getX(), displayX = 0; x < Math.min(structure[cursor.getY()][z].length, cursor.getX() + displaySize.getX()); x++, displayX++) {
-                        new SlotWidget(structure[cursor.getY()][z][x], 18 + displayX * 18, 18 + displayZ * 18)
+                        new SlotWidget(structure[cursor.getY()][z][x], displayX * SLOT_SIZE, displayZ * SLOT_SIZE)
                             .render(graphics, mouseX, mouseY, delta);
                     }
                 }
@@ -164,27 +164,33 @@ public class EmiRitualStructure implements EmiRecipe {
             () -> true, (mouseX, mouseY, button) -> this.right()
         ));
         widgets.add(new Button(
-            displaySize.getX() * SLOT_SIZE / 2 + 18 - BUTTON_SIZE / 2, (SLOT_SIZE - BUTTON_SIZE) / 2,
+            displaySize.getX() * SLOT_SIZE / 2 + SLOT_SIZE - BUTTON_SIZE / 2, (SLOT_SIZE - BUTTON_SIZE) / 2,
             BUTTON_SIZE, BUTTON_SIZE, Constants.UP_DARK, Constants.UP_WHITE,
-            () -> true, (mouseX, mouseY, button) -> this.up()
+            () -> true, (mouseX, mouseY, button) -> this.forward()
         ));
         widgets.add(new Button(
-            displaySize.getX() * SLOT_SIZE / 2 + 18 - BUTTON_SIZE / 2,
+            displaySize.getX() * SLOT_SIZE / 2 + SLOT_SIZE - BUTTON_SIZE / 2,
             displaySize.getZ() * SLOT_SIZE + SLOT_SIZE + (SLOT_SIZE - BUTTON_SIZE) / 2,
             BUTTON_SIZE, BUTTON_SIZE, Constants.DOWN_DARK, Constants.DOWN_WHITE,
-            () -> true, (mouseX, mouseY, button) -> this.down()
+            () -> true, (mouseX, mouseY, button) -> this.backward()
         ));
         widgets.add(new Button(
-            SLOT_SIZE, displaySize.getZ() * SLOT_SIZE + 36 + (18 - BUTTON_SIZE) / 2,
+            SLOT_SIZE, this.getDisplayHeight() - SLOT_SIZE + (SLOT_SIZE - BUTTON_SIZE) / 2,
             BUTTON_SIZE, BUTTON_SIZE, Constants.LEFT_DARK, Constants.LEFT_WHITE,
-            () -> true, (mouseX, mouseY, button) -> this.lower()
+            () -> true, (mouseX, mouseY, button) -> this.down()
         ));
         widgets.add(new Button(
             this.getDisplayWidth() - SLOT_SIZE - BUTTON_SIZE,
             this.getDisplayHeight() - BUTTON_SIZE - SLOT_SIZE / 2,
             BUTTON_SIZE, BUTTON_SIZE, Constants.RIGHT_DARK, Constants.RIGHT_WHITE,
-            () -> true, (mouseX, mouseY, button) -> this.higher()
+            () -> true, (mouseX, mouseY, button) -> this.up()
         ));
+        widgets.addText(
+            Component.translatable("gui.croparia.ritual_structure.label", cursor.getY()),
+            displaySize.getX() * SLOT_SIZE / 2 + 18 - BUTTON_SIZE / 2,
+            displaySize.getZ() * SLOT_SIZE + 36 + (18 - BUTTON_SIZE) / 2,
+            0x8b8b8b, true
+        );
         widgets.addText(Component.translatable("gui.croparia.ritual_structure.label", cursor.getY()), 20, 0, 0xFF000000, true);
         widgets.addDrawable(
             20, 0,
