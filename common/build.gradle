@@ -13,4 +13,5 @@ dependencies {
     
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-api:$rei_version"
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-default-plugin:$rei_version"
+    modCompileOnly "dev.emi:emi-xplat-intermediary:${emi_version}:api"
 }

@@ -96,5 +96,8 @@
   "gui.croparia.ritual_structure.lower": "往低一层",
   "gui.croparia.ritual_structure.upper": "往高一层",
   "gui.croparia.ritual.title": "仪式召唤",
-  "gui.croparia.infusor.title": "元素灌注"
+  "gui.croparia.infusor.title": "元素灌注",
+  "emi.category.croparia.infusor": "元素灌注",
+  "emi.category.croparia.ritual": "仪式召唤",
+  "emi.category.croparia.ritual_structure": "仪式结构"
 }

@@ -1,6 +1,7 @@
 package cool.muyucloud.croparia.item.relic;
 
 import cool.muyucloud.croparia.registry.CropariaComponents;
+import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.registry.Tabs;
 import cool.muyucloud.croparia.util.Util;
 import net.minecraft.core.BlockPos;
@@ -29,11 +30,14 @@ public class MagicRope extends Item {
             MinecraftServer server = player.getServer();
             ItemStack itemStack = context.getItemInHand();
             if (player.isShiftKeyDown()) {
+                itemStack.shrink(1);
+                ItemStack newStack = CropariaItems.MAGIC_ROPE.get().getDefaultInstance();
                 BlockPos targetPos = player.blockPosition();
                 ResourceLocation targetWorld = world.dimension().location();
-                itemStack.set(CropariaComponents.TARGET_WORLD.get(), targetWorld);
-                itemStack.set(CropariaComponents.TARGET_POSITION.get(), targetPos);
-                player.displayClientMessage(Component.literal("x=%s, y=%s, z=%s in %s".formatted(targetPos.getX(), targetPos.getY(), targetPos.getZ(), targetWorld)), true);
+                newStack.set(CropariaComponents.TARGET_WORLD.get(), targetWorld);
+                newStack.set(CropariaComponents.TARGET_POSITION.get(), targetPos);
+                player.addItem(newStack);
+                player.displayClientMessage(Component.literal("%s[x=%s, y=%s, z=%s]".formatted(targetWorld, targetPos.getX(), targetPos.getY(), targetPos.getZ())), true);
                 return InteractionResult.SUCCESS;
             }
             @NotNull ResourceLocation targetWorld = itemStack.getOrDefault(

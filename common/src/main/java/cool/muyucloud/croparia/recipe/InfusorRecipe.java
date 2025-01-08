@@ -38,6 +38,10 @@ public class InfusorRecipe implements Recipe<InfusorContainer> {
         this.result = result;
     }
 
+    public ItemStack getElementPotion() {
+        return CropariaItems.getPotion(this.element).getDefaultInstance();
+    }
+
     public ElementsEnum getElement() {
         return element;
     }

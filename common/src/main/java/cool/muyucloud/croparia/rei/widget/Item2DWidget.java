@@ -1,4 +1,4 @@
-package cool.muyucloud.croparia.client.recipe.display.widget;
+package cool.muyucloud.croparia.rei.widget;
 
 import cool.muyucloud.croparia.util.BiFunction;
 import me.shedaniel.math.Point;

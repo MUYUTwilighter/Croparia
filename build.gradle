@@ -31,6 +31,10 @@ subprojects {
         // for more information about repositories.
         maven { url "<https://maven.shedaniel.me/>" }
         maven { url "<https://maven.architectury.dev/>" }
+        maven {
+            name = "TerraformersMC"
+            url = "https://maven.terraformersmc.com/"
+        }
     }
 
     loom {

@@ -1,6 +1,6 @@
-package cool.muyucloud.croparia.client.recipe.display;
+package cool.muyucloud.croparia.rei.display;
 
-import cool.muyucloud.croparia.client.recipe.display.category.InfusorRecipeDisplayCategory;
+import cool.muyucloud.croparia.rei.category.InfusorRecipeDisplayCategory;
 import cool.muyucloud.croparia.recipe.InfusorRecipe;
 import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.util.Constants;
