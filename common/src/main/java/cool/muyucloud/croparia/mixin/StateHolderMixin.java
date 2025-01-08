@@ -21,10 +21,6 @@ import java.util.Map;
 
 @Mixin(StateHolder.class)
 public abstract class StateHolderMixin<O, S> implements StateHolderAccess {
-
-    @Shadow
-    public abstract <T extends Comparable<T>, V extends T> S setValue(Property<T> arg, V comparable);
-
     @Shadow
     @Final
     private Reference2ObjectArrayMap<Property<?>, Comparable<?>> values;
