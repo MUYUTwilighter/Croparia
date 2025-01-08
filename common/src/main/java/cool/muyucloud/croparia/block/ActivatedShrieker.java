@@ -7,7 +7,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.valueproviders.IntProvider;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -68,5 +70,13 @@ public class ActivatedShrieker extends SculkShriekerBlock {
         return !level.isClientSide ? BaseEntityBlock.createTickerHelper(blockEntityType, BlockEntities.ACTIVATED_SHRIEKER.get(), (levelx, blockPos, blockStatex, sculkShriekerBlockEntity) -> {
             VibrationSystem.Ticker.tick(levelx, sculkShriekerBlockEntity.getVibrationData(), sculkShriekerBlockEntity.getVibrationUser());
         }) : null;
+    }
+
+    @Override
+    protected void tryDropExperience(ServerLevel serverLevel, BlockPos blockPos, ItemStack itemStack, IntProvider intProvider) {
+    }
+
+    @Override
+    protected void popExperience(ServerLevel serverLevel, BlockPos blockPos, int i) {
     }
 }
