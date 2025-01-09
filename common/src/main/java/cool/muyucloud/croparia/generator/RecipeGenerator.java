@@ -9,8 +9,6 @@ import cool.muyucloud.croparia.registry.Crops;
 import cool.muyucloud.croparia.util.TagUtil;
 import cool.muyucloud.croparia.util.pack.DataPackHandler;
 import dev.architectury.platform.Platform;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.Objects;
