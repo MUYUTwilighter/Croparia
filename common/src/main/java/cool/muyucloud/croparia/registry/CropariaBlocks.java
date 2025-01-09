@@ -1,6 +1,8 @@
 package cool.muyucloud.croparia.registry;
 
 import cool.muyucloud.croparia.CropariaIf;
+import cool.muyucloud.croparia.annotation.PostReg;
+import cool.muyucloud.croparia.annotation.PreReg;
 import cool.muyucloud.croparia.block.*;
 import cool.muyucloud.croparia.data.ElementsEnum;
 import cool.muyucloud.croparia.data.crop.Crop;
@@ -21,15 +23,19 @@ import java.util.List;
 import java.util.function.Supplier;
 
 public class CropariaBlocks {
+    @PreReg
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(CropariaIf.MOD_ID, Registries.BLOCK);
 
+    @PostReg
     public static final RegistrySupplier<ActivatedShrieker> ACTIVATED_SHRIEKER = registerBlock(
         "activated_shrieker",
         () -> new ActivatedShrieker(
             BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK).strength(3.0F, 3.0F).sound(SoundType.SCULK_SHRIEKER)
         )
     );
+    @PostReg
     public static final RegistrySupplier<Placeholder> PLACEHOLDER = registerBlock("placeholder_block", Placeholder::new);
+    @PostReg
     public static final RegistrySupplier<Greenhouse> GREENHOUSE = registerBlock(
         "greenhouse",
         () -> new Greenhouse(
@@ -38,16 +44,21 @@ public class CropariaBlocks {
                 .isViewBlocking((state, world, pos) -> false)
         )
     );
+    @PostReg
     public static final RegistrySupplier<Infusor> INFUSOR = registerBlock("infusor", Infusor::new);
+    @PostReg
     public static final RegistrySupplier<RitualStand> RITUAL_STAND = registerBlock(
         "ritual_stand", () -> new RitualStand(1)
     );
+    @PostReg
     public static final RegistrySupplier<RitualStand> RITUAL_STAND_2 = registerBlock(
         "ritual_stand_2", () -> new RitualStand(2)
     );
+    @PostReg
     public static final RegistrySupplier<RitualStand> RITUAL_STAND_3 = registerBlock(
         "ritual_stand_3", () -> new RitualStand(3)
     );
+    @PostReg
     public static final RegistrySupplier<Block> ELEMENTAL_STONE = registerBlock(
         "elemental_stone",
         () -> new DropExperienceBlock(
@@ -55,6 +66,7 @@ public class CropariaBlocks {
             UniformInt.of(0, 2)
         )
     );
+    @PostReg
     public static final RegistrySupplier<DropExperienceBlock> ELEMATILIUS_ORE = registerBlock(
         "elematilius_ore",
         () -> new DropExperienceBlock(
@@ -62,6 +74,7 @@ public class CropariaBlocks {
             UniformInt.of(0, 2)
         )
     );
+    @PostReg
     public static final RegistrySupplier<DropExperienceBlock> DEEPSLATE_ELEMATILIUS_ORE = registerBlock(
         "deepslate_elematilius_ore",
         () -> new DropExperienceBlock(
@@ -70,6 +83,7 @@ public class CropariaBlocks {
             UniformInt.of(0, 2)
         )
     );
+    @PostReg
     public static final RegistrySupplier<LayeredCauldronBlock> CAULDRON = registerBlock(
         "elematilius_cauldron",
         () -> new LayeredCauldronBlock(
@@ -77,6 +91,7 @@ public class CropariaBlocks {
             LayeredCauldronBlock.RAIN, CropariaCauldronInteraction.ELEMATILIUS
         )
     );
+    @PostReg
     public static final RegistrySupplier<LayeredCauldronBlock> WATER_CAULDRON = registerBlock(
         "water_cauldron",
         () -> new LayeredCauldronBlock(
@@ -85,6 +100,7 @@ public class CropariaBlocks {
             CropariaCauldronInteraction.WATER_CAULDRON
         )
     );
+    @PostReg
     public static final RegistrySupplier<LayeredCauldronBlock> FIRE_CAULDRON = registerBlock(
         "fire_cauldron",
         () -> new LayeredCauldronBlock(
@@ -92,6 +108,7 @@ public class CropariaBlocks {
             LayeredCauldronBlock.RAIN, CropariaCauldronInteraction.FIRE_CAULDRON
         )
     );
+    @PostReg
     public static final RegistrySupplier<LayeredCauldronBlock> EARTH_CAULDRON = registerBlock(
         "earth_cauldron",
         () -> new LayeredCauldronBlock(
@@ -99,6 +116,7 @@ public class CropariaBlocks {
             LayeredCauldronBlock.RAIN, CropariaCauldronInteraction.EARTH_CAULDRON
         )
     );
+    @PostReg
     public static final RegistrySupplier<LayeredCauldronBlock> AIR_CAULDRON = registerBlock(
         "air_cauldron",
         () -> new LayeredCauldronBlock(
@@ -107,19 +125,23 @@ public class CropariaBlocks {
         )
     );
 
+    @PreReg
     @NotNull
     public static <T extends Block> RegistrySupplier<T> registerBlock(@NotNull String name, @NotNull Supplier<T> supplier) {
         return BLOCKS.register(name, supplier);
     }
 
+    @PreReg
     public static void registerCrop(@NotNull Crop crop) {
         BLOCKS.register(crop.getBlockId(), () -> new CropariaCropBlock(crop));
     }
 
+    @PreReg
     public static void register() {
         BLOCKS.register();
     }
 
+    @PostReg
     public static @Nullable RegistrySupplier<LayeredCauldronBlock> getCauldron(@NotNull ElementsEnum element) {
         return switch (element) {
             case WATER -> WATER_CAULDRON;
@@ -131,8 +153,10 @@ public class CropariaBlocks {
         };
     }
 
+    @PostReg
     protected static final List<RegistrySupplier<RitualStand>> RITUAL_STANDS = List.of(RITUAL_STAND, RITUAL_STAND_2, RITUAL_STAND_3);
 
+    @PostReg
     public static @NotNull RegistrySupplier<RitualStand> getRitualStand(int tier) throws IndexOutOfBoundsException {
         return RITUAL_STANDS.get(tier - 1);
     }

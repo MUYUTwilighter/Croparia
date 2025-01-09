@@ -15,7 +15,7 @@ public class CompatCrop {
         Codec.STRING.fieldOf("type").forGetter(CompatCrop::getTypeString),
         Codec.STRING.fieldOf("color").forGetter(CompatCrop::getColorString),
         Codec.INT.fieldOf("tier").forGetter(CompatCrop::getTier),
-        Codec.STRING.optionalFieldOf("translation_key").forGetter(CompatCrop::getTranslationKey),
+        Codec.STRING.optionalFieldOf("translationKey").forGetter(CompatCrop::getTranslationKey),
         Codec.STRING.listOf().listOf().optionalFieldOf("dependencies").forGetter(CompatCrop::getDependencies)
     ).apply(instance, (name, material, rawType, rawColor, tier, optionalTranslationKey, optionalDependencies) -> {
         CropType type = CropType.valueOf(rawType.toUpperCase());

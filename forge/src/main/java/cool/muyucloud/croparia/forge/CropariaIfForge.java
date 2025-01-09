@@ -13,6 +13,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 public class CropariaIfForge {
     public CropariaIfForge() {
         EventBuses.registerModEventBus(CropariaIf.MOD_ID, FMLJavaModLoadingContext.get().getModEventBus());
+        CompatCrops.init();
         CropariaIf.init();
     }
 

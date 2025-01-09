@@ -36,14 +36,14 @@ public class Crops {
 
 
     /**
-     * Add a simple crop with specified translation key. Mainly used for vanilla crops.
+     * Add a simple crop with specified translation translationKey. Mainly used for vanilla crops.
      *
      * @param name           crop name
      * @param materialId     material id which the crop grows, could be item ID or item tag
      * @param color          int value of color
      * @param tier           tier
      * @param type           crop type that specifies the textures. See also {@link CropType}
-     * @param translationKey translation key for the crop, used for formatting item & block names.
+     * @param translationKey translation translationKey for the crop, used for formatting item & block names.
      */
     public static @NotNull Crop registerCrop(
         @NotNull String name, @NotNull String materialId, int color, int tier, @NotNull CropType type,
@@ -187,7 +187,7 @@ public class Crops {
      * @param tier            croparia tier
      * @param type            crop type that specifies the textures. See also {@link CropType}
      * @param translationKeys The mod dependencies with corresponding translation keys.
-     *                        The translation key for the first existing mod will be used.
+     *                        The translation translationKey for the first existing mod will be used.
      * @return the intermediate data entity of the crop
      */
     public static @Nullable CompatCrop compatCrop(
@@ -232,6 +232,8 @@ public class Crops {
                 CROPS::add,
                 () -> CropariaIf.LOGGER.error("Failed to create custom crop %s".formatted(raw.name()))
             );
+        } else {
+            CropariaIf.LOGGER.warn("Crop {} is skipped due to missing dependencies", raw.name());
         }
     }
 }

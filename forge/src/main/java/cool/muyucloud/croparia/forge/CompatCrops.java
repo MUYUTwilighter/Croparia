@@ -1,5 +1,6 @@
 package cool.muyucloud.croparia.forge;
 
+import cool.muyucloud.croparia.annotation.PreReg;
 import cool.muyucloud.croparia.data.crop.CompatCrop;
 import cool.muyucloud.croparia.data.crop.CropType;
 import cool.muyucloud.croparia.registry.Crops;
@@ -7,18 +8,19 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
+@PreReg
 public class CompatCrops {
+    public static final CompatCrop NICKEL = Crops.compatCrop("nickel", "#forge:ingots/nickel", 0xAEAC8C, 3, CropType.CROP, Map.of(
+        "thermal_foundation", "item.thermal.nickel_ingot"
+    ));
     @Nullable
     public static final CompatCrop TIN = Crops.compatCrop("tin", "#forge:ingots/tin", 0xE3E3E0, 3, CropType.CROP, Map.of(
-        "mekanism", "item.mekanism.ingot_tin"
+        "mekanism", "item.mekanism.ingot_tin",
+        "thermal_foundation", "item.thermal.tin_ingot"
     ));
     @Nullable
     public static final CompatCrop ZINC = Crops.compatCrop("zinc", "#forge:ingots/zinc", 0xEDEEEC, 3, CropType.CROP, Map.of(
         "create", "item.create.zinc_ingot"
-    ));
-    @Nullable
-    public static final CompatCrop BRONZE = Crops.compatCrop("bronze", "#forge:ingots/bronze", 0xC48553, 3, CropType.CROP, Map.of(
-        "mekanism", "item.mekanism.ingot_bronze"
     ));
     @Nullable
     public static final CompatCrop STEEL = Crops.compatCrop("steel", "#forge:ingots/steel", 0xA0A0A0, 3, CropType.CROP, Map.of(
@@ -27,7 +29,8 @@ public class CompatCrops {
     ));
     @Nullable
     public static final CompatCrop LEAD = Crops.compatCrop("lead", "#forge:ingots/lead", 0x6F6B77, 3, CropType.CROP, Map.of(
-        "mekanism", "item.mekanism.ingot_lead"
+        "mekanism", "item.mekanism.ingot_lead",
+        "thermal_foundation", "item.thermal.lead_ingot"
     ));
     @Nullable
     public static final CompatCrop OSMIUM = Crops.compatCrop("osmium", "#forge:ingots/osmium", 0x9EB1C8, 3, CropType.CROP, Map.of(
@@ -100,6 +103,18 @@ public class CompatCrops {
     @Nullable
     public static final CompatCrop SILICON = Crops.compatCrop("silicon", "#forge:silicon", 0x66546D, 3, CropType.CROP, Map.of(
         "ae2", "item.ae2.silicon"
+    ));
+    @Nullable
+    public static final CompatCrop SILVER = Crops.compatCrop("silver", "#forge:ingots/silver", 0xEDEEEC, 3, CropType.CROP, Map.of(
+        "thermal_foundation", "item.thermal.silver_ingot"
+    ));
+    @Nullable
+    public static final CompatCrop RUBY = Crops.compatCrop("ruby", "#forge:gems/ruby", 0xFF0000, 3, CropType.CROP, Map.of(
+        "thermal_foundation", "item.thermal.ruby"
+    ));
+    @Nullable
+    public static final CompatCrop SAPHIRE = Crops.compatCrop("sapphire", "#forge:gems/sapphire", 0x6D9BEC, 3, CropType.CROP, Map.of(
+        "thermal_foundation", "item.thermal.sapphire"
     ));
 
     public static void init() {

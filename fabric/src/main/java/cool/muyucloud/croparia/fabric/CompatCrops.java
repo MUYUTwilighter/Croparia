@@ -17,7 +17,8 @@ public class CompatCrops {
     ));
     @Nullable
     public static final CompatCrop ZINC = Crops.compatCrop("zinc", "#c:zinc_ingots", 0xEDEEEC, 3, CropType.CROP, Map.of(
-        "techreborn", "item.techreborn.zinc_ingot"
+        "techreborn", "item.techreborn.zinc_ingot",
+        "create", "item.create.zinc_ingot"
     ));
     @Nullable
     public static final CompatCrop NICKEL = Crops.compatCrop("nickel", "#c:nickel_ingots", 0xAEAC8C, 3, CropType.CROP, Map.of(

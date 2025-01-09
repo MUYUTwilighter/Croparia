@@ -54,7 +54,7 @@ public class RitualStructure implements Recipe<RitualStructureContainer> {
         } while (i < 4);
         for (Character c : keys.keySet()) {
             if (!Character.isUpperCase(c) || !Character.isAlphabetic(c) || c == '*' || c == '$' || c == ' ' || c == '.') {
-                throw new IllegalArgumentException("Invalid key '%s' in %s, must be uppercase letter".formatted(c, id));
+                throw new IllegalArgumentException("Invalid translationKey '%s' in %s, must be uppercase letter".formatted(c, id));
             }
         }
         keys = new HashMap<>(keys);
@@ -142,7 +142,7 @@ public class RitualStructure implements Recipe<RitualStructureContainer> {
         for (Map.Entry<String, JsonElement> entry : rawKeys.entrySet()) {
             String rawKey = entry.getKey();
             if (rawKey.length() != 1) {
-                throw new IllegalArgumentException("Invalid key: " + rawKey);
+                throw new IllegalArgumentException("Invalid translationKey: " + rawKey);
             }
             Character key = rawKey.charAt(0);
             JsonObject rawPredicate = entry.getValue().getAsJsonObject();
