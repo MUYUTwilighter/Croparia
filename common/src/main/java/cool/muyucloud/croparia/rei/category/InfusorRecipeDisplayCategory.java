@@ -1,7 +1,7 @@
 package cool.muyucloud.croparia.rei.category;
 
-import cool.muyucloud.croparia.rei.display.InfusorRecipeDisplay;
 import cool.muyucloud.croparia.registry.CropariaItems;
+import cool.muyucloud.croparia.rei.display.InfusorRecipeDisplay;
 import cool.muyucloud.croparia.util.Constants;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;

@@ -1,7 +1,7 @@
 package cool.muyucloud.croparia.rei.display;
 
-import cool.muyucloud.croparia.rei.category.RitualRecipeDisplayCategory;
 import cool.muyucloud.croparia.recipe.RitualRecipe;
+import cool.muyucloud.croparia.rei.category.RitualRecipeDisplayCategory;
 import cool.muyucloud.croparia.util.Constants;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.display.Display;

@@ -30,7 +30,6 @@
     ]
   },
   "mixins": [
-    "croparia-if.mixins.json",
     "croparia-if-common.mixins.json"
   ],
   "depends": {

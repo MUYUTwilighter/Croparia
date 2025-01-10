@@ -1,15 +1,15 @@
 package cool.muyucloud.croparia.rei;
 
-import cool.muyucloud.croparia.rei.display.InfusorRecipeDisplay;
-import cool.muyucloud.croparia.rei.display.RitualRecipeDisplay;
-import cool.muyucloud.croparia.rei.display.RitualStructureDisplay;
-import cool.muyucloud.croparia.rei.category.InfusorRecipeDisplayCategory;
-import cool.muyucloud.croparia.rei.category.RitualRecipeDisplayCategory;
-import cool.muyucloud.croparia.rei.category.RitualStructureDisplayCategory;
 import cool.muyucloud.croparia.recipe.InfusorRecipe;
 import cool.muyucloud.croparia.recipe.RitualRecipe;
 import cool.muyucloud.croparia.recipe.RitualStructure;
 import cool.muyucloud.croparia.registry.RecipeTypes;
+import cool.muyucloud.croparia.rei.category.InfusorRecipeDisplayCategory;
+import cool.muyucloud.croparia.rei.category.RitualRecipeDisplayCategory;
+import cool.muyucloud.croparia.rei.category.RitualStructureDisplayCategory;
+import cool.muyucloud.croparia.rei.display.InfusorRecipeDisplay;
+import cool.muyucloud.croparia.rei.display.RitualRecipeDisplay;
+import cool.muyucloud.croparia.rei.display.RitualStructureDisplay;
 import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
 import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
 

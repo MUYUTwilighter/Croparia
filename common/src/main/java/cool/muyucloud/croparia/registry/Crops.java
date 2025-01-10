@@ -232,6 +232,8 @@ public class Crops {
                 CROPS::add,
                 () -> CropariaIf.LOGGER.error("Failed to create custom crop %s".formatted(raw.name()))
             );
+        } else {
+            CropariaIf.LOGGER.info("Skipped custom crop {} due to missing dependencies {}", raw.name(), raw.dependencies());
         }
     }
 }

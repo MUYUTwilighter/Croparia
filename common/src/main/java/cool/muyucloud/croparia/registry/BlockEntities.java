@@ -8,7 +8,6 @@ import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.entity.SculkShriekerBlockEntity;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;

@@ -4,14 +4,16 @@
   "compatibilityLevel": "JAVA_21",
   "minVersion": "0.8",
   "client": [
+    "WorldOpenFlowsMixin"
   ],
   "mixins": [
+    "BlockMixin",
     "CropBlockMixin",
+    "MainMixin",
     "MinecraftServerMixin",
     "PackRepositoryMixin",
     "ReloadableResourceManagerImplMixin",
     "ReloadCommandMixin",
-    "BlockMixin",
     "StateHolderMixin"
   ],
   "injectors": {
