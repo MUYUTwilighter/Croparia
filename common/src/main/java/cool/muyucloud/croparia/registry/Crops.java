@@ -124,7 +124,7 @@ public class Crops {
     public static final Crop TURTLE_EGG = registerCrop("turtle_egg", Objects.requireNonNull(Items.TURTLE_EGG.arch$registryName()).toString(), 0x58ceaf, 1, CropType.FOOD, Items.TURTLE_EGG.getDescriptionId());
     public static final Crop SNIFFER_EGG = registerCrop("sniffer_egg", Objects.requireNonNull(Items.SNIFFER_EGG.arch$registryName()).toString(), 0xb1413f, 1, CropType.FOOD, Items.SNIFFER_EGG.getDescriptionId());
     public static final Crop TROPICAL_FISH = registerCrop("clownfish", Objects.requireNonNull(Items.TROPICAL_FISH.arch$registryName()).toString(), 0xf29965, 1, CropType.FOOD, Items.TROPICAL_FISH.getDescriptionId());
-    public static final Crop PUFFER_FISH = registerCrop("pufferfish", Objects.requireNonNull(Items.PUFFERFISH_SPAWN_EGG.arch$registryName()).toString(), 0xc5b200, 1, CropType.FOOD, Items.PUFFERFISH_SPAWN_EGG.getDescriptionId());
+    public static final Crop PUFFER_FISH = registerCrop("pufferfish", Objects.requireNonNull(Items.PUFFERFISH.arch$registryName()).toString(), 0xc5b200, 1, CropType.FOOD, Items.PUFFERFISH.getDescriptionId());
     public static final Crop COOKIE = registerCrop("cookie", Objects.requireNonNull(Items.COOKIE.arch$registryName()).toString(), 0xd9833e, 1, CropType.FOOD, Items.COOKIE.getDescriptionId());
     public static final Crop CHORUS = registerCrop("chorus", Objects.requireNonNull(Items.CHORUS_FRUIT.arch$registryName()).toString(), 0xaa85aa, 3, CropType.FOOD, Items.CHORUS_FRUIT.getDescriptionId());
     public static final Crop BEEF = registerCrop("raw_beef", Objects.requireNonNull(Items.BEEF.arch$registryName()).toString(), 0xe24940, 1, CropType.FOOD, Items.BEEF.getDescriptionId());

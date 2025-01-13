@@ -3,10 +3,12 @@ package cool.muyucloud.croparia.util.pack;
 import com.google.gson.JsonObject;
 import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.util.Util;
+import net.minecraft.SharedConstants;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackResources;
+import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.PathPackResources;
 import net.minecraft.server.packs.repository.PackSource;
 
@@ -36,6 +38,11 @@ public class ResourcePackHandler extends PackHandler {
 
     @Override
     public void onSecondary() {
+    }
+
+    @Override
+    protected int getVersion() {
+        return SharedConstants.getCurrentVersion().getPackVersion(PackType.CLIENT_RESOURCES);
     }
 
     public ResourcePackHandler(Path path) {

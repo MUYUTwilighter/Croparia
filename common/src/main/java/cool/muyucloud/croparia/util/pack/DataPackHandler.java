@@ -3,6 +3,7 @@ package cool.muyucloud.croparia.util.pack;
 import com.google.gson.JsonObject;
 import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.util.Util;
+import net.minecraft.SharedConstants;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.PackSource;
@@ -30,6 +31,11 @@ public class DataPackHandler extends PackHandler {
         super.onInitial();
         this.generate();
         this.dump();
+    }
+
+    @Override
+    protected int getVersion() {
+        return SharedConstants.getCurrentVersion().getPackVersion(PackType.SERVER_DATA);
     }
 
     public DataPackHandler(Path path) {
