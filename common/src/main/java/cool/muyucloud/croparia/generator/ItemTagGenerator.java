@@ -28,7 +28,7 @@ public class ItemTagGenerator {
     }
 
     protected static void addSeed(Crop crop) {
-        JsonObject tag = getTag(CropariaIf.of("magic_seeds"));
+        JsonObject tag = getTag(CropariaIf.of("crop_seeds"));
         TagUtil.addValue(tag, crop.getSeedId().toString());
     }
 
