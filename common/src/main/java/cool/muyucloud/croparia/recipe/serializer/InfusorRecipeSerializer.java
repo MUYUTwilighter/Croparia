@@ -35,12 +35,13 @@ public class InfusorRecipeSerializer implements RecipeSerializer<InfusorRecipe> 
     }
 
     @Override
-    public @NotNull InfusorRecipe fromNetwork(ResourceLocation resourceLocation, FriendlyByteBuf buf) {
+    public @NotNull InfusorRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
         ElementsEnum element = buf.readEnum(ElementsEnum.class);
         GenericIngredient ingredient = buf.readJsonWithCodec(GenericIngredient.CODEC);
         ItemStack result = buf.readItem();
 
         InfusorRecipe recipe = new InfusorRecipe();
+        recipe.setId(id);
         recipe.setElement(element);
         recipe.setIngredient(ingredient);
         recipe.setResult(result);
