@@ -8,13 +8,13 @@
       "block": "minecraft:diorite"
     },
     "I": {
-      "block": "croparia:block_crop_iron",
+      "block": "croparia:block_crop_coal",
       "properties": {
         "age": "7"
       }
     },
     "G": {
-      "block": "croparia:block_crop_gold",
+      "block": "croparia:block_crop_grass",
       "properties": {
         "age": "7"
       }
