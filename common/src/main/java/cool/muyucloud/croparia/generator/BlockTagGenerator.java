@@ -1,6 +1,7 @@
 package cool.muyucloud.croparia.generator;
 
 import com.google.gson.JsonObject;
+import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.data.crop.Crop;
 import cool.muyucloud.croparia.registry.Crops;
 import cool.muyucloud.croparia.util.TagUtil;
@@ -21,7 +22,7 @@ public class BlockTagGenerator {
     }
 
     private static void addCropBlock(Crop crop) {
-        JsonObject tag = getTag(TagUtil.compatId("crops"));
+        JsonObject tag = getTag(CropariaIf.of("crop_blocks"));
         TagUtil.addValue(tag, crop.getBlockId().toString());
     }
 

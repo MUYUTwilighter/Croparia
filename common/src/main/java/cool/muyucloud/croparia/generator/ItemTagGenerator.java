@@ -1,6 +1,7 @@
 package cool.muyucloud.croparia.generator;
 
 import com.google.gson.JsonObject;
+import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.data.crop.Crop;
 import cool.muyucloud.croparia.registry.Crops;
 import cool.muyucloud.croparia.util.TagUtil;
@@ -22,12 +23,12 @@ public class ItemTagGenerator {
     }
 
     protected static void addFruit(Crop crop) {
-        JsonObject tag = getTag(TagUtil.compatId("fruits"));
+        JsonObject tag = getTag(ResourceLocation.tryParse("c:fruits"));
         TagUtil.addValue(tag, crop.getFruitId().toString());
     }
 
     protected static void addSeed(Crop crop) {
-        JsonObject tag = getTag(TagUtil.compatId("seeds"));
+        JsonObject tag = getTag(CropariaIf.of("magic_seeds"));
         TagUtil.addValue(tag, crop.getSeedId().toString());
     }
 

@@ -2,6 +2,7 @@ package cool.muyucloud.croparia.generator;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.annotation.PostGen;
 import cool.muyucloud.croparia.data.crop.Crop;
 import cool.muyucloud.croparia.registry.CropariaItems;
@@ -32,7 +33,7 @@ public class RecipeGenerator {
         JsonObject material = new JsonObject();
         material.addProperty(crop.isTag() ? "tag" : "item", crop.getMaterial().toString());
         JsonObject seed = new JsonObject();
-        seed.addProperty("tag", TagUtil.compatId("seeds").toString());
+        seed.addProperty("tag", CropariaIf.MOD_ID + ":seed_ingredient");
         JsonObject keys = new JsonObject();
         keys.add("C", croparia);
         keys.add("M", material);
