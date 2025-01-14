@@ -25,12 +25,20 @@ public class CompatCrops {
         "aoa3", "item.aoa3.blazium_ingot"
     ));
     @Nullable
+    public static final CompatCrop BLOODSTONE = Crops.compatCrop("bloodstone", "#c:gems/bloodstone", 0x9B0000, 3, CropType.CROP, Map.of(
+        "aoa3", "item.aoa3.bloodstone"
+    ));
+    @Nullable
     public static final CompatCrop BRONZE = Crops.compatCrop("bronze", "#c:ingots/bronze", 0xC48553, 3, CropType.CROP, Map.of(
         "mekanism", "item.mekanism.ingot_bronze"
     ));
     @Nullable
     public static final CompatCrop CERTUS = Crops.compatCrop("certus", "#c:gems/certus_quartz", 0xB8D8FC, 3, CropType.CROP, Map.of(
         "ae2", "item.ae2.certus_quartz_crystal"
+    ));
+    @Nullable
+    public static final CompatCrop CRYSTALLITE = Crops.compatCrop("crystallite", "#c:gems/crystallite", 0x9EB1C8, 3, CropType.CROP, Map.of(
+        "aoa3", "item.aoa3.crystallite"
     ));
     @Nullable
     public static final CompatCrop ELECANIUM = Crops.compatCrop("elecanium", "#c:ingots/elecanium", 0x34ACDE, 3, CropType.CROP, Map.of(
@@ -45,12 +53,24 @@ public class CompatCrops {
         "ae2", "item.ae2.fluix_crystal"
     ));
     @Nullable
+    public static final CompatCrop GEMENYTE = Crops.compatCrop("gemenyte", "#c:gems/gemenyte", 0x8F5CCB, 3, CropType.CROP, Map.of(
+        "aoa3", "item.aoa3.gemenyte"
+    ));
+    @Nullable
     public static final CompatCrop GHASTLY = Crops.compatCrop("ghastly", "#c:ingots/ghastly", 0xF8FC9C, 3, CropType.CROP, Map.of(
         "aoa3", "item.aoa3.ghastly_ingot"
     ));
     @Nullable
     public static final CompatCrop GHOULISH = Crops.compatCrop("ghoulish", "#c:ingots/ghoulish", 0x7EA8FC, 3, CropType.CROP, Map.of(
         "aoa3", "item.aoa3.ghoulish_ingot"
+    ));
+    @Nullable
+    public static final CompatCrop JADE = Crops.compatCrop("jade", "#c:gems/jade", 0x8F5CCB, 3, CropType.CROP, Map.of(
+        "aoa3", "item.aoa3.jade"
+    ));
+    @Nullable
+    public static final CompatCrop JEWELYTE = Crops.compatCrop("jewelyte", "#c:gems/jewelyte", 0x8F5CCB, 3, CropType.CROP, Map.of(
+        "aoa3", "item.aoa3.jewelyte"
     ));
     @Nullable
     public static final CompatCrop LEAD = Crops.compatCrop("lead_conventional", "#c:ingots/lead", 0x6F6B77, 3, CropType.CROP, Map.of(
@@ -82,12 +102,28 @@ public class CompatCrops {
         "modern_industrialization", "item.modern_industrialization.iridium_ingot"
     ));
     @Nullable
+    public static final CompatCrop ORNAMYTE = Crops.compatCrop("ornamyte", "#c:gems/ornamyte", 0x8F5CCB, 3, CropType.CROP, Map.of(
+        "aoa3", "item.aoa3.ornamyte"
+    ));
+    @Nullable
+    public static final CompatCrop OSMIUM = Crops.compatCrop("osmium", "#c:ingots/osmium", 0x9EB1C8, 3, CropType.CROP, Map.of(
+        "mekanism", "item.mekanism.ingot_osmium"
+    ));
+    @Nullable
+    public static final CompatCrop PLATINUM = Crops.compatCrop("platinum", "#c:ingots/platinum", 0x9EB1C8, 3, CropType.CROP, Map.of(
+        "modern_industrialization", "item.modern_industrialization.platinum_ingot"
+    ));
+    @Nullable
     public static final CompatCrop SALT = Crops.compatCrop("salt", "#c:dusts/salt", 0x8F9E9A, 3, CropType.CROP, Map.of(
         "modern_industrialization", "item.modern_industrialization.salt_dust"
     ));
     @Nullable
     public static final CompatCrop SHYRESTONE = Crops.compatCrop("shyrestone", "#c:ingots/shyrestone", 0xA1EAFC, 3, CropType.CROP, Map.of(
         "aoa3", "item.aoa3.shyrestone_ingot"
+    ));
+    @Nullable
+    public static final CompatCrop SHYREGEM = Crops.compatCrop("shyregem", "#c:gems/shyregem", 0xA1EAFC, 3, CropType.CROP, Map.of(
+        "aoa3", "item.aoa3.shyregem"
     ));
     @Nullable
     public static final CompatCrop SILICON = Crops.compatCrop("silicon", "#c:silicon", 0x66546D, 3, CropType.CROP, Map.of(
@@ -97,14 +133,6 @@ public class CompatCrops {
     public static final CompatCrop STEEL = Crops.compatCrop("steel", "#c:ingots/steel", 0xA0A0A0, 3, CropType.CROP, Map.of(
         "ad_astra", "item.ad_astra.ingot_steel",
         "mekanism", "item.mekanism.ingot_steel"
-    ));
-    @Nullable
-    public static final CompatCrop OSMIUM = Crops.compatCrop("osmium", "#c:ingots/osmium", 0x9EB1C8, 3, CropType.CROP, Map.of(
-        "mekanism", "item.mekanism.ingot_osmium"
-    ));
-    @Nullable
-    public static final CompatCrop PLATINUM = Crops.compatCrop("platinum", "#c:ingots/platinum", 0x9EB1C8, 3, CropType.CROP, Map.of(
-        "modern_industrialization", "item.modern_industrialization.platinum_ingot"
     ));
     @Nullable
     public static final CompatCrop ROSITE = Crops.compatCrop("rosite", "#c:ingots/rosite", 0xF16B59, 3, CropType.CROP, Map.of(

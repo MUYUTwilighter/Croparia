@@ -11,6 +11,7 @@ import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 @EventBusSubscriber(modid = CropariaIf.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.DEDICATED_SERVER)
 public class CropariaIfNeoForge {
     public CropariaIfNeoForge() {
+        CompatCrops.init();
         CropariaIf.init();
     }
 
