@@ -1,7 +1,6 @@
 package cool.muyucloud.croparia.generator;
 
 import com.google.gson.JsonObject;
-import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.data.crop.Crop;
 import cool.muyucloud.croparia.registry.Crops;
 import cool.muyucloud.croparia.util.TagUtil;
@@ -17,12 +16,18 @@ public class BlockTagGenerator {
     public static void init() {
         for (Crop crop : Crops.CROPS) {
             addCropBlock(crop);
+            addBeeGrowable(crop);
         }
         TAGS.forEach(DataPackHandler.INSTANCE::addBlockTag);
     }
 
     private static void addCropBlock(Crop crop) {
-        JsonObject tag = getTag(ResourceLocation.tryParse("c:crop_blocks"));
+        JsonObject tag = getTag(ResourceLocation.tryParse("minecraft:crops"));
+        TagUtil.addValue(tag, crop.getBlockId().toString());
+    }
+
+    private static void addBeeGrowable(Crop crop) {
+        JsonObject tag = getTag(ResourceLocation.tryParse("minecraft:bee_growables"));
         TagUtil.addValue(tag, crop.getBlockId().toString());
     }
 
