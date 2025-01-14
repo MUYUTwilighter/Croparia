@@ -22,7 +22,7 @@ public class BlockTagGenerator {
     }
 
     private static void addCropBlock(Crop crop) {
-        JsonObject tag = getTag(CropariaIf.of("crop_blocks"));
+        JsonObject tag = getTag(ResourceLocation.tryParse("c:crop_blocks"));
         TagUtil.addValue(tag, crop.getBlockId().toString());
     }
 
