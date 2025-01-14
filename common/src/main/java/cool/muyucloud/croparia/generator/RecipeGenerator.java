@@ -44,7 +44,7 @@ public class RecipeGenerator {
         keys.add("C", croparia);
         keys.add("M", material);
         keys.add("S", seed);
-        root.add("translationKey", keys);
+        root.add("key", keys);
 
         JsonArray pattern = new JsonArray();
         pattern.add("MSM");
