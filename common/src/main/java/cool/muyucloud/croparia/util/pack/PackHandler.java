@@ -4,8 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import cool.muyucloud.croparia.CropariaIf;
-import net.minecraft.SharedConstants;
-import net.minecraft.server.packs.PackType;
 
 import java.io.File;
 import java.io.FileWriter;

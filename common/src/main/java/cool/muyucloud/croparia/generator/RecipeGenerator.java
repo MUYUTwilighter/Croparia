@@ -7,7 +7,6 @@ import cool.muyucloud.croparia.annotation.PostGen;
 import cool.muyucloud.croparia.data.crop.Crop;
 import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.registry.Crops;
-import cool.muyucloud.croparia.util.TagUtil;
 import cool.muyucloud.croparia.util.pack.DataPackHandler;
 import dev.architectury.platform.Platform;
 import net.minecraft.resources.ResourceLocation;
