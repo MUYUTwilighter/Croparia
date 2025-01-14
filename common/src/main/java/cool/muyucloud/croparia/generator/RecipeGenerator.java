@@ -2,6 +2,7 @@ package cool.muyucloud.croparia.generator;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.annotation.PostGen;
 import cool.muyucloud.croparia.data.crop.Crop;
 import cool.muyucloud.croparia.registry.CropariaItems;
@@ -39,7 +40,7 @@ public class RecipeGenerator {
         JsonObject material = new JsonObject();
         material.addProperty(crop.isTag() ? "tag" : "item", crop.getMaterial().toString());
         JsonObject seed = new JsonObject();
-        seed.addProperty("tag", TagUtil.compatId("seeds").toString());
+        seed.addProperty("tag", Objects.requireNonNull(CropariaIf.of("seed_ingredient")).toString());
         JsonObject keys = new JsonObject();
         keys.add("C", croparia);
         keys.add("M", material);
@@ -79,6 +80,33 @@ public class RecipeGenerator {
         root.add("result", result);
 
         DataPackHandler.INSTANCE.addRecipe(Objects.requireNonNull(id), root);
+    }
+
+    /**
+     * Modern Industrialization - Packer
+     */
+    public static void createMiPacker(Crop crop) {
+        ResourceLocation id = CropariaIf.of("modern_industrialization/packer/" + crop.getName());
+        JsonObject root = new JsonObject();
+        root.addProperty("type", "modern_industrialization:packer");
+        root.addProperty("duration", "100");
+        root.addProperty("eu", 2);
+
+        JsonArray itemInputs = new JsonArray();
+        JsonObject itemInput = new JsonObject();
+        itemInput.addProperty("item", crop.getFruitId().toString());
+        itemInput.addProperty("amount", 1);
+        itemInputs.add(itemInput);
+        root.add("item_inputs", itemInputs);
+
+        JsonArray itemOutputs = new JsonArray();
+        JsonObject itemOutput = new JsonObject();
+        itemOutput.addProperty("item", Objects.requireNonNull(crop.getMaterialItem().arch$registryName()).toString());
+        itemOutput.addProperty("amount", 2);
+        itemOutputs.add(itemOutput);
+        root.add("item_outputs", itemOutputs);
+
+        DataPackHandler.INSTANCE.addRecipe(id, root);
     }
 
     public static void createThermalIsolator(Crop crop) {

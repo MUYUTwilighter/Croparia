@@ -3,6 +3,7 @@ package cool.muyucloud.croparia.util.pack;
 import com.google.gson.JsonObject;
 import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.util.Util;
+import net.minecraft.SharedConstants;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.PackSource;
@@ -72,5 +73,10 @@ public class DataPackHandler extends PackHandler {
                 CropariaIf.LOGGER.error("Failed to clear data pack directory", e);
             }
         }
+    }
+
+    @Override
+    protected int getPackVersion() {
+        return SharedConstants.getCurrentVersion().getPackVersion(PackType.SERVER_DATA);
     }
 }

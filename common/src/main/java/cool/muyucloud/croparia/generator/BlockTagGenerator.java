@@ -21,7 +21,12 @@ public class BlockTagGenerator {
     }
 
     private static void addCropBlock(Crop crop) {
-        JsonObject tag = getTag(TagUtil.compatId("crops"));
+        JsonObject tag = getTag(ResourceLocation.tryParse("minecraft:crops"));
+        TagUtil.addValue(tag, crop.getBlockId().toString());
+    }
+
+    private static void addBeeGrowable(Crop crop) {
+        JsonObject tag = getTag(ResourceLocation.tryParse("minecraft:bee_growables"));
         TagUtil.addValue(tag, crop.getBlockId().toString());
     }
 

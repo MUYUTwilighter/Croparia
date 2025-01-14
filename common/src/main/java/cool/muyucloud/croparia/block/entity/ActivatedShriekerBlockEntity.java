@@ -64,7 +64,6 @@ public class ActivatedShriekerBlockEntity extends BlockEntity implements GameEve
         map.put(3, SoundEvents.WARDEN_NEARBY_CLOSEST);
         map.put(4, SoundEvents.WARDEN_LISTENING_ANGRY);
     });
-    private int warningLevel;
     private final VibrationSystem.User vibrationUser = new ActivatedShriekerBlockEntity.VibrationUser();
     private VibrationSystem.Data vibrationData = new VibrationSystem.Data();
     private final VibrationSystem.Listener vibrationListener = new VibrationSystem.Listener(this);
@@ -85,10 +84,6 @@ public class ActivatedShriekerBlockEntity extends BlockEntity implements GameEve
 
     public void load(CompoundTag compoundTag) {
         super.load(compoundTag);
-        if (compoundTag.contains("warning_level", 99)) {
-            this.warningLevel = compoundTag.getInt("warning_level");
-        }
-
         if (compoundTag.contains("listener", 10)) {
             DataResult<VibrationSystem.Data> listener = Data.CODEC.parse(new Dynamic<>(NbtOps.INSTANCE, compoundTag.getCompound("listener")));
             listener.resultOrPartial(LOGGER::error).ifPresent((data) -> {
@@ -100,7 +95,6 @@ public class ActivatedShriekerBlockEntity extends BlockEntity implements GameEve
 
     protected void saveAdditional(CompoundTag compoundTag) {
         super.saveAdditional(compoundTag);
-        compoundTag.putInt("warning_level", this.warningLevel);
         DataResult<Tag> vibrationData = Data.CODEC.encodeStart(NbtOps.INSTANCE, this.vibrationData);
         vibrationData.resultOrPartial(LOGGER::error).ifPresent((tag) -> {
             compoundTag.put("listener", tag);
@@ -139,7 +133,6 @@ public class ActivatedShriekerBlockEntity extends BlockEntity implements GameEve
         if (serverPlayer != null) {
             BlockState blockState = this.getBlockState();
             if (!(Boolean) blockState.getValue(ActivatedShrieker.SHRIEKING)) {
-                this.warningLevel = 0;
                 if (!this.canRespond(serverLevel) || this.tryToWarn(serverLevel, serverPlayer)) {
                     this.shriek(serverLevel, serverPlayer);
                 }
@@ -149,7 +142,6 @@ public class ActivatedShriekerBlockEntity extends BlockEntity implements GameEve
 
     private boolean tryToWarn(ServerLevel serverLevel, ServerPlayer serverPlayer) {
         OptionalInt optionalInt = WardenSpawnTracker.tryWarn(serverLevel, this.getBlockPos(), serverPlayer);
-        optionalInt.ifPresent((i) -> this.warningLevel = i);
         return optionalInt.isPresent();
     }
 
@@ -167,7 +159,7 @@ public class ActivatedShriekerBlockEntity extends BlockEntity implements GameEve
     }
 
     public void tryRespond(ServerLevel serverLevel) {
-        if (this.canRespond(serverLevel) && this.warningLevel > 0) {
+        if (this.canRespond(serverLevel)) {
             if (!this.trySummonWarden(serverLevel)) {
                 this.playWardenReplySound(serverLevel);
             }
@@ -178,7 +170,7 @@ public class ActivatedShriekerBlockEntity extends BlockEntity implements GameEve
     }
 
     private void playWardenReplySound(Level level) {
-        SoundEvent soundEvent = SOUND_BY_LEVEL.get(this.warningLevel);
+        SoundEvent soundEvent = SOUND_BY_LEVEL.get(4);
         if (soundEvent != null) {
             BlockPos blockPos = this.getBlockPos();
             int i = blockPos.getX() + Mth.randomBetweenInclusive(level.random, -10, 10);
@@ -190,7 +182,7 @@ public class ActivatedShriekerBlockEntity extends BlockEntity implements GameEve
     }
 
     private boolean trySummonWarden(ServerLevel serverLevel) {
-        return this.warningLevel >= 4 && SpawnUtil.trySpawnMob(EntityType.WARDEN, MobSpawnType.TRIGGERED, serverLevel, this.getBlockPos(), 20, 5, 6, SpawnUtil.Strategy.ON_TOP_OF_COLLIDER).isPresent();
+        return SpawnUtil.trySpawnMob(EntityType.WARDEN, MobSpawnType.TRIGGERED, serverLevel, this.getBlockPos(), 20, 5, 6, SpawnUtil.Strategy.ON_TOP_OF_COLLIDER).isPresent();
     }
 
     public VibrationSystem.@NotNull Listener getListener() {
