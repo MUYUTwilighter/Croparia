@@ -32,9 +32,9 @@ public class ActivatedShrieker extends SculkShriekerBlock {
         if (level instanceof ServerLevel serverLevel) {
             ServerPlayer serverPlayer = SculkShriekerBlockEntity.tryGetPlayer(entity);
             if (serverPlayer != null) {
-                serverLevel.getBlockEntity(blockPos, BlockEntities.ACTIVATED_SHRIEKER.get()).ifPresent((sculkShriekerBlockEntity) -> {
-                    sculkShriekerBlockEntity.tryShriek(serverLevel, serverPlayer);
-                });
+                serverLevel.getBlockEntity(blockPos, BlockEntities.ACTIVATED_SHRIEKER.get()).ifPresent(
+                    sculkShriekerBlockEntity -> sculkShriekerBlockEntity.tryShriek(serverLevel, serverPlayer)
+                );
             }
         }
         super.stepOn(level, blockPos, blockState, entity);
@@ -43,9 +43,9 @@ public class ActivatedShrieker extends SculkShriekerBlock {
     protected void onRemove(BlockState blockState, Level level, BlockPos blockPos, BlockState blockState2, boolean bl) {
         if (level instanceof ServerLevel serverLevel) {
             if (blockState.getValue(SHRIEKING) && !blockState.is(blockState2.getBlock())) {
-                serverLevel.getBlockEntity(blockPos, BlockEntities.ACTIVATED_SHRIEKER.get()).ifPresent((sculkShriekerBlockEntity) -> {
-                    sculkShriekerBlockEntity.tryRespond(serverLevel);
-                });
+                serverLevel.getBlockEntity(blockPos, BlockEntities.ACTIVATED_SHRIEKER.get()).ifPresent(
+                    sculkShriekerBlockEntity -> sculkShriekerBlockEntity.tryRespond(serverLevel)
+                );
             }
         }
         super.onRemove(blockState, level, blockPos, blockState2, bl);
@@ -60,17 +60,20 @@ public class ActivatedShrieker extends SculkShriekerBlock {
     protected void tick(BlockState blockState, ServerLevel serverLevel, BlockPos blockPos, RandomSource randomSource) {
         if (blockState.getValue(SHRIEKING)) {
             serverLevel.setBlock(blockPos, blockState.setValue(SHRIEKING, false), 3);
-            serverLevel.getBlockEntity(blockPos, BlockEntities.ACTIVATED_SHRIEKER.get()).ifPresent((sculkShriekerBlockEntity) -> {
-                sculkShriekerBlockEntity.tryRespond(serverLevel);
-            });
+            serverLevel.getBlockEntity(blockPos, BlockEntities.ACTIVATED_SHRIEKER.get()).ifPresent(
+                sculkShriekerBlockEntity -> sculkShriekerBlockEntity.tryRespond(serverLevel)
+            );
         }
     }
 
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
-        return !level.isClientSide ? BaseEntityBlock.createTickerHelper(blockEntityType, BlockEntities.ACTIVATED_SHRIEKER.get(), (levelx, blockPos, blockStatex, sculkShriekerBlockEntity) -> {
-            VibrationSystem.Ticker.tick(levelx, sculkShriekerBlockEntity.getVibrationData(), sculkShriekerBlockEntity.getVibrationUser());
-        }) : null;
+        return !level.isClientSide ? BaseEntityBlock.createTickerHelper(
+            blockEntityType, BlockEntities.ACTIVATED_SHRIEKER.get(),
+            (levelx, blockPos, blockStatex, sculkShriekerBlockEntity) -> VibrationSystem.Ticker.tick(
+                levelx, sculkShriekerBlockEntity.getVibrationData(), sculkShriekerBlockEntity.getVibrationUser()
+            )
+        ) : null;
     }
 
     @Override

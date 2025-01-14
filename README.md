@@ -8,7 +8,7 @@ but was completely rewritten since beta 0.0.1, 2024-12, by [MUYU_Twilighter](htt
 
 Following GNU license, this project has provided a share for the original author.
 
-## Features
+## Difference between Croparia and Croparia-IF
 
 **You can only choose ONE installation between Croparia and Croparia-IF**
 
@@ -24,5 +24,7 @@ Including:
 - Auto-gen default textures and models for items & block.
 - Recipes of crop seeds can be replaced by datapack. (The original project would overwrite the recipes in datapacks)
 - Auto generate recipes converting fruits to resources on crafting table
+- Add compat recipes for mods like Modern Industrialization, Botany Pots, etc.
+- Five elements & 3 rituals are now back, but are built & applied in a different way.
 
 For more information, see [wiki](https://github.com/MUYUTwilighter/Croparia/wiki).
