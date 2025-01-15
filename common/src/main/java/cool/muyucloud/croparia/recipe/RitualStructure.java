@@ -69,6 +69,10 @@ public class RitualStructure implements Recipe<RitualStructureContainer> {
         return Optional.ofNullable(this.keys.get(key));
     }
 
+    public Optional<BlockStatePredicate> getPredicate(int x, int y, int z) {
+        return getPredicate(getChar(x, y, z));
+    }
+
     public char getChar(int x, int y, int z) {
         return this.patterns.get(0).get(x, y, z);
     }

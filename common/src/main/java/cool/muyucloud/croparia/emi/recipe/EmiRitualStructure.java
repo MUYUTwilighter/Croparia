@@ -30,6 +30,7 @@ public class EmiRitualStructure implements EmiRecipe {
     private static final int BUTTON_SIZE = 12;
     private static final int SLOT_SIZE = 18;
 
+    private final RitualStructure recipe;
     private final EmiIngredient[][][] structure;
     private final EmiIngredient ritual;
     private final ResourceLocation id;
@@ -41,6 +42,7 @@ public class EmiRitualStructure implements EmiRecipe {
     private Vec3i oldCursor = new Vec3i(0, 0, 0);
 
     public EmiRitualStructure(RitualStructure recipe) {
+        this.recipe = recipe;
         this.structure = new EmiIngredient[recipe.maxY()][recipe.maxZ()][recipe.maxX()];
         this.ritual = EmiStack.of(BuiltInRegistries.ITEM.get(recipe.getId()));
         this.id = recipe.getId();
@@ -68,7 +70,10 @@ public class EmiRitualStructure implements EmiRecipe {
                         int finalY = y;
                         int finalZ = z;
                         int finalX = x;
-                        structure.getPredicate(key).ifPresentOrElse(predicate -> this.structure[finalY][finalZ][finalX] = EmiIngredient.of(predicate.availableBlockItems().stream().map(EmiStack::of).toList()), () -> this.structure[finalY][finalZ][finalX] = UNKNOWN);
+                        structure.getPredicate(key).ifPresentOrElse(
+                            predicate -> this.structure[finalY][finalZ][finalX] = EmiIngredient.of(predicate.availableBlockItems().stream().map(EmiStack::of).toList()),
+                            () -> this.structure[finalY][finalZ][finalX] = UNKNOWN
+                        );
                     }
                 }
             }
@@ -168,6 +173,9 @@ public class EmiRitualStructure implements EmiRecipe {
                 for (int z = cursor.getZ(), displayZ = 0; z < Math.min(structure[cursor.getY()].length, cursor.getZ() + displaySize.getZ()); z++, displayZ++) {
                     for (int x = cursor.getX(), displayX = 0; x < Math.min(structure[cursor.getY()][z].length, cursor.getX() + displaySize.getX()); x++, displayX++) {
                         slots[displayX][displayZ].setStack(structure[cursor.getY()][z][x]);
+                        int finalDisplayX = displayX;
+                        int finalDisplayZ = displayZ;
+                        recipe.getPredicate(x, cursor.getY(), z).ifPresent(predicate -> slots[finalDisplayX][finalDisplayZ].setTooltip(predicate.tooltip()));
                     }
                 }
             }
