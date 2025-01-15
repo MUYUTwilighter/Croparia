@@ -40,6 +40,7 @@ public class EmiRitualStructure implements EmiRecipe {
     private static final int BUTTON_SIZE = 12;
     private static final int SLOT_SIZE = 18;
 
+    private final RitualStructure recipe;
     private final EmiIngredient[][][] structure;
     private final EmiIngredient ritual;
     private final ResourceLocation id;
@@ -52,6 +53,7 @@ public class EmiRitualStructure implements EmiRecipe {
 
     public EmiRitualStructure(RecipeHolder<RitualStructure> holder) {
         RitualStructure recipe = holder.value();
+        this.recipe = recipe;
         this.structure = new EmiIngredient[recipe.maxY()][recipe.maxZ()][recipe.maxX()];
         this.ritual = EmiStack.of(BuiltInRegistries.ITEM.get(holder.id()));
         this.id = holder.id();
@@ -179,6 +181,9 @@ public class EmiRitualStructure implements EmiRecipe {
                 for (int z = cursor.getZ(), displayZ = 0; z < Math.min(structure[cursor.getY()].length, cursor.getZ() + displaySize.getZ()); z++, displayZ++) {
                     for (int x = cursor.getX(), displayX = 0; x < Math.min(structure[cursor.getY()][z].length, cursor.getX() + displaySize.getX()); x++, displayX++) {
                         slots[displayX][displayZ].setStack(structure[cursor.getY()][z][x]);
+                        int finalDisplayX = displayX;
+                        int finalDisplayZ = displayZ;
+                        recipe.getPredicate(x, cursor.getY(), z).ifPresent(predicate -> slots[finalDisplayX][finalDisplayZ].setTooltips(predicate.tooltip()));
                     }
                 }
             }

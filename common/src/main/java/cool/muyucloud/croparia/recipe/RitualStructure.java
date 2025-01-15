@@ -61,7 +61,7 @@ public class RitualStructure implements Recipe<RitualStructureContainer> {
     }
 
     public Char3DWithMark getPattern() {
-        return this.patterns.get(0);
+        return this.patterns.getFirst();
     }
 
     public Collection<BlockStatePredicate> getPredicates() {
@@ -72,8 +72,12 @@ public class RitualStructure implements Recipe<RitualStructureContainer> {
         return Optional.ofNullable(this.keys.get(key));
     }
 
+    public Optional<BlockStatePredicate> getPredicate(int x, int y, int z) {
+        return this.getPredicate(this.getChar(x, y, z));
+    }
+
     public char getChar(int x, int y, int z) {
-        return this.patterns.get(0).get(x, y, z);
+        return this.patterns.getFirst().get(x, y, z);
     }
 
     public int maxX() {
@@ -146,7 +150,7 @@ public class RitualStructure implements Recipe<RitualStructureContainer> {
 
     @Override
     @Deprecated
-    public ItemStack assemble(RitualStructureContainer recipeInput, HolderLookup.Provider provider) {
+    public @NotNull ItemStack assemble(RitualStructureContainer recipeInput, HolderLookup.Provider provider) {
         throw new UnsupportedOperationException();
     }
 
