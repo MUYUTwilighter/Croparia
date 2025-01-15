@@ -72,10 +72,10 @@ public class BlockStatePredicate implements Predicate<BlockState> {
 
     public Collection<ItemStack> availableBlockItems() {
         if (this.builder.isBlock()) {
-            return Collections.singleton(getBlockItem(ResourceLocation.tryParse(this.builder.getBlock())));
+            return Collections.singleton(getBlockItem(ResourceLocation.tryParse(Objects.requireNonNull(this.builder.getBlock()))));
         } else if (this.builder.isTag()) {
             Iterator<Holder<Block>> blocks = BuiltInRegistries.BLOCK.getTagOrEmpty(
-                TagKey.create(Registries.BLOCK, ResourceLocation.tryParse(builder.getBlock()))
+                TagKey.create(Registries.BLOCK, ResourceLocation.tryParse(Objects.requireNonNull(builder.getBlock()).substring(1)))
             ).iterator();
             if (!blocks.hasNext()) {
                 return builder.properties.isEmpty() ? Collections.singleton(STACK_UNKNOWN)
