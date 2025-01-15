@@ -1,6 +1,7 @@
 package cool.muyucloud.croparia.emi.recipe;
 
 import cool.muyucloud.croparia.emi.widget.Button;
+import cool.muyucloud.croparia.emi.widget.DynamicSlot;
 import cool.muyucloud.croparia.recipe.RitualStructure;
 import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.util.Constants;
@@ -9,7 +10,6 @@ import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
-import dev.emi.emi.api.widget.SlotWidget;
 import dev.emi.emi.api.widget.TextWidget;
 import dev.emi.emi.api.widget.WidgetHolder;
 import net.minecraft.core.Vec3i;
@@ -38,6 +38,7 @@ public class EmiRitualStructure implements EmiRecipe {
     private final Vec3i size;
     private final Vec3i displaySize;
     private Vec3i cursor = new Vec3i(0, 0, 0);
+    private Vec3i oldCursor = new Vec3i(0, 0, 0);
 
     public EmiRitualStructure(RitualStructure recipe) {
         this.structure = new EmiIngredient[recipe.maxY()][recipe.maxZ()][recipe.maxX()];
@@ -140,15 +141,33 @@ public class EmiRitualStructure implements EmiRecipe {
         }
     }
 
+    public boolean queryCursor() {
+        if (oldCursor.equals(cursor)) {
+            return false;
+        } else {
+            oldCursor = new Vec3i(cursor.getX(), cursor.getY(), cursor.getZ());
+            return true;
+        }
+    }
+
     @Override
     public void addWidgets(WidgetHolder widgets) {
+        DynamicSlot[][] slots = new DynamicSlot[displaySize.getX()][displaySize.getZ()];
+        for (int x = 0; x < displaySize.getX(); x++) {
+            for (int z = 0; z < displaySize.getZ(); z++) {
+                slots[x][z] = widgets.add(new DynamicSlot(SLOT_SIZE + SLOT_SIZE * x, SLOT_SIZE + SLOT_SIZE * z));
+                slots[x][z].setStack(structure[cursor.getY()][cursor.getZ() + z][cursor.getX() + x]);
+            }
+        }
         widgets.addDrawable(SLOT_SIZE, SLOT_SIZE,
             this.getDisplayWidth() - SLOT_SIZE * 2, this.getDisplayHeight() - SLOT_SIZE * 3,
             (graphics, mouseX, mouseY, delta) -> {
+                if (!queryCursor()) {
+                    return;
+                }
                 for (int z = cursor.getZ(), displayZ = 0; z < Math.min(structure[cursor.getY()].length, cursor.getZ() + displaySize.getZ()); z++, displayZ++) {
                     for (int x = cursor.getX(), displayX = 0; x < Math.min(structure[cursor.getY()][z].length, cursor.getX() + displaySize.getX()); x++, displayX++) {
-                        new SlotWidget(structure[cursor.getY()][z][x], displayX * SLOT_SIZE, displayZ * SLOT_SIZE)
-                            .render(graphics, mouseX, mouseY, delta);
+                        slots[displayX][displayZ].setStack(structure[cursor.getY()][z][x]);
                     }
                 }
             }
