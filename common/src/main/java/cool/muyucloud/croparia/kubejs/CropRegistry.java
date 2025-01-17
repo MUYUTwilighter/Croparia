@@ -16,10 +16,12 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
-@SuppressWarnings({"UnstableApiUsage", "unused"})
+
+@SuppressWarnings({"unused"})
 public class CropRegistry {
     private final DeferredRegister<Item> itemRegistry = DeferredRegister.create(CropariaIf.MOD_ID, Registries.ITEM);
     private final DeferredRegister<Block> blockRegistry = DeferredRegister.create(CropariaIf.MOD_ID, Registries.BLOCK);
+
     /**
      * Add a simple custom crop.
      *
