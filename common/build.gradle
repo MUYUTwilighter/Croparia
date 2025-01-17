@@ -13,10 +13,10 @@ dependencies {
     // Remove the next line if you don't want to depend on the API
     modApi "dev.architectury:architectury:${rootProject.architectury_version}"
 
+    // REI
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-api:$rei_version"
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-default-plugin:$rei_version"
-
-//    compileOnly "dev.emi:emi-xplat-mojmap:${emi_version}:api"
+    // EMI
     modCompileOnly "dev.emi:emi-xplat-intermediary:${emi_version}:api"
 }
 

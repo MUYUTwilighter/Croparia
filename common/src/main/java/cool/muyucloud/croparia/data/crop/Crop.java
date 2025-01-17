@@ -1,6 +1,9 @@
 package cool.muyucloud.croparia.data.crop;
 
 import cool.muyucloud.croparia.CropariaIf;
+import cool.muyucloud.croparia.annotation.PostGen;
+import cool.muyucloud.croparia.annotation.PostReg;
+import cool.muyucloud.croparia.annotation.PreReg;
 import cool.muyucloud.croparia.block.CropariaCropBlock;
 import cool.muyucloud.croparia.util.BiOptional;
 import cool.muyucloud.croparia.util.Util;
@@ -14,10 +17,7 @@ import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class Crop {
@@ -194,6 +194,7 @@ public class Crop {
     }
 
     @NotNull
+    @PostReg
     public CropariaCropBlock getCropBlock() {
         return (CropariaCropBlock) BuiltInRegistries.BLOCK.get(blockId);
     }
@@ -204,6 +205,7 @@ public class Crop {
     }
 
     @NotNull
+    @PostReg
     public Item getSeedItem() {
         return BuiltInRegistries.ITEM.get(seedId);
     }
@@ -214,6 +216,7 @@ public class Crop {
     }
 
     @NotNull
+    @PostReg
     public Item getFruitItem() {
         return BuiltInRegistries.ITEM.get(fruitId);
     }
@@ -239,5 +242,10 @@ public class Crop {
 
     protected Map<String, String> getTranslations() {
         return Map.copyOf(translations);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.name);
     }
 }

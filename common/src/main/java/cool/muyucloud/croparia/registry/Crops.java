@@ -10,30 +10,19 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
+@SuppressWarnings("unused")
 public class Crops {
+    // All crops, including KubeJS crops
     public static final Set<Crop> CROPS = new HashSet<>();
+    // Crops including file definition (not present until read), here and CompatCrops, but not KubeJS definition
+    private static final Set<Crop> BUILTIN_CROPS = new HashSet<>();
+    // Intermediate data entity of compat crops
+    private static final Map<String, CompatCrop> COMPAT_CROPS = new HashMap<>();
 
-    /**
-     * Add a simple crop. Mainly used for croparia crops.
-     *
-     * @param name       crop name
-     * @param materialId id of material which the crop grows, could be item ID or item tag
-     * @param color      int value of color
-     * @param tier       tier
-     * @param type       crop type that specifies the textures. See also {@link CropType}
-     */
-    public static @NotNull Crop registerCrop(
-        @NotNull String name, @NotNull String materialId, int color, int tier, @NotNull CropType type
-    ) {
-        Crop crop = Crop.create(name, materialId, color, tier, type).orElseThrow(
-            () -> new IllegalArgumentException(
-                "Failed to create croparia crop %s".formatted(name)
-            )
-        );
+    private static void addCrop(Crop crop) {
+        BUILTIN_CROPS.add(crop);
         CROPS.add(crop);
-        return crop;
     }
-
 
     /**
      * Add a simple crop with specified translation translationKey. Mainly used for vanilla crops.
@@ -52,7 +41,7 @@ public class Crops {
         Crop crop = Crop.create(name, materialId, color, tier, type, translationKey, Map.of()).orElseThrow(
             () -> new IllegalArgumentException("Vanilla crop %s failed to create".formatted(name))
         );
-        CROPS.add(crop);
+        addCrop(crop);
         return crop;
     }
 
@@ -172,10 +161,9 @@ public class Crops {
     public static final Crop AMETHYST = registerCrop("amethyst", Objects.requireNonNull(Items.AMETHYST_SHARD.arch$registryName()).toString(), 0xd9cbf2, 3, CropType.CROP, Items.AMETHYST_SHARD.getDescriptionId());
     public static final Crop ECHO_SHARD = registerCrop("echo_shard", Objects.requireNonNull(Items.ECHO_SHARD.arch$registryName()).toString(), 0x3404f, 4, CropType.CROP, Items.ECHO_SHARD.getDescriptionId());
 
-    private static final Map<String, CompatCrop> COMPAT_CROPS = new HashMap<>();
 
     /**
-     * Add a crop from a modded material.
+     * Add a crop from material implemented by multiple mods<br/>
      * This method does not register the crop directly, but will save the crop in {@link Config#getCropPath()}<br/>
      * The crop registration is handled by {@code CropFileHandler.readCrops().forEach(Crops::registerFileCrop);}
      * in {@link #register()}<br/>
@@ -191,7 +179,7 @@ public class Crops {
      * @return the intermediate data entity of the crop
      */
     public static @Nullable CompatCrop compatCrop(
-        String name, String material, int color, int tier, CropType type, @NotNull Map<String, String> translationKeys
+        String name, String material, int color, int tier, CropType type, @Nullable Map<String, String> translationKeys
     ) {
         for (String mod : translationKeys.keySet()) {
             if (Platform.isModLoaded(mod)) {
@@ -209,18 +197,24 @@ public class Crops {
     }
 
     public static boolean shouldLoad(@NotNull List<List<String>> dependencies) {
-        return dependencies.isEmpty() || dependencies.stream().allMatch(list -> list.isEmpty() || list.stream().anyMatch(Platform::isModLoaded));
+        return dependencies.isEmpty()
+            || dependencies.stream().allMatch(list -> list.isEmpty()
+            || list.stream().anyMatch(Platform::isModLoaded));
     }
 
     @SafeVarargs
     public static boolean shouldLoad(@NotNull List<String>... dependencies) {
-        return dependencies.length == 0 || Arrays.stream(dependencies).allMatch(list -> list.isEmpty() || list.stream().anyMatch(Platform::isModLoaded));
+        return dependencies.length == 0
+            || Arrays.stream(dependencies).allMatch(list -> list.isEmpty()
+            || list.stream().anyMatch(Platform::isModLoaded));
     }
 
     public static void register() {
-        COMPAT_CROPS.forEach((material, crop) -> CropFileHandler.saveCompatCrop(crop));
+        if (CropariaIf.CONFIG.getCompatGen()) {
+            COMPAT_CROPS.forEach((material, crop) -> CropFileHandler.saveCompatCrop(crop));
+        }
         CropFileHandler.readCrops().forEach(Crops::registerFileCrop);
-        for (Crop crop : CROPS) {
+        for (Crop crop : BUILTIN_CROPS) {
             if (CropariaIf.CONFIG.inBlacklist(crop)) {
                 continue;
             }
@@ -232,7 +226,7 @@ public class Crops {
     private static void registerFileCrop(@NotNull RawCrop raw) {
         if (raw.dependencies() == null || shouldLoad(raw.dependencies())) {
             Crop.of(raw).ifPresentOrElse(
-                CROPS::add,
+                Crops::addCrop,
                 () -> CropariaIf.LOGGER.error("Failed to create custom crop %s".formatted(raw.name()))
             );
         } else {
