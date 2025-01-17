@@ -4,20 +4,16 @@ import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.annotation.PostReg;
 import cool.muyucloud.croparia.annotation.PreReg;
 import cool.muyucloud.croparia.block.*;
-import cool.muyucloud.croparia.data.ElementsEnum;
 import cool.muyucloud.croparia.data.crop.Crop;
+import dev.architectury.core.block.ArchitecturyLiquidBlock;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.util.valueproviders.UniformInt;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.DropExperienceBlock;
-import net.minecraft.world.level.block.LayeredCauldronBlock;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -84,45 +80,29 @@ public class CropariaBlocks {
         )
     );
     @PostReg
-    public static final RegistrySupplier<LayeredCauldronBlock> CAULDRON = registerBlock(
-        "elematilius_cauldron",
-        () -> new LayeredCauldronBlock(
-            BlockBehaviour.Properties.copy(net.minecraft.world.level.block.Blocks.CAULDRON),
-            LayeredCauldronBlock.RAIN, CropariaCauldronInteraction.ELEMATILIUS
-        )
+    public static final RegistrySupplier<LiquidBlock> FLUID_ELEMATILIUS = registerBlock(
+        "fluid_elematilius",
+        () -> new ArchitecturyLiquidBlock(Fluids.ELEMATILIUS, BlockBehaviour.Properties.copy(Blocks.WATER))
     );
     @PostReg
-    public static final RegistrySupplier<LayeredCauldronBlock> WATER_CAULDRON = registerBlock(
-        "water_cauldron",
-        () -> new LayeredCauldronBlock(
-            BlockBehaviour.Properties.copy(net.minecraft.world.level.block.Blocks.CAULDRON),
-            LayeredCauldronBlock.RAIN,
-            CropariaCauldronInteraction.WATER_CAULDRON
-        )
+    public static final RegistrySupplier<LiquidBlock> FLUID_EARTH = registerBlock(
+        "fluid_earth",
+        () -> new ArchitecturyLiquidBlock(Fluids.EARTH, BlockBehaviour.Properties.copy(Blocks.WATER))
     );
     @PostReg
-    public static final RegistrySupplier<LayeredCauldronBlock> FIRE_CAULDRON = registerBlock(
-        "fire_cauldron",
-        () -> new LayeredCauldronBlock(
-            BlockBehaviour.Properties.copy(net.minecraft.world.level.block.Blocks.CAULDRON),
-            LayeredCauldronBlock.RAIN, CropariaCauldronInteraction.FIRE_CAULDRON
-        )
+    public static final RegistrySupplier<LiquidBlock> FLUID_WATER = registerBlock(
+        "fluid_water",
+        () -> new ArchitecturyLiquidBlock(Fluids.WATER, BlockBehaviour.Properties.copy(Blocks.WATER))
     );
     @PostReg
-    public static final RegistrySupplier<LayeredCauldronBlock> EARTH_CAULDRON = registerBlock(
-        "earth_cauldron",
-        () -> new LayeredCauldronBlock(
-            BlockBehaviour.Properties.copy(net.minecraft.world.level.block.Blocks.CAULDRON),
-            LayeredCauldronBlock.RAIN, CropariaCauldronInteraction.EARTH_CAULDRON
-        )
+    public static final RegistrySupplier<LiquidBlock> FLUID_FIRE = registerBlock(
+        "fluid_fire",
+        () -> new ArchitecturyLiquidBlock(Fluids.FIRE, BlockBehaviour.Properties.copy(Blocks.WATER))
     );
     @PostReg
-    public static final RegistrySupplier<LayeredCauldronBlock> AIR_CAULDRON = registerBlock(
-        "air_cauldron",
-        () -> new LayeredCauldronBlock(
-            BlockBehaviour.Properties.copy(net.minecraft.world.level.block.Blocks.CAULDRON),
-            LayeredCauldronBlock.RAIN, CropariaCauldronInteraction.AIR_CAULDRON
-        )
+    public static final RegistrySupplier<LiquidBlock> FLUID_AIR = registerBlock(
+        "fluid_air",
+        () -> new ArchitecturyLiquidBlock(Fluids.AIR, BlockBehaviour.Properties.copy(Blocks.WATER))
     );
 
     @PreReg
@@ -139,18 +119,6 @@ public class CropariaBlocks {
     @PreReg
     public static void register() {
         BLOCKS.register();
-    }
-
-    @PostReg
-    public static @Nullable RegistrySupplier<LayeredCauldronBlock> getCauldron(@NotNull ElementsEnum element) {
-        return switch (element) {
-            case WATER -> WATER_CAULDRON;
-            case FIRE -> FIRE_CAULDRON;
-            case EARTH -> EARTH_CAULDRON;
-            case AIR -> AIR_CAULDRON;
-            case ELEMENTAL -> CAULDRON;
-            case EMPTY -> null;
-        };
     }
 
     @PostReg

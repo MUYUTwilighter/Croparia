@@ -1,0 +1,7 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "croparia:item/bucket_layer",
+    "layer1": "croparia:item/liquid_layer"
+  }
+}
