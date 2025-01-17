@@ -3,7 +3,6 @@ package cool.muyucloud.croparia.emi.widget;
 import cool.muyucloud.croparia.emi.recipe.EmiRitualStructure;
 import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.widget.SlotWidget;
-import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.network.chat.Component;
 
 import java.util.List;
