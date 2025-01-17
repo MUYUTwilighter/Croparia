@@ -40,7 +40,11 @@ public class Crops {
         Crop crop = Crop.create(name, materialId, color, tier, type, translationKey, Map.of()).orElseThrow(
             () -> new IllegalArgumentException("Vanilla crop %s failed to create".formatted(name))
         );
-        addCrop(crop);
+        if (CropariaIf.CONFIG.inBlacklist(name)) {
+            CropariaIf.LOGGER.info("Skipped built-in crop {} due to blacklist", name);
+        } else {
+            addCrop(crop);
+        }
         return crop;
     }
 
@@ -179,6 +183,10 @@ public class Crops {
     public static @Nullable CompatCrop compatCrop(
         String name, String material, int color, int tier, CropType type, @NotNull Map<String, String> translationKeys
     ) {
+        if (CropariaIf.CONFIG.inBlacklist(name)) {
+            CropariaIf.LOGGER.info("Skipped built-in compat crop {} due to blacklist", name);
+            return null;
+        }
         for (String mod : translationKeys.keySet()) {
             if (Platform.isModLoaded(mod)) {
                 CompatCrop crop = COMPAT_CROPS.get(material);
@@ -205,13 +213,13 @@ public class Crops {
 
     public static void register() {
         if (CropariaIf.CONFIG.getCompatGen()) {
+            CropariaIf.LOGGER.info("Loading built-in compat crops");
             COMPAT_CROPS.forEach((material, crop) -> CropFileHandler.saveCompatCrop(crop));
         }
+        CropariaIf.LOGGER.info("Loading custom crops");
         CropFileHandler.readCrops().forEach(Crops::registerFileCrop);
-        for (Crop crop : CROPS) {
-            if (CropariaIf.CONFIG.inBlacklist(crop)) {
-                continue;
-            }
+        CropariaIf.LOGGER.info("Registering crops");
+        for (Crop crop : BUILTIN_CROPS) {
             CropariaItems.registerCrop(crop);
             CropariaBlocks.registerCrop(crop);
         }

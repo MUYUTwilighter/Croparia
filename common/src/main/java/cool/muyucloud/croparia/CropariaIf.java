@@ -22,6 +22,7 @@ public class CropariaIf {
     public static final Config CONFIG = ConfigFileHandler.load();
 
     public static void init() {
+        CropariaIf.LOGGER.info("=== Croparia common setup ===");
         CropariaComponents.register();
         RecipeTypes.register();
         RecipeSerializers.register();
@@ -31,6 +32,7 @@ public class CropariaIf {
         BlockEntities.register();
         CropariaItems.register();
         Tabs.register();
+        CropariaIf.LOGGER.debug("Adding data generators");
         DataPackHandler.INSTANCE.registerGenerator(RecipeGenerator::init);
         DataPackHandler.INSTANCE.registerGenerator(LootTableGenerator::init);
         DataPackHandler.INSTANCE.registerGenerator(ItemTagGenerator::init);
@@ -39,6 +41,7 @@ public class CropariaIf {
         ResourcePackHandler.INSTANCE.registerGenerator(BlockStateModelGenerator::init);
         ResourcePackHandler.INSTANCE.registerGenerator(LangGenerator::init);
         PlacedFeatures.register();
+        CropariaIf.LOGGER.info("=== Croparia common setup done ===");
     }
 
     public static void onServerStarting() {

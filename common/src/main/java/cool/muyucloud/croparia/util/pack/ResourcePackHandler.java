@@ -33,6 +33,7 @@ public class ResourcePackHandler extends PackHandler {
         if (CropariaIf.CONFIG.getOverride()) {
             this.clear();
         }
+        CropariaIf.LOGGER.info("Generating resource pack data to file system");
         this.dump();
     }
 

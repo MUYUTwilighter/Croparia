@@ -42,6 +42,7 @@ public class RecipeTypes {
     }
 
     public static void register() {
+        CropariaIf.LOGGER.debug("Registering recipe types");
         RECIPE_TYPES.register();
     }
 }

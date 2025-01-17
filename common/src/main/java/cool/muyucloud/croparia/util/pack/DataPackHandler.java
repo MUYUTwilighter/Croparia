@@ -29,7 +29,7 @@ public class DataPackHandler extends PackHandler {
     @Override
     public void onSecondary() {
         super.onInitial();
-        this.generate();
+        CropariaIf.LOGGER.info("Generating resource pack data to file system");
         this.dump();
     }
 

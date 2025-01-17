@@ -165,6 +165,7 @@ public class CropariaItems {
     }
 
     public static void register() {
+        CropariaIf.LOGGER.debug("Registering items");
         ITEMS.register();
     }
 

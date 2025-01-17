@@ -4,8 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import cool.muyucloud.croparia.CropariaIf;
-import net.minecraft.SharedConstants;
-import net.minecraft.server.packs.PackType;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -45,7 +43,7 @@ public abstract class PackHandler {
     protected JsonObject generateMetaFile() {
         JsonObject root = new JsonObject();
         JsonObject pack = new JsonObject();
-        pack.addProperty("pack_format", SharedConstants.getCurrentVersion().getPackVersion(PackType.SERVER_DATA));
+        pack.addProperty("pack_format", this.getVersion());
         pack.addProperty("description",
             "Croparia mandatory pack in %s.\nPlease do not modify data / assets folders!".formatted(this.root));
         root.add("pack", pack);

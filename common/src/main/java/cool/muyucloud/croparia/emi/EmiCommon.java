@@ -1,5 +1,6 @@
 package cool.muyucloud.croparia.emi;
 
+import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.emi.recipe.EmiInfusorRecipe;
 import cool.muyucloud.croparia.emi.recipe.EmiRitualRecipe;
 import cool.muyucloud.croparia.emi.recipe.EmiRitualStructure;
@@ -14,6 +15,7 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 public class EmiCommon implements EmiPlugin {
     @Override
     public void register(EmiRegistry registry) {
+        CropariaIf.LOGGER.debug("Registering emi recipes...");
         registry.addCategory(EmiInfusorRecipe.CATEGORY);
         registry.addWorkstation(EmiInfusorRecipe.CATEGORY, EmiInfusorRecipe.WORKSTATION);
         for (RecipeHolder<InfusorRecipe> holder : registry.getRecipeManager().getAllRecipesFor(RecipeTypes.INFUSOR.get())) {

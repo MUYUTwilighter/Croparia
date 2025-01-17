@@ -35,6 +35,7 @@ public class Tabs {
     }
 
     public static void register() {
+        CropariaIf.LOGGER.debug("Registering tabs");
         TABS.register();
     }
 

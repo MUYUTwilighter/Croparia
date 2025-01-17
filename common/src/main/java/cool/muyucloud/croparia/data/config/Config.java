@@ -165,4 +165,8 @@ public class Config {
     public boolean inBlacklist(@NotNull Crop crop) {
         return blacklist.contains(crop.getName());
     }
+
+    public boolean inBlacklist(@NotNull String cropName) {
+        return blacklist.contains(cropName);
+    }
 }

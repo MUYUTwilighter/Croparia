@@ -30,6 +30,7 @@ public class BlockEntities {
     }
 
     public static void register() {
+        CropariaIf.LOGGER.debug("Registering block entities");
         BLOCK_ENTITIES.register();
     }
 }

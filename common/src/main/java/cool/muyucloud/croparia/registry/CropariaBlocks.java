@@ -104,6 +104,7 @@ public class CropariaBlocks {
     }
 
     public static void register() {
+        CropariaIf.LOGGER.debug("Registering blocks");
         BLOCKS.register();
     }
 

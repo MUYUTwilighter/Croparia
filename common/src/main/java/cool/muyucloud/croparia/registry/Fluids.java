@@ -48,6 +48,7 @@ public class Fluids {
     }
 
     public static void register() {
+        CropariaIf.LOGGER.debug("Registering fluids");
         FLUIDS.register();
     }
 }

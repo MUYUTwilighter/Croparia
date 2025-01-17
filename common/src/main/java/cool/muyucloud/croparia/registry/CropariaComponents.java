@@ -35,6 +35,7 @@ public class CropariaComponents {
     }
 
     public static void register() {
+        CropariaIf.LOGGER.debug("Registering data components");
         DATA_COMPONENTS.register();
     }
 }

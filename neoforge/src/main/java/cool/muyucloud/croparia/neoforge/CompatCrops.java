@@ -1,5 +1,6 @@
 package cool.muyucloud.croparia.neoforge;
 
+import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.data.crop.CompatCrop;
 import cool.muyucloud.croparia.data.crop.CropType;
 import cool.muyucloud.croparia.registry.Crops;
@@ -170,5 +171,6 @@ public class CompatCrops {
     ));
 
     public static void init() {
+        CropariaIf.LOGGER.debug("Initializing neoforge CompatCrops");
     }
 }

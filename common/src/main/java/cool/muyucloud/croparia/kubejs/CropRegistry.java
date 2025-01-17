@@ -54,9 +54,12 @@ public class CropRegistry {
         RegistrySupplier<CropariaCropBlock> cropBlock = blockRegistry.register(crop.getBlockId(), () -> new CropariaCropBlock(crop));
         RegistrySupplier<CropSeed> seed = itemRegistry.register(crop.getSeedId(), () -> new CropSeed(crop));
         RegistrySupplier<CropFruit> fruit = itemRegistry.register(crop.getFruitId(), () -> new CropFruit(crop));
+        CropariaIf.LOGGER.info("Added KubeJs crop {}", name);
     }
+
     public void register() {
         blockRegistry.register();
         itemRegistry.register();
+        CropariaIf.LOGGER.info("Finished KubeJs crop registration");
     }
 }

@@ -32,6 +32,7 @@ public class PlacedFeatures {
     }
 
     public static void register() {
+        CropariaIf.LOGGER.debug("Adding biome modifications");
         BiomeModifications.addProperties((context, mutable) -> {
             for (Map.Entry<GenerationStep.Decoration, Map<ResourceKey<PlacedFeature>, Predicate<BiomeModifications.BiomeContext>>> entry : PLACED_FEATURES.entrySet()) {
                 GenerationStep.Decoration decoration = entry.getKey();

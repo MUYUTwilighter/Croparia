@@ -15,6 +15,7 @@ public class ConfigFileHandler {
     public static final Path CONFIG_PATH = Platform.getGameFolder().resolve("config/croparia.json");
 
     public static void save(Config config) {
+        CropariaIf.LOGGER.info("Saving config");
         File parent = CONFIG_PATH.getParent().toFile();
         if (!parent.exists()) {
             parent.mkdirs();
@@ -40,6 +41,7 @@ public class ConfigFileHandler {
     }
 
     public static void reload(Config config) {
+        CropariaIf.LOGGER.info("Loading config");
         Config newConfig = load();
         config.setCropPath(newConfig.getCropPath());
         config.setPackPath(newConfig.getPackPath());
