@@ -1,12 +1,15 @@
 package cool.muyucloud.croparia.data.config;
 
 import com.google.gson.Gson;
+import cool.muyucloud.croparia.data.crop.Crop;
 import dev.architectury.platform.Platform;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.FileWriter;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class Config {
@@ -51,6 +54,8 @@ public class Config {
     private Boolean cauldron;
     @NotNull
     private Boolean compatGen;
+    @NotNull
+    private List<String> blacklist = new ArrayList<>();
 
     /**
      * Default config
@@ -78,10 +83,11 @@ public class Config {
         this.ritual = raw.ritual() != null ? raw.ritual() : true;
         this.cauldron = raw.cauldron() != null ? raw.cauldron() : true;
         this.compatGen = raw.compatGen() != null ? raw.compatGen() : true;
+        this.blacklist = raw.blacklist() != null ? raw.blacklist() : new ArrayList<>();
     }
 
     public RawConfig toRaw() {
-        return new RawConfig(resolvePath(cropPath), resolvePath(packPath), override, fruitUse, infusor, ritual, cauldron, compatGen);
+        return new RawConfig(resolvePath(cropPath), resolvePath(packPath), override, fruitUse, infusor, ritual, cauldron, compatGen, blacklist);
     }
 
     public void save() {
@@ -154,5 +160,9 @@ public class Config {
 
     public void setCompatGen(@NotNull Boolean compatGen) {
         this.compatGen = compatGen;
+    }
+
+    public boolean inBlacklist(Crop crop) {
+        return this.blacklist.contains(crop.getName());
     }
 }

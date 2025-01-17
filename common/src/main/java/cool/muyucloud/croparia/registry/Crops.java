@@ -221,6 +221,9 @@ public class Crops {
         COMPAT_CROPS.forEach((material, crop) -> CropFileHandler.saveCompatCrop(crop));
         CropFileHandler.readCrops().forEach(Crops::registerFileCrop);
         for (Crop crop : CROPS) {
+            if (CropariaIf.CONFIG.inBlacklist(crop)) {
+                continue;
+            }
             CropariaItems.registerCrop(crop);
             CropariaBlocks.registerCrop(crop);
         }
