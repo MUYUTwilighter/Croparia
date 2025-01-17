@@ -1,6 +1,7 @@
 package cool.muyucloud.croparia.registry;
 
 import cool.muyucloud.croparia.CropariaIf;
+import cool.muyucloud.croparia.annotation.PostReg;
 import cool.muyucloud.croparia.data.ElementsEnum;
 import cool.muyucloud.croparia.data.crop.Crop;
 import cool.muyucloud.croparia.item.*;
@@ -8,6 +9,7 @@ import cool.muyucloud.croparia.item.relic.HornPlenty;
 import cool.muyucloud.croparia.item.relic.InfiniteApple;
 import cool.muyucloud.croparia.item.relic.MagicRope;
 import cool.muyucloud.croparia.item.relic.MidasHand;
+import dev.architectury.core.item.ArchitecturyBucketItem;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
@@ -19,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.function.Supplier;
 
+@SuppressWarnings("UnstableApiUsage")
 public class CropariaItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(CropariaIf.MOD_ID, Registries.ITEM);
 
@@ -119,7 +122,31 @@ public class CropariaItems {
     public static final RegistrySupplier<InfiniteApple> INFINITE_APPLE = registerItem("infinite_apple", InfiniteApple::new);
     public static final RegistrySupplier<MagicRope> MAGIC_ROPE = registerItem("magic_rope", MagicRope::new);
     public static final RegistrySupplier<MidasHand> MIDAS_HAND = registerItem("midas_hand", MidasHand::new);
-
+    @PostReg
+    public static final RegistrySupplier<Item> ELEMATILIUS_BUCKET = registerItem(
+        "elematilius_bucket",
+        () -> new ArchitecturyBucketItem(Fluids.ELEMATILIUS, new Item.Properties().arch$tab(Tabs.MAIN))
+    );
+    @PostReg
+    public static final RegistrySupplier<Item> EARTH_BUCKET = registerItem(
+        "earth_bucket",
+        () -> new ArchitecturyBucketItem(Fluids.EARTH, new Item.Properties().arch$tab(Tabs.MAIN))
+    );
+    @PostReg
+    public static final RegistrySupplier<Item> WATER_BUCKET = registerItem(
+        "water_bucket",
+        () -> new ArchitecturyBucketItem(Fluids.WATER, new Item.Properties().arch$tab(Tabs.MAIN))
+    );
+    @PostReg
+    public static final RegistrySupplier<Item> FIRE_BUCKET = registerItem(
+        "fire_bucket",
+        () -> new ArchitecturyBucketItem(Fluids.FIRE, new Item.Properties().arch$tab(Tabs.MAIN))
+    );
+    @PostReg
+    public static final RegistrySupplier<Item> AIR_BUCKET = registerItem(
+        "air_bucket",
+        () -> new ArchitecturyBucketItem(Fluids.AIR, new Item.Properties().arch$tab(Tabs.MAIN))
+    );
     protected static final List<RegistrySupplier<Item>> CROPARIAS = List.of(
         CROPARIA, CROPARIA2, CROPARIA3, CROPARIA4, CROPARIA5, CROPARIA6, CROPARIA7
     );

@@ -1,18 +1,17 @@
 package cool.muyucloud.croparia.registry;
 
 import cool.muyucloud.croparia.CropariaIf;
+import cool.muyucloud.croparia.annotation.PostReg;
 import cool.muyucloud.croparia.block.*;
 import cool.muyucloud.croparia.data.ElementsEnum;
 import cool.muyucloud.croparia.data.crop.Crop;
+import dev.architectury.core.block.ArchitecturyLiquidBlock;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.DropExperienceBlock;
-import net.minecraft.world.level.block.LayeredCauldronBlock;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.NotNull;
@@ -71,46 +70,32 @@ public class CropariaBlocks {
                 mapColor(MapColor.DEEPSLATE).sound(SoundType.DEEPSLATE).requiresCorrectToolForDrops()
         )
     );
-    public static final RegistrySupplier<LayeredCauldronBlock> CAULDRON = registerBlock(
-        "elematilius_cauldron",
-        () -> new LayeredCauldronBlock(
-            Biome.Precipitation.RAIN,
-            CropariaCauldronInteraction.ELEMATILIUS,
-            BlockBehaviour.Properties.ofFullCopy(net.minecraft.world.level.block.Blocks.CAULDRON)
-        )
+    @PostReg
+    public static final RegistrySupplier<LiquidBlock> FLUID_ELEMATILIUS = registerBlock(
+        "fluid_elematilius",
+        () -> new ArchitecturyLiquidBlock(Fluids.ELEMATILIUS, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER))
     );
-    public static final RegistrySupplier<LayeredCauldronBlock> WATER_CAULDRON = registerBlock(
-        "water_cauldron",
-        () -> new LayeredCauldronBlock(
-            Biome.Precipitation.RAIN,
-            CropariaCauldronInteraction.WATER_CAULDRON,
-            BlockBehaviour.Properties.ofFullCopy(net.minecraft.world.level.block.Blocks.CAULDRON)
-        )
+    @PostReg
+    public static final RegistrySupplier<LiquidBlock> FLUID_EARTH = registerBlock(
+        "fluid_earth",
+        () -> new ArchitecturyLiquidBlock(Fluids.EARTH, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER))
     );
-    public static final RegistrySupplier<LayeredCauldronBlock> FIRE_CAULDRON = registerBlock(
-        "fire_cauldron",
-        () -> new LayeredCauldronBlock(
-            Biome.Precipitation.RAIN,
-            CropariaCauldronInteraction.FIRE_CAULDRON,
-            BlockBehaviour.Properties.ofFullCopy(net.minecraft.world.level.block.Blocks.CAULDRON)
-        )
+    @PostReg
+    public static final RegistrySupplier<LiquidBlock> FLUID_WATER = registerBlock(
+        "fluid_water",
+        () -> new ArchitecturyLiquidBlock(Fluids.WATER, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER))
     );
-    public static final RegistrySupplier<LayeredCauldronBlock> EARTH_CAULDRON = registerBlock(
-        "earth_cauldron",
-        () -> new LayeredCauldronBlock(
-            Biome.Precipitation.RAIN,
-            CropariaCauldronInteraction.EARTH_CAULDRON,
-            BlockBehaviour.Properties.ofFullCopy(net.minecraft.world.level.block.Blocks.CAULDRON)
-        )
+    @PostReg
+    public static final RegistrySupplier<LiquidBlock> FLUID_FIRE = registerBlock(
+        "fluid_fire",
+        () -> new ArchitecturyLiquidBlock(Fluids.FIRE, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER))
     );
-    public static final RegistrySupplier<LayeredCauldronBlock> AIR_CAULDRON = registerBlock(
-        "air_cauldron",
-        () -> new LayeredCauldronBlock(
-            Biome.Precipitation.RAIN,
-            CropariaCauldronInteraction.AIR_CAULDRON,
-            BlockBehaviour.Properties.ofFullCopy(net.minecraft.world.level.block.Blocks.CAULDRON)
-        )
+    @PostReg
+    public static final RegistrySupplier<LiquidBlock> FLUID_AIR = registerBlock(
+        "fluid_air",
+        () -> new ArchitecturyLiquidBlock(Fluids.AIR, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER))
     );
+
 
     @NotNull
     public static <T extends Block> RegistrySupplier<T> registerBlock(@NotNull String name, @NotNull Supplier<T> supplier) {
@@ -123,17 +108,6 @@ public class CropariaBlocks {
 
     public static void register() {
         BLOCKS.register();
-    }
-
-    public static @Nullable RegistrySupplier<LayeredCauldronBlock> getCauldron(@NotNull ElementsEnum element) {
-        return switch (element) {
-            case WATER -> WATER_CAULDRON;
-            case FIRE -> FIRE_CAULDRON;
-            case EARTH -> EARTH_CAULDRON;
-            case AIR -> AIR_CAULDRON;
-            case ELEMENTAL -> CAULDRON;
-            case EMPTY -> null;
-        };
     }
 
     protected static final List<RegistrySupplier<RitualStand>> RITUAL_STANDS = List.of(RITUAL_STAND, RITUAL_STAND_2, RITUAL_STAND_3);

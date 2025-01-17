@@ -26,11 +26,11 @@ public class CropariaIf {
         RecipeTypes.register();
         RecipeSerializers.register();
         Crops.register();
+        Fluids.register();
         CropariaBlocks.register();
         BlockEntities.register();
         CropariaItems.register();
         Tabs.register();
-        CropariaCauldronInteraction.bootStrap();
         DataPackHandler.INSTANCE.registerGenerator(RecipeGenerator::init);
         DataPackHandler.INSTANCE.registerGenerator(LootTableGenerator::init);
         DataPackHandler.INSTANCE.registerGenerator(ItemTagGenerator::init);
