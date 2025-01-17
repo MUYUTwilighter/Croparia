@@ -12,7 +12,16 @@ import java.util.*;
 
 @SuppressWarnings("unused")
 public class Crops {
+    // All crops, including KubeJS crops
     public static final Set<Crop> CROPS = new HashSet<>();
+    // Crops including file definition (not present until read), here and CompatCrops, but not KubeJS definition
+    private static final Set<Crop> BUILTIN_CROPS = new HashSet<>();
+    // Intermediate data entity of compat crops
+    private static final Map<String, CompatCrop> COMPAT_CROPS = new HashMap<>();
+
+    private static void addCrop(Crop crop) {
+        BUILTIN_CROPS.add(crop);
+    }
 
     /**
      * Add a simple crop with specified translation key. Mainly used for vanilla crops.
@@ -31,7 +40,7 @@ public class Crops {
         Crop crop = Crop.create(name, materialId, color, tier, type, translationKey, Map.of()).orElseThrow(
             () -> new IllegalArgumentException("Vanilla crop %s failed to create".formatted(name))
         );
-        CROPS.add(crop);
+        addCrop(crop);
         return crop;
     }
 
@@ -151,8 +160,6 @@ public class Crops {
     public static final Crop AMETHYST = registerCrop("amethyst", Objects.requireNonNull(Items.AMETHYST_SHARD.arch$registryName()).toString(), 0xd9cbf2, 3, CropType.CROP, Items.AMETHYST_SHARD.getDescriptionId());
     public static final Crop ECHO_SHARD = registerCrop("echo_shard", Objects.requireNonNull(Items.ECHO_SHARD.arch$registryName()).toString(), 0x3404f, 4, CropType.CROP, Items.ECHO_SHARD.getDescriptionId());
 
-    private static final Map<String, CompatCrop> COMPAT_CROPS = new HashMap<>();
-
     /**
      * Add a crop from a modded material.
      * This method does not register the crop directly, but will save the crop in {@link Config#getCropPath()}<br/>
@@ -213,7 +220,7 @@ public class Crops {
     private static void registerFileCrop(@NotNull RawCrop raw) {
         if (raw.dependencies() == null || shouldLoad(raw.dependencies())) {
             Crop.of(raw).ifPresentOrElse(
-                CROPS::add,
+                Crops::addCrop,
                 () -> CropariaIf.LOGGER.error("Failed to create custom crop %s".formatted(raw.name()))
             );
         } else {
