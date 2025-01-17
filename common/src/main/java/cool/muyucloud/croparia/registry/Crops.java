@@ -10,30 +10,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
+@SuppressWarnings("unused")
 public class Crops {
     public static final Set<Crop> CROPS = new HashSet<>();
-
-    /**
-     * Add a simple crop. Mainly used for croparia crops.
-     *
-     * @param name       crop name
-     * @param materialId id of material which the crop grows, could be item ID or item tag
-     * @param color      int value of color
-     * @param tier       tier
-     * @param type       crop type that specifies the textures. See also {@link CropType}
-     */
-    public static @NotNull Crop registerCrop(
-        @NotNull String name, @NotNull String materialId, int color, int tier, @NotNull CropType type
-    ) {
-        Crop crop = Crop.create(name, materialId, color, tier, type).orElseThrow(
-            () -> new IllegalArgumentException(
-                "Failed to create croparia crop %s".formatted(name)
-            )
-        );
-        CROPS.add(crop);
-        return crop;
-    }
-
 
     /**
      * Add a simple crop with specified translation key. Mainly used for vanilla crops.
@@ -218,9 +197,14 @@ public class Crops {
     }
 
     public static void register() {
-        COMPAT_CROPS.forEach((material, crop) -> CropFileHandler.saveCompatCrop(crop));
+        if (CropariaIf.CONFIG.getCompatGen()) {
+            COMPAT_CROPS.forEach((material, crop) -> CropFileHandler.saveCompatCrop(crop));
+        }
         CropFileHandler.readCrops().forEach(Crops::registerFileCrop);
         for (Crop crop : CROPS) {
+            if (CropariaIf.CONFIG.inBlacklist(crop)) {
+                continue;
+            }
             CropariaItems.registerCrop(crop);
             CropariaBlocks.registerCrop(crop);
         }
