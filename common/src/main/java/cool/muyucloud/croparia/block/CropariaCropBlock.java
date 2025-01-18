@@ -1,6 +1,7 @@
 package cool.muyucloud.croparia.block;
 
 import cool.muyucloud.croparia.CropariaIf;
+import cool.muyucloud.croparia.access.CropAccess;
 import cool.muyucloud.croparia.data.crop.Crop;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -10,7 +11,7 @@ import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.SoundType;
 import org.jetbrains.annotations.NotNull;
 
-public class CropariaCropBlock extends CropBlock {
+public class CropariaCropBlock extends CropBlock implements CropAccess {
     private final Crop crop;
 
     public CropariaCropBlock(Crop crop) {
@@ -41,5 +42,10 @@ public class CropariaCropBlock extends CropBlock {
     @Override
     public @NotNull Item asItem() {
         return crop.getSeedItem();
+    }
+
+    @Override
+    public Crop getCrop() {
+        return this.crop;
     }
 }

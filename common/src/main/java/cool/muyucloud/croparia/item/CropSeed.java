@@ -6,14 +6,16 @@
 package cool.muyucloud.croparia.item;
 
 import cool.muyucloud.croparia.CropariaIf;
+import cool.muyucloud.croparia.access.CropAccess;
 import cool.muyucloud.croparia.data.crop.Crop;
 import cool.muyucloud.croparia.registry.Tabs;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
-public class CropSeed extends BlockItem {
+public class CropSeed extends BlockItem implements CropAccess {
     public Crop crop;
 
     public CropSeed(Crop crop) {
@@ -22,13 +24,18 @@ public class CropSeed extends BlockItem {
     }
 
     @Override
-    public Component getName(ItemStack itemStack) {
+    public @NotNull Component getName(ItemStack itemStack) {
         MutableComponent cropName = Component.translatable(this.crop.getTranslationKey());
         return Component.translatable(this.getDescriptionId(itemStack), cropName);
     }
 
     @Override
-    public String getDescriptionId() {
+    public @NotNull String getDescriptionId() {
         return "item." + CropariaIf.MOD_ID + ".crop.seed";
+    }
+
+    @Override
+    public Crop getCrop() {
+        return this.crop;
     }
 }

@@ -119,6 +119,9 @@
   "commands.croparia.dump.singular": "已保存作物 %s",
   "commands.croparia.dump.singular.absent": "未找到作物 %s",
   "commands.croparia.dumpBuiltin.success": "已保存 %s 个内置作物文件",
+  "commands.croparia.crop.absent": "未找到作物 %s",
+  "commands.croparia.crop.notPlayer": "只有玩家可以执行此命令",
+  "commands.croparia.crop.notCrop": "未发现作物",
   "commands.croparia.crop.name": "名称：%s",
   "commands.croparia.crop.translation": "翻译名：%s",
   "commands.croparia.crop.material": "材料：%s",
@@ -130,7 +133,7 @@
   "commands.croparia.crop.cropBlock": "作物方块：%s",
   "commands.croparia.crop.status.good": "该作物正常",
   "commands.croparia.crop.status.material": "未找到材料物品",
-  "commands.croparia.crop.status.seed": "未找到作物种子",
-  "commands.croparia.crop.status.fruit": "未找到作物果实",
-  "commands.croparia.crop.status.cropBlock": "未找到作物方块"
+  "commands.croparia.crop.status.seed": "未找到作物种子，请确认是否成功注册",
+  "commands.croparia.crop.status.fruit": "未找到作物果实，请确认是否成功注册",
+  "commands.croparia.crop.status.cropBlock": "未找到作物方块，请确认是否成功注册"
 }

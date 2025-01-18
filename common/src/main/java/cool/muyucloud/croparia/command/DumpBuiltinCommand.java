@@ -8,7 +8,6 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.world.entity.player.Player;
 
 public class DumpBuiltinCommand {
     private static final LiteralArgumentBuilder<CommandSourceStack> DUMP_BUILTIN = Commands.literal("dumpBuiltin")
@@ -16,12 +15,9 @@ public class DumpBuiltinCommand {
         .executes(context -> {
             int size = Crops.builtinSize();
             MutableComponent component = Component.translatable("commands.croparia.dump.perform", size);
-            if (context.getSource().isPlayer()) {
-                Player player = context.getSource().getPlayerOrException();
-                if (player.isLocalPlayer()) {
-                    component.withStyle(ServerRoot.openUrl(CropariaIf.CONFIG.getDumpPath().toString()))
-                        .withStyle(ServerRoot.blockMouseBehavior());
-                }
+            if (context.getSource().isPlayer() && context.getSource().getPlayerOrException().isLocalPlayer()) {
+                component.withStyle(ServerRoot.openUrl(CropariaIf.CONFIG.getDumpPath().toString()))
+                    .withStyle(ServerRoot.blockMouseBehavior());
             }
             context.getSource().sendSuccess(() -> Component.translatable("commands.croparia.dumpBuiltin.success", size), false);
             CropFileHandler.dumpBuiltinCrops();

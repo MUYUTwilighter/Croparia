@@ -50,6 +50,7 @@ public class CropFileHandler {
         Crops.forEachCrop(crop -> {
             try (JsonWriter writer = new JsonWriter(new FileWriter(dir.resolve(crop.getName() + ".json").toFile()))) {
                 writer.setIndent("  ");
+                GSON.toJson(crop.toJson(), writer);
             } catch (Throwable e) {
                 CropariaIf.LOGGER.error("Failed to dump crop {}", crop.getName(), e);
             }
@@ -65,6 +66,7 @@ public class CropFileHandler {
         Crops.forEachBuiltinCrop(crop -> {
             try (JsonWriter writer = new JsonWriter(new FileWriter(dir.resolve(crop.getName() + ".json").toFile()))) {
                 writer.setIndent("  ");
+                GSON.toJson(crop.toJson(), writer);
             } catch (Throwable e) {
                 CropariaIf.LOGGER.error("Failed to dump crop {}", crop.getName(), e);
             }

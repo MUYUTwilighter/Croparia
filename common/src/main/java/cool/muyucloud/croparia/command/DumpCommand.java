@@ -11,20 +11,18 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.world.entity.player.Player;
 
 public class DumpCommand {
     private static final LiteralArgumentBuilder<CommandSourceStack> DUMP = Commands.literal("dump")
         .requires(s -> s.hasPermission(2))
         .executes(context -> {
             int size = Crops.size();
-            MutableComponent component = Component.translatable("commands.croparia.dump.perform", size);
-            if (context.getSource().isPlayer()) {
-                Player player = context.getSource().getPlayerOrException();
-                if (player.isLocalPlayer()) {
-                    component.withStyle(ServerRoot.openUrl(CropariaIf.CONFIG.getDumpPath().toString()))
-                        .withStyle(ServerRoot.blockMouseBehavior());
-                }
+            MutableComponent component = Component.translatable("commands.croparia.dump.perform", size).withStyle(
+                ServerRoot.openUrl(CropariaIf.CONFIG.getDumpPath().toString())
+            ).withStyle(ServerRoot.blockMouseBehavior());
+            if (context.getSource().isPlayer() && context.getSource().getPlayerOrException().isLocalPlayer()) {
+                component.withStyle(ServerRoot.openUrl(CropariaIf.CONFIG.getDumpPath().toString()))
+                    .withStyle(ServerRoot.blockMouseBehavior());
             }
             context.getSource().sendSuccess(() -> component, true);
             CropFileHandler.dumpCrops();
@@ -45,11 +43,12 @@ public class DumpCommand {
                     return 0;
                 }
                 if (CropFileHandler.dumpCrop(crop)) {
-                    context.getSource().sendSuccess(() -> Component.translatable(
-                        "commands.croparia.dump.singular", Component.literal(name).setStyle(
-                            ServerRoot.openUrl(CropariaIf.CONFIG.getDumpPath().resolve(crop.getName() + ".json").toString())
-                        ).withStyle(ServerRoot.blockMouseBehavior())
-                    ), true);
+                    MutableComponent component = Component.translatable("commands.croparia.dump.singular", name);
+                    if (context.getSource().isPlayer() && context.getSource().getPlayerOrException().isLocalPlayer()) {
+                        component.withStyle(ServerRoot.openUrl(CropariaIf.CONFIG.getDumpPath().toString()))
+                            .withStyle(ServerRoot.blockMouseBehavior());
+                    }
+                    context.getSource().sendSuccess(() -> component, true);
                     return 1;
                 } else {
                     context.getSource().sendFailure(Component.translatable("commands.croparia.dump.singular.fail", name));

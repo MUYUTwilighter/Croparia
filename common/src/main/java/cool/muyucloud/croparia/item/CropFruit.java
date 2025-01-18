@@ -1,6 +1,7 @@
 package cool.muyucloud.croparia.item;
 
 import cool.muyucloud.croparia.CropariaIf;
+import cool.muyucloud.croparia.access.CropAccess;
 import cool.muyucloud.croparia.data.crop.Crop;
 import cool.muyucloud.croparia.registry.Tabs;
 import net.minecraft.network.chat.Component;
@@ -12,7 +13,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import org.jetbrains.annotations.NotNull;
 
-public class CropFruit extends Item {
+public class CropFruit extends Item implements CropAccess {
     public Crop crop;
 
     public CropFruit(Crop crop) {
@@ -47,5 +48,10 @@ public class CropFruit extends Item {
     @Override
     public @NotNull String getDescriptionId() {
         return "item." + CropariaIf.MOD_ID + ".crop.fruit";
+    }
+
+    @Override
+    public Crop getCrop() {
+        return this.crop;
     }
 }

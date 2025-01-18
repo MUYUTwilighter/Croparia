@@ -1,13 +1,19 @@
 package cool.muyucloud.croparia.util;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
@@ -44,5 +50,16 @@ public class Util {
 
     public static ServerLevel getLevel(ResourceLocation id, MinecraftServer server) {
         return server.getLevel(ResourceKey.create(Registries.DIMENSION, id));
+    }
+
+    public static BlockPos lookingAt(@NotNull Player player) {
+        Level world = player.level();
+        ClipContext context = new ClipContext(
+            player.getEyePosition(),
+            player.getEyePosition().add(player.getLookAngle().multiply(5, 5, 5)),
+            ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player
+        );
+        BlockHitResult result = world.clip(context);
+        return result.getBlockPos();
     }
 }

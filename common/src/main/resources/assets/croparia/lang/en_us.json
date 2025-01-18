@@ -121,6 +121,8 @@
   "commands.croparia.dump.singular.fail": "Failed to dump crop %s",
   "commands.croparia.dumpBuiltin.success": "Dumped %s builtin crops",
   "commands.croparia.crop.absent": "Crop %s not found",
+  "commands.croparia.crop.notPlayer": "You must be a player to use this command",
+  "commands.croparia.crop.notCrop": "No crop detected",
   "commands.croparia.crop.name": "- Name: %s",
   "commands.croparia.crop.material": "- Material: %s",
   "commands.croparia.crop.tier": "- Tier: %s",
@@ -132,7 +134,7 @@
   "commands.croparia.crop.cropBlock": "- Crop block: %s",
   "commands.croparia.crop.status.good": "This crop is good",
   "commands.croparia.crop.status.material": "Could not find specific material",
-  "commands.croparia.crop.status.seed": "Seed item not found",
-  "commands.croparia.crop.status.fruit": "Fruit item not found",
-  "commands.croparia.crop.status.cropBlock": "Crop block not found"
+  "commands.croparia.crop.status.seed": "Seed item not found, did you register it?",
+  "commands.croparia.crop.status.fruit": "Fruit item not found, did you register it?",
+  "commands.croparia.crop.status.cropBlock": "Crop block not found, did you register it?"
 }
