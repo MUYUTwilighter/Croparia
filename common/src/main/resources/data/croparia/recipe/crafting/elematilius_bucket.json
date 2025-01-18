@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:bucket"
+    },
+    {
+      "item": "croparia:elematilius"
+    },
+    {
+      "item": "croparia:elematilius"
+    },
+    {
+      "item": "croparia:elematilius"
+    },
+    {
+      "item": "croparia:elematilius"
+    }
+  ],
+  "result": {
+    "id": "croparia:elematilius_bucket"
+  }
+}
