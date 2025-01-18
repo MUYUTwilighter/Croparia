@@ -15,10 +15,10 @@ public class ItemTagGenerator {
     private static final Map<ResourceLocation, JsonObject> TAGS = new HashMap<>();
 
     public static void init() {
-        for (Crop crop : Crops.CROPS) {
-            addSeed(crop);
+        Crops.forEachCrop(crop -> {
             addFruit(crop);
-        }
+            addSeed(crop);
+        });
         TAGS.forEach(DataPackHandler.INSTANCE::addItemTag);
     }
 

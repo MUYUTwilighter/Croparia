@@ -205,6 +205,14 @@ public class CropariaItems {
         return CROPARIAS.get(tier - 1);
     }
 
+    public static int leastTier() {
+        return 1;
+    }
+
+    public static int mostTier() {
+        return CROPARIAS.size();
+    }
+
     public static @NotNull RegistrySupplier<BlockItem> getRitualStand(int tier) {
         return RITUAL_STANDS.get(tier - 1);
     }

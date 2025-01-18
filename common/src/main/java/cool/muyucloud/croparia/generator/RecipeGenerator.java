@@ -16,18 +16,18 @@ import java.util.Objects;
 public class RecipeGenerator {
     @PostGen
     public static void init() {
-        for (Crop crop : Crops.CROPS) {
+        Crops.forEachCrop(crop -> {
             createSeed(crop);
             createFruitToMaterial(crop);
-        }
+        });
         if (Platform.isModLoaded("modern_industrialization")) {
-            Crops.CROPS.forEach(RecipeGenerator::createMiPacker);
+            Crops.forEachCrop(RecipeGenerator::createMiPacker);
         }
         if (Platform.isModLoaded("thermal_cultivation")) {
-            Crops.CROPS.forEach(RecipeGenerator::createThermalInsolator);
+            Crops.forEachCrop(RecipeGenerator::createThermalInsolator);
         }
         if (Platform.isModLoaded("botanypots")) {
-            Crops.CROPS.forEach(RecipeGenerator::createBotanyPot);
+            Crops.forEachCrop(RecipeGenerator::createBotanyPot);
         }
     }
 

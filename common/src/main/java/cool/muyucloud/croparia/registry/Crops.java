@@ -11,21 +11,47 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 @SuppressWarnings("unused")
 public class Crops {
     // All crops, including KubeJS crops and file crops
-    public static final Set<Crop> CROPS = new HashSet<>();
+    protected static final Map<String, Crop> CROPS = new HashMap();
     // Crops including here and CompatCrops, but not KubeJS definition and file definition
-    private static final Set<Crop> BUILTIN_CROPS = new HashSet<>();
+    protected static final Map<String, Crop> BUILTIN_CROPS = new HashMap<>();
 
-    private static void recordBuiltin(Crop crop) {
-        BUILTIN_CROPS.add(crop);
-        CROPS.add(crop);
+    public static int size() {
+        return CROPS.size();
     }
 
-    private static void recordCustom(Crop crop) {
-        CROPS.add(crop);
+    public static int builtinSize() {
+        return BUILTIN_CROPS.size();
+    }
+
+    @Nullable
+    public static Crop forName(@NotNull String name) {
+        return CROPS.get(name);
+    }
+
+    public static Collection<String> cropNames() {
+        return Collections.unmodifiableSet(CROPS.keySet());
+    }
+
+    public static void forEachCrop(@NotNull Consumer<Crop> consumer) {
+        CROPS.values().forEach(consumer);
+    }
+
+    public static void forEachBuiltinCrop(@NotNull Consumer<Crop> consumer) {
+        BUILTIN_CROPS.values().forEach(consumer);
+    }
+
+    protected static void recordBuiltin(Crop crop) {
+        BUILTIN_CROPS.put(crop.getName(), crop);
+        CROPS.put(crop.getName(), crop);
+    }
+
+    public static void recordCustom(Crop crop) {
+        CROPS.put(crop.getName(), crop);
     }
 
     /**
@@ -238,7 +264,7 @@ public class Crops {
         CropariaIf.LOGGER.info("Loading custom crops from file definitions");
         CropFileHandler.readCrops().forEach(Crops::registerFileCrop);
         CropariaIf.LOGGER.info("Registering built-in crops");
-        for (Crop crop : BUILTIN_CROPS) {
+        for (Crop crop : BUILTIN_CROPS.values()) {
             CropariaItems.registerCrop(crop);
             CropariaBlocks.registerCrop(crop);
         }

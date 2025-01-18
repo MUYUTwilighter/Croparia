@@ -43,6 +43,8 @@ public class Config {
     @NotNull
     private Path packPath;
     @NotNull
+    private Path dumpPath;
+    @NotNull
     private Boolean override;
     @NotNull
     private Boolean fruitUse;
@@ -55,13 +57,15 @@ public class Config {
     @NotNull
     private Boolean compatGen;
     @NotNull
-    private List<String> blacklist;
+    private final List<String> blacklist;
+
     /**
      * Default config
      */
     public Config() {
         this.cropPath = Platform.getGameFolder().resolve("crops");
         this.packPath = Platform.getGameFolder().resolve("config/croparia");
+        this.dumpPath = Platform.getGameFolder().resolve("croparia");
         this.override = true;
         this.fruitUse = true;
         this.infusor = true;
@@ -77,6 +81,7 @@ public class Config {
     public Config(RawConfig raw) {
         this.cropPath = parsePath(raw.cropPath()).orElse(Platform.getGameFolder().resolve("crops"));
         this.packPath = parsePath(raw.packPath()).orElse(Platform.getGameFolder().resolve("config/croparia"));
+        this.dumpPath = parsePath(raw.dumpPath()).orElse(Platform.getGameFolder().resolve("croparia"));
         this.override = raw.override() != null ? raw.override() : true;
         this.fruitUse = raw.fruitUse() != null ? raw.fruitUse() : true;
         this.infusor = raw.infusor() != null ? raw.infusor() : true;
@@ -87,7 +92,7 @@ public class Config {
     }
 
     public RawConfig toRaw() {
-        return new RawConfig(resolvePath(cropPath), resolvePath(packPath), override, fruitUse, infusor, ritual, cauldron, compatGen, this.blacklist);
+        return new RawConfig(resolvePath(cropPath), resolvePath(packPath), resolvePath(dumpPath), override, fruitUse, infusor, ritual, cauldron, compatGen, this.blacklist);
     }
 
     public void save() {
@@ -112,6 +117,14 @@ public class Config {
 
     public void setPackPath(@NotNull Path packPath) {
         this.packPath = packPath;
+    }
+
+    public @NotNull Path getDumpPath() {
+        return dumpPath;
+    }
+
+    public void setDumpPath(@NotNull Path dumpPath) {
+        this.dumpPath = dumpPath;
     }
 
     public @NotNull Boolean getOverride() {

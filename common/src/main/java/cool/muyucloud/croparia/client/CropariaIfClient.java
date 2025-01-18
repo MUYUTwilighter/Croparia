@@ -12,7 +12,7 @@ public class CropariaIfClient {
     public static void init() {
         CropariaIf.LOGGER.info("Initializing client setup");
         CropariaIf.LOGGER.debug("Registering crop color");
-        Crops.CROPS.forEach(crop -> {
+        Crops.forEachCrop(crop -> {
             ColorHandlerRegistry.registerBlockColors((blockState, blockAndTintGetter, blockPos, i) -> crop.getColor(), crop.getCropBlock());
             ColorHandlerRegistry.registerItemColors((itemStack, i) -> i == 1 ? crop.getColor() | 0xFF000000 : -1, crop.getFruitItem());
             ColorHandlerRegistry.registerItemColors((itemStack, i) -> crop.getColor() | 0xFF000000, crop.getSeedItem());

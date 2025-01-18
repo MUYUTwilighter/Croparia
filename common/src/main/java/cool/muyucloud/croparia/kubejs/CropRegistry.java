@@ -62,7 +62,7 @@ public class CropRegistry {
         Crop crop = Crop.create(name, material, color, tier, parsedType, translationKey, translations).orElseThrow(
             () -> new IllegalArgumentException("Failed to create crop %s".formatted(name))
         );
-        Crops.CROPS.add(crop);
+        Crops.recordCustom(crop);
         RegistrySupplier<CropariaCropBlock> cropBlock = blockRegistry.register(crop.getBlockId(), () -> new CropariaCropBlock(crop));
         RegistrySupplier<CropSeed> seed = itemRegistry.register(crop.getSeedId(), () -> new CropSeed(crop));
         RegistrySupplier<CropFruit> fruit = itemRegistry.register(crop.getFruitId(), () -> new CropFruit(crop));
