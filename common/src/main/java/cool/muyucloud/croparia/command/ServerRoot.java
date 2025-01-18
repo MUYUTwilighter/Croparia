@@ -14,6 +14,7 @@ import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 
 public class ServerRoot {
     private static final LiteralArgumentBuilder<CommandSourceStack> ROOT = Commands.literal("croparia")
@@ -41,7 +42,8 @@ public class ServerRoot {
     }
 
     public static Style hoverItem(Item item) {
-        return Style.EMPTY.withHoverEvent(new HoverEvent(
+        if (item == Items.AIR) return Style.EMPTY;
+        else return Style.EMPTY.withHoverEvent(new HoverEvent(
             HoverEvent.Action.SHOW_ITEM,
             new HoverEvent.ItemStackInfo(item.getDefaultInstance())
         ));

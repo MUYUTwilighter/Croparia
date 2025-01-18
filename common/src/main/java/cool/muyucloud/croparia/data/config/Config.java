@@ -53,8 +53,6 @@ public class Config {
     @NotNull
     private Boolean ritual;
     @NotNull
-    private Boolean cauldron;
-    @NotNull
     private Boolean compatGen;
     @NotNull
     private final List<String> blacklist;
@@ -70,7 +68,6 @@ public class Config {
         this.fruitUse = true;
         this.infusor = true;
         this.ritual = true;
-        this.cauldron = true;
         this.compatGen = true;
         this.blacklist = new ArrayList<>();
     }
@@ -86,13 +83,12 @@ public class Config {
         this.fruitUse = raw.fruitUse() != null ? raw.fruitUse() : true;
         this.infusor = raw.infusor() != null ? raw.infusor() : true;
         this.ritual = raw.ritual() != null ? raw.ritual() : true;
-        this.cauldron = raw.cauldron() != null ? raw.cauldron() : true;
         this.compatGen = raw.compatGen() != null ? raw.compatGen() : true;
         this.blacklist = raw.blacklist() != null ? raw.blacklist() : new ArrayList<>();
     }
 
     public RawConfig toRaw() {
-        return new RawConfig(resolvePath(cropPath), resolvePath(packPath), resolvePath(dumpPath), override, fruitUse, infusor, ritual, cauldron, compatGen, this.blacklist);
+        return new RawConfig(resolvePath(cropPath), resolvePath(packPath), resolvePath(dumpPath), override, fruitUse, infusor, ritual, compatGen, this.blacklist);
     }
 
     public void save() {
@@ -157,14 +153,6 @@ public class Config {
 
     public void setRitual(@NotNull Boolean ritual) {
         this.ritual = ritual;
-    }
-
-    public @NotNull Boolean getCauldron() {
-        return cauldron;
-    }
-
-    public void setCauldron(@NotNull Boolean cauldron) {
-        this.cauldron = cauldron;
     }
 
     public @NotNull Boolean getCompatGen() {

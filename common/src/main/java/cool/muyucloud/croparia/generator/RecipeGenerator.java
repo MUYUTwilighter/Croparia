@@ -10,6 +10,7 @@ import cool.muyucloud.croparia.registry.Crops;
 import cool.muyucloud.croparia.util.pack.DataPackHandler;
 import dev.architectury.platform.Platform;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 
 import java.util.Objects;
 
@@ -77,8 +78,9 @@ public class RecipeGenerator {
         root.add("ingredients", ingredients);
 
         JsonObject result = new JsonObject();
-        result.addProperty("id", Objects.requireNonNull(crop.getMaterialItem().arch$registryName()).toString());
-        result.addProperty("count", Math.max(crop.getMaterialItem().getDefaultMaxStackSize(), 1));
+        Item material = crop.getMaterialItem();
+        result.addProperty("id", Objects.requireNonNull(material.arch$registryName()).toString());
+        result.addProperty("count", Math.min(material.getDefaultMaxStackSize(), 2));
         root.add("result", result);
 
         DataPackHandler.INSTANCE.addRecipe(Objects.requireNonNull(id), root);
@@ -103,8 +105,9 @@ public class RecipeGenerator {
 
         JsonArray itemOutputs = new JsonArray();
         JsonObject itemOutput = new JsonObject();
-        itemOutput.addProperty("item", Objects.requireNonNull(crop.getMaterialItem().arch$registryName()).toString());
-        itemOutput.addProperty("amount", 2);
+        Item material = crop.getMaterialItem();
+        itemOutput.addProperty("item", Objects.requireNonNull(material.arch$registryName()).toString());
+        itemOutput.addProperty("amount", Math.min(material.getDefaultMaxStackSize(), 2));
         itemOutputs.add(itemOutput);
         root.add("item_outputs", itemOutputs);
 
