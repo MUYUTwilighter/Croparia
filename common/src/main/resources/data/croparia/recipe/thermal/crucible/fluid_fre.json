@@ -1,0 +1,27 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "thermal_expansion"
+    }
+  ],
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "thermal_expansion"
+      ]
+    }
+  ],
+  "type": "thermal:crucible",
+  "ingredient": {
+    "item": "croparia:elemental_fire"
+  },
+  "result": [
+    {
+      "fluid": "croparia:fire",
+      "amount": 250
+    }
+  ],
+  "energy": 20000
+}
