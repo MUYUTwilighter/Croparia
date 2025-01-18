@@ -80,7 +80,7 @@ public class CropCommand {
         );
         MutableComponent cropBlock = Component.translatable(
             "commands.croparia.crop.cropBlock",
-            Component.literal(crop.getFruitId().toString()).withStyle(
+            Component.literal(crop.getBlockId().toString()).withStyle(
                 ServerRoot.suggestCommand("/setblock ~ ~ ~ %s[age=7]", crop.getBlockId().toString())
             ).withStyle(
                 ServerRoot.hoverText(crop.getCropBlock().getName())
