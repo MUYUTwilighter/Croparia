@@ -26,12 +26,13 @@ public class CropFruit extends Item implements CropAccess {
             return InteractionResult.PASS;
         }
         if (!context.getLevel().isClientSide) {
+            Item material = crop.getMaterialItem();
             context.getLevel().addFreshEntity(new ItemEntity(
                 context.getLevel(),
                 context.getClickedPos().getX() + 0.5,
                 context.getClickedPos().getY() + 1,
                 context.getClickedPos().getZ() + 0.5,
-                new ItemStack(crop.getMaterialItem(), 2)
+                new ItemStack(material, Math.min(material.getDefaultMaxStackSize(), 2))
             ));
             context.getItemInHand().shrink(1);
             return InteractionResult.SUCCESS;
