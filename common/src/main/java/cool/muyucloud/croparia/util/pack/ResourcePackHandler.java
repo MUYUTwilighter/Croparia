@@ -25,7 +25,8 @@ public class ResourcePackHandler extends PackHandler {
             Component.literal("croparia"),
             PackSource.BUILT_IN,
             Optional.empty()
-        ), root);
+        ), root
+    );
 
     @Override
     public void onInitial() {

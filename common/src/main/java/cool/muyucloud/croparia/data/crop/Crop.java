@@ -30,13 +30,13 @@ public class Crop {
     private final Map<String, String> translations;
     private final int color;
     private final int tier;
+    private final boolean tag;
     @NotNull
     private transient final ResourceLocation blockId;
     @NotNull
     private transient final ResourceLocation seedId;
     @NotNull
     private transient final ResourceLocation fruitId;
-    private transient final boolean tag;
 
     private Crop(@NotNull RawCrop raw) throws RuntimeException {
         if (Util.hasNull(raw.name(), raw.material())) {
@@ -241,5 +241,19 @@ public class Crop {
     @Override
     public int hashCode() {
         return Objects.hash(this.name);
+    }
+
+    @Override
+    public String toString() {
+        return "Crop{" +
+            "name='" + name + '\'' +
+            ", material=" + material +
+            ", type=" + type +
+            ", translationKey='" + translationKey + '\'' +
+            ", translations=" + translations +
+            ", color=" + color +
+            ", tier=" + tier +
+            ", tag=" + tag +
+            '}';
     }
 }

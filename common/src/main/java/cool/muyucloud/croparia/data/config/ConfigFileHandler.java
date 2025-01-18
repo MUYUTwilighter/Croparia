@@ -50,5 +50,6 @@ public class ConfigFileHandler {
         config.setInfusor(newConfig.getInfusor());
         config.setRitual(newConfig.getRitual());
         config.setCauldron(newConfig.getCauldron());
+        config.setCompatGen(newConfig.getCompatGen());
     }
 }

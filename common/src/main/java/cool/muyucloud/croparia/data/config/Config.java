@@ -1,7 +1,6 @@
 package cool.muyucloud.croparia.data.config;
 
 import com.google.gson.Gson;
-import cool.muyucloud.croparia.data.crop.Crop;
 import dev.architectury.platform.Platform;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -11,6 +10,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 public class Config {
     public static final Gson GSON = new Gson();
@@ -162,11 +162,20 @@ public class Config {
         this.compatGen = compatGen;
     }
 
-    public boolean inBlacklist(@NotNull Crop crop) {
-        return blacklist.contains(crop.getName());
-    }
-
-    public boolean inBlacklist(@NotNull String cropName) {
-        return blacklist.contains(cropName);
+    public boolean inBlacklist(@NotNull String cropName, @NotNull String mod) {
+        for (String pattern : blacklist) {
+            if (pattern.startsWith("@")) {
+                pattern = pattern.substring(1);
+                Pattern modPattern = Pattern.compile(pattern);
+                if (modPattern.matcher(mod).matches()) {
+                    return true;
+                }
+                continue;
+            }
+            if (Pattern.compile(pattern).matcher(cropName).matches()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

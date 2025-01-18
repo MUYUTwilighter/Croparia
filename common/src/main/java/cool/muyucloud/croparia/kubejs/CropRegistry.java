@@ -19,8 +19,20 @@ import java.util.Map;
 
 @SuppressWarnings({"unused"})
 public class CropRegistry {
+    @NotNull
     private final DeferredRegister<Item> itemRegistry = DeferredRegister.create(CropariaIf.MOD_ID, Registries.ITEM);
+    @NotNull
     private final DeferredRegister<Block> blockRegistry = DeferredRegister.create(CropariaIf.MOD_ID, Registries.BLOCK);
+    @NotNull
+    private final String name;
+
+    public CropRegistry() {
+        this.name = "Unnamed";
+    }
+
+    public CropRegistry(@NotNull String name) {
+        this.name = name;
+    }
 
     /**
      * Add a simple custom crop.
@@ -54,12 +66,12 @@ public class CropRegistry {
         RegistrySupplier<CropariaCropBlock> cropBlock = blockRegistry.register(crop.getBlockId(), () -> new CropariaCropBlock(crop));
         RegistrySupplier<CropSeed> seed = itemRegistry.register(crop.getSeedId(), () -> new CropSeed(crop));
         RegistrySupplier<CropFruit> fruit = itemRegistry.register(crop.getFruitId(), () -> new CropFruit(crop));
-        CropariaIf.LOGGER.info("Added KubeJs crop {}", name);
+        CropariaIf.LOGGER.debug("Added crop {} for CropRegistry \"{}\"", name, this.name);
     }
 
     public void register() {
         blockRegistry.register();
         itemRegistry.register();
-        CropariaIf.LOGGER.info("Finished KubeJs crop registration");
+        CropariaIf.LOGGER.info("Done registering crops for CropRegistry \"{}\"", name);
     }
 }
