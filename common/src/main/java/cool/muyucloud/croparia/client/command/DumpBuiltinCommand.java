@@ -9,6 +9,8 @@ import dev.architectury.event.events.client.ClientCommandRegistrationEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 
+import static cool.muyucloud.croparia.command.DumpBuiltinCommand.dumpAll;
+
 public class DumpBuiltinCommand {
     private static final LiteralArgumentBuilder<ClientCommandRegistrationEvent.ClientCommandSourceStack> DUMP_BUILTIN =
         LiteralArgumentBuilder.literal("dumpBuiltin");
@@ -16,13 +18,7 @@ public class DumpBuiltinCommand {
     public static LiteralArgumentBuilder<ClientCommandRegistrationEvent.ClientCommandSourceStack> build() {
         DUMP_BUILTIN.executes(context -> {
             ClientCommandRegistrationEvent.ClientCommandSourceStack source = context.getSource();
-            int size = Crops.builtinSize();
-            MutableComponent component = Component.translatable("commands.croparia.dump.perform", size).withStyle(
-                ClientCommandRoot.openFile(CropariaIf.CONFIG.getDumpPath().toString())
-            ).withStyle(ServerCommandRoot.blockMouseBehavior());
-            source.arch$sendSuccess(() -> component, false);
-            CropFileHandler.dumpBuiltinCrops();
-            return size;
+            return dumpAll(source::arch$sendSuccess);
         });
         return DUMP_BUILTIN;
     }

@@ -1,5 +1,7 @@
 package cool.muyucloud.croparia.registry;
 
+import com.mojang.brigadier.suggestion.Suggestions;
+import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.data.crop.Crop;
 import cool.muyucloud.croparia.data.crop.CropFileHandler;
@@ -11,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 @SuppressWarnings("unused")
@@ -19,6 +22,12 @@ public class Crops {
     protected static final Map<String, Crop> CROPS = new HashMap();
     // Crops including here and CompatCrops, but not KubeJS definition and file definition
     protected static final Map<String, Crop> BUILTIN_CROPS = new HashMap<>();
+
+    public static CompletableFuture<Suggestions> cropSuggestions(String input, int start) {
+        SuggestionsBuilder suggestionsBuilder = new SuggestionsBuilder(input, start);
+        Crops.cropNames().forEach(suggestionsBuilder::suggest);
+        return suggestionsBuilder.buildFuture();
+    }
 
     public static int size() {
         return CROPS.size();

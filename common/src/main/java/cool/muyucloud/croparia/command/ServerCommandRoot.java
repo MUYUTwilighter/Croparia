@@ -35,6 +35,10 @@ public class ServerCommandRoot {
         );
     }
 
+    public static Style copyText(String text) {
+        return Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, text));
+    }
+
     public static Style hoverItem(ResourceLocation id) {
         return hoverItem(BuiltInRegistries.ITEM.get(id));
     }

@@ -10,13 +10,15 @@ import net.minecraft.network.chat.MutableComponent;
 
 public class DumpBuiltinCommand {
     private static final LiteralArgumentBuilder<CommandSourceStack> DUMP_BUILTIN = Commands.literal("dumpBuiltin")
-        .executes(context -> {
-            int size = Crops.builtinSize();
-            MutableComponent component = Component.translatable("commands.croparia.dump.perform", size);
-            context.getSource().sendSuccess(() -> component, false);
-            CropFileHandler.dumpBuiltinCrops();
-            return size;
-        });
+        .executes(context -> dumpAll(context.getSource()::sendSuccess));
+
+    public static int dumpAll(SuccessMessage success) {
+        int size = Crops.size();
+        MutableComponent component = Component.translatable("commands.croparia.dump.perform", size);
+        success.send(() -> component, false);
+        CropFileHandler.dumpBuiltinCrops();
+        return size;
+    }
 
     public static LiteralArgumentBuilder<CommandSourceStack> build() {
         return DUMP_BUILTIN;
