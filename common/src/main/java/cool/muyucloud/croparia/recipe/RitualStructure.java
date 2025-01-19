@@ -116,6 +116,7 @@ public class RitualStructure implements Recipe<RitualStructureContainer> {
                             return null;
                         }
                     } else if (key == ' ') {
+                        BlockStatePredicate.ANY.test(state);
                     } else {
                         BlockStatePredicate predicate = this.keys.get(key);
                         if (predicate == null || !predicate.test(state)) {

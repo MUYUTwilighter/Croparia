@@ -28,7 +28,7 @@ public abstract class StateHolderMixin<O, S> implements StateHolderAccess {
     private Map<String, Property<?>> croparia_if$properties;
 
     @Inject(method = "<init>", at = @At("TAIL"))
-    private void onConstruct(@Nullable Object object, Reference2ObjectArrayMap<Property<?>, Comparable<?>> map, @Nullable MapCodec mapCodec, @Nullable CallbackInfo ci) {
+    private void onConstruct(@Nullable O object, Reference2ObjectArrayMap<Property<?>, Comparable<?>> map, @Nullable MapCodec<S> mapCodec, @Nullable CallbackInfo ci) {
         if (map == null) {
             this.croparia_if$properties = ImmutableMap.of();
             return;
