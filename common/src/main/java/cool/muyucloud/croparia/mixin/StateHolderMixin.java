@@ -33,7 +33,6 @@ public abstract class StateHolderMixin<O, S> implements StateHolderAccess {
             this.croparia_if$properties = ImmutableMap.of();
             return;
         }
-
         Map<String, Property<?>> properties = new HashMap<>();
         for (Property<?> property : map.keySet()) {
             properties.put(property.getName(), property);
@@ -52,5 +51,14 @@ public abstract class StateHolderMixin<O, S> implements StateHolderAccess {
         } else {
             return value.toString();
         }
+    }
+
+    @Override
+    public Map<String, String> croparia_if$getProperties() {
+        Map<String, String> map = new HashMap<>();
+        for (String key : this.croparia_if$properties.keySet()) {
+            map.put(key, this.croparia_if$getValue(key));
+        }
+        return map;
     }
 }

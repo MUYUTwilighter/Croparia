@@ -4,7 +4,7 @@ import com.mojang.logging.LogUtils;
 import cool.muyucloud.croparia.client.generator.BlockStateModelGenerator;
 import cool.muyucloud.croparia.client.generator.ItemModelGenerator;
 import cool.muyucloud.croparia.client.generator.LangGenerator;
-import cool.muyucloud.croparia.command.ServerRoot;
+import cool.muyucloud.croparia.command.ServerCommandRoot;
 import cool.muyucloud.croparia.data.config.Config;
 import cool.muyucloud.croparia.data.config.ConfigFileHandler;
 import cool.muyucloud.croparia.generator.BlockTagGenerator;
@@ -14,7 +14,6 @@ import cool.muyucloud.croparia.generator.RecipeGenerator;
 import cool.muyucloud.croparia.registry.*;
 import cool.muyucloud.croparia.util.pack.DataPackHandler;
 import cool.muyucloud.croparia.util.pack.ResourcePackHandler;
-import dev.architectury.event.events.common.CommandRegistrationEvent;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 
@@ -34,7 +33,7 @@ public class CropariaIf {
         BlockEntities.register();
         CropariaItems.register();
         Tabs.register();
-        CommandRegistrationEvent.EVENT.register(ServerRoot::register);
+        ServerCommandRoot.register();
         CropariaIf.LOGGER.debug("Adding data generators");
         DataPackHandler.INSTANCE.registerGenerator(RecipeGenerator::init);
         DataPackHandler.INSTANCE.registerGenerator(LootTableGenerator::init);

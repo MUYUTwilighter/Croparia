@@ -1,6 +1,7 @@
 package cool.muyucloud.croparia.client;
 
 import cool.muyucloud.croparia.CropariaIf;
+import cool.muyucloud.croparia.client.command.ClientCommandRoot;
 import cool.muyucloud.croparia.registry.CropariaBlocks;
 import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.registry.Crops;
@@ -11,6 +12,7 @@ import net.minecraft.client.renderer.RenderType;
 public class CropariaIfClient {
     public static void init() {
         CropariaIf.LOGGER.info("Initializing client setup");
+        ClientCommandRoot.register();
         CropariaIf.LOGGER.debug("Registering crop color");
         Crops.forEachCrop(crop -> {
             ColorHandlerRegistry.registerBlockColors((blockState, blockAndTintGetter, blockPos, i) -> crop.getColor(), crop.getCropBlock());

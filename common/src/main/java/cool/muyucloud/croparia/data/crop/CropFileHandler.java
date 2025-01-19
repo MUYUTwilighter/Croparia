@@ -42,7 +42,7 @@ public class CropFileHandler {
     }
 
     public static void dumpCrops() {
-        Path dir = CropariaIf.CONFIG.getDumpPath();
+        Path dir = CropariaIf.CONFIG.getDumpPath().resolve("crops");
         File dirFile = dir.toFile();
         if (!dirFile.isDirectory()) {
             dirFile.mkdirs();
@@ -58,7 +58,7 @@ public class CropFileHandler {
     }
 
     public static void dumpBuiltinCrops() {
-        Path dir = CropariaIf.CONFIG.getDumpPath();
+        Path dir = CropariaIf.CONFIG.getDumpPath().resolve("builtin_crops");
         File dirFile = dir.toFile();
         if (!dirFile.isDirectory()) {
             dirFile.mkdirs();
@@ -74,7 +74,7 @@ public class CropFileHandler {
     }
 
     public static boolean dumpCrop(@NotNull Crop crop) {
-        Path dir = CropariaIf.CONFIG.getDumpPath();
+        Path dir = CropariaIf.CONFIG.getDumpPath().resolve("crops");
         File dirFile = dir.toFile();
         if (!dirFile.isDirectory()) {
             dirFile.mkdirs();

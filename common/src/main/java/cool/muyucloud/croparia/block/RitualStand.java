@@ -50,7 +50,7 @@ public class RitualStand extends Block {
             ItemStack stack = itemEntity.getItem();
             RecipeManager recipeManager = serverWorld.getServer().getRecipeManager();
             this.getRitualStructure(recipeManager).flatMap(
-                structure -> structure.matches(pos, world)
+                structure -> structure.matchesAndDestroy(pos, world)
             ).ifPresentOrElse(inputBlock -> {
                 RitualContainer container = this.getRitualContainer(stack, inputBlock);
                 if (itemEntity.getOwner() instanceof Player player) {
@@ -109,5 +109,9 @@ public class RitualStand extends Block {
 
     public @NotNull VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         return this.SHAPE;
+    }
+
+    public int getTier() {
+        return this.tier;
     }
 }

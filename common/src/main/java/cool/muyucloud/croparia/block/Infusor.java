@@ -4,6 +4,7 @@ import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.data.ElementsEnum;
 import cool.muyucloud.croparia.recipe.InfusorRecipe;
 import cool.muyucloud.croparia.recipe.container.InfusorContainer;
+import cool.muyucloud.croparia.registry.CropariaBlocks;
 import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.registry.RecipeTypes;
 import net.minecraft.core.BlockPos;
@@ -71,6 +72,10 @@ public class Infusor extends Block {
             }
             return ItemInteractionResult.SUCCESS;
         }
+    }
+
+    public static ElementsEnum getElement(BlockState state) {
+        return state.getBlock() != CropariaBlocks.INFUSOR.get() ? ElementsEnum.EMPTY : state.getValue(TYPE);
     }
 
     public void onCrafting(InfusorRecipe recipe, InfusorContainer container, Level world, BlockPos pos) {

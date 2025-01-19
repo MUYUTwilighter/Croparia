@@ -25,6 +25,9 @@ import java.util.function.Supplier;
 public class CropariaItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(CropariaIf.MOD_ID, Registries.ITEM);
 
+    public static final RegistrySupplier<RecipeWizard> RECIPE_WIZARD = registerItem(
+        "recipe_wizard", () -> new RecipeWizard(new Item.Properties().arch$tab(Tabs.MAIN))
+    );
     public static final RegistrySupplier<BlockItem> ACTIVATED_SHRIEKER = registerItem(
         "activated_shrieker", () -> new BlockItem(CropariaBlocks.ACTIVATED_SHRIEKER.get(), new Item.Properties().arch$tab(Tabs.MAIN))
     );

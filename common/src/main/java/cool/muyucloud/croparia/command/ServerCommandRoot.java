@@ -1,10 +1,9 @@
 package cool.muyucloud.croparia.command;
 
-import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import cool.muyucloud.croparia.CropariaIf;
+import dev.architectury.event.events.common.CommandRegistrationEvent;
 import net.minecraft.ChatFormatting;
-import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -16,19 +15,18 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 
-public class ServerRoot {
-    private static final LiteralArgumentBuilder<CommandSourceStack> ROOT = Commands.literal("croparia")
+public class ServerCommandRoot {
+    private static final LiteralArgumentBuilder<CommandSourceStack> ROOT = Commands.literal("cropariaServer")
+        .requires(s -> s.hasPermission(2))
         .then(DumpCommand.build())
         .then(DumpBuiltinCommand.build())
-        .then(CropCommand.build());
+        .then(CropCommand.build())
+        .then(ConfigCommand.buildInfusor())
+        .then(ConfigCommand.buildRitual());
 
-    public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext context, Commands.CommandSelection selection) {
+    public static void register() {
         CropariaIf.LOGGER.debug("Registering commands");
-        dispatcher.register(ROOT);
-    }
-
-    public static Style openUrl(String url) {
-        return Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, url));
+        CommandRegistrationEvent.EVENT.register((dispatcher, registry, selection) -> dispatcher.register(ROOT));
     }
 
     public static Style suggestCommand(String command, Object... args) {
@@ -42,11 +40,14 @@ public class ServerRoot {
     }
 
     public static Style hoverItem(Item item) {
-        if (item == Items.AIR) return Style.EMPTY;
-        else return Style.EMPTY.withHoverEvent(new HoverEvent(
+        return item == Items.AIR ? Style.EMPTY : Style.EMPTY.withHoverEvent(new HoverEvent(
             HoverEvent.Action.SHOW_ITEM,
             new HoverEvent.ItemStackInfo(item.getDefaultInstance())
         ));
+    }
+
+    public static Style hoverText(String text) {
+        return Style.EMPTY.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Component.literal(text)));
     }
 
     public static Style hoverText(Component text) {
