@@ -8,7 +8,6 @@ import com.mojang.serialization.JsonOps;
 import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.block.Infusor;
 import cool.muyucloud.croparia.block.RitualStand;
-import cool.muyucloud.croparia.client.command.ClientCommandRoot;
 import cool.muyucloud.croparia.command.ServerCommandRoot;
 import cool.muyucloud.croparia.data.ElementsEnum;
 import cool.muyucloud.croparia.recipe.container.RitualStructureContainer;
@@ -121,7 +120,7 @@ public class RecipeWizard extends Item {
 
     public void sendFeedback(String key, Path path, Player player) {
         MutableComponent location = Component.literal(path.getFileName().toString()).withStyle(
-            ClientCommandRoot.openFile(path.toString())
+            ServerCommandRoot.openFile(path.toString())
         ).withStyle(ServerCommandRoot.inlineMouseBehavior());
         MutableComponent main = Component.translatable(key, location);
         player.displayClientMessage(main, false);

@@ -17,10 +17,10 @@ public class DumpCommand {
     public static LiteralArgumentBuilder<ClientCommandRegistrationEvent.ClientCommandSourceStack> build() {
         CROP.executes(context -> {
             String name = StringArgumentType.getString(context, "crop");
-            return dump(name, context.getSource()::arch$sendSuccess, context.getSource()::arch$sendFailure);
+            return dump(name, context.getSource()::arch$sendSuccess, context.getSource()::arch$sendFailure, true);
         });
         DUMP.requires(s -> s.hasPermission(2));
-        DUMP.executes(context -> dumpAll(context.getSource()::arch$sendSuccess));
+        DUMP.executes(context -> dumpAll(context.getSource()::arch$sendSuccess, true));
         DUMP.then(CROP);
         return DUMP;
     }
