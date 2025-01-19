@@ -7,12 +7,9 @@ import cool.muyucloud.croparia.data.crop.CropType;
 import cool.muyucloud.croparia.item.CropFruit;
 import cool.muyucloud.croparia.item.CropSeed;
 import cool.muyucloud.croparia.registry.Crops;
-import cool.muyucloud.croparia.registry.Tabs;
-import cool.muyucloud.croparia.util.pack.ResourcePackHandler;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.NotNull;
@@ -20,10 +17,20 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
-@SuppressWarnings({"UnstableApiUsage", "unused"})
+@SuppressWarnings({"unused"})
 public class CropRegistry {
     private final DeferredRegister<Item> itemRegistry = DeferredRegister.create(CropariaIf.MOD_ID, Registries.ITEM);
     private final DeferredRegister<Block> blockRegistry = DeferredRegister.create(CropariaIf.MOD_ID, Registries.BLOCK);
+    @NotNull
+    private final String name;
+
+    public CropRegistry() {
+        this.name = "Unnamed";
+    }
+
+    public CropRegistry(@NotNull String name) {
+        this.name = name;
+    }
 
     /**
      * Add a simple custom crop.
@@ -53,15 +60,16 @@ public class CropRegistry {
         Crop crop = Crop.create(name, material, color, tier, parsedType, translationKey, translations).orElseThrow(
             () -> new IllegalArgumentException("Failed to create crop %s".formatted(name))
         );
-        Crops.CROPS.add(crop);
+        Crops.recordCustom(crop);
         RegistrySupplier<CropariaCropBlock> cropBlock = blockRegistry.register(crop.getBlockId(), () -> new CropariaCropBlock(crop));
         RegistrySupplier<CropSeed> seed = itemRegistry.register(crop.getSeedId(), () -> new CropSeed(crop));
         RegistrySupplier<CropFruit> fruit = itemRegistry.register(crop.getFruitId(), () -> new CropFruit(crop));
+        CropariaIf.LOGGER.info("Added KubeJs crop {}", name);
     }
 
     public void register() {
         blockRegistry.register();
         itemRegistry.register();
-//        ResourcePackHandler.INSTANCE.onInitial();
+        CropariaIf.LOGGER.info("Finished KubeJs crop registration");
     }
 }

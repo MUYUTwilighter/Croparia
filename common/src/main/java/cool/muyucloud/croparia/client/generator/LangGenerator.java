@@ -14,9 +14,7 @@ public class LangGenerator {
     public static final Map<ResourceLocation, Map<String, String>> CACHE = new HashMap<>();
 
     public static void init() {
-        for (Crop crop : Crops.CROPS) {
-            addCrop(crop);
-        }
+        Crops.forEachCrop(LangGenerator::addCrop);
         for (Map.Entry<ResourceLocation, Map<String, String>> entry : CACHE.entrySet()) {
             ResourceLocation lang = entry.getKey();
             Map<String, String> map = entry.getValue();

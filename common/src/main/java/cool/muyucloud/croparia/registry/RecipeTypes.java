@@ -15,6 +15,7 @@ import net.minecraft.world.item.crafting.RecipeType;
  * @see RecipeSerializers
  * @see cool.muyucloud.croparia.recipe.serializer
  */
+@SuppressWarnings("unused")
 public class RecipeTypes {
     public static DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(CropariaIf.MOD_ID, Registries.RECIPE_TYPE);
 
@@ -42,6 +43,7 @@ public class RecipeTypes {
     }
 
     public static void register() {
+        CropariaIf.LOGGER.debug("Registering recipe types");
         RECIPE_TYPES.register();
     }
 }

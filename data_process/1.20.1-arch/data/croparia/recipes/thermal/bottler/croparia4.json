@@ -1,0 +1,32 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "thermal_expansion"
+        }
+      ],
+      "recipe": {
+        "type": "thermal:bottler",
+        "ingredients": [
+          {
+            "item": "croparia:croparia3",
+            "amount": 2
+          },
+          {
+            "fluid": "croparia:fire",
+            "amount": 250
+          }
+        ],
+        "result": [
+          {
+            "item": "croparia:croparia4"
+          }
+        ],
+        "experience": 0.1
+      }
+    }
+  ]
+}

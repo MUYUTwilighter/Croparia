@@ -15,6 +15,7 @@ public class ConfigFileHandler {
     public static final Path CONFIG_PATH = Platform.getGameFolder().resolve("config/croparia.json");
 
     public static void save(Config config) {
+        CropariaIf.LOGGER.info("Saving config");
         File parent = CONFIG_PATH.getParent().toFile();
         if (!parent.exists()) {
             parent.mkdirs();
@@ -28,6 +29,7 @@ public class ConfigFileHandler {
     }
 
     public static Config load() {
+        CropariaIf.LOGGER.info("Loading config");
         Config config;
         try (FileReader reader = new FileReader(CONFIG_PATH.toFile())) {
             config = new Config(GSON.fromJson(reader, RawConfig.class));
@@ -43,10 +45,11 @@ public class ConfigFileHandler {
         Config newConfig = load();
         config.setCropPath(newConfig.getCropPath());
         config.setPackPath(newConfig.getPackPath());
+        config.setDumpPath(newConfig.getDumpPath());
         config.setOverride(newConfig.getOverride());
         config.setFruitUse(newConfig.getFruitUse());
         config.setInfusor(newConfig.getInfusor());
         config.setRitual(newConfig.getRitual());
-        config.setCauldron(newConfig.getCauldron());
+        config.setBlacklist(newConfig.getBlacklist());
     }
 }

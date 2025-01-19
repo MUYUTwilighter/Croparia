@@ -22,11 +22,15 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.function.Supplier;
 
-@SuppressWarnings("UnstableApiUsage")
+@SuppressWarnings({"UnstableApiUsage", "unused"})
 public class CropariaItems {
     @PreReg
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(CropariaIf.MOD_ID, Registries.ITEM);
 
+    @PostReg
+    public static final RegistrySupplier<RecipeWizard> RECIPE_WIZARD = registerItem(
+        "recipe_wizard", () -> new RecipeWizard(new Item.Properties().arch$tab(Tabs.MAIN))
+    );
     @PostReg
     public static final RegistrySupplier<BlockItem> ACTIVATED_SHRIEKER = registerItem(
         "activated_shrieker",
@@ -206,6 +210,7 @@ public class CropariaItems {
 
     @PreReg
     public static void register() {
+        CropariaIf.LOGGER.debug("Registering items");
         ITEMS.register();
     }
 
@@ -246,6 +251,14 @@ public class CropariaItems {
 
     public static @NotNull @PostReg RegistrySupplier<Item> getCroparia(int tier) {
         return CROPARIAS.get(tier - 1);
+    }
+
+    public static int leastTier() {
+        return 1;
+    }
+
+    public static int mostTier() {
+        return CROPARIAS.size();
     }
 
     public static @NotNull @PostReg RegistrySupplier<BlockItem> getRitualStand(int tier) {

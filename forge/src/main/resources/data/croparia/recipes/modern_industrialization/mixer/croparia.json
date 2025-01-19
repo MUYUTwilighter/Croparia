@@ -1,0 +1,30 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "modern_industrialization"
+        }
+      ],
+      "recipe": {
+        "type": "modern_industrialization:mixer",
+        "eu": 2,
+        "duration": 100,
+        "item_inputs": {
+          "tag": "croparia:seed_ingredient",
+          "amount": 4
+        },
+        "fluid_inputs": {
+          "fluid": "croparia:elematilius",
+          "amount": 250
+        },
+        "item_outputs": {
+          "item": "croparia:croparia",
+          "amount": 1
+        }
+      }
+    }
+  ]
+}

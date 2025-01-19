@@ -32,6 +32,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+@SuppressWarnings("deprecation")
 public class Infusor extends Block {
     protected final VoxelShape SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 8.0, 16.0);
     public static final EnumProperty<ElementsEnum> TYPE = EnumProperty.create("infusor_type", ElementsEnum.class);
@@ -113,5 +114,9 @@ public class Infusor extends Block {
     @Override
     public @NotNull Item asItem() {
         return CropariaItems.INFUSOR.get();
+    }
+
+    public static ElementsEnum getElement(BlockState state) {
+        return state.getValue(TYPE);
     }
 }

@@ -7,10 +7,10 @@ import cool.muyucloud.croparia.util.pack.ResourcePackHandler;
 
 public class ItemModelGenerator {
     public static void init() {
-        for (Crop crop : Crops.CROPS) {
+        Crops.forEachCrop(crop -> {
             addFruit(crop);
             addSeed(crop);
-        }
+        });
     }
 
     public static void addFruit(Crop crop) {

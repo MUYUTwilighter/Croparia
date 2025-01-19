@@ -118,6 +118,7 @@ public class CropariaBlocks {
 
     @PreReg
     public static void register() {
+        CropariaIf.LOGGER.debug("Registering blocks");
         BLOCKS.register();
     }
 

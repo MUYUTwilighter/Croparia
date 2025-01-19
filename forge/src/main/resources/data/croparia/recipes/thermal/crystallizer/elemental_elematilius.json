@@ -1,0 +1,31 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "thermal_expansion"
+        }
+      ],
+      "recipe": {
+        "type": "thermal:crystallizer",
+        "ingredients": [
+          {
+            "fluid": "croparia:elematilius",
+            "amount": 250
+          },
+          {
+            "item": "croparia:elematilius"
+          }
+        ],
+        "result": [
+          {
+            "item": "croparia:elematilius",
+            "amount": 2
+          }
+        ]
+      }
+    }
+  ]
+}

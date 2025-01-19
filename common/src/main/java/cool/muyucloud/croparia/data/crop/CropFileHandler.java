@@ -1,15 +1,15 @@
 package cool.muyucloud.croparia.data.crop;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonWriter;
-import com.mojang.serialization.JsonOps;
 import cool.muyucloud.croparia.CropariaIf;
+import cool.muyucloud.croparia.registry.Crops;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.nio.file.Path;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -41,23 +41,51 @@ public class CropFileHandler {
         }
     }
 
-    public static void saveCompatCrop(CompatCrop crop) {
-        File cropPath = CropariaIf.CONFIG.getCropPath().toFile();
-        if (!cropPath.exists() || !cropPath.isDirectory()) {
-            cropPath.mkdirs();
+    public static void dumpCrops() {
+        Path dir = CropariaIf.CONFIG.getDumpPath().resolve("crops");
+        File dirFile = dir.toFile();
+        if (!dirFile.isDirectory()) {
+            dirFile.mkdirs();
         }
-        File file = CropariaIf.CONFIG.getCropPath().resolve(crop.getName() + ".json").toFile();
-        if (file.exists() && !CropariaIf.CONFIG.getOverride()) {
-            return;
+        Crops.forEachCrop(crop -> {
+            try (JsonWriter writer = new JsonWriter(new FileWriter(dir.resolve(crop.getName() + ".json").toFile()))) {
+                writer.setIndent("  ");
+                GSON.toJson(crop.toJson(), writer);
+            } catch (Throwable e) {
+                CropariaIf.LOGGER.error("Failed to dump crop {}", crop.getName(), e);
+            }
+        });
+    }
+
+    public static void dumpBuiltinCrops() {
+        Path dir = CropariaIf.CONFIG.getDumpPath().resolve("builtin_crops");
+        File dirFile = dir.toFile();
+        if (!dirFile.isDirectory()) {
+            dirFile.mkdirs();
         }
-        try (JsonWriter writer = new JsonWriter(new FileWriter(file))) {
+        Crops.forEachBuiltinCrop(crop -> {
+            try (JsonWriter writer = new JsonWriter(new FileWriter(dir.resolve(crop.getName() + ".json").toFile()))) {
+                writer.setIndent("  ");
+                GSON.toJson(crop.toJson(), writer);
+            } catch (Throwable e) {
+                CropariaIf.LOGGER.error("Failed to dump crop {}", crop.getName(), e);
+            }
+        });
+    }
+
+    public static boolean dumpCrop(@NotNull Crop crop) {
+        Path dir = CropariaIf.CONFIG.getDumpPath().resolve("crops");
+        File dirFile = dir.toFile();
+        if (!dirFile.isDirectory()) {
+            dirFile.mkdirs();
+        }
+        try (JsonWriter writer = new JsonWriter(new FileWriter(dir.resolve(crop.getName() + ".json").toFile()))) {
             writer.setIndent("  ");
-            JsonObject json = CompatCrop.CODEC.encodeStart(JsonOps.INSTANCE, crop).getOrThrow(false, msg -> {
-                throw new RuntimeException(msg);
-            }).getAsJsonObject();
-            GSON.toJson(json, writer);
-        } catch (Exception e) {
-            CropariaIf.LOGGER.error("Failed to save crop {}", crop.getName(), e);
+            GSON.toJson(crop.toJson(), writer);
+            return true;
+        } catch (Throwable e) {
+            CropariaIf.LOGGER.error("Failed to dump crop {}", crop.getName(), e);
         }
+        return false;
     }
 }

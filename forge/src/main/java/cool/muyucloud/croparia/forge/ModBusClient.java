@@ -8,8 +8,8 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 @Mod.EventBusSubscriber(modid = CropariaIf.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-public class CropariaIfClientForge {
-    @SubscribeEvent()
+public class ModBusClient {
+    @SubscribeEvent
     public static void onClientSetup(FMLClientSetupEvent event) {
         CropariaIfClient.init();
     }

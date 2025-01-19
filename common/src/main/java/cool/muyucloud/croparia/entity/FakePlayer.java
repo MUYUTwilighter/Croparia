@@ -1,6 +1,7 @@
 package cool.muyucloud.croparia.entity;
 
 import com.mojang.authlib.GameProfile;
+import cool.muyucloud.croparia.CropariaIf;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -15,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class FakePlayer extends Player {
     private static final Map<ServerLevel, FakePlayer> FAKE_PLAYERS = new HashMap<>();
@@ -52,7 +54,8 @@ public class FakePlayer extends Player {
     }
 
     public FakePlayer(@NotNull Level level) {
-        super(level, BlockPos.ZERO, 0, new GameProfile(null, "FakePlayer"));
+        super(level, BlockPos.ZERO, 0, new GameProfile(UUID.randomUUID(), "FakePlayer"));
+        CropariaIf.LOGGER.debug("Created fake player for {}", level.dimension());
     }
 
     public InteractionResult useItemOn(@NotNull BlockPos pos, @NotNull ItemStack item) {

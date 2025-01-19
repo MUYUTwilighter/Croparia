@@ -42,9 +42,9 @@ dependencies {
     modCompileOnly "dev.emi:emi-forge:${emi_version}:api"
     modCompileOnly "dev.emi:emi-forge:${emi_version}"
     modRuntimeOnly "dev.emi:emi-forge:${emi_version}"
-    // KubeJS
-    modImplementation "dev.latvian.mods:kubejs-forge:${kubejs_version}"
-    modImplementation "dev.latvian.mods:rhino-forge:${rhino_version}"
+//    // KubeJS
+//    modImplementation "dev.latvian.mods:kubejs-forge:${kubejs_version}"
+//    modImplementation "dev.latvian.mods:rhino-forge:${rhino_version}"
 }
 
 processResources {

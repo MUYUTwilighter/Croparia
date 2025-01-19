@@ -1,0 +1,26 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "modern_industrialization"
+        }
+      ],
+      "recipe": {
+        "type": "modern_industrialization:blast_furnace",
+        "eu": 4,
+        "duration": 60,
+        "item_inputs": {
+          "item": "croparia:elemental_air",
+          "amount": 1
+        },
+        "fluid_outputs": {
+          "fluid": "croparia:air",
+          "amount": 250
+        }
+      }
+    }
+  ]
+}

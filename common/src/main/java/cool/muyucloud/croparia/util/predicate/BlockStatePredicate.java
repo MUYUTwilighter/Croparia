@@ -110,6 +110,13 @@ public class BlockStatePredicate implements Predicate<BlockState> {
         return components;
     }
 
+    public static Builder ofState(BlockState state) {
+        Builder builder = Builder.create();
+        builder.block(Objects.requireNonNull(state.getBlock().arch$registryName()).toString());
+        builder.properties(((StateHolderAccess) state).croparia_if$getProperties());
+        return builder;
+    }
+
     public static class Builder {
         public static final Codec<Builder> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.STRING.optionalFieldOf("block").forGetter(builder -> Optional.ofNullable(builder.getBlock())),

@@ -1,0 +1,31 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "indrev"
+        }
+      ],
+      "recipe": {
+        "type": "indrev:fluid_infuse",
+        "ingredients": [
+          {
+            "item": "croparia:croparia4",
+            "count": 2
+          }
+        ],
+        "fluidInput": {
+          "fluid": "croparia:fire",
+          "amount": 20250
+        },
+        "output": {
+          "item": "croparia:croparia5",
+          "count": 1
+        },
+        "processTime": 200
+      }
+    }
+  ]
+}

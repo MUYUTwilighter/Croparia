@@ -1,0 +1,25 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "indrev"
+        }
+      ],
+      "recipe": {
+        "type": "indrev:condenser",
+        "fluidInput": {
+          "fluid": "croparia:elematilius",
+          "amount": 20250
+        },
+        "output": {
+          "item": "croparia:elematilius",
+          "count": 1
+        },
+        "processTime": 500
+      }
+    }
+  ]
+}

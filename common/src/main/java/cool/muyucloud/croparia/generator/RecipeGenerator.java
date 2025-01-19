@@ -10,21 +10,25 @@ import cool.muyucloud.croparia.registry.Crops;
 import cool.muyucloud.croparia.util.pack.DataPackHandler;
 import dev.architectury.platform.Platform;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 
 import java.util.Objects;
 
 public class RecipeGenerator {
     @PostGen
     public static void init() {
-        for (Crop crop : Crops.CROPS) {
+        Crops.forEachCrop(crop -> {
             createSeed(crop);
             createFruitToMaterial(crop);
+        });
+        if (Platform.isModLoaded("modern_industrialization")) {
+            Crops.forEachCrop(RecipeGenerator::createMiPacker);
         }
         if (Platform.isModLoaded("thermal_cultivation")) {
-            Crops.CROPS.forEach(RecipeGenerator::createThermalIsolator);
+            Crops.forEachCrop(RecipeGenerator::createThermalInsolator);
         }
         if (Platform.isModLoaded("botanypots")) {
-            Crops.CROPS.forEach(RecipeGenerator::createBotanyPot);
+            Crops.forEachCrop(RecipeGenerator::createBotanyPot);
         }
     }
 
@@ -74,8 +78,9 @@ public class RecipeGenerator {
         root.add("ingredients", ingredients);
 
         JsonObject result = new JsonObject();
-        result.addProperty("item", Objects.requireNonNull(crop.getMaterialItem().arch$registryName()).toString());
-        result.addProperty("count", 2);
+        Item material = crop.getMaterialItem();
+        result.addProperty("item", Objects.requireNonNull(material.arch$registryName()).toString());
+        result.addProperty("count", Math.min(material.getMaxStackSize(), 2));
         root.add("result", result);
 
         DataPackHandler.INSTANCE.addRecipe(Objects.requireNonNull(id), root);
@@ -108,7 +113,7 @@ public class RecipeGenerator {
         DataPackHandler.INSTANCE.addRecipe(id, root);
     }
 
-    public static void createThermalIsolator(Crop crop) {
+    public static void createThermalInsolator(Crop crop) {
         ResourceLocation id = ResourceLocation.tryParse("croparia:thermal/insolator/" + crop.getName());
         JsonObject root = new JsonObject();
         root.addProperty("type", "thermal:insolator");

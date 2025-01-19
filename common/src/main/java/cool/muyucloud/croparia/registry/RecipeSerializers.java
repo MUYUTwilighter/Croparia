@@ -24,6 +24,7 @@ public class RecipeSerializers {
     }
 
     public static void register() {
+        CropariaIf.LOGGER.debug("Registering recipe serializers");
         SERIALIZERS.register();
     }
 }

@@ -1,0 +1,24 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "indrev"
+        }
+      ],
+      "recipe": {
+        "type": "indrev:smelter",
+        "ingredients": {
+          "item": "croparia:elemental_fire"
+        },
+        "fluidOutput": {
+          "fluid": "croparia:fire",
+          "amount": 20250
+        },
+        "processTime": 600
+      }
+    }
+  ]
+}

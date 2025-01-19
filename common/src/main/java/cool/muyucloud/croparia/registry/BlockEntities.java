@@ -26,6 +26,7 @@ public class BlockEntities {
 
     @NotNull
     public static <T extends BlockEntity> RegistrySupplier<BlockEntityType<T>> register(@NotNull String name, @NotNull Supplier<BlockEntityType<T>> supplier) {
+        CropariaIf.LOGGER.debug("Registering block entities");
         return BLOCK_ENTITIES.register(name, supplier);
     }
 

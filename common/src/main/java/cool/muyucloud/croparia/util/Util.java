@@ -1,5 +1,12 @@
 package cool.muyucloud.croparia.util;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -18,5 +25,15 @@ public class Util {
             }
         }
         Files.delete(dir.toPath());
+    }
+
+    public static BlockPos lookingAt(@NotNull Player player) {
+        Level world = player.level();
+        ClipContext context = new ClipContext(
+            player.getEyePosition(), player.getEyePosition().add(player.getLookAngle().multiply(5, 5, 5)),
+            ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player
+        );
+        BlockHitResult result = world.clip(context);
+        return result.getBlockPos();
     }
 }

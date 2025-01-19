@@ -14,9 +14,10 @@ public class BlockTagGenerator {
     private static final Map<ResourceLocation, JsonObject> TAGS = new HashMap<>();
 
     public static void init() {
-        for (Crop crop : Crops.CROPS) {
+        Crops.forEachCrop(crop -> {
             addCropBlock(crop);
-        }
+            addBeeGrowable(crop);
+        });
         TAGS.forEach(DataPackHandler.INSTANCE::addBlockTag);
     }
 

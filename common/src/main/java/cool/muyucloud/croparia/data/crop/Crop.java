@@ -1,10 +1,10 @@
 package cool.muyucloud.croparia.data.crop;
 
+import com.google.gson.JsonObject;
 import cool.muyucloud.croparia.CropariaIf;
-import cool.muyucloud.croparia.annotation.PostGen;
 import cool.muyucloud.croparia.annotation.PostReg;
-import cool.muyucloud.croparia.annotation.PreReg;
 import cool.muyucloud.croparia.block.CropariaCropBlock;
+import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.util.BiOptional;
 import cool.muyucloud.croparia.util.Util;
 import net.minecraft.core.Holder;
@@ -51,7 +51,7 @@ public class Crop {
         this.translations = parseTranslation(raw.translations(), parseDefaultTranslation(this.name));
         this.translationKey = raw.translationKey() == null ? "crop.croparia." + this.name : raw.translationKey();
         this.color = raw.color().startsWith("0x") ? Integer.parseInt(raw.color().substring(2), 16) : Integer.parseInt(raw.color());
-        this.tier = raw.tier() <= 0 ? 1 : raw.tier();
+        this.tier = parseTier(raw.tier());
         this.tag = raw.material().trim().startsWith("#");
         this.blockId = CropariaIf.of("block_crop_" + this.name);
         this.seedId = CropariaIf.of("seed_crop_" + this.name);
@@ -62,7 +62,7 @@ public class Crop {
         this.name = parseName(name);
         this.material = parseMaterialId(material, null);
         this.color = color;
-        this.tier = tier;
+        this.tier = parseTier(tier);
         this.type = type == null ? CropType.CROP : type;
         this.translations = parseTranslation(translations, parseDefaultTranslation(this.name));
         this.translationKey = translationKey == null ? "croparia.crop." + this.name : translationKey;
@@ -152,8 +152,35 @@ public class Crop {
     }
 
     @NotNull
+    public JsonObject toJson() {
+        JsonObject root = new JsonObject();
+        root.addProperty("name", this.name);
+        root.addProperty("material", (this.tag ? "#" : "") + this.material);
+        root.addProperty("color", this.serializeColor());
+        root.addProperty("tier", this.tier);
+        root.addProperty("type", this.type.getModelName());
+        root.addProperty("translationKey", this.translationKey);
+        JsonObject translations = new JsonObject();
+        this.translations.forEach(translations::addProperty);
+        root.add("translations", translations);
+        return root;
+    }
+
+    protected static int parseTier(int tier) {
+        if (tier < CropariaItems.leastTier() || tier > CropariaItems.mostTier()) {
+            CropariaIf.LOGGER.warn("Crop tier {} is out of range, defaulting to 1", tier);
+            return 1;
+        }
+        return tier;
+    }
+
+    @NotNull
     public CropType getType() {
         return type;
+    }
+
+    public String serializeMaterial() {
+        return (this.tag ? "#" : "") + this.material;
     }
 
     @NotNull
@@ -177,6 +204,10 @@ public class Crop {
 
     public int getColor() {
         return color;
+    }
+
+    public String serializeColor() {
+        return "0x" + Integer.toHexString(this.color);
     }
 
     public int getTier() {
@@ -247,5 +278,19 @@ public class Crop {
     @Override
     public int hashCode() {
         return Objects.hash(this.name);
+    }
+
+    @Override
+    public String toString() {
+        return "Crop{" +
+            "name='" + name + '\'' +
+            ", material=" + material +
+            ", type=" + type +
+            ", translationKey='" + translationKey + '\'' +
+            ", translations=" + translations +
+            ", color=" + color +
+            ", tier=" + tier +
+            ", tag=" + tag +
+            '}';
     }
 }

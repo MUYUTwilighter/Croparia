@@ -7,9 +7,7 @@ import cool.muyucloud.croparia.util.pack.ResourcePackHandler;
 
 public class BlockStateModelGenerator {
     public static void init() {
-        for (Crop crop : Crops.CROPS) {
-            addCrop(crop);
-        }
+        Crops.forEachCrop(BlockStateModelGenerator::addCrop);
     }
 
     public static void addCrop(Crop crop) {

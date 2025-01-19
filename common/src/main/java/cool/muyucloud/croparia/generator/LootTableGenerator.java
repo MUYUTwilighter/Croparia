@@ -9,9 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class LootTableGenerator {
     public static void init() {
-        for (Crop crop : Crops.CROPS) {
-            addCropBlock(crop);
-        }
+        Crops.forEachCrop(LootTableGenerator::addCropBlock);
     }
 
     public static void addCropBlock(Crop crop) {

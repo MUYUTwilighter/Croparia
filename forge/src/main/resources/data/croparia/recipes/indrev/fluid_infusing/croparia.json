@@ -1,0 +1,31 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "indrev"
+        }
+      ],
+      "recipe": {
+        "type": "indrev:fluid_infuse",
+        "ingredients": [
+          {
+            "tag": "croparia:seed_ingredient",
+            "count": 4
+          }
+        ],
+        "fluidInput": {
+          "fluid": "croparia:elematilius",
+          "amount": 20250
+        },
+        "output": {
+          "item": "croparia:croparia",
+          "count": 1
+        },
+        "processTime": 200
+      }
+    }
+  ]
+}

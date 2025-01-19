@@ -10,19 +10,19 @@ import cool.muyucloud.croparia.rei.display.RitualStructureDisplay;
 import cool.muyucloud.croparia.rei.display.category.InfusorRecipeDisplayCategory;
 import cool.muyucloud.croparia.rei.display.category.RitualRecipeDisplayCategory;
 import cool.muyucloud.croparia.rei.display.category.RitualStructureDisplayCategory;
+import me.shedaniel.rei.api.client.plugins.REIClientPlugin;
 import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
 import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
 
 
-public class ReiClient {
-
-    public static void registerCategories(CategoryRegistry registry) {
+public class ReiClient implements REIClientPlugin {
+    public void registerCategories(CategoryRegistry registry) {
         registry.add(new InfusorRecipeDisplayCategory());
         registry.add(new RitualRecipeDisplayCategory());
         registry.add(new RitualStructureDisplayCategory());
     }
 
-    public static void registerDisplays(DisplayRegistry registry) {
+    public void registerDisplays(DisplayRegistry registry) {
         registry.registerRecipeFiller(InfusorRecipe.class, RecipeTypes.INFUSOR.get(), InfusorRecipeDisplay::new);
         registry.registerRecipeFiller(RitualRecipe.class, RecipeTypes.RITUAL.get(), RitualRecipeDisplay::new);
         registry.registerRecipeFiller(RitualStructure.class, RecipeTypes.RITUAL_STRUCTURE.get(), RitualStructureDisplay::new);

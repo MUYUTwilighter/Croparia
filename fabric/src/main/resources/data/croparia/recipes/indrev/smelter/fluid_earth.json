@@ -1,0 +1,25 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "indrev"
+    }
+  ],
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "indrev"
+      ]
+    }
+  ],
+  "type": "indrev:smelter",
+  "ingredients": {
+    "item": "croparia:elemental_earth"
+  },
+  "fluidOutput": {
+    "fluid": "croparia:earth",
+    "amount": 20250
+  },
+  "processTime": 600
+}

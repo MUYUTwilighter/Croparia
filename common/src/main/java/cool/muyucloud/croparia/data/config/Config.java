@@ -1,21 +1,17 @@
 package cool.muyucloud.croparia.data.config;
 
-import com.google.gson.Gson;
 import cool.muyucloud.croparia.data.crop.Crop;
 import dev.architectury.platform.Platform;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.FileWriter;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 public class Config {
-    public static final Gson GSON = new Gson();
-    public static final Path CONFIG_PATH = Platform.getGameFolder().resolve("config/croparia.json");
-
     public static @NotNull Optional<Path> parsePath(@Nullable String path) {
         if (path == null) {
             return Optional.empty();
@@ -43,6 +39,8 @@ public class Config {
     @NotNull
     private Path packPath;
     @NotNull
+    private Path dumpPath;
+    @NotNull
     private Boolean override;
     @NotNull
     private Boolean fruitUse;
@@ -51,11 +49,7 @@ public class Config {
     @NotNull
     private Boolean ritual;
     @NotNull
-    private Boolean cauldron;
-    @NotNull
-    private Boolean compatGen;
-    @NotNull
-    private List<String> blacklist = new ArrayList<>();
+    private List<String> blacklist;
 
     /**
      * Default config
@@ -63,12 +57,12 @@ public class Config {
     public Config() {
         this.cropPath = Platform.getGameFolder().resolve("crops");
         this.packPath = Platform.getGameFolder().resolve("config/croparia");
+        this.dumpPath = Platform.getGameFolder().resolve("croparia");
         this.override = true;
         this.fruitUse = true;
         this.infusor = true;
         this.ritual = true;
-        this.cauldron = true;
-        this.compatGen = true;
+        this.blacklist = new ArrayList<>();
     }
 
     /**
@@ -77,25 +71,16 @@ public class Config {
     public Config(RawConfig raw) {
         this.cropPath = parsePath(raw.cropPath()).orElse(Platform.getGameFolder().resolve("crops"));
         this.packPath = parsePath(raw.packPath()).orElse(Platform.getGameFolder().resolve("config/croparia"));
+        this.dumpPath = Platform.getGameFolder().resolve("croparia");
         this.override = raw.override() != null ? raw.override() : true;
         this.fruitUse = raw.fruitUse() != null ? raw.fruitUse() : true;
         this.infusor = raw.infusor() != null ? raw.infusor() : true;
         this.ritual = raw.ritual() != null ? raw.ritual() : true;
-        this.cauldron = raw.cauldron() != null ? raw.cauldron() : true;
-        this.compatGen = raw.compatGen() != null ? raw.compatGen() : true;
         this.blacklist = raw.blacklist() != null ? raw.blacklist() : new ArrayList<>();
     }
 
     public RawConfig toRaw() {
-        return new RawConfig(resolvePath(cropPath), resolvePath(packPath), override, fruitUse, infusor, ritual, cauldron, compatGen, blacklist);
-    }
-
-    public void save() {
-        try (FileWriter writer = new FileWriter(CONFIG_PATH.toFile())) {
-            GSON.toJson(this.toRaw(), writer);
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
+        return new RawConfig(resolvePath(cropPath), resolvePath(packPath), resolvePath(dumpPath), override, fruitUse, infusor, ritual, blacklist);
     }
 
     public @NotNull Path getCropPath() {
@@ -112,6 +97,14 @@ public class Config {
 
     public void setPackPath(@NotNull Path packPath) {
         this.packPath = packPath;
+    }
+
+    public @NotNull Path getDumpPath() {
+        return dumpPath;
+    }
+
+    public void setDumpPath(@NotNull Path dumpPath) {
+        this.dumpPath = dumpPath;
     }
 
     public @NotNull Boolean getOverride() {
@@ -146,23 +139,32 @@ public class Config {
         this.ritual = ritual;
     }
 
-    public @NotNull Boolean getCauldron() {
-        return cauldron;
+    public @NotNull List<String> getBlacklist() {
+        return blacklist;
     }
 
-    public void setCauldron(@NotNull Boolean cauldron) {
-        this.cauldron = cauldron;
-    }
-
-    public @NotNull Boolean getCompatGen() {
-        return compatGen;
-    }
-
-    public void setCompatGen(@NotNull Boolean compatGen) {
-        this.compatGen = compatGen;
+    public void setBlacklist(@NotNull List<String> blacklist) {
+        this.blacklist = blacklist;
     }
 
     public boolean inBlacklist(Crop crop) {
         return this.blacklist.contains(crop.getName());
+    }
+
+    public boolean inBlacklist(@NotNull String cropName, @NotNull String mod) {
+        for (String pattern : blacklist) {
+            if (pattern.startsWith("@")) {
+                pattern = pattern.substring(1);
+                Pattern modPattern = Pattern.compile(pattern);
+                if (modPattern.matcher(mod).matches()) {
+                    return true;
+                }
+                continue;
+            }
+            if (Pattern.compile(pattern).matcher(cropName).matches()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

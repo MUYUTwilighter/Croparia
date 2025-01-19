@@ -1,0 +1,32 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "indrev"
+    }
+  ],
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "indrev"
+      ]
+    }
+  ],
+  "type": "indrev:fluid_infuse",
+  "ingredients": [
+    {
+      "item": "croparia:croparia2",
+      "count": 2
+    }
+  ],
+  "fluidInput": {
+    "fluid": "croparia:water",
+    "amount": 20250
+  },
+  "output": {
+    "item": "croparia:croparia3",
+    "count": 1
+  },
+  "processTime": 200
+}

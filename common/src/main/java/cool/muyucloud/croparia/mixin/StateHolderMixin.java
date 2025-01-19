@@ -23,8 +23,6 @@ public abstract class StateHolderMixin<O, S> implements StateHolderAccess {
     @Final
     private ImmutableMap<Property<?>, Comparable<?>> values;
 
-    @Shadow public abstract <T extends Comparable<T>, V extends T> S setValue(Property<T> arg, V comparable);
-
     @Unique
     private Map<String, Property<?>> croparia_if$properties;
 
@@ -52,5 +50,14 @@ public abstract class StateHolderMixin<O, S> implements StateHolderAccess {
         } else {
             return value.toString();
         }
+    }
+
+    @Override
+    public Map<String, String> croparia_if$getProperties() {
+        Map<String, String> map = new HashMap<>();
+        for (String key : this.croparia_if$properties.keySet()) {
+            map.put(key, this.croparia_if$getValue(key));
+        }
+        return map;
     }
 }

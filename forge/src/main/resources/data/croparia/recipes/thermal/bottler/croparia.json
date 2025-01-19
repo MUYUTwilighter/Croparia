@@ -1,0 +1,32 @@
+{
+  "type": "forge:conditional",
+  "recipes": [
+    {
+      "conditions": [
+        {
+          "type": "forge:mod_loaded",
+          "modid": "thermal_expansion"
+        }
+      ],
+      "recipe": {
+        "type": "thermal:bottler",
+        "ingredients": [
+          {
+            "tag": "croparia:seed_ingredient",
+            "amount": 4
+          },
+          {
+            "fluid": "croparia:elematilius",
+            "amount": 250
+          }
+        ],
+        "result": [
+          {
+            "item": "croparia:croparia"
+          }
+        ],
+        "experience": 0.1
+      }
+    }
+  ]
+}

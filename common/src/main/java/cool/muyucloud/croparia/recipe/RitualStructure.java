@@ -89,7 +89,7 @@ public class RitualStructure implements Recipe<RitualStructureContainer> {
         return this.patterns.get(0).maxZ();
     }
 
-    public @Nullable BlockState matchTransformed(BlockPos origin, Level level, Char3D pattern, BlockState ritualBlock) {
+    public @Nullable BlockState matchTransformed(BlockPos origin, Level level, Char3D pattern, BlockState ritualBlock, boolean destroy) {
         List<BlockPos> inputPositions = new LinkedList<>();
         BlockState inputBlock = null;
         for (int x = 0; x < pattern.maxX(); x++) {
@@ -109,7 +109,7 @@ public class RitualStructure implements Recipe<RitualStructureContainer> {
                             return null;
                         }
                     } else if (key == ' ') {
-                        continue;
+                        BlockStatePredicate.ANY.test(state);
                     } else if (key == '.') {
                         if (!state.isAir()) {
                             return null;
@@ -123,16 +123,29 @@ public class RitualStructure implements Recipe<RitualStructureContainer> {
                 }
             }
         }
-        for (BlockPos pos : inputPositions) {
-            level.destroyBlock(pos, false);
+        if (destroy) {
+            for (BlockPos pos : inputPositions) {
+                level.destroyBlock(pos, false);
+            }
         }
         return inputBlock;
+    }
+
+    public Optional<BlockState> matchesAndDestroy(BlockPos ritualPos, Level level) {
+        BlockState ritualBlock = level.getBlockState(ritualPos);
+        for (Char3DWithMark pattern : patterns) {
+            BlockState inputBlock = matchTransformed(pattern.getOriginInWorld(ritualPos), level, pattern, ritualBlock, true);
+            if (inputBlock != null) {
+                return Optional.of(inputBlock);
+            }
+        }
+        return Optional.empty();
     }
 
     public Optional<BlockState> matches(BlockPos ritualPos, Level level) {
         BlockState ritualBlock = level.getBlockState(ritualPos);
         for (Char3DWithMark pattern : patterns) {
-            BlockState inputBlock = matchTransformed(pattern.getOriginInWorld(ritualPos), level, pattern, ritualBlock);
+            BlockState inputBlock = matchTransformed(pattern.getOriginInWorld(ritualPos), level, pattern, ritualBlock, false);
             if (inputBlock != null) {
                 return Optional.of(inputBlock);
             }
@@ -193,7 +206,7 @@ public class RitualStructure implements Recipe<RitualStructureContainer> {
     }
 
     /**
-     * Please use {@link #matches(BlockPos, Level)} instead
+     * Please use {@link #matchesAndDestroy(BlockPos, Level)} instead
      */
     @Deprecated
     @Override
