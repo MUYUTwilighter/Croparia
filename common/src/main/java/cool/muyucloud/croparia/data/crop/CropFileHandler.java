@@ -36,7 +36,7 @@ public class CropFileHandler {
         try (FileReader reader = new FileReader(file)) {
             return Optional.ofNullable(GSON.fromJson(reader, RawCrop.class));
         } catch (Exception e) {
-            CropariaIf.LOGGER.error("Failed to read crop file {}", file, e);
+            CropariaIf.LOGGER.error("Invalid crop file \"%s\"".formatted(file), e);
             return Optional.empty();
         }
     }
