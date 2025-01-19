@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "croparia:air_bucket"
+    }
+  ],
+  "result": {
+    "id": "croparia:elemental_air",
+    "count": 4
+  }
+}

@@ -52,10 +52,7 @@ public class Infusor extends Block {
             if (state.getValue(TYPE) == ElementsEnum.EMPTY && element != ElementsEnum.EMPTY) {
                 world.setBlockAndUpdate(pos, this.defaultBlockState().setValue(TYPE, element));
                 player.getMainHandItem().shrink(1);
-                world.addFreshEntity(new ItemEntity(
-                    world, (double) pos.getX() + 0.5, (double) pos.getY() + 0.5, (double) pos.getZ() + 0.5,
-                    new ItemStack(Items.GLASS_BOTTLE)
-                ));
+                player.addItem(Items.GLASS_BOTTLE.getDefaultInstance());
                 if (world instanceof ServerLevel serverWorld) {
                     world.getEntities(
                         EntityTypeTest.forClass(ItemEntity.class),
@@ -68,7 +65,7 @@ public class Infusor extends Block {
             } else if (state.getValue(TYPE) != ElementsEnum.EMPTY && player.getMainHandItem().getItem() == Items.GLASS_BOTTLE) {
                 world.setBlockAndUpdate(pos, this.defaultBlockState().setValue(TYPE, ElementsEnum.EMPTY));
                 player.getMainHandItem().shrink(1);
-                world.addFreshEntity(new ItemEntity(world, (double) pos.getX() + 0.5, (double) pos.getY() + 0.5, (double) pos.getZ() + 0.5, new ItemStack(CropariaItems.getPotion(state.getValue(TYPE)))));
+                player.addItem(CropariaItems.getPotion(state.getValue(TYPE)).getDefaultInstance());
             }
             return ItemInteractionResult.SUCCESS;
         }
