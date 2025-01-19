@@ -20,19 +20,15 @@ import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.NotNull;
 
 public class CropCommand {
-    private static final LiteralArgumentBuilder<CommandSourceStack> CROP = Commands.literal("crop").executes(context -> {
-        if (context.getSource().getPlayer() instanceof ServerPlayer player) {
-            return reportForPlayer(player, player.level(), context.getSource()::sendSuccess, context.getSource()::sendFailure);
-        } else {
-            context.getSource().sendFailure(Component.translatable("commands.croparia.crop.not_player"));
-            return 0;
-        }
-    }).then(Commands.argument("name", StringArgumentType.greedyString()).suggests(
-        (context, builder) -> Crops.cropSuggestions(builder.getInput(), builder.getStart())
-    ).executes(context -> {
-        String name = StringArgumentType.getString(context, "name");
-        return reportSingular(name, context.getSource()::sendSuccess, context.getSource()::sendFailure);
-    }));
+    private static final LiteralArgumentBuilder<CommandSourceStack> CROP = Commands.literal("crop").then(
+        Commands.argument("name", StringArgumentType.greedyString()
+        ).suggests(
+            (context, builder) -> Crops.cropSuggestions(builder.getInput(), builder.getStart())
+        ).executes(context -> {
+            String name = StringArgumentType.getString(context, "name");
+            return reportSingular(name, context.getSource()::sendSuccess, context.getSource()::sendFailure);
+        })
+    );
 
     public static LiteralArgumentBuilder<CommandSourceStack> build() {
         return CROP;

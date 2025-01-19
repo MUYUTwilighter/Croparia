@@ -115,31 +115,6 @@ public class Crops {
      * Add a crop for vanilla material with specified translation key.
      *
      * @param name           crop name
-     * @param material       material id which the crop grows, could be item ID or item tag
-     * @param color          int value of color
-     * @param tier           tier
-     * @param type           crop type that specifies the textures. See also {@link CropType}
-     * @param translationKey translation key for the crop, used for formatting item & block names.
-     */
-    public static @NotNull Crop vanilla(
-        @NotNull String name, @NotNull String material, int color, int tier, @NotNull CropType type,
-        @NotNull String translationKey
-    ) {
-        Crop crop = Crop.create(name, material, color, tier, type, translationKey, Map.of()).orElseThrow(
-            () -> new IllegalArgumentException("Vanilla crop %s failed to create".formatted(name))
-        );
-        if (CropariaIf.CONFIG.inBlacklist(name, "minecraft")) {
-            CropariaIf.LOGGER.debug("Skipped vanilla crop \"{}\" due to blacklist", name);
-        } else {
-            recordBuiltin(crop);
-        }
-        return crop;
-    }
-
-    /**
-     * Add a crop for vanilla material with specified translation key.
-     *
-     * @param name           crop name
      * @param material       material item which the crop grows
      * @param color          int value of color
      * @param tier           tier

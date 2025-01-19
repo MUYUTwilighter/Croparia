@@ -43,7 +43,7 @@ public class Infusor extends Block {
 
     @Override
     protected @NotNull ItemInteractionResult useItemOn(ItemStack itemStack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
-        if (world.isClientSide || !CropariaIf.CONFIG.getInfusor()) {
+        if (world.isClientSide) {
             return ItemInteractionResult.FAIL;
         } else {
             ItemStack itemstack = player.getItemInHand(hand);
@@ -96,7 +96,7 @@ public class Infusor extends Block {
 
     @Override
     public void stepOn(Level world, BlockPos pos, BlockState state, Entity entity) {
-        if (entity instanceof ItemEntity itemEntity && world instanceof ServerLevel serverWorld) {
+        if (entity instanceof ItemEntity itemEntity && world instanceof ServerLevel serverWorld && CropariaIf.CONFIG.getInfusor()) {
             ItemStack input = itemEntity.getItem();
             ElementsEnum element = state.getValue(TYPE);
             this.tryCraft(serverWorld, pos, input, element);

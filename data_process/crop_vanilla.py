@@ -111,7 +111,6 @@ original_data = """
     public static final Crop COPPER = vanilla("copper", Objects.requireNonNull(Items.COPPER_INGOT.arch$registryName()).toString(), 0xfbc3b6, 2, CropType.CROP, Items.COPPER_INGOT.getDescriptionId());
     public static final Crop AMETHYST = vanilla("amethyst", Objects.requireNonNull(Items.AMETHYST_SHARD.arch$registryName()).toString(), 0xd9cbf2, 3, CropType.CROP, Items.AMETHYST_SHARD.getDescriptionId());
     public static final Crop ECHO_SHARD = vanilla("echo_shard", Objects.requireNonNull(Items.ECHO_SHARD.arch$registryName()).toString(), 0x3404f, 4, CropType.CROP, Items.ECHO_SHARD.getDescriptionId());
-
 """
 
 pattern = re.compile(r'public static final Crop (\w+) = vanilla\("(\w+)", Objects\.requireNonNull\(Items\.(\w+)\.arch\$registryName\(\)\)\.toString\(\), (0x[0-9a-f]+), (\d+), (CropType\.\w+), Items\.\w+\.getDescriptionId\(\)\);')
