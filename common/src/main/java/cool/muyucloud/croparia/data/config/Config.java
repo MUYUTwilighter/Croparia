@@ -53,8 +53,6 @@ public class Config {
     @NotNull
     private Boolean ritual;
     @NotNull
-    private Boolean compatGen;
-    @NotNull
     private final List<String> blacklist;
 
     /**
@@ -68,7 +66,6 @@ public class Config {
         this.fruitUse = true;
         this.infusor = true;
         this.ritual = true;
-        this.compatGen = true;
         this.blacklist = new ArrayList<>();
     }
 
@@ -83,12 +80,11 @@ public class Config {
         this.fruitUse = raw.fruitUse() != null ? raw.fruitUse() : true;
         this.infusor = raw.infusor() != null ? raw.infusor() : true;
         this.ritual = raw.ritual() != null ? raw.ritual() : true;
-        this.compatGen = raw.compatGen() != null ? raw.compatGen() : true;
         this.blacklist = raw.blacklist() != null ? raw.blacklist() : new ArrayList<>();
     }
 
     public RawConfig toRaw() {
-        return new RawConfig(resolvePath(cropPath), resolvePath(packPath), resolvePath(dumpPath), override, fruitUse, infusor, ritual, compatGen, this.blacklist);
+        return new RawConfig(resolvePath(cropPath), resolvePath(packPath), resolvePath(dumpPath), override, fruitUse, infusor, ritual, this.blacklist);
     }
 
     public void save() {
@@ -155,12 +151,13 @@ public class Config {
         this.ritual = ritual;
     }
 
-    public @NotNull Boolean getCompatGen() {
-        return compatGen;
+    public @NotNull List<String> getBlacklist() {
+        return blacklist;
     }
 
-    public void setCompatGen(@NotNull Boolean compatGen) {
-        this.compatGen = compatGen;
+    public void setBlacklist(@NotNull List<String> blacklist) {
+        this.blacklist.clear();
+        this.blacklist.addAll(blacklist);
     }
 
     public boolean inBlacklist(@NotNull String cropName, @NotNull String mod) {
