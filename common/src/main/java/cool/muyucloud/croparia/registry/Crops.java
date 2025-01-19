@@ -19,7 +19,7 @@ import java.util.function.Consumer;
 @SuppressWarnings("unused")
 public class Crops {
     // All crops, including KubeJS crops and file crops
-    protected static final Map<String, Crop> CROPS = new HashMap();
+    protected static final Map<String, Crop> CROPS = new HashMap<>();
     // Crops including here and CompatCrops, but not KubeJS definition and file definition
     protected static final Map<String, Crop> BUILTIN_CROPS = new HashMap<>();
 
@@ -54,13 +54,28 @@ public class Crops {
         BUILTIN_CROPS.values().forEach(consumer);
     }
 
-    protected static void recordBuiltin(Crop crop) {
+    /**
+     * Record to both {@link #CROPS} and {@link #BUILTIN_CROPS}, it will be registered by {@link #register()}
+     */
+    protected static void recordBuiltin(@NotNull Crop crop) {
+        if (CROPS.containsKey(crop.getName())) {
+            CropariaIf.LOGGER.error("Built-in crop \"{}\" already exists", crop.getName());
+            return;
+        }
         BUILTIN_CROPS.put(crop.getName(), crop);
         CROPS.put(crop.getName(), crop);
     }
 
-    public static void recordCustom(Crop crop) {
+    /**
+     * Only record to CROPS, it will not be registered by {@link Crops#register()}
+     * @return {@code true} if the crop is recorded, {@code false} if it already exists
+     */
+    public static boolean recordCustom(@NotNull Crop crop) {
+        if (CROPS.containsKey(crop.getName())) {
+            return false;
+        }
         CROPS.put(crop.getName(), crop);
+        return true;
     }
 
     /**
@@ -81,7 +96,7 @@ public class Crops {
             () -> new IllegalArgumentException("Vanilla crop %s failed to create".formatted(name))
         );
         if (CropariaIf.CONFIG.inBlacklist(name, "croparia")) {
-            CropariaIf.LOGGER.debug("Skipped croparia crop {} due to blacklist", name);
+            CropariaIf.LOGGER.debug("Skipped croparia crop \"{}\" due to blacklist", name);
         } else {
             recordBuiltin(crop);
         }
@@ -112,7 +127,7 @@ public class Crops {
             () -> new IllegalArgumentException("Vanilla crop %s failed to create".formatted(name))
         );
         if (CropariaIf.CONFIG.inBlacklist(name, "minecraft")) {
-            CropariaIf.LOGGER.debug("Skipped vanilla crop {} due to blacklist", name);
+            CropariaIf.LOGGER.debug("Skipped vanilla crop \"{}\" due to blacklist", name);
         } else {
             recordBuiltin(crop);
         }
@@ -233,7 +248,6 @@ public class Crops {
     /**
      * Add a crop from a modded material.
      *
-     *
      * @param name            crop name, used to generate identifiers
      * @param material        material which the crop grows, could be item ID or item tag (# + id).<br/>
      *                        If the tag with namespace {@code c} is used, the corresponding {@code forge} tag will be generated and included
@@ -256,7 +270,7 @@ public class Crops {
                 return crop;
             }
         }
-        CropariaIf.LOGGER.debug("Skipped compat crop {} due to blacklist or missing dependencies", name);
+        CropariaIf.LOGGER.debug("Skipped compat crop \"{}\" due to blacklist or missing dependencies", name);
         return null;
     }
 
@@ -283,14 +297,17 @@ public class Crops {
         if (raw.dependencies() == null || shouldLoad(raw.dependencies())) {
             Crop.of(raw).ifPresentOrElse(
                 crop -> {
-                    recordCustom(crop);
-                    CropariaItems.registerCrop(crop);
-                    CropariaBlocks.registerCrop(crop);
+                    if (recordCustom(crop)) {
+                        CropariaItems.registerCrop(crop);
+                        CropariaBlocks.registerCrop(crop);
+                    } else {
+                        CropariaIf.LOGGER.error("Duplicated custom crop \"{}\" from file definition", raw.name());
+                    }
                 },
-                () -> CropariaIf.LOGGER.error("Failed to create custom crop %s".formatted(raw.name()))
+                () -> CropariaIf.LOGGER.error("Failed to create custom crop \"{}\" from file definition", raw.name())
             );
         } else {
-            CropariaIf.LOGGER.info("Skipped custom crop {} due to missing dependencies {}", raw.name(), raw.dependencies());
+            CropariaIf.LOGGER.info("Skipped custom crop \"{}\" from file definition due to missing dependencies {}", raw.name(), raw.dependencies());
         }
     }
 }
