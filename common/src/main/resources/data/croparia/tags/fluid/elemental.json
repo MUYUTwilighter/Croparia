@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "#croparia:elematilius",
+    "#croparia:air",
+    "#croparia:earth",
+    "#croparia:fire",
+    "#croparia:water"
+  ]
+}
