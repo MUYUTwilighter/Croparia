@@ -16,7 +16,7 @@ Some interesting relics can be summoned by rituals with higher tiers, *which is 
 
 ![Tier 2 Ritual Structure](https://cdn.modrinth.com/data/d2EWn1lE/images/db282093425a237789f3b530fd4647ba65c8591a.png)
 
-## Licenses
+## What's the relationship from Dalarion's Croparia?
 
 Originally, This is a forked project from
 Dalarion's [Croparia v4.5](https://www.curseforge.com/minecraft/mc-mods/croparia),
@@ -26,7 +26,7 @@ but was completely rewritten since beta 0.0.1, 2024-12, by [MUYU_Twilighter](htt
 
 **Compatibility with add-ons for Dalarion's Croparia is not guaranteed**
 
-## Difference between Croparia and Croparia-IF
+### Differences
 
 Including:
 
