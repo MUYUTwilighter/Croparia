@@ -5,7 +5,10 @@
     "id": "minecraft:lead"
   },
   "block": {
-    "block": "minecraft:calibrated_sculk_sensor"
+    "block": "minecraft:bedrock",
+    "properties": {
+      "not_implemented": "true"
+    }
   },
   "result": {
     "id": "croparia:magic_rope",

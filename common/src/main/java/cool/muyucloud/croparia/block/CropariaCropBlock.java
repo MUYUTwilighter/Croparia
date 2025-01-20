@@ -16,7 +16,7 @@ public class CropariaCropBlock extends CropBlock implements CropAccess {
     private final Crop crop;
 
     public CropariaCropBlock(Crop crop) {
-        super(Properties.of(Material.GRASS).noCollission().sound(SoundType.CROP));
+        super(Properties.of(Material.PLANT).noCollission().randomTicks().instabreak().sound(SoundType.CROP));
         this.crop = crop;
     }
 

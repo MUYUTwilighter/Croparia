@@ -69,14 +69,14 @@ public class Config {
      * Deserialize config
      */
     public Config(RawConfig raw) {
-        this.cropPath = parsePath(raw.cropPath()).orElse(Platform.getGameFolder().resolve("crops"));
-        this.packPath = parsePath(raw.packPath()).orElse(Platform.getGameFolder().resolve("config/croparia"));
+        this.cropPath = parsePath(raw.cropPath).orElse(Platform.getGameFolder().resolve("crops"));
+        this.packPath = parsePath(raw.packPath).orElse(Platform.getGameFolder().resolve("config/croparia"));
         this.dumpPath = Platform.getGameFolder().resolve("croparia");
-        this.override = raw.override() != null ? raw.override() : true;
-        this.fruitUse = raw.fruitUse() != null ? raw.fruitUse() : true;
-        this.infusor = raw.infusor() != null ? raw.infusor() : true;
-        this.ritual = raw.ritual() != null ? raw.ritual() : true;
-        this.blacklist = raw.blacklist() != null ? raw.blacklist() : new ArrayList<>();
+        this.override = raw.override != null ? raw.override : true;
+        this.fruitUse = raw.fruitUse != null ? raw.fruitUse : true;
+        this.infusor = raw.infusor != null ? raw.infusor : true;
+        this.ritual = raw.ritual != null ? raw.ritual : true;
+        this.blacklist = raw.blacklist != null ? raw.blacklist : new ArrayList<>();
     }
 
     public RawConfig toRaw() {

@@ -130,25 +130,32 @@ public class CropariaItems {
     );
     @PostReg
     public static final RegistrySupplier<Item> CROPARIA = registerItem(
-        "croparia", () -> new Item(new Item.Properties().tab(Tabs.MAIN)));
+        "croparia", () -> new Item(new Item.Properties().tab(Tabs.MAIN))
+    );
     @PostReg
     public static final RegistrySupplier<Item> CROPARIA2 = registerItem(
-        "croparia2", () -> new Item(new Item.Properties().tab(Tabs.MAIN)));
+        "croparia2", () -> new Item(new Item.Properties().tab(Tabs.MAIN))
+    );
     @PostReg
     public static final RegistrySupplier<Item> CROPARIA3 = registerItem(
-        "croparia3", () -> new Item(new Item.Properties().tab(Tabs.MAIN)));
+        "croparia3", () -> new Item(new Item.Properties().tab(Tabs.MAIN))
+    );
     @PostReg
     public static final RegistrySupplier<Item> CROPARIA4 = registerItem(
-        "croparia4", () -> new Item(new Item.Properties().tab(Tabs.MAIN)));
+        "croparia4", () -> new Item(new Item.Properties().tab(Tabs.MAIN))
+    );
     @PostReg
     public static final RegistrySupplier<Item> CROPARIA5 = registerItem(
-        "croparia5", () -> new Item(new Item.Properties().tab(Tabs.MAIN)));
+        "croparia5", () -> new Item(new Item.Properties().tab(Tabs.MAIN))
+    );
     @PostReg
     public static final RegistrySupplier<Item> CROPARIA6 = registerItem(
-        "croparia6", () -> new Item(new Item.Properties().tab(Tabs.MAIN)));
+        "croparia6", () -> new Item(new Item.Properties().tab(Tabs.MAIN))
+    );
     @PostReg
     public static final RegistrySupplier<Item> CROPARIA7 = registerItem(
-        "croparia7", () -> new Item(new Item.Properties().tab(Tabs.MAIN)));
+        "croparia7", () -> new Item(new Item.Properties().tab(Tabs.MAIN))
+    );
     @PostReg
     public static final RegistrySupplier<HornPlenty> HORN = registerItem("horn_plenty", HornPlenty::new);
     @PostReg

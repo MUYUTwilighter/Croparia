@@ -2,11 +2,13 @@
   "type": "croparia:infusor",
   "element": "elemental",
   "ingredient": {
-    "id": "minecraft:sculk_shrieker",
-    "count": 1
+    "id": "minecraft:bedrock",
+    "nbt": {
+      "not_implemented": "true"
+    }
   },
   "result": {
-    "id": "croparia:activated_shrieker",
+    "id": "minecraft:bedrock",
     "Count": 1
   }
 }

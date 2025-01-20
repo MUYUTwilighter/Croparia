@@ -8,14 +8,13 @@ import net.minecraft.world.item.ItemStack;
 import java.util.function.Supplier;
 
 public class Tabs {
-
     public static final CreativeModeTab CROPS = registerTab(
         "crops",
-        CropariaItems.CROPARIA.get()::getDefaultInstance
+        () -> CropariaItems.CROPARIA.get().getDefaultInstance()
     );
     public static final CreativeModeTab MAIN = registerTab(
         "main",
-        CropariaItems.ELEMATILIUS.get()::getDefaultInstance
+        () -> CropariaItems.ELEMATILIUS.get().getDefaultInstance()
     );
 
     public static CreativeModeTab registerTab(String name, Supplier<ItemStack> icon) {

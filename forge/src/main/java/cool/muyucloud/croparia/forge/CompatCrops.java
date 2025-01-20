@@ -172,6 +172,6 @@ public class CompatCrops {
     ));
 
     public static void init() {
-        CropariaIf.LOGGER.debug("Initializing neoforge CompatCrops");
+        CropariaIf.LOGGER.debug("Initializing forge CompatCrops");
     }
 }

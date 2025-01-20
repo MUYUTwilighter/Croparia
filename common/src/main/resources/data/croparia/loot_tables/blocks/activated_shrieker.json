@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "croparia:activated_shrieker"
+          "name": "minecraft:barrier"
         }
       ],
       "conditions": [

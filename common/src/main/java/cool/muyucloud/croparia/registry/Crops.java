@@ -297,20 +297,20 @@ public class Crops {
     }
 
     private static void registerFileCrop(@NotNull RawCrop raw) {
-        if (raw.dependencies() == null || shouldLoad(raw.dependencies())) {
+        if (raw.dependencies == null || shouldLoad(raw.dependencies)) {
             Crop.of(raw).ifPresentOrElse(
                 crop -> {
                     if (recordCustom(crop)) {
                         CropariaItems.registerCrop(crop);
                         CropariaBlocks.registerCrop(crop);
                     } else {
-                        CropariaIf.LOGGER.error("Duplicated custom crop \"{}\" from file definition", raw.name());
+                        CropariaIf.LOGGER.error("Duplicated custom crop \"{}\" from file definition", raw.name);
                     }
                 },
-                () -> CropariaIf.LOGGER.error("Inadequate or invalid arguments for custom crop \"{}\" from file definition", raw.name())
+                () -> CropariaIf.LOGGER.error("Inadequate or invalid arguments for custom crop \"{}\" from file definition", raw.name)
             );
         } else {
-            CropariaIf.LOGGER.debug("Skipped custom crop \"{}\" from file definition due to missing dependencies {}", raw.name(), raw.dependencies());
+            CropariaIf.LOGGER.debug("Skipped custom crop \"{}\" from file definition due to missing dependencies {}", raw.name, raw.dependencies);
         }
     }
 }

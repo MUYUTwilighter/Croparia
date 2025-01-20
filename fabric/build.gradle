@@ -46,7 +46,7 @@ dependencies {
     modLocalRuntime "dev.emi:emi:${emi_version}"
 
     // KubeJS
-    modImplementation "dev.latvian.mods:kubejs-fabric:${kubejs_version}"
+//    modImplementation "dev.latvian.mods:kubejs-fabric:${kubejs_version}"
 }
 
 processResources {
@@ -64,4 +64,10 @@ shadowJar {
 
 remapJar {
     inputFile.set shadowJar.archiveFile
+}
+
+configurations.all {
+    resolutionStrategy {
+        force("net.fabricmc:fabric-loader:$fabric_loader_version")
+    }
 }

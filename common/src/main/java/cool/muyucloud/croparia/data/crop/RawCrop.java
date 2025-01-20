@@ -23,6 +23,28 @@ import java.util.Map;
  * @see Crop
  */
 @Nullable
-public record RawCrop(String name, String material, String tag, String type, String translationKey, String color,
-                      int tier, Map<String, String> translations, List<List<String>> dependencies) {
+public class RawCrop {
+    //(String name, String material, String tag, String type, String translationKey, String color,
+    //                      int tier, Map<String, String> translations, List<List<String>> dependencies)
+    public String name;
+    public String material;
+    public String tag;
+    public String type;
+    public String translationKey;
+    public String color;
+    public Integer tier;
+    public Map<String, String> translations;
+    public List<List<String>> dependencies;
+
+    public RawCrop(String name, String material, String tag, String type, String translationKey, String color, Integer tier, Map<String, String> translations, List<List<String>> dependencies) {
+        this.name = name;
+        this.material = material;
+        this.tag = tag;
+        this.type = type;
+        this.translationKey = translationKey;
+        this.color = color;
+        this.tier = tier;
+        this.translations = translations;
+        this.dependencies = dependencies;
+    }
 }

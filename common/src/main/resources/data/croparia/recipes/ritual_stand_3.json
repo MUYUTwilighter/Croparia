@@ -8,7 +8,10 @@
       "block": "minecraft:beacon"
     },
     "C": {
-      "block": "croparia:activated_shrieker"
+      "properties": {
+        "block": "minecraft:bedrock",
+        "not_implemented": "true"
+      }
     },
     "D": {
       "block": "minecraft:sculk_sensor"

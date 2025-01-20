@@ -41,17 +41,17 @@ public class Crop {
     private transient final boolean tag;
 
     private Crop(@NotNull RawCrop raw) throws RuntimeException {
-        if (Util.anyNull(raw.name(), raw.material())) {
+        if (Util.anyNull(raw.name, raw.material)) {
             throw new IllegalArgumentException("Crop name and material ID cannot be null");
         }
-        this.name = parseName(raw.name());
-        this.material = parseMaterialId(raw.material(), raw.tag());
-        this.type = parseType(raw.type());
-        this.translations = parseTranslation(raw.translations(), parseDefaultTranslation(this.name));
-        this.translationKey = raw.translationKey() == null ? "crop.croparia." + this.name : raw.translationKey();
-        this.color = raw.color().startsWith("0x") ? Integer.parseInt(raw.color().substring(2), 16) : Integer.parseInt(raw.color());
-        this.tier = parseTier(raw.tier());
-        this.tag = raw.material().trim().startsWith("#");
+        this.name = parseName(raw.name);
+        this.material = parseMaterialId(raw.material, raw.tag);
+        this.type = parseType(raw.type);
+        this.translations = parseTranslation(raw.translations, parseDefaultTranslation(this.name));
+        this.translationKey = raw.translationKey == null ? "crop.croparia." + this.name : raw.translationKey;
+        this.color = raw.color.startsWith("0x") ? Integer.parseInt(raw.color.substring(2), 16) : Integer.parseInt(raw.color);
+        this.tier = parseTier(raw.tier);
+        this.tag = raw.material.trim().startsWith("#");
         this.blockId = CropariaIf.of("block_crop_" + this.name);
         this.seedId = CropariaIf.of("seed_crop_" + this.name);
         this.fruitId = CropariaIf.of("fruit_" + this.name);
@@ -75,7 +75,7 @@ public class Crop {
         try {
             return Optional.of(new Crop(raw));
         } catch (Throwable e) {
-            CropariaIf.LOGGER.error("Failed to create crop %s".formatted(raw.name()), e);
+            CropariaIf.LOGGER.error("Failed to create crop %s".formatted(raw.name), e);
             return Optional.empty();
         }
     }

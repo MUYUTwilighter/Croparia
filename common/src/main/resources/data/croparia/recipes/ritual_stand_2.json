@@ -5,7 +5,10 @@
       "block": "croparia:elemental_stone"
     },
     "S": {
-      "block": "croparia:activated_shrieker"
+      "block": "minecraft:bedrock",
+      "properties": {
+        "not_implemented": "true"
+      }
     },
     "T": {
       "block": "minecraft:tuff"
