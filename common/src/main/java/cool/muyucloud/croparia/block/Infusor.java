@@ -45,9 +45,7 @@ public class Infusor extends Block {
 
     @Override
     protected @NotNull ItemInteractionResult useItemOn(ItemStack itemStack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
-        if (world.isClientSide || hand != InteractionHand.MAIN_HAND) {
-            return ItemInteractionResult.FAIL;
-        } else {
+        if (!world.isClientSide && hand == InteractionHand.MAIN_HAND) {
             ItemStack itemstack = player.getMainHandItem();
             Item item = itemstack.getItem();
             ElementsEnum element = CropariaItems.elementFromPotion(item);
@@ -75,8 +73,8 @@ public class Infusor extends Block {
                 }
                 return ItemInteractionResult.SUCCESS;
             }
-            return ItemInteractionResult.FAIL;
         }
+        return ItemInteractionResult.FAIL;
     }
 
     public static ElementsEnum getElement(BlockState state) {
