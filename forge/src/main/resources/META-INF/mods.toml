@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[47,)"
+loaderVersion = "[38,)"
 issueTrackerURL = "https://github.com/MUYUTwilighter/Croparia/issues"
 license = "MIT"
 

@@ -22,4 +22,16 @@ public class OldRitualRecipeSerializer implements RecipeSerializer<OldRitualReci
     public void toNetwork(FriendlyByteBuf friendlyByteBuf, OldRitualRecipe recipe) {
         recipe.toNetwork(friendlyByteBuf);
     }
+
+    // IDK what are these used for but forge needs it
+    private ResourceLocation registryName;
+
+    public Object setRegistryName(ResourceLocation registryName) {
+        this.registryName = registryName;
+        return this;
+    }
+
+    public ResourceLocation getRegistryName() {
+        return this.registryName;
+    }
 }

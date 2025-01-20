@@ -12,6 +12,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import org.jetbrains.annotations.NotNull;
 
 public class InfusorRecipeSerializer implements RecipeSerializer<InfusorRecipe> {
+
     @Override
     public @NotNull InfusorRecipe fromJson(ResourceLocation id, JsonObject jsonObject) {
         ElementsEnum element = ElementsEnum.valueOf(jsonObject.get("element").getAsString().toUpperCase());
@@ -53,5 +54,17 @@ public class InfusorRecipeSerializer implements RecipeSerializer<InfusorRecipe> 
         friendlyByteBuf.writeEnum(recipe.getElement());
         friendlyByteBuf.writeWithCodec(GenericIngredient.CODEC, recipe.getIngredient());
         friendlyByteBuf.writeItem(recipe.getResult());
+    }
+
+    // IDK what are these used for but forge needs it
+    private ResourceLocation registryName;
+
+    public Object setRegistryName(ResourceLocation registryName) {
+        this.registryName = registryName;
+        return this;
+    }
+
+    public ResourceLocation getRegistryName() {
+        return this.registryName;
     }
 }
