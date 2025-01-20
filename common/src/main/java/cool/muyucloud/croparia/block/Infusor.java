@@ -32,6 +32,8 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 public class Infusor extends Block {
     protected final VoxelShape SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 8.0, 16.0);
     public static final EnumProperty<ElementsEnum> TYPE = EnumProperty.create("infusor_type", ElementsEnum.class);
@@ -43,16 +45,18 @@ public class Infusor extends Block {
 
     @Override
     protected @NotNull ItemInteractionResult useItemOn(ItemStack itemStack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
-        if (world.isClientSide) {
+        if (world.isClientSide || hand != InteractionHand.MAIN_HAND) {
             return ItemInteractionResult.FAIL;
         } else {
-            ItemStack itemstack = player.getItemInHand(hand);
+            ItemStack itemstack = player.getMainHandItem();
             Item item = itemstack.getItem();
             ElementsEnum element = CropariaItems.elementFromPotion(item);
             if (state.getValue(TYPE) == ElementsEnum.EMPTY && element != ElementsEnum.EMPTY) {
                 world.setBlockAndUpdate(pos, this.defaultBlockState().setValue(TYPE, element));
-                player.getMainHandItem().shrink(1);
-                player.addItem(Items.GLASS_BOTTLE.getDefaultInstance());
+                if (!player.isCreative()) {
+                    itemstack.shrink(1);
+                    player.addItem(Objects.requireNonNull(item.getCraftingRemainingItem()).getDefaultInstance());
+                }
                 if (world instanceof ServerLevel serverWorld) {
                     world.getEntities(
                         EntityTypeTest.forClass(ItemEntity.class),
@@ -62,12 +66,16 @@ public class Infusor extends Block {
                         this.tryCraft(serverWorld, pos, input, element);
                     });
                 }
+                return ItemInteractionResult.SUCCESS;
             } else if (state.getValue(TYPE) != ElementsEnum.EMPTY && player.getMainHandItem().getItem() == Items.GLASS_BOTTLE) {
                 world.setBlockAndUpdate(pos, this.defaultBlockState().setValue(TYPE, ElementsEnum.EMPTY));
-                player.getMainHandItem().shrink(1);
-                player.addItem(CropariaItems.getPotion(state.getValue(TYPE)).getDefaultInstance());
+                if (!player.isCreative()) {
+                    player.getMainHandItem().shrink(1);
+                    player.addItem(CropariaItems.getPotion(state.getValue(TYPE)).getDefaultInstance());
+                }
+                return ItemInteractionResult.SUCCESS;
             }
-            return ItemInteractionResult.SUCCESS;
+            return ItemInteractionResult.FAIL;
         }
     }
 

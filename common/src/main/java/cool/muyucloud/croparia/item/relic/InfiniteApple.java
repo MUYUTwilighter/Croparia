@@ -8,6 +8,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,7 +22,7 @@ public class InfiniteApple extends Item {
                 .effect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 100, 0), 1.0F)
                 .effect(new MobEffectInstance(MobEffects.ABSORPTION, 100, 3), 1.0F)
                 .build()
-        ).stacksTo(1).arch$tab(Tabs.MAIN));
+        ).stacksTo(1).arch$tab(Tabs.MAIN).rarity(Rarity.EPIC));
     }
 
     public @NotNull ItemStack finishUsingItem(ItemStack stack, Level world, LivingEntity user) {

@@ -15,6 +15,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -24,7 +25,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class MidasHand extends Item {
     public MidasHand() {
-        super(new Properties().stacksTo(1).arch$tab(Tabs.MAIN));
+        super(new Properties().stacksTo(1).arch$tab(Tabs.MAIN).rarity(Rarity.EPIC));
     }
 
     public @NotNull InteractionResult useOn(UseOnContext context) {
