@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "croparia:earth_bucket"
+    }
+  ],
+  "result": {
+    "item": "croparia:elemental_earth",
+    "count": 4
+  }
+}

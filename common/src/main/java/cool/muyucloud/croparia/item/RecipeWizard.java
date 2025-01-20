@@ -76,6 +76,7 @@ public class RecipeWizard extends Item {
             JsonObject recipe = assembleRitual(ritualStand, optionalBlock.get(), optionalIngredient.get(), result);
             Path path = this.dumpRecipe(RecipeTypes.RITUAL.getId(), recipe);
             this.sendFeedback("chat.croparia.recipe_wizard.ritual", path, player);
+            this.addCooldown(player);
             return InteractionResult.SUCCESS;
         } else if (target instanceof Infusor) {
             Optional<ItemStack> optionalIngredient = getItemInput(level, targetPos);
@@ -96,9 +97,14 @@ public class RecipeWizard extends Item {
             JsonObject recipe = assembleInfusor(element, optionalIngredient.get(), result);
             Path path = this.dumpRecipe(RecipeTypes.INFUSOR.getId(), recipe);
             this.sendFeedback("chat.croparia.recipe_wizard.infusor", path, player);
+            this.addCooldown(player);
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.FAIL;
+    }
+
+    public void addCooldown(Player player) {
+        player.getCooldowns().addCooldown(this, 5);
     }
 
     public Path dumpRecipe(ResourceLocation recipeType, JsonObject recipe) {

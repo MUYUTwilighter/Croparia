@@ -32,6 +32,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
+
 @SuppressWarnings("deprecation")
 public class Infusor extends Block {
     protected final VoxelShape SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 8.0, 16.0);
@@ -43,19 +45,16 @@ public class Infusor extends Block {
     }
 
     public @NotNull InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, @Nullable BlockHitResult hit) {
-        if (world.isClientSide || !CropariaIf.CONFIG.getInfusor()) {
-            return InteractionResult.FAIL;
-        } else {
-            ItemStack itemstack = player.getItemInHand(hand);
+        if (!world.isClientSide && hand == InteractionHand.MAIN_HAND) {
+            ItemStack itemstack = player.getMainHandItem();
             Item item = itemstack.getItem();
             ElementsEnum element = CropariaItems.elementFromPotion(item);
             if (state.getValue(TYPE) == ElementsEnum.EMPTY && element != ElementsEnum.EMPTY) {
                 world.setBlockAndUpdate(pos, this.defaultBlockState().setValue(TYPE, element));
-                player.getMainHandItem().shrink(1);
-                world.addFreshEntity(new ItemEntity(
-                    world, (double) pos.getX() + 0.5, (double) pos.getY() + 0.5, (double) pos.getZ() + 0.5,
-                    new ItemStack(Items.GLASS_BOTTLE)
-                ));
+                if (!player.isCreative()) {
+                    player.getMainHandItem().shrink(1);
+                    player.addItem(Objects.requireNonNull(item.getCraftingRemainingItem()).getDefaultInstance());
+                }
                 if (world instanceof ServerLevel serverWorld) {
                     world.getEntities(
                         EntityTypeTest.forClass(ItemEntity.class),
@@ -65,13 +64,17 @@ public class Infusor extends Block {
                         this.tryCraft(serverWorld, pos, input, element);
                     });
                 }
+                return InteractionResult.SUCCESS;
             } else if (state.getValue(TYPE) != ElementsEnum.EMPTY && player.getMainHandItem().getItem() == Items.GLASS_BOTTLE) {
                 world.setBlockAndUpdate(pos, this.defaultBlockState().setValue(TYPE, ElementsEnum.EMPTY));
-                player.getMainHandItem().shrink(1);
-                world.addFreshEntity(new ItemEntity(world, (double) pos.getX() + 0.5, (double) pos.getY() + 0.5, (double) pos.getZ() + 0.5, new ItemStack(CropariaItems.getPotion(state.getValue(TYPE)))));
+                if (!player.isCreative()) {
+                    player.getMainHandItem().shrink(1);
+                    player.addItem(CropariaItems.getPotion(element).getDefaultInstance());
+                }
+                return InteractionResult.SUCCESS;
             }
-            return InteractionResult.PASS;
         }
+        return InteractionResult.FAIL;
     }
 
     public void onCrafting(InfusorRecipe recipe, InfusorContainer container, Level world, BlockPos pos) {
@@ -92,7 +95,7 @@ public class Infusor extends Block {
 
     @Override
     public void stepOn(Level world, BlockPos pos, BlockState state, Entity entity) {
-        if (entity instanceof ItemEntity itemEntity && world instanceof ServerLevel serverWorld) {
+        if (entity instanceof ItemEntity itemEntity && world instanceof ServerLevel serverWorld && CropariaIf.CONFIG.getInfusor()) {
             ItemStack input = itemEntity.getItem();
             ElementsEnum element = state.getValue(TYPE);
             this.tryCraft(serverWorld, pos, input, element);

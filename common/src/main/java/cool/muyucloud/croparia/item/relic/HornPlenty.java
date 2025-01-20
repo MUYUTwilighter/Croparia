@@ -8,16 +8,18 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.context.UseOnContext;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
+@SuppressWarnings("UnstableApiUsage")
 public class HornPlenty extends Item {
     private static final int MAX_ATTEMPT = 5;
 
     public HornPlenty() {
-        super(new Properties().stacksTo(1).arch$tab(Tabs.MAIN));
+        super(new Properties().stacksTo(1).arch$tab(Tabs.MAIN).rarity(Rarity.EPIC));
     }
 
     public @NotNull InteractionResult useOn(UseOnContext context) {

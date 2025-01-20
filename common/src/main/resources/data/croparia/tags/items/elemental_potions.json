@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "croparia:potion_elematilius",
+    "croparia:potion_air",
+    "croparia:potion_earth",
+    "croparia:potion_fire",
+    "croparia:potion_water"
+  ]
+}

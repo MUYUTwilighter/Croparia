@@ -17,6 +17,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.Rarity;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public class CropariaItems {
 
     @PostReg
     public static final RegistrySupplier<RecipeWizard> RECIPE_WIZARD = registerItem(
-        "recipe_wizard", () -> new RecipeWizard(new Item.Properties().arch$tab(Tabs.MAIN))
+        "recipe_wizard", () -> new RecipeWizard(new Item.Properties().arch$tab(Tabs.MAIN).stacksTo(1).rarity(Rarity.UNCOMMON))
     );
     @PostReg
     public static final RegistrySupplier<BlockItem> ACTIVATED_SHRIEKER = registerItem(
@@ -85,27 +86,27 @@ public class CropariaItems {
     @PostReg
     public static final RegistrySupplier<Item> POTION_ELEMATILIUS = registerItem(
         "potion_elematilius",
-        () -> new Item(new Item.Properties().arch$tab(Tabs.MAIN))
+        () -> new Item(new Item.Properties().arch$tab(Tabs.MAIN).craftRemainder(Items.GLASS_BOTTLE))
     );
     @PostReg
     public static final RegistrySupplier<Item> POTION_WATER = registerItem(
         "potion_water",
-        () -> new Item(new Item.Properties().arch$tab(Tabs.MAIN))
+        () -> new Item(new Item.Properties().arch$tab(Tabs.MAIN).craftRemainder(Items.GLASS_BOTTLE))
     );
     @PostReg
     public static final RegistrySupplier<Item> POTION_FIRE = registerItem(
         "potion_fire",
-        () -> new Item(new Item.Properties().arch$tab(Tabs.MAIN))
+        () -> new Item(new Item.Properties().arch$tab(Tabs.MAIN).craftRemainder(Items.GLASS_BOTTLE))
     );
     @PostReg
     public static final RegistrySupplier<Item> POTION_EARTH = registerItem(
         "potion_earth",
-        () -> new Item(new Item.Properties().arch$tab(Tabs.MAIN))
+        () -> new Item(new Item.Properties().arch$tab(Tabs.MAIN).craftRemainder(Items.GLASS_BOTTLE))
     );
     @PostReg
     public static final RegistrySupplier<Item> POTION_AIR = registerItem(
         "potion_air",
-        () -> new Item(new Item.Properties().arch$tab(Tabs.MAIN))
+        () -> new Item(new Item.Properties().arch$tab(Tabs.MAIN).craftRemainder(Items.GLASS_BOTTLE))
     );
     @PostReg
     public static final RegistrySupplier<Elematilius> ELEMATILIUS = registerItem(
@@ -164,27 +165,27 @@ public class CropariaItems {
     @PostReg
     public static final RegistrySupplier<Item> ELEMATILIUS_BUCKET = registerItem(
         "elematilius_bucket",
-        () -> new ArchitecturyBucketItem(Fluids.ELEMATILIUS, new Item.Properties().arch$tab(Tabs.MAIN))
+        () -> new ArchitecturyBucketItem(Fluids.ELEMATILIUS, new Item.Properties().arch$tab(Tabs.MAIN).stacksTo(1).craftRemainder(Items.BUCKET))
     );
     @PostReg
     public static final RegistrySupplier<Item> EARTH_BUCKET = registerItem(
         "earth_bucket",
-        () -> new ArchitecturyBucketItem(Fluids.EARTH, new Item.Properties().arch$tab(Tabs.MAIN))
+        () -> new ArchitecturyBucketItem(Fluids.EARTH, new Item.Properties().arch$tab(Tabs.MAIN).stacksTo(1).craftRemainder(Items.BUCKET))
     );
     @PostReg
     public static final RegistrySupplier<Item> WATER_BUCKET = registerItem(
         "water_bucket",
-        () -> new ArchitecturyBucketItem(Fluids.WATER, new Item.Properties().arch$tab(Tabs.MAIN))
+        () -> new ArchitecturyBucketItem(Fluids.WATER, new Item.Properties().arch$tab(Tabs.MAIN).stacksTo(1).craftRemainder(Items.BUCKET))
     );
     @PostReg
     public static final RegistrySupplier<Item> FIRE_BUCKET = registerItem(
         "fire_bucket",
-        () -> new ArchitecturyBucketItem(Fluids.FIRE, new Item.Properties().arch$tab(Tabs.MAIN))
+        () -> new ArchitecturyBucketItem(Fluids.FIRE, new Item.Properties().arch$tab(Tabs.MAIN).stacksTo(1).craftRemainder(Items.BUCKET))
     );
     @PostReg
     public static final RegistrySupplier<Item> AIR_BUCKET = registerItem(
         "air_bucket",
-        () -> new ArchitecturyBucketItem(Fluids.AIR, new Item.Properties().arch$tab(Tabs.MAIN))
+        () -> new ArchitecturyBucketItem(Fluids.AIR, new Item.Properties().arch$tab(Tabs.MAIN).stacksTo(1).craftRemainder(Items.BUCKET))
     );
 
     @PostReg

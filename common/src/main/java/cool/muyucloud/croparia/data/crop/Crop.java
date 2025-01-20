@@ -42,7 +42,7 @@ public class Crop {
     private transient final boolean tag;
 
     private Crop(@NotNull RawCrop raw) throws RuntimeException {
-        if (Util.hasNull(raw.name(), raw.material())) {
+        if (Util.anyNull(raw.name(), raw.material())) {
             throw new IllegalArgumentException("Crop name and material ID cannot be null");
         }
         this.name = parseName(raw.name());

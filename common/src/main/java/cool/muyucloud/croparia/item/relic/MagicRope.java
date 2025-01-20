@@ -12,12 +12,14 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.context.UseOnContext;
 import org.jetbrains.annotations.NotNull;
 
+@SuppressWarnings("UnstableApiUsage")
 public class MagicRope extends Item {
     public MagicRope() {
-        super(new Properties().arch$tab(Tabs.MAIN));
+        super(new Properties().arch$tab(Tabs.MAIN).rarity(Rarity.EPIC));
     }
 
     public @NotNull InteractionResult useOn(UseOnContext context) {
