@@ -13,7 +13,7 @@ import cool.muyucloud.croparia.item.relic.MidasHand;
 import dev.architectury.core.item.ArchitecturyBucketItem;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Registry;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -23,19 +23,14 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.function.Supplier;
 
-@SuppressWarnings({"UnstableApiUsage", "unused"})
+@SuppressWarnings({"unused"})
 public class CropariaItems {
     @PreReg
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(CropariaIf.MOD_ID, Registries.ITEM);
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(CropariaIf.MOD_ID, Registry.ITEM_REGISTRY);
 
     @PostReg
     public static final RegistrySupplier<RecipeWizard> RECIPE_WIZARD = registerItem(
-        "recipe_wizard", () -> new RecipeWizard(new Item.Properties().arch$tab(Tabs.MAIN).stacksTo(1).rarity(Rarity.UNCOMMON))
-    );
-    @PostReg
-    public static final RegistrySupplier<BlockItem> ACTIVATED_SHRIEKER = registerItem(
-        "activated_shrieker",
-        () -> new BlockItem(CropariaBlocks.ACTIVATED_SHRIEKER.get(), new Item.Properties().arch$tab(Tabs.MAIN))
+        "recipe_wizard", () -> new RecipeWizard(new Item.Properties().tab(Tabs.MAIN).stacksTo(1).rarity(Rarity.UNCOMMON))
     );
     @PostReg
     public static final RegistrySupplier<BlockItem> PLACEHOLDER_BLOCK = registerItem(
@@ -46,114 +41,114 @@ public class CropariaItems {
     @PostReg
     public static final RegistrySupplier<BlockItem> GREENHOUSE = registerItem(
         "greenhouse",
-        () -> new GreenhouseItem(CropariaBlocks.GREENHOUSE.get(), new Item.Properties().arch$tab(Tabs.MAIN))
+        () -> new GreenhouseItem(CropariaBlocks.GREENHOUSE.get(), new Item.Properties().tab(Tabs.MAIN))
     );
     @PostReg
     public static final RegistrySupplier<BlockItem> INFUSOR = registerItem(
         "infusor",
-        () -> new BlockItem(CropariaBlocks.INFUSOR.get(), new Item.Properties().arch$tab(Tabs.MAIN))
+        () -> new BlockItem(CropariaBlocks.INFUSOR.get(), new Item.Properties().tab(Tabs.MAIN))
     );
     @PostReg
     public static final RegistrySupplier<BlockItem> RITUAL_STAND = registerItem(
         "ritual_stand",
-        () -> new BlockItem(CropariaBlocks.RITUAL_STAND.get(), new Item.Properties().arch$tab(Tabs.MAIN))
+        () -> new BlockItem(CropariaBlocks.RITUAL_STAND.get(), new Item.Properties().tab(Tabs.MAIN))
     );
     @PostReg
     public static final RegistrySupplier<BlockItem> RITUAL_STAND_2 = registerItem(
         "ritual_stand_2",
-        () -> new BlockItem(CropariaBlocks.RITUAL_STAND_2.get(), new Item.Properties().arch$tab(Tabs.MAIN))
+        () -> new BlockItem(CropariaBlocks.RITUAL_STAND_2.get(), new Item.Properties().tab(Tabs.MAIN))
     );
     @PostReg
     public static final RegistrySupplier<BlockItem> RITUAL_STAND_3 = registerItem(
         "ritual_stand_3",
-        () -> new BlockItem(CropariaBlocks.RITUAL_STAND_3.get(), new Item.Properties().arch$tab(Tabs.MAIN))
+        () -> new BlockItem(CropariaBlocks.RITUAL_STAND_3.get(), new Item.Properties().tab(Tabs.MAIN))
     );
     @PostReg
     public static final RegistrySupplier<BlockItem> ELEMENTAL_STONE = registerItem(
         "elemental_stone",
-        () -> new BlockItem(CropariaBlocks.ELEMENTAL_STONE.get(), new Item.Properties().arch$tab(Tabs.MAIN))
+        () -> new BlockItem(CropariaBlocks.ELEMENTAL_STONE.get(), new Item.Properties().tab(Tabs.MAIN))
     );
     @PostReg
     public static final RegistrySupplier<BlockItem> ELEMATILIUS_ORE = registerItem(
         "elematilius_ore",
-        () -> new BlockItem(CropariaBlocks.ELEMATILIUS_ORE.get(), new Item.Properties().arch$tab(Tabs.MAIN))
+        () -> new BlockItem(CropariaBlocks.ELEMATILIUS_ORE.get(), new Item.Properties().tab(Tabs.MAIN))
     );
     @PostReg
     public static final RegistrySupplier<BlockItem> DEEPSLATE_ELEMATILIUS_ORE = registerItem(
         "deepslate_elematilius_ore",
-        () -> new BlockItem(CropariaBlocks.DEEPSLATE_ELEMATILIUS_ORE.get(), new Item.Properties().arch$tab(Tabs.MAIN))
+        () -> new BlockItem(CropariaBlocks.DEEPSLATE_ELEMATILIUS_ORE.get(), new Item.Properties().tab(Tabs.MAIN))
     );
     @PostReg
     public static final RegistrySupplier<Item> POTION_ELEMATILIUS = registerItem(
         "potion_elematilius",
-        () -> new Item(new Item.Properties().arch$tab(Tabs.MAIN).craftRemainder(Items.GLASS_BOTTLE))
+        () -> new Item(new Item.Properties().tab(Tabs.MAIN).craftRemainder(Items.GLASS_BOTTLE))
     );
     @PostReg
     public static final RegistrySupplier<Item> POTION_WATER = registerItem(
         "potion_water",
-        () -> new Item(new Item.Properties().arch$tab(Tabs.MAIN).craftRemainder(Items.GLASS_BOTTLE))
+        () -> new Item(new Item.Properties().tab(Tabs.MAIN).craftRemainder(Items.GLASS_BOTTLE))
     );
     @PostReg
     public static final RegistrySupplier<Item> POTION_FIRE = registerItem(
         "potion_fire",
-        () -> new Item(new Item.Properties().arch$tab(Tabs.MAIN).craftRemainder(Items.GLASS_BOTTLE))
+        () -> new Item(new Item.Properties().tab(Tabs.MAIN).craftRemainder(Items.GLASS_BOTTLE))
     );
     @PostReg
     public static final RegistrySupplier<Item> POTION_EARTH = registerItem(
         "potion_earth",
-        () -> new Item(new Item.Properties().arch$tab(Tabs.MAIN).craftRemainder(Items.GLASS_BOTTLE))
+        () -> new Item(new Item.Properties().tab(Tabs.MAIN).craftRemainder(Items.GLASS_BOTTLE))
     );
     @PostReg
     public static final RegistrySupplier<Item> POTION_AIR = registerItem(
         "potion_air",
-        () -> new Item(new Item.Properties().arch$tab(Tabs.MAIN).craftRemainder(Items.GLASS_BOTTLE))
+        () -> new Item(new Item.Properties().tab(Tabs.MAIN).craftRemainder(Items.GLASS_BOTTLE))
     );
     @PostReg
     public static final RegistrySupplier<Elematilius> ELEMATILIUS = registerItem(
         "elematilius",
-        () -> new Elematilius(ElementsEnum.ELEMENTAL, new Item.Properties().arch$tab(Tabs.MAIN))
+        () -> new Elematilius(ElementsEnum.ELEMENTAL, new Item.Properties().tab(Tabs.MAIN))
     );
     @PostReg
     public static final RegistrySupplier<Elematilius> ELEMENTAL_FIRE = registerItem(
         "elemental_fire",
-        () -> new Elematilius(ElementsEnum.FIRE, new Item.Properties().arch$tab(Tabs.MAIN))
+        () -> new Elematilius(ElementsEnum.FIRE, new Item.Properties().tab(Tabs.MAIN))
     );
     @PostReg
     public static final RegistrySupplier<Elematilius> ELEMENTAL_WATER = registerItem(
         "elemental_water",
-        () -> new Elematilius(ElementsEnum.WATER, new Item.Properties().arch$tab(Tabs.MAIN))
+        () -> new Elematilius(ElementsEnum.WATER, new Item.Properties().tab(Tabs.MAIN))
     );
     @PostReg
     public static final RegistrySupplier<Elematilius> ELEMENTAL_EARTH = registerItem(
         "elemental_earth",
-        () -> new Elematilius(ElementsEnum.EARTH, new Item.Properties().arch$tab(Tabs.MAIN))
+        () -> new Elematilius(ElementsEnum.EARTH, new Item.Properties().tab(Tabs.MAIN))
     );
     @PostReg
     public static final RegistrySupplier<Elematilius> ELEMENTAL_AIR = registerItem(
         "elemental_air",
-        () -> new Elematilius(ElementsEnum.AIR, new Item.Properties().arch$tab(Tabs.MAIN))
+        () -> new Elematilius(ElementsEnum.AIR, new Item.Properties().tab(Tabs.MAIN))
     );
     @PostReg
     public static final RegistrySupplier<Item> CROPARIA = registerItem(
-        "croparia", () -> new Item(new Item.Properties().arch$tab(Tabs.MAIN)));
+        "croparia", () -> new Item(new Item.Properties().tab(Tabs.MAIN)));
     @PostReg
     public static final RegistrySupplier<Item> CROPARIA2 = registerItem(
-        "croparia2", () -> new Item(new Item.Properties().arch$tab(Tabs.MAIN)));
+        "croparia2", () -> new Item(new Item.Properties().tab(Tabs.MAIN)));
     @PostReg
     public static final RegistrySupplier<Item> CROPARIA3 = registerItem(
-        "croparia3", () -> new Item(new Item.Properties().arch$tab(Tabs.MAIN)));
+        "croparia3", () -> new Item(new Item.Properties().tab(Tabs.MAIN)));
     @PostReg
     public static final RegistrySupplier<Item> CROPARIA4 = registerItem(
-        "croparia4", () -> new Item(new Item.Properties().arch$tab(Tabs.MAIN)));
+        "croparia4", () -> new Item(new Item.Properties().tab(Tabs.MAIN)));
     @PostReg
     public static final RegistrySupplier<Item> CROPARIA5 = registerItem(
-        "croparia5", () -> new Item(new Item.Properties().arch$tab(Tabs.MAIN)));
+        "croparia5", () -> new Item(new Item.Properties().tab(Tabs.MAIN)));
     @PostReg
     public static final RegistrySupplier<Item> CROPARIA6 = registerItem(
-        "croparia6", () -> new Item(new Item.Properties().arch$tab(Tabs.MAIN)));
+        "croparia6", () -> new Item(new Item.Properties().tab(Tabs.MAIN)));
     @PostReg
     public static final RegistrySupplier<Item> CROPARIA7 = registerItem(
-        "croparia7", () -> new Item(new Item.Properties().arch$tab(Tabs.MAIN)));
+        "croparia7", () -> new Item(new Item.Properties().tab(Tabs.MAIN)));
     @PostReg
     public static final RegistrySupplier<HornPlenty> HORN = registerItem("horn_plenty", HornPlenty::new);
     @PostReg
@@ -165,27 +160,27 @@ public class CropariaItems {
     @PostReg
     public static final RegistrySupplier<Item> ELEMATILIUS_BUCKET = registerItem(
         "elematilius_bucket",
-        () -> new ArchitecturyBucketItem(Fluids.ELEMATILIUS, new Item.Properties().arch$tab(Tabs.MAIN).stacksTo(1).craftRemainder(Items.BUCKET))
+        () -> new ArchitecturyBucketItem(Fluids.ELEMATILIUS, new Item.Properties().tab(Tabs.MAIN).stacksTo(1).craftRemainder(Items.BUCKET))
     );
     @PostReg
     public static final RegistrySupplier<Item> EARTH_BUCKET = registerItem(
         "earth_bucket",
-        () -> new ArchitecturyBucketItem(Fluids.EARTH, new Item.Properties().arch$tab(Tabs.MAIN).stacksTo(1).craftRemainder(Items.BUCKET))
+        () -> new ArchitecturyBucketItem(Fluids.EARTH, new Item.Properties().tab(Tabs.MAIN).stacksTo(1).craftRemainder(Items.BUCKET))
     );
     @PostReg
     public static final RegistrySupplier<Item> WATER_BUCKET = registerItem(
         "water_bucket",
-        () -> new ArchitecturyBucketItem(Fluids.WATER, new Item.Properties().arch$tab(Tabs.MAIN).stacksTo(1).craftRemainder(Items.BUCKET))
+        () -> new ArchitecturyBucketItem(Fluids.WATER, new Item.Properties().tab(Tabs.MAIN).stacksTo(1).craftRemainder(Items.BUCKET))
     );
     @PostReg
     public static final RegistrySupplier<Item> FIRE_BUCKET = registerItem(
         "fire_bucket",
-        () -> new ArchitecturyBucketItem(Fluids.FIRE, new Item.Properties().arch$tab(Tabs.MAIN).stacksTo(1).craftRemainder(Items.BUCKET))
+        () -> new ArchitecturyBucketItem(Fluids.FIRE, new Item.Properties().tab(Tabs.MAIN).stacksTo(1).craftRemainder(Items.BUCKET))
     );
     @PostReg
     public static final RegistrySupplier<Item> AIR_BUCKET = registerItem(
         "air_bucket",
-        () -> new ArchitecturyBucketItem(Fluids.AIR, new Item.Properties().arch$tab(Tabs.MAIN).stacksTo(1).craftRemainder(Items.BUCKET))
+        () -> new ArchitecturyBucketItem(Fluids.AIR, new Item.Properties().tab(Tabs.MAIN).stacksTo(1).craftRemainder(Items.BUCKET))
     );
 
     @PostReg

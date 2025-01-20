@@ -37,7 +37,7 @@ public class InfusorRecipeSerializer implements RecipeSerializer<InfusorRecipe> 
     @Override
     public @NotNull InfusorRecipe fromNetwork(ResourceLocation id, FriendlyByteBuf buf) {
         ElementsEnum element = buf.readEnum(ElementsEnum.class);
-        GenericIngredient ingredient = buf.readJsonWithCodec(GenericIngredient.CODEC);
+        GenericIngredient ingredient = buf.readWithCodec(GenericIngredient.CODEC);
         ItemStack result = buf.readItem();
 
         InfusorRecipe recipe = new InfusorRecipe();
@@ -51,7 +51,7 @@ public class InfusorRecipeSerializer implements RecipeSerializer<InfusorRecipe> 
     @Override
     public void toNetwork(FriendlyByteBuf friendlyByteBuf, InfusorRecipe recipe) {
         friendlyByteBuf.writeEnum(recipe.getElement());
-        friendlyByteBuf.writeJsonWithCodec(GenericIngredient.CODEC, recipe.getIngredient());
+        friendlyByteBuf.writeWithCodec(GenericIngredient.CODEC, recipe.getIngredient());
         friendlyByteBuf.writeItem(recipe.getResult());
     }
 }

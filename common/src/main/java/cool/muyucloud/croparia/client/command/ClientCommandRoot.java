@@ -1,12 +1,11 @@
-package cool.muyucloud.croparia.fabric.command;
+package cool.muyucloud.croparia.client.command;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import cool.muyucloud.croparia.CropariaIf;
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
-import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
+import dev.architectury.event.events.client.ClientCommandRegistrationEvent;
 
 public class ClientCommandRoot {
-    public static final LiteralArgumentBuilder<FabricClientCommandSource> ROOT =
+    public static final LiteralArgumentBuilder<ClientCommandRegistrationEvent.ClientCommandSourceStack> ROOT =
         LiteralArgumentBuilder.literal("croparia");
 
     public static void register() {
@@ -14,6 +13,6 @@ public class ClientCommandRoot {
         ROOT.then(DumpCommand.build());
         ROOT.then(DumpBuiltinCommand.build());
         ROOT.then(CropCommand.build());
-        ClientCommandRegistrationCallback.EVENT.register((dispatcher, context) -> dispatcher.register(ROOT));
+        ClientCommandRegistrationEvent.EVENT.register(dispatcher -> dispatcher.register(ROOT));
     }
 }

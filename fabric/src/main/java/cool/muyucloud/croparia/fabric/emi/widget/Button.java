@@ -1,10 +1,10 @@
-package cool.muyucloud.croparia.emi.widget;
+package cool.muyucloud.croparia.fabric.emi.widget;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import dev.emi.emi.api.widget.Bounds;
 import dev.emi.emi.api.widget.ButtonWidget;
 import dev.emi.emi.api.widget.TextureWidget;
 import dev.emi.emi.api.widget.Widget;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.function.BooleanSupplier;
@@ -41,11 +41,11 @@ public class Button extends Widget {
     }
 
     @Override
-    public void render(GuiGraphics draw, int mouseX, int mouseY, float delta) {
+    public void render(PoseStack matrices, int mouseX, int mouseY, float delta) {
         if (this.bounds.contains(mouseX, mouseY)) {
-            new TextureWidget(this.hover, this.x, this.y, this.width, this.height, 0, 0, this.width, this.height, this.width, this.height).render(draw, mouseX, mouseY, delta);
+            new TextureWidget(this.hover, this.x, this.y, this.width, this.height, 0, 0, this.width, this.height, this.width, this.height).render(matrices, mouseX, mouseY, delta);
         } else {
-            new TextureWidget(this.normal, this.x, this.y, this.width, this.height, this.u, this.v, this.width, this.height, this.width, this.height).render(draw, mouseX, mouseY, delta);
+            new TextureWidget(this.normal, this.x, this.y, this.width, this.height, this.u, this.v, this.width, this.height, this.width, this.height).render(matrices, mouseX, mouseY, delta);
         }
     }
 

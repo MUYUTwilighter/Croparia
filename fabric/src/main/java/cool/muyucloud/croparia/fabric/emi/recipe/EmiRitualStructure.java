@@ -1,7 +1,7 @@
-package cool.muyucloud.croparia.emi.recipe;
+package cool.muyucloud.croparia.fabric.emi.recipe;
 
-import cool.muyucloud.croparia.emi.widget.Button;
-import cool.muyucloud.croparia.emi.widget.DynamicSlot;
+import cool.muyucloud.croparia.fabric.emi.widget.Button;
+import cool.muyucloud.croparia.fabric.emi.widget.DynamicSlot;
 import cool.muyucloud.croparia.recipe.RitualStructure;
 import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.util.Constants;
@@ -12,9 +12,9 @@ import dev.emi.emi.api.stack.EmiIngredient;
 import dev.emi.emi.api.stack.EmiStack;
 import dev.emi.emi.api.widget.TextWidget;
 import dev.emi.emi.api.widget.WidgetHolder;
+import net.minecraft.core.Registry;
 import net.minecraft.core.Vec3i;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.Nullable;
@@ -26,7 +26,7 @@ public class EmiRitualStructure implements EmiRecipe {
     public static final EmiIngredient AIR = EmiStack.of(BlockStatePredicate.STACK_AIR);
     public static final EmiIngredient ANY = EmiStack.of(BlockStatePredicate.STACK_ANY);
     public static final EmiIngredient UNKNOWN = EmiStack.of(BlockStatePredicate.STACK_UNKNOWN);
-    public static final EmiIngredient INPUT = EmiStack.of(CropariaItems.PLACEHOLDER.get().getDefaultInstance().setHoverName(Component.translatable("tooltip.croparia.input")));
+    public static final EmiIngredient INPUT = EmiStack.of(CropariaItems.PLACEHOLDER.get().getDefaultInstance().setHoverName(new TranslatableComponent("tooltip.croparia.input")));
     private static final int BUTTON_SIZE = 12;
     private static final int SLOT_SIZE = 18;
 
@@ -44,7 +44,7 @@ public class EmiRitualStructure implements EmiRecipe {
     public EmiRitualStructure(RitualStructure recipe) {
         this.recipe = recipe;
         this.structure = new EmiIngredient[recipe.maxY()][recipe.maxZ()][recipe.maxX()];
-        this.ritual = EmiStack.of(BuiltInRegistries.ITEM.get(recipe.getId()));
+        this.ritual = EmiStack.of(Registry.ITEM.get(recipe.getId()));
         this.id = recipe.getId();
         this.inputs = recipe.getPredicates().stream().map(predicate -> EmiIngredient.of(predicate.availableBlockItems().stream().map(EmiStack::of).toList())).toList();
         this.outputs = ritual.getEmiStacks();
@@ -218,7 +218,7 @@ public class EmiRitualStructure implements EmiRecipe {
             SLOT_SIZE + BUTTON_SIZE, this.getDisplayHeight() - SLOT_SIZE,
             labelWidth, SLOT_SIZE,
             (graphics, mouseX, mouseY, delta) -> new TextWidget(
-                Component.translatable("gui.croparia.ritual_structure.label", cursor.getY() + 1).getVisualOrderText(),
+                new TranslatableComponent("gui.croparia.ritual_structure.label", cursor.getY() + 1).getVisualOrderText(),
                 labelWidth / 2 - SLOT_SIZE, 0, 0xFF3F3F3F, false
             ).render(graphics, mouseX, mouseY, delta)
         );

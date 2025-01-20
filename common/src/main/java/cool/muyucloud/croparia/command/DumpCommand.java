@@ -8,8 +8,9 @@ import cool.muyucloud.croparia.data.crop.CropFileHandler;
 import cool.muyucloud.croparia.registry.Crops;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 
 public class DumpCommand {
     private static final LiteralArgumentBuilder<CommandSourceStack> DUMP = Commands.literal("dump").requires(s -> s.hasPermission(2)).executes(context -> dumpAll(context.getSource()::sendSuccess, false)).then(Commands.argument("crop", StringArgumentType.greedyString()).suggests((context, builder) -> Crops.suggestCrops(builder.getInput(), builder.getStart())).executes(context -> {
@@ -19,11 +20,11 @@ public class DumpCommand {
 
     public static int dumpAll(SuccessMessage success, boolean openFile) {
         int size = Crops.size();
-        MutableComponent component = Component.translatable("commands.croparia.dump.perform", size);
+        MutableComponent component = new TranslatableComponent("commands.croparia.dump.perform", size);
         if (openFile) {
             component.withStyle(ServerCommandRoot.openFile(CropariaIf.CONFIG.getDumpPath().toString())).withStyle(ServerCommandRoot.blockMouseBehavior());
         }
-        success.send(() -> component, true);
+        success.send(component, true);
         CropFileHandler.dumpCrops();
         return Crops.size();
     }
@@ -31,22 +32,22 @@ public class DumpCommand {
     public static int dump(String name, SuccessMessage success, FailureMessage failure, boolean openFile) {
         Crop crop = Crops.forName(name);
         if (crop == null) {
-            MutableComponent component = Component.translatable("commands.croparia.dump.singular.absent", name);
+            MutableComponent component = new TranslatableComponent("commands.croparia.dump.singular.absent", name);
             failure.send(component);
             return 0;
         }
         if (CropFileHandler.dumpCrop(crop)) {
-            MutableComponent nameComponent = Component.literal(name);
+            MutableComponent nameComponent = new TextComponent(name);
             if (openFile) {
                 nameComponent.withStyle(
                     ServerCommandRoot.openFile(CropariaIf.CONFIG.getDumpPath().resolve(name + ".json").toString())
                 ).withStyle(ServerCommandRoot.blockMouseBehavior());
             }
-            MutableComponent component = Component.translatable("commands.croparia.dump.singular", nameComponent);
-            success.send(() -> component, true);
+            MutableComponent component = new TranslatableComponent("commands.croparia.dump.singular", nameComponent);
+            success.send(component, true);
             return 1;
         } else {
-            failure.send(Component.translatable("commands.croparia.dump.singular.fail", name));
+            failure.send(new TranslatableComponent("commands.croparia.dump.singular.fail", name));
             return 0;
         }
     }

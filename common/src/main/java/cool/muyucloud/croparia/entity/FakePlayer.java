@@ -12,6 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -59,7 +60,7 @@ public class FakePlayer extends Player {
     }
 
     public InteractionResult useItemOn(@NotNull BlockPos pos, @NotNull ItemStack item) {
-        BlockHitResult hit = new BlockHitResult(pos.getCenter(), Direction.UP, pos, false);
+        BlockHitResult hit = new BlockHitResult(Vec3.atCenterOf(pos), Direction.UP, pos, false);
         UseOnContext context = new UseOnContext(this, InteractionHand.MAIN_HAND, hit);
         return item.useOn(context);
     }

@@ -25,6 +25,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -40,7 +41,7 @@ public class Infusor extends Block {
     public static final EnumProperty<ElementsEnum> TYPE = EnumProperty.create("infusor_type", ElementsEnum.class);
 
     public Infusor() {
-        super(Properties.of().strength(1.0F, 1.0F).requiresCorrectToolForDrops());
+        super(Properties.of(Material.STONE).strength(1.0F, 1.0F).requiresCorrectToolForDrops());
         this.registerDefaultState(this.defaultBlockState().setValue(TYPE, ElementsEnum.EMPTY));
     }
 

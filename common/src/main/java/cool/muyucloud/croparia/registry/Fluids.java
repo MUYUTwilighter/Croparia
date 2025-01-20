@@ -4,13 +4,13 @@ import cool.muyucloud.croparia.CropariaIf;
 import dev.architectury.core.fluid.ArchitecturyFlowingFluid;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Registry;
 import net.minecraft.world.level.material.Fluid;
 
 import java.util.function.Supplier;
 
 public class Fluids {
-    public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(CropariaIf.MOD_ID, Registries.FLUID);
+    public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(CropariaIf.MOD_ID, Registry.FLUID_REGISTRY);
 
     public static final RegistrySupplier<ArchitecturyFlowingFluid> ELEMATILIUS = register(
         "elematilius", () -> new ArchitecturyFlowingFluid.Source(FluidAttributes.ELEMATILIUS)

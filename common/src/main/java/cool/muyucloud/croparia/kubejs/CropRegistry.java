@@ -9,7 +9,7 @@ import cool.muyucloud.croparia.item.CropSeed;
 import cool.muyucloud.croparia.registry.Crops;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Registry;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.NotNull;
@@ -19,8 +19,8 @@ import java.util.Map;
 
 @SuppressWarnings({"unused"})
 public class CropRegistry {
-    private final DeferredRegister<Item> itemRegistry = DeferredRegister.create(CropariaIf.MOD_ID, Registries.ITEM);
-    private final DeferredRegister<Block> blockRegistry = DeferredRegister.create(CropariaIf.MOD_ID, Registries.BLOCK);
+    private final DeferredRegister<Item> itemRegistry = DeferredRegister.create(CropariaIf.MOD_ID, Registry.ITEM_REGISTRY);
+    private final DeferredRegister<Block> blockRegistry = DeferredRegister.create(CropariaIf.MOD_ID, Registry.BLOCK_REGISTRY);
     @NotNull
     private final String name;
 

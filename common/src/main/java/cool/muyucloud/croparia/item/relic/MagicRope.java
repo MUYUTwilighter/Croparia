@@ -2,9 +2,9 @@ package cool.muyucloud.croparia.item.relic;
 
 import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.registry.Tabs;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -16,10 +16,9 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.context.UseOnContext;
 import org.jetbrains.annotations.NotNull;
 
-@SuppressWarnings("UnstableApiUsage")
 public class MagicRope extends Item {
     public MagicRope() {
-        super(new Properties().arch$tab(Tabs.MAIN).rarity(Rarity.EPIC));
+        super(new Properties().tab(Tabs.MAIN).rarity(Rarity.EPIC));
     }
 
     public @NotNull InteractionResult useOn(UseOnContext context) {
@@ -34,14 +33,14 @@ public class MagicRope extends Item {
                 String targetWorld = world.dimension().location().toString();
                 tag.putIntArray("targetPos", position);
                 tag.putString("targetWorld", targetWorld);
-                player.displayClientMessage(Component.literal("%s[x=%d y=%d z=%d]".formatted(targetWorld, position[0], position[1], position[2])), true);
+                player.displayClientMessage(new TextComponent("%s[x=%d y=%d z=%d]".formatted(targetWorld, position[0], position[1], position[2])), true);
                 player.addItem(newStack);
                 return InteractionResult.CONSUME;
             }
             CompoundTag tag = itemStack.getOrCreateTag();
             if (tag.contains("targetPos")) {
                 String targetWorld = tag.contains("targetWorld") ? tag.getString("targetWorld") : "minecraft:overworld";
-                world = world.getServer().getLevel(ResourceKey.create(Registries.DIMENSION, ResourceLocation.tryParse(targetWorld)));
+                world = world.getServer().getLevel(ResourceKey.create(Registry.DIMENSION_REGISTRY, ResourceLocation.tryParse(targetWorld)));
                 position = tag.getIntArray("targetPos");
                 player.teleportTo(world, position[0], position[1], position[2], 0, 0);
                 return InteractionResult.SUCCESS;

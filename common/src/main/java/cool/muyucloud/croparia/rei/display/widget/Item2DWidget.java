@@ -1,5 +1,6 @@
 package cool.muyucloud.croparia.rei.display.widget;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import cool.muyucloud.croparia.util.BiFunction;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
@@ -7,7 +8,6 @@ import me.shedaniel.rei.api.client.gui.widgets.WidgetWithBounds;
 import me.shedaniel.rei.api.client.gui.widgets.Widgets;
 import me.shedaniel.rei.api.common.entry.EntryStack;
 import me.shedaniel.rei.api.common.util.EntryStacks;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -76,22 +76,22 @@ public class Item2DWidget extends WidgetWithBounds {
     }
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-        for (int posX = 0; posX < cols; posX++) {
-            for (int posZ = 0; posZ < rows; posZ++) {
-                Widgets.createSlot(
-                    new Point(x + (posX + 1) * SLOT_SIZE, y + (posZ + 1) * SLOT_SIZE)
-                ).entries(itemProvider.apply(posX, posZ)).render(graphics, mouseX, mouseY, delta);
-            }
-        }
-    }
-
-    @Override
-    public List<? extends GuiEventListener> children() {
+    public @NotNull List<? extends GuiEventListener> children() {
         return List.of();
     }
 
     public static Item2DWidget create() {
         return new Item2DWidget();
+    }
+
+    @Override
+    public void render(PoseStack poseStack, int mouseX, int mouseY, float delta) {
+        for (int posX = 0; posX < cols; posX++) {
+            for (int posZ = 0; posZ < rows; posZ++) {
+                Widgets.createSlot(
+                    new Point(x + (posX + 1) * SLOT_SIZE, y + (posZ + 1) * SLOT_SIZE)
+                ).entries(itemProvider.apply(posX, posZ)).render(poseStack, mouseX, mouseY, delta);
+            }
+        }
     }
 }

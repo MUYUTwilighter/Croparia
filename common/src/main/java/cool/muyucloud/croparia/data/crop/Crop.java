@@ -8,8 +8,7 @@ import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.util.BiOptional;
 import cool.muyucloud.croparia.util.Util;
 import net.minecraft.core.Holder;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -186,13 +185,13 @@ public class Crop {
     @NotNull
     public Item getMaterialItem() {
         if (this.tag) {
-            TagKey<Item> tag = TagKey.create(Registries.ITEM, this.material);
-            Iterable<Holder<Item>> set = BuiltInRegistries.ITEM.getTagOrEmpty(tag);
+            TagKey<Item> tag = TagKey.create(Registry.ITEM_REGISTRY, this.material);
+            Iterable<Holder<Item>> set = Registry.ITEM.getTagOrEmpty(tag);
             if (set.iterator().hasNext()) {
                 return set.iterator().next().value();
             }
         } else {
-            return BuiltInRegistries.ITEM.get(this.material);
+            return Registry.ITEM.get(this.material);
         }
         return Items.AIR;
     }
@@ -227,7 +226,7 @@ public class Crop {
     @NotNull
     @PostReg
     public CropariaCropBlock getCropBlock() {
-        return (CropariaCropBlock) BuiltInRegistries.BLOCK.get(blockId);
+        return (CropariaCropBlock) Registry.BLOCK.get(blockId);
     }
 
     @NotNull
@@ -238,7 +237,7 @@ public class Crop {
     @NotNull
     @PostReg
     public Item getSeedItem() {
-        return BuiltInRegistries.ITEM.get(seedId);
+        return Registry.ITEM.get(seedId);
     }
 
     @NotNull
@@ -249,7 +248,7 @@ public class Crop {
     @NotNull
     @PostReg
     public Item getFruitItem() {
-        return BuiltInRegistries.ITEM.get(fruitId);
+        return Registry.ITEM.get(fruitId);
     }
 
     @NotNull

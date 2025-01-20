@@ -4,7 +4,7 @@ import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.recipe.*;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Registry;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 
@@ -17,7 +17,7 @@ import net.minecraft.world.item.crafting.RecipeType;
  */
 @SuppressWarnings("unused")
 public class RecipeTypes {
-    public static DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(CropariaIf.MOD_ID, Registries.RECIPE_TYPE);
+    public static DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(CropariaIf.MOD_ID, Registry.RECIPE_TYPE_REGISTRY);
 
     /**
      * This is new recipe types after porting to architectury

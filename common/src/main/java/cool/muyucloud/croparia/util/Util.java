@@ -28,7 +28,7 @@ public class Util {
     }
 
     public static BlockPos lookingAt(@NotNull Player player) {
-        Level world = player.level();
+        Level world = player.getLevel();
         ClipContext context = new ClipContext(
             player.getEyePosition(), player.getEyePosition().add(player.getLookAngle().multiply(5, 5, 5)),
             ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player

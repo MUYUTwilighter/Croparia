@@ -6,11 +6,8 @@ import dev.architectury.event.events.common.CommandRegistrationEvent;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.chat.ClickEvent;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.HoverEvent;
-import net.minecraft.network.chat.Style;
+import net.minecraft.core.Registry;
+import net.minecraft.network.chat.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -26,7 +23,7 @@ public class ServerCommandRoot {
 
     public static void register() {
         CropariaIf.LOGGER.debug("Registering commands");
-        CommandRegistrationEvent.EVENT.register((dispatcher, registry, selection) -> dispatcher.register(ROOT));
+        CommandRegistrationEvent.EVENT.register((dispatcher, selection) -> dispatcher.register(ROOT));
     }
 
     public static Style suggestCommand(String command, Object... args) {
@@ -40,7 +37,7 @@ public class ServerCommandRoot {
     }
 
     public static Style hoverItem(ResourceLocation id) {
-        return hoverItem(BuiltInRegistries.ITEM.get(id));
+        return hoverItem(Registry.ITEM.get(id));
     }
 
     public static Style hoverItem(Item item) {
@@ -51,7 +48,7 @@ public class ServerCommandRoot {
     }
 
     public static Style hoverText(String text) {
-        return Style.EMPTY.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Component.literal(text)));
+        return Style.EMPTY.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponent(text)));
     }
 
     public static Style hoverText(Component text) {

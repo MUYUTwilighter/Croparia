@@ -8,7 +8,6 @@ import cool.muyucloud.croparia.registry.RecipeSerializers;
 import cool.muyucloud.croparia.registry.RecipeTypes;
 import cool.muyucloud.croparia.util.predicate.BlockStatePredicate;
 import cool.muyucloud.croparia.util.predicate.GenericIngredient;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -75,16 +74,16 @@ public class RitualRecipe implements Recipe<RitualContainer> {
         if (tier < 1) {
             throw new IllegalArgumentException("Tier must be at least 1");
         }
-        BlockStatePredicate block = buf.readJsonWithCodec(BlockStatePredicate.Builder.CODEC).build();
-        GenericIngredient ingredient = buf.readJsonWithCodec(GenericIngredient.CODEC);
+        BlockStatePredicate block = buf.readWithCodec(BlockStatePredicate.Builder.CODEC).build();
+        GenericIngredient ingredient = buf.readWithCodec(GenericIngredient.CODEC);
         ItemStack result = buf.readItem();
         return new RitualRecipe(id, tier, block, ingredient, result);
     }
 
     public void toNetwork(@NotNull FriendlyByteBuf buf) {
         buf.writeInt(this.getTier());
-        buf.writeJsonWithCodec(BlockStatePredicate.Builder.CODEC, this.getStateBuilder());
-        buf.writeJsonWithCodec(GenericIngredient.CODEC, this.getIngredient());
+        buf.writeWithCodec(BlockStatePredicate.Builder.CODEC, this.getStateBuilder());
+        buf.writeWithCodec(GenericIngredient.CODEC, this.getIngredient());
         buf.writeItem(this.getResult());
     }
 
@@ -135,8 +134,7 @@ public class RitualRecipe implements Recipe<RitualContainer> {
         return matches(container);
     }
 
-    @Override
-    public @NotNull ItemStack assemble(@NotNull RitualContainer container, @NotNull RegistryAccess registryAccess) {
+    public @NotNull ItemStack assemble(@NotNull RitualContainer container) {
         if (matches(container)) {
             container.item().shrink(this.getIngredient().getCount());
             return getResult().copy();
@@ -151,8 +149,8 @@ public class RitualRecipe implements Recipe<RitualContainer> {
     }
 
     @Override
-    public @NotNull ItemStack getResultItem(RegistryAccess registryAccess) {
-        return result.copy();
+    public @NotNull ItemStack getResultItem() {
+        return this.result.copy();
     }
 
     @Override

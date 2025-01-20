@@ -10,7 +10,6 @@ import cool.muyucloud.croparia.registry.BlockEntities;
 import cool.muyucloud.croparia.registry.CropariaItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -35,7 +34,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
+@SuppressWarnings("deprecation")
 public class Greenhouse extends BaseEntityBlock {
     public static List<Greenhouse> blockGreenhouse = new ArrayList<>();
     protected final VoxelShape SHAPE = Block.box(1.0, 1.0, 0.0, 15.0, 3.0, 15.0);
@@ -45,18 +46,22 @@ public class Greenhouse extends BaseEntityBlock {
         blockGreenhouse.add(this);
     }
 
+    @Override
     public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         return this.SHAPE;
     }
 
+    @Override
     public @NotNull VoxelShape getCollisionShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
         return this.SHAPE;
     }
 
+    @Override
     public boolean isCollisionShapeFullBlock(BlockState state, BlockGetter world, BlockPos pos) {
         return false;
     }
 
+    @Override
     public @NotNull InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         if (!world.isClientSide) {
             MenuProvider screenHandlerFactory = state.getMenuProvider(world, pos);
@@ -68,27 +73,30 @@ public class Greenhouse extends BaseEntityBlock {
         return InteractionResult.SUCCESS;
     }
 
-    public void randomTick(@Nullable BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
+    @Override
+    public void randomTick(@Nullable BlockState state, ServerLevel world, BlockPos pos, Random random) {
         if (world.getBlockState(pos.below()).getBlock() instanceof CropBlock) {
             world.getBlockState(pos.below()).randomTick(world, pos.below(), random);
         }
 
     }
 
+    @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new GreenhouseBlockEntity(pos, state);
     }
 
+    @Override
     public <T extends BlockEntity> @Nullable BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-        return createTickerHelper(type, BlockEntities.GREENHOUSE_BE.get(), (world1, pos, state1, be) -> {
-            GreenhouseBlockEntity.tick(world1, pos, be);
-        });
+        return createTickerHelper(type, BlockEntities.GREENHOUSE_BE.get(), (world1, pos, state1, be) -> GreenhouseBlockEntity.tick(world1, pos, be));
     }
 
+    @Override
     public @NotNull RenderShape getRenderShape(BlockState state) {
         return RenderShape.MODEL;
     }
 
+    @Override
     public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean moved) {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = world.getBlockEntity(pos);

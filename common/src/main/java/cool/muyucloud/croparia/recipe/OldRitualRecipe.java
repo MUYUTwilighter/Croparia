@@ -4,7 +4,7 @@ import com.google.gson.JsonObject;
 import cool.muyucloud.croparia.registry.RecipeSerializers;
 import cool.muyucloud.croparia.util.predicate.BlockStatePredicate;
 import cool.muyucloud.croparia.util.predicate.GenericIngredient;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Registry;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -34,7 +34,7 @@ public class OldRitualRecipe extends RitualRecipe {
     public Block extractBlock() {
         if (this.getStateBuilder().isTag()) {
             @Nullable ResourceLocation id = ResourceLocation.tryParse(this.getBlock().getBuilder().getBlock());
-            return BuiltInRegistries.BLOCK.get(id);
+            return Registry.BLOCK.get(id);
         } else {
             return Blocks.AIR;
         }
@@ -53,12 +53,12 @@ public class OldRitualRecipe extends RitualRecipe {
         int tier = GsonHelper.getAsInt(json, "tier");
         BlockStatePredicate block = BlockStatePredicate.Builder.create()
             .block(GsonHelper.getAsString(json, "block")).build();
-        Item item = BuiltInRegistries.ITEM.get(ResourceLocation.tryParse(GsonHelper.getAsString(json, "input")));
+        Item item = Registry.ITEM.get(ResourceLocation.tryParse(GsonHelper.getAsString(json, "input")));
         if (item == Items.AIR) {
             throw new IllegalArgumentException("Invalid or missing input item in recipe %s".formatted(id));
         }
         ItemStack ingredient = item.getDefaultInstance();
-        item = BuiltInRegistries.ITEM.get(ResourceLocation.tryParse(GsonHelper.getAsString(json, "output")));
+        item = Registry.ITEM.get(ResourceLocation.tryParse(GsonHelper.getAsString(json, "output")));
         if (item == Items.AIR) {
             throw new IllegalArgumentException("Invalid or missing input item in recipe %s".formatted(id));
         }

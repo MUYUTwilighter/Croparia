@@ -10,7 +10,6 @@ import cool.muyucloud.croparia.util.math.Char3D;
 import cool.muyucloud.croparia.util.math.Char3DWithMark;
 import cool.muyucloud.croparia.util.predicate.BlockStatePredicate;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.Vec3i;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -180,19 +179,19 @@ public class RitualStructure implements Recipe<RitualStructureContainer> {
 
     public static RitualStructure fromNetwork(ResourceLocation resourceLocation, FriendlyByteBuf inputBuf) {
         Map<Character, BlockStatePredicate> keys = inputBuf.readMap(
-            FriendlyByteBuf::readChar, buf -> buf.readJsonWithCodec(BlockStatePredicate.Builder.CODEC).build()
+            FriendlyByteBuf::readChar, buf -> buf.readWithCodec(BlockStatePredicate.Builder.CODEC).build()
         );
         keys = Map.copyOf(keys);
-        Char3D pattern = inputBuf.readJsonWithCodec(Char3D.CODEC);
+        Char3D pattern = inputBuf.readWithCodec(Char3D.CODEC);
         return new RitualStructure(resourceLocation, keys, pattern);
     }
 
     public void toNetwork(FriendlyByteBuf outputBuf) {
         outputBuf.writeMap(this.keys,
             (buf, character) -> buf.writeChar(character),
-            (buf, predicate) -> buf.writeJsonWithCodec(BlockStatePredicate.Builder.CODEC, predicate.getBuilder())
+            (buf, predicate) -> buf.writeWithCodec(BlockStatePredicate.Builder.CODEC, predicate.getBuilder())
         );
-        outputBuf.writeJsonWithCodec(Char3D.CODEC, this.patterns.get(0));
+        outputBuf.writeWithCodec(Char3D.CODEC, this.patterns.get(0));
     }
 
     @Override
@@ -215,8 +214,7 @@ public class RitualStructure implements Recipe<RitualStructureContainer> {
     }
 
     @Deprecated
-    @Override
-    public @NotNull ItemStack assemble(RitualStructureContainer container, RegistryAccess registryAccess) {
+    public @NotNull ItemStack assemble(RitualStructureContainer container) {
         return ItemStack.EMPTY;
     }
 
@@ -227,8 +225,7 @@ public class RitualStructure implements Recipe<RitualStructureContainer> {
     }
 
     @Deprecated
-    @Override
-    public @NotNull ItemStack getResultItem(RegistryAccess registryAccess) {
+    public @NotNull ItemStack getResultItem() {
         return ItemStack.EMPTY;
     }
 

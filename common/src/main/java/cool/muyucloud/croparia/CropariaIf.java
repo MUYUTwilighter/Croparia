@@ -24,6 +24,7 @@ public class CropariaIf {
 
     public static void init() {
         CropariaIf.LOGGER.info("=== Croparia common setup ===");
+        DataPackHandler.INSTANCE.onInitial();
         RecipeTypes.register();
         RecipeSerializers.register();
         Crops.register();

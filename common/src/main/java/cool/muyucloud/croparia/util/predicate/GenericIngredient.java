@@ -5,12 +5,12 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.util.TagUtil;
 import net.minecraft.core.Holder;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CollectionTag;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -35,8 +35,8 @@ public class GenericIngredient implements Predicate<ItemStack> {
         int count = optionalCount.orElse(1);
         CompoundTag nbt = optionalNbt.orElse(null);
         AtomicReference<GenericIngredient> ingredient = new AtomicReference<>();
-        id.map(BuiltInRegistries.ITEM::get).map(item -> new GenericIngredient(item, count, nbt)).ifPresentOrElse(
-            ingredient::set, () -> rawTag.map(raw -> TagKey.create(Registries.ITEM, raw)).ifPresentOrElse(
+        id.map(Registry.ITEM::get).map(item -> new GenericIngredient(item, count, nbt)).ifPresentOrElse(
+            ingredient::set, () -> rawTag.map(raw -> TagKey.create(Registry.ITEM.key(), raw)).ifPresentOrElse(
                 tag -> ingredient.set(new GenericIngredient(tag, count, nbt)),
                 () -> ingredient.set(new GenericIngredient(count, nbt))
             ));
@@ -148,7 +148,7 @@ public class GenericIngredient implements Predicate<ItemStack> {
         if (this.nbt == null) {
             return Optional.empty();
         }
-        return Optional.of(Component.literal(this.nbt.toString()));
+        return Optional.of(new TextComponent(this.nbt.toString()));
     }
 
     public @NotNull List<ItemStack> availableStacks() {

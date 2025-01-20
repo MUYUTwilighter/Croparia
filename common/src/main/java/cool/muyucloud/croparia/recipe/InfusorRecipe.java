@@ -65,6 +65,7 @@ public class InfusorRecipe implements Recipe<InfusorContainer> {
         return ingredient.test(input) && container.getElement() == element;
     }
 
+    @Override
     public @NotNull ItemStack assemble(@NotNull InfusorContainer container) {
         if (matches(container)) {
             ItemStack input = container.getItem(0);
@@ -85,18 +86,13 @@ public class InfusorRecipe implements Recipe<InfusorContainer> {
     }
 
     @Override
-    public @NotNull ItemStack assemble(InfusorContainer container, RegistryAccess registryAccess) {
-        return assemble(container);
-    }
-
-    @Override
     public boolean canCraftInDimensions(int i, int j) {
         return i >= 1 && j >= 2 || i >= 2 && j >= 1;
     }
 
     @Override
-    public @NotNull ItemStack getResultItem(@Nullable RegistryAccess registryAccess) {
-        return result.copy();
+    public @NotNull ItemStack getResultItem() {
+        return this.getResult().copy();
     }
 
     public void setId(ResourceLocation id) {

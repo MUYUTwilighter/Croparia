@@ -4,7 +4,7 @@ import cool.muyucloud.croparia.recipe.serializer.OldInfusorRecipeSerializer;
 import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.registry.RecipeSerializers;
 import cool.muyucloud.croparia.util.predicate.GenericIngredient;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.Item;
@@ -29,7 +29,7 @@ public class OldInfusorRecipe extends InfusorRecipe {
     }
 
     public void setInput(@NotNull String input) {
-        this.setIngredient(new GenericIngredient(BuiltInRegistries.ITEM.getOptional(
+        this.setIngredient(new GenericIngredient(Registry.ITEM.getOptional(
             ResourceLocation.tryParse(input)
         ).orElseThrow(
             () -> new IllegalArgumentException("Invalid item item in recipe %s".formatted(this.getId()))
@@ -53,7 +53,7 @@ public class OldInfusorRecipe extends InfusorRecipe {
     }
 
     public void setOutput(@NotNull String output) {
-        this.setResult(BuiltInRegistries.ITEM.getOptional(
+        this.setResult(Registry.ITEM.getOptional(
             ResourceLocation.tryParse(output)
         ).orElseThrow(
             () -> new IllegalArgumentException("Invalid output item in recipe %s".formatted(this.getId()))

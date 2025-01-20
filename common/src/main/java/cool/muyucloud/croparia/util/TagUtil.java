@@ -4,7 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import dev.architectury.platform.Platform;
 import net.minecraft.core.Holder;
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
@@ -32,10 +32,10 @@ public class TagUtil {
     }
 
     public static Iterable<Holder<Item>> forItems(TagKey<Item> tag) {
-        return BuiltInRegistries.ITEM.getTagOrEmpty(tag);
+        return Registry.ITEM.getTagOrEmpty(tag);
     }
 
     public static Iterable<Holder<Block>> forBlocks(TagKey<Block> tag) {
-        return BuiltInRegistries.BLOCK.getTagOrEmpty(tag);
+        return Registry.BLOCK.getTagOrEmpty(tag);
     }
 }

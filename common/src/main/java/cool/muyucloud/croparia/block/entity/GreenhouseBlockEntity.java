@@ -46,7 +46,7 @@ public class GreenhouseBlockEntity extends BlockEntity implements MenuProvider, 
             if (belowState.getBlock() instanceof CropBlock block) {
                 Item seed = block.getCloneItemStack(level, worldPosition, belowState).getItem();
                 if (block.isMaxAge(belowState)) {
-                    List<ItemStack> droppedStacks = Block.getDrops(belowState, Objects.requireNonNull(level.getServer()).getLevel(level.dimension()), worldPosition.below(), level.getBlockEntity(worldPosition.below()));
+                    List<ItemStack> droppedStacks = Block.getDrops(belowState, Objects.requireNonNull(Objects.requireNonNull(level.getServer()).getLevel(level.dimension())), worldPosition.below(), level.getBlockEntity(worldPosition.below()));
                     boolean decreased = false;
                     for (ItemStack stack : droppedStacks) {
                         if (!decreased && stack.is(seed)) {

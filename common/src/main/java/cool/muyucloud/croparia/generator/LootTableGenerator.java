@@ -2,6 +2,7 @@ package cool.muyucloud.croparia.generator;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.data.crop.Crop;
 import cool.muyucloud.croparia.registry.Crops;
 import cool.muyucloud.croparia.util.pack.DataPackHandler;
@@ -13,7 +14,7 @@ public class LootTableGenerator {
     }
 
     public static void addCropBlock(Crop crop) {
-        ResourceLocation id = crop.getBlockId().withPrefix("blocks/");
+        ResourceLocation id = CropariaIf.of("blocks/" + crop.getBlockId().getPath());
         // 1. Pools
         // 1.1 Seed Pool
         // 1.1.1 Seed entry

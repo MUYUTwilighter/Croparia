@@ -1,9 +1,9 @@
-package cool.muyucloud.croparia.emi;
+package cool.muyucloud.croparia.fabric.emi;
 
 import cool.muyucloud.croparia.CropariaIf;
-import cool.muyucloud.croparia.emi.recipe.EmiInfusorRecipe;
-import cool.muyucloud.croparia.emi.recipe.EmiRitualRecipe;
-import cool.muyucloud.croparia.emi.recipe.EmiRitualStructure;
+import cool.muyucloud.croparia.fabric.emi.recipe.EmiInfusorRecipe;
+import cool.muyucloud.croparia.fabric.emi.recipe.EmiRitualRecipe;
+import cool.muyucloud.croparia.fabric.emi.recipe.EmiRitualStructure;
 import cool.muyucloud.croparia.recipe.InfusorRecipe;
 import cool.muyucloud.croparia.recipe.RitualRecipe;
 import cool.muyucloud.croparia.recipe.RitualStructure;

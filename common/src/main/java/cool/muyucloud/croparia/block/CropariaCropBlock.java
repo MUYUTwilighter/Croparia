@@ -3,19 +3,20 @@ package cool.muyucloud.croparia.block;
 import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.access.CropAccess;
 import cool.muyucloud.croparia.data.crop.Crop;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.material.Material;
 import org.jetbrains.annotations.NotNull;
 
 public class CropariaCropBlock extends CropBlock implements CropAccess {
     private final Crop crop;
 
     public CropariaCropBlock(Crop crop) {
-        super(Properties.of().noCollission().sound(SoundType.CROP));
+        super(Properties.of(Material.GRASS).noCollission().sound(SoundType.CROP));
         this.crop = crop;
     }
 
@@ -26,8 +27,8 @@ public class CropariaCropBlock extends CropBlock implements CropAccess {
 
     @Override
     public @NotNull MutableComponent getName() {
-        MutableComponent cropName = Component.translatable(this.crop.getTranslationKey());
-        return Component.translatable(this.getDescriptionId(), cropName);
+        MutableComponent cropName = new TranslatableComponent(this.crop.getTranslationKey());
+        return new TranslatableComponent(this.getDescriptionId(), cropName);
     }
 
     @Override

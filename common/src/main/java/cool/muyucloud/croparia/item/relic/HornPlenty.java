@@ -14,12 +14,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-@SuppressWarnings("UnstableApiUsage")
 public class HornPlenty extends Item {
     private static final int MAX_ATTEMPT = 5;
 
     public HornPlenty() {
-        super(new Properties().stacksTo(1).arch$tab(Tabs.MAIN).rarity(Rarity.EPIC));
+        super(new Properties().stacksTo(1).tab(Tabs.MAIN).rarity(Rarity.EPIC));
     }
 
     public @NotNull InteractionResult useOn(UseOnContext context) {

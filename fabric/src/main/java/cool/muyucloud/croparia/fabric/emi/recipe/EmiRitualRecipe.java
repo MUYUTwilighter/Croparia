@@ -1,4 +1,4 @@
-package cool.muyucloud.croparia.emi.recipe;
+package cool.muyucloud.croparia.fabric.emi.recipe;
 
 import cool.muyucloud.croparia.recipe.RitualRecipe;
 import cool.muyucloud.croparia.registry.CropariaItems;

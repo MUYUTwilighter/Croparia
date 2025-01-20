@@ -183,9 +183,6 @@ public class Crops {
     public static final Crop JUNGLE = vanilla("jungle", Items.JUNGLE_PLANKS, 0xbd8c6a, 1, CropType.NATURE);
     public static final Crop ACACIA = vanilla("acacia", Items.ACACIA_PLANKS, 0xb86236, 1, CropType.NATURE);
     public static final Crop DARK_OAK = vanilla("dark_oak", Items.DARK_OAK_PLANKS, 0x4e3118, 1, CropType.NATURE);
-    public static final Crop MANGROVE = vanilla("mangrove", Items.MANGROVE_PLANKS, 0x7d4133, 1, CropType.NATURE);
-    public static final Crop CHERRY = vanilla("cherry", Items.CHERRY_PLANKS, 0xe3b1ab, 1, CropType.NATURE);
-    public static final Crop BAMBOO = vanilla("bamboo", Items.BAMBOO_PLANKS, 0xe0ca69, 1, CropType.NATURE);
     public static final Crop CRIMSON = vanilla("crimson", Items.CRIMSON_PLANKS, 0x5b2f41, 1, CropType.NATURE);
     public static final Crop WARPED = vanilla("warped", Items.WARPED_PLANKS, 0x388180, 1, CropType.NATURE);
     public static final Crop APPLE = vanilla("apple", Items.APPLE, 0xff1c2b, 1, CropType.FOOD);
@@ -193,7 +190,6 @@ public class Crops {
     public static final Crop BREAD = vanilla("bread", Items.BREAD, 0x9e7325, 1, CropType.FOOD);
     public static final Crop EGG = vanilla("egg", Items.EGG, 0xdfce9b, 1, CropType.FOOD);
     public static final Crop TURTLE_EGG = vanilla("turtle_egg", Items.TURTLE_EGG, 0x58ceaf, 1, CropType.FOOD);
-    public static final Crop SNIFFER_EGG = vanilla("sniffer_egg", Items.SNIFFER_EGG, 0xb1413f, 1, CropType.FOOD);
     public static final Crop TROPICAL_FISH = vanilla("clownfish", Items.TROPICAL_FISH, 0xf29965, 1, CropType.FOOD);
     public static final Crop PUFFER_FISH = vanilla("pufferfish", Items.PUFFERFISH, 0xc5b200, 1, CropType.FOOD);
     public static final Crop COOKIE = vanilla("cookie", Items.COOKIE, 0xd9833e, 1, CropType.FOOD);
@@ -241,7 +237,6 @@ public class Crops {
     public static final Crop GLOW_INK = vanilla("glowink", Items.GLOW_INK_SAC, 0x4bdeba, 2, CropType.CROP);
     public static final Crop COPPER = vanilla("copper", Items.COPPER_INGOT, 0xfbc3b6, 2, CropType.CROP);
     public static final Crop AMETHYST = vanilla("amethyst", Items.AMETHYST_SHARD, 0xd9cbf2, 3, CropType.CROP);
-    public static final Crop ECHO_SHARD = vanilla("echo_shard", Items.ECHO_SHARD, 0x3404f, 4, CropType.CROP);
 
     /**
      * Add a crop from material implemented by multiple mods<br/>

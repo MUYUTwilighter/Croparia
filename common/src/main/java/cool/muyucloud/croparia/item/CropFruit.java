@@ -6,6 +6,7 @@ import cool.muyucloud.croparia.data.crop.Crop;
 import cool.muyucloud.croparia.registry.Tabs;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
@@ -13,12 +14,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import org.jetbrains.annotations.NotNull;
 
-@SuppressWarnings("UnstableApiUsage")
 public class CropFruit extends Item implements CropAccess {
     public Crop crop;
 
     public CropFruit(Crop crop) {
-        super(new Properties().arch$tab(Tabs.CROPS));
+        super(new Properties().tab(Tabs.CROPS));
         this.crop = crop;
     }
 
@@ -42,8 +42,8 @@ public class CropFruit extends Item implements CropAccess {
 
     @Override
     public @NotNull Component getName(ItemStack itemStack) {
-        MutableComponent cropName = Component.translatable(this.crop.getTranslationKey());
-        return Component.translatable(this.getDescriptionId(itemStack), cropName);
+        MutableComponent cropName = new TranslatableComponent(this.crop.getTranslationKey());
+        return new TranslatableComponent(this.getDescriptionId(itemStack), cropName);
     }
 
     @Override

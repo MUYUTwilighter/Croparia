@@ -3,6 +3,7 @@ package cool.muyucloud.croparia.rei.display;
 import cool.muyucloud.croparia.recipe.RitualStructure;
 import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.rei.display.category.RitualStructureDisplayCategory;
+import cool.muyucloud.croparia.util.Constants;
 import cool.muyucloud.croparia.util.predicate.BlockStatePredicate;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.display.Display;
@@ -11,9 +12,8 @@ import me.shedaniel.rei.api.common.entry.EntryStack;
 import me.shedaniel.rei.api.common.entry.type.VanillaEntryTypes;
 import me.shedaniel.rei.api.common.util.EntryIngredients;
 import me.shedaniel.rei.api.common.util.EntryStacks;
+import net.minecraft.core.Registry;
 import net.minecraft.core.Vec3i;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
@@ -27,7 +27,7 @@ public class RitualStructureDisplay implements Display {
     private static final EntryStack<ItemStack> ANY = EntryStacks.of(BlockStatePredicate.STACK_ANY);
     private static final EntryStack<ItemStack> UNKNOWN = EntryStacks.of(BlockStatePredicate.STACK_UNKNOWN);
     private static final EntryStack<ItemStack> INPUT = EntryStacks.of(
-        CropariaItems.PLACEHOLDER.get().getDefaultInstance().setHoverName(Component.translatable("tooltip.croparia.input"))
+        CropariaItems.PLACEHOLDER.get().getDefaultInstance().setHoverName(Constants.TOOLTIP_INPUT)
     );
 
     private final List<EntryIngredient> input;
@@ -40,7 +40,7 @@ public class RitualStructureDisplay implements Display {
         this.structure = new Collection[structure.maxY()][structure.maxZ()][structure.maxX()];
         this.input = structure.getPredicates().stream().map(predicate -> EntryIngredients.of(VanillaEntryTypes.ITEM, predicate.availableBlockItems())).toList();
         this.id = structure.getId();
-        this.ritual = EntryStacks.of(BuiltInRegistries.ITEM.get(structure.getId()));
+        this.ritual = EntryStacks.of(Registry.ITEM.get(structure.getId()));
         this.extractStructure(structure);
     }
 

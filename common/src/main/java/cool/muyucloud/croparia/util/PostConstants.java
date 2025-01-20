@@ -1,8 +1,7 @@
 package cool.muyucloud.croparia.util;
 
 import cool.muyucloud.croparia.annotation.PostGen;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
@@ -13,8 +12,8 @@ import java.util.List;
 
 @PostGen
 public class PostConstants {
-    public static final List<Item> FOODS = BuiltInRegistries.ITEM.stream().filter(Item::isEdible).toList();
-    public static final TagKey<Block> MIDAS_HAND_IMMUNE_BLOCKS = TagKey.create(Registries.BLOCK, new ResourceLocation("croparia", "midas_hand_immune"));
-    public static final TagKey<EntityType<?>> MIDAS_HAND_IMMUNE_ENTITIES = TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("croparia", "midas_hand_immune"));
-    public static final TagKey<Item> HORN_PLENTY_BLACKLIST = TagKey.create(Registries.ITEM, new ResourceLocation("croparia", "horn_plenty_blacklist"));
+    public static final List<Item> FOODS = Registry.ITEM.stream().filter(Item::isEdible).toList();
+    public static final TagKey<Block> MIDAS_HAND_IMMUNE_BLOCKS = TagKey.create(Registry.BLOCK.key(), new ResourceLocation("croparia", "midas_hand_immune"));
+    public static final TagKey<EntityType<?>> MIDAS_HAND_IMMUNE_ENTITIES = TagKey.create(Registry.ENTITY_TYPE.key(), new ResourceLocation("croparia", "midas_hand_immune"));
+    public static final TagKey<Item> HORN_PLENTY_BLACKLIST = TagKey.create(Registry.ITEM.key(), new ResourceLocation("croparia", "horn_plenty_blacklist"));
 }

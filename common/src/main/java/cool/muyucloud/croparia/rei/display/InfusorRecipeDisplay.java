@@ -39,7 +39,7 @@ public class InfusorRecipeDisplay implements Display {
 
     public EntryStack<ItemStack> getElement() {
         ItemStack potion = recipe.getPotion().getDefaultInstance();
-        List<Component> tooltips = new LinkedList<>(potion.getTooltipLines(null, TooltipFlag.NORMAL));
+        List<Component> tooltips = new LinkedList<>(potion.getTooltipLines(null, TooltipFlag.Default.NORMAL));
         tooltips.set(0, Constants.ELEM_INFUSE_TOOLTIP);
         return EntryStacks.of(recipe.getPotion()).tooltip(tooltips);
     }

@@ -3,7 +3,7 @@ package cool.muyucloud.croparia.mixin;
 import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.util.pack.DataPackHandler;
 import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.commands.ReloadCommand;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -19,7 +19,7 @@ public class ReloadCommandMixin {
         DataPackHandler.INSTANCE.onSecondary();
         commandSourceStack.getServer().reloadResources(collection).exceptionally((throwable) -> {
             CropariaIf.LOGGER.warn("Failed to perform secondary reload", throwable);
-            commandSourceStack.sendFailure(Component.translatable("commands.reload.failure"));
+            commandSourceStack.sendFailure(new TranslatableComponent("commands.reload.failure"));
             return null;
         });
     }

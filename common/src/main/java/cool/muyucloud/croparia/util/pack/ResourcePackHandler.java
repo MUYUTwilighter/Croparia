@@ -1,13 +1,13 @@
 package cool.muyucloud.croparia.util.pack;
 
 import com.google.gson.JsonObject;
+import com.mojang.bridge.game.PackType;
 import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.util.Util;
 import net.minecraft.SharedConstants;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.FolderPackResources;
 import net.minecraft.server.packs.PackResources;
-import net.minecraft.server.packs.PackType;
-import net.minecraft.server.packs.PathPackResources;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -15,7 +15,7 @@ import java.nio.file.Path;
 public class ResourcePackHandler extends PackHandler {
     public static final ResourcePackHandler INSTANCE = new ResourcePackHandler(CropariaIf.CONFIG.getPackPath());
 
-    private final PathPackResources resourcePack = new PathPackResources("croparia", root, true);
+    private final FolderPackResources resourcePack = new FolderPackResources(this.root.toFile());
 
     @Override
     public void onInitial() {
@@ -69,6 +69,6 @@ public class ResourcePackHandler extends PackHandler {
 
     @Override
     protected int getPackVersion() {
-        return SharedConstants.getCurrentVersion().getPackVersion(PackType.CLIENT_RESOURCES);
+        return SharedConstants.getCurrentVersion().getPackVersion(PackType.RESOURCE);
     }
 }

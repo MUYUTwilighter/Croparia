@@ -23,10 +23,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-@SuppressWarnings("UnstableApiUsage")
 public class MidasHand extends Item {
     public MidasHand() {
-        super(new Properties().stacksTo(1).arch$tab(Tabs.MAIN).rarity(Rarity.EPIC));
+        super(new Properties().stacksTo(1).tab(Tabs.MAIN).rarity(Rarity.EPIC));
     }
 
     public @NotNull InteractionResult useOn(UseOnContext context) {

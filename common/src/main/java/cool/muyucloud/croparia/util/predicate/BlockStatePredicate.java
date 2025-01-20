@@ -4,10 +4,11 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import cool.muyucloud.croparia.access.StateHolderAccess;
 import cool.muyucloud.croparia.registry.CropariaItems;
+import cool.muyucloud.croparia.util.Constants;
 import net.minecraft.core.Holder;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
@@ -23,9 +24,9 @@ import java.util.*;
 import java.util.function.Predicate;
 
 public class BlockStatePredicate implements Predicate<BlockState> {
-    public static final ItemStack STACK_UNKNOWN = Items.BEDROCK.getDefaultInstance().setHoverName(Component.translatable("tooltip.croparia.unknown"));
-    public static final ItemStack STACK_AIR = Items.BARRIER.getDefaultInstance().setHoverName(Component.translatable("tooltip.croparia.air"));
-    public static final ItemStack STACK_ANY = Items.LIGHT_GRAY_STAINED_GLASS_PANE.getDefaultInstance().setHoverName(Component.translatable("tooltip.croparia.any"));
+    public static final ItemStack STACK_UNKNOWN = Items.BEDROCK.getDefaultInstance().setHoverName(Constants.TOOLTIP_UNKNOWN);
+    public static final ItemStack STACK_AIR = Items.BARRIER.getDefaultInstance().setHoverName(Constants.TOOLTIP_AIR);
+    public static final ItemStack STACK_ANY = Items.LIGHT_GRAY_STAINED_GLASS_PANE.getDefaultInstance().setHoverName(Constants.TOOLTIP_ANY);
 
     public static final BlockStatePredicate ANY = new BlockStatePredicate(b -> true, b -> true, 0, Builder.create());
     public static final BlockStatePredicate AIR = new BlockStatePredicate(BlockBehaviour.BlockStateBase::isAir, b -> true, 0, Builder.create());
@@ -67,8 +68,8 @@ public class BlockStatePredicate implements Predicate<BlockState> {
         if (this.builder.isBlock()) {
             return Collections.singleton(getBlockItem(ResourceLocation.tryParse(this.builder.getBlock())));
         } else if (this.builder.isTag()) {
-            Iterator<Holder<Block>> blocks = BuiltInRegistries.BLOCK.getTagOrEmpty(
-                TagKey.create(Registries.BLOCK, ResourceLocation.tryParse(Objects.requireNonNull(builder.getBlock()).substring(1)))
+            Iterator<Holder<Block>> blocks = Registry.BLOCK.getTagOrEmpty(
+                TagKey.create(Registry.BLOCK.key(), ResourceLocation.tryParse(Objects.requireNonNull(builder.getBlock()).substring(1)))
             ).iterator();
             if (!blocks.hasNext()) {
                 return builder.properties.isEmpty() ? Collections.singleton(STACK_UNKNOWN)
@@ -77,7 +78,7 @@ public class BlockStatePredicate implements Predicate<BlockState> {
                 List<ItemStack> list = new ArrayList<>();
                 blocks.forEachRemaining(
                     holder -> list.add(holder.value().asItem().getDefaultInstance()
-                        .setHoverName(Component.literal(builder.block)))
+                        .setHoverName(new TextComponent(builder.block)))
                 );
                 return list;
             }
@@ -88,7 +89,7 @@ public class BlockStatePredicate implements Predicate<BlockState> {
     }
 
     public static ItemStack getBlockItem(ResourceLocation id) {
-        Block block = BuiltInRegistries.BLOCK.getOptional(id).orElse(null);
+        Block block = Registry.BLOCK.getOptional(id).orElse(null);
         if (block != null) {
             return block.asItem().getDefaultInstance();
         } else {
@@ -106,7 +107,7 @@ public class BlockStatePredicate implements Predicate<BlockState> {
             return List.of();
         }
         List<Component> components = new LinkedList<>();
-        this.builder.properties.forEach((property, value) -> components.add(Component.literal("%s=%s".formatted(property, value))));
+        this.builder.properties.forEach((property, value) -> components.add(new TextComponent("%s=%s".formatted(property, value))));
         return components;
     }
 
@@ -146,10 +147,10 @@ public class BlockStatePredicate implements Predicate<BlockState> {
             if (block == null) {
                 blockPredicate = b -> true;
             } else if (tag) {
-                TagKey<Block> tag = TagKey.create(Registries.BLOCK, ResourceLocation.tryParse(block.substring(1)));
+                TagKey<Block> tag = TagKey.create(Registry.BLOCK.key(), ResourceLocation.tryParse(block.substring(1)));
                 blockPredicate = b -> b.is(tag);
             } else {
-                Block block = BuiltInRegistries.BLOCK.get(ResourceLocation.tryParse(this.block));
+                Block block = Registry.BLOCK.get(ResourceLocation.tryParse(this.block));
                 if (block == Blocks.AIR) {
                     throw new IllegalArgumentException("Invalid block: " + this.block);
                 }

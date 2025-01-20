@@ -4,13 +4,13 @@ import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.recipe.serializer.*;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Registry;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 
 import java.util.function.Supplier;
 
 public class RecipeSerializers {
-    public static DeferredRegister<RecipeSerializer<?>> SERIALIZERS = DeferredRegister.create(CropariaIf.MOD_ID, Registries.RECIPE_SERIALIZER);
+    public static DeferredRegister<RecipeSerializer<?>> SERIALIZERS = DeferredRegister.create(CropariaIf.MOD_ID, Registry.RECIPE_SERIALIZER_REGISTRY);
 
     public static RegistrySupplier<InfusorRecipeSerializer> INFUSOR = register("infusor", InfusorRecipeSerializer::new);
     public static RegistrySupplier<RitualRecipeSerializer> RITUAL = register("ritual", RitualRecipeSerializer::new);

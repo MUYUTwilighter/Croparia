@@ -8,11 +8,12 @@ import cool.muyucloud.croparia.data.crop.Crop;
 import dev.architectury.core.block.ArchitecturyLiquidBlock;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.Registry;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -20,22 +21,15 @@ import java.util.function.Supplier;
 
 public class CropariaBlocks {
     @PreReg
-    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(CropariaIf.MOD_ID, Registries.BLOCK);
+    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(CropariaIf.MOD_ID, Registry.BLOCK_REGISTRY);
 
-    @PostReg
-    public static final RegistrySupplier<ActivatedShrieker> ACTIVATED_SHRIEKER = registerBlock(
-        "activated_shrieker",
-        () -> new ActivatedShrieker(
-            BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK).strength(3.0F, 3.0F).sound(SoundType.SCULK_SHRIEKER)
-        )
-    );
     @PostReg
     public static final RegistrySupplier<Placeholder> PLACEHOLDER = registerBlock("placeholder_block", Placeholder::new);
     @PostReg
     public static final RegistrySupplier<Greenhouse> GREENHOUSE = registerBlock(
         "greenhouse",
         () -> new Greenhouse(
-            BlockBehaviour.Properties.of().strength(1.0F, 1.0F).randomTicks().lightLevel(state -> 8)
+            BlockBehaviour.Properties.of(Material.GLASS).strength(1.0F, 1.0F).randomTicks().lightLevel(state -> 8)
                 .isSuffocating((state, world, pos) -> false)
                 .isViewBlocking((state, world, pos) -> false)
         )
@@ -57,25 +51,23 @@ public class CropariaBlocks {
     @PostReg
     public static final RegistrySupplier<Block> ELEMENTAL_STONE = registerBlock(
         "elemental_stone",
-        () -> new DropExperienceBlock(
-            BlockBehaviour.Properties.of().strength(1.0F, 1.0F).requiresCorrectToolForDrops(),
-            UniformInt.of(0, 2)
+        () -> new Block(
+            BlockBehaviour.Properties.of(Material.STONE).strength(1.0F, 1.0F).requiresCorrectToolForDrops()
         )
     );
     @PostReg
-    public static final RegistrySupplier<DropExperienceBlock> ELEMATILIUS_ORE = registerBlock(
+    public static final RegistrySupplier<OreBlock> ELEMATILIUS_ORE = registerBlock(
         "elematilius_ore",
-        () -> new DropExperienceBlock(
-            BlockBehaviour.Properties.of().strength(1.0F, 1.0F).requiresCorrectToolForDrops(),
+        () -> new OreBlock(
+            BlockBehaviour.Properties.of(Material.STONE).strength(1.0F, 1.0F).requiresCorrectToolForDrops(),
             UniformInt.of(0, 2)
         )
     );
     @PostReg
-    public static final RegistrySupplier<DropExperienceBlock> DEEPSLATE_ELEMATILIUS_ORE = registerBlock(
+    public static final RegistrySupplier<OreBlock> DEEPSLATE_ELEMATILIUS_ORE = registerBlock(
         "deepslate_elematilius_ore",
-        () -> new DropExperienceBlock(
-            BlockBehaviour.Properties.of().strength(1.0F, 1.0F).requiresCorrectToolForDrops().
-                mapColor(MapColor.DEEPSLATE).sound(SoundType.DEEPSLATE).requiresCorrectToolForDrops(),
+        () -> new OreBlock(
+            BlockBehaviour.Properties.of(Material.STONE).strength(1.0F, 1.0F).requiresCorrectToolForDrops().color(MaterialColor.DEEPSLATE).sound(SoundType.DEEPSLATE).requiresCorrectToolForDrops(),
             UniformInt.of(0, 2)
         )
     );

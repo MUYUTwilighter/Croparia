@@ -14,6 +14,8 @@ import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.core.Vec3i;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 
 import java.util.List;
 
@@ -54,7 +56,7 @@ public class RitualStructureDisplayCategory implements DisplayCategory<RitualStr
                 bounds.y + bounds.height - FRAME_PADDING - (SLOT_SIZE + BUTTON_SIZE) / 2,
                 BUTTON_SIZE, BUTTON_SIZE
             ),
-            Component.literal("<")
+            new TextComponent("<")
         ).onClick(button -> display.lower()).tooltipLine(Constants.RITUAL_STRUCTURE_LOWER);
         Widget upper = Widgets.createButton(
             new Rectangle(
@@ -62,17 +64,17 @@ public class RitualStructureDisplayCategory implements DisplayCategory<RitualStr
                 bounds.y + bounds.height - FRAME_PADDING - (SLOT_SIZE + BUTTON_SIZE) / 2,
                 BUTTON_SIZE, BUTTON_SIZE
             ),
-            Component.literal(">")
+            new TextComponent(">")
         ).onClick(button -> display.upper()).tooltipLine(Constants.RITUAL_STRUCTURE_UPPER);
         Vec3i slotSize = display.size();
         Widget label = Widgets.createDrawableWidget(
-            (graphics, mouseX, mouseY, delta) -> Widgets.createLabel(
+            (helper, poseStack, mouseX, mouseY, delta) -> Widgets.createLabel(
                 new Point(
                     bounds.x + bounds.width / 2,
                     bounds.y + bounds.height - FRAME_PADDING - SLOT_SIZE + LABEL_MARGIN
                 ),
-                Component.translatable("gui.croparia.ritual_structure.label", display.lastRead() + 1)
-            ).render(graphics, mouseX, mouseY, delta)
+                new TranslatableComponent("gui.croparia.ritual_structure.label", display.lastRead() + 1)
+            ).render(poseStack, mouseX, mouseY, delta)
         );
         Widget layer = Widgets.overflowed(
             new Rectangle(

@@ -14,12 +14,12 @@ import cool.muyucloud.croparia.recipe.container.RitualStructureContainer;
 import cool.muyucloud.croparia.registry.RecipeTypes;
 import cool.muyucloud.croparia.util.predicate.BlockStatePredicate;
 import cool.muyucloud.croparia.util.predicate.GenericIngredient;
-import net.minecraft.Util;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -37,12 +37,16 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.io.FileWriter;
 import java.nio.file.Path;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class RecipeWizard extends Item {
     private static final Gson GSON = new Gson();
+    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss");
 
     public RecipeWizard(Properties properties) {
         super(properties);
@@ -60,17 +64,17 @@ public class RecipeWizard extends Item {
             ResourceLocation id = ritualStand.arch$registryName();
             Optional<BlockState> optionalBlock = getRitualInputBlock(id, context.getLevel(), targetPos);
             if (optionalBlock.isEmpty() || optionalBlock.get().isAir()) {
-                player.displayClientMessage(Component.translatable("overlay.croparia.recipe_wizard.ritual.missing.block"), true);
+                player.displayClientMessage(new TranslatableComponent("overlay.croparia.recipe_wizard.ritual.missing.block"), true);
                 return InteractionResult.FAIL;
             }
             Optional<ItemStack> optionalIngredient = getItemInput(level, targetPos);
             if (optionalIngredient.isEmpty()) {
-                player.displayClientMessage(Component.translatable("overlay.croparia.recipe_wizard.ritual.missing.ingredient"), true);
+                player.displayClientMessage(new TranslatableComponent("overlay.croparia.recipe_wizard.ritual.missing.ingredient"), true);
                 return InteractionResult.FAIL;
             }
             ItemStack result = player.getOffhandItem();
             if (result.isEmpty()) {
-                player.displayClientMessage(Component.translatable("overlay.croparia.recipe_wizard.ritual.missing.result"), true);
+                player.displayClientMessage(new TranslatableComponent("overlay.croparia.recipe_wizard.ritual.missing.result"), true);
                 return InteractionResult.FAIL;
             }
             JsonObject recipe = assembleRitual(ritualStand, optionalBlock.get(), optionalIngredient.get(), result);
@@ -81,17 +85,17 @@ public class RecipeWizard extends Item {
         } else if (target instanceof Infusor) {
             Optional<ItemStack> optionalIngredient = getItemInput(level, targetPos);
             if (optionalIngredient.isEmpty()) {
-                player.displayClientMessage(Component.translatable("overlay.croparia.recipe_wizard.infusor.missing.ingredient"), true);
+                player.displayClientMessage(new TranslatableComponent("overlay.croparia.recipe_wizard.infusor.missing.ingredient"), true);
                 return InteractionResult.FAIL;
             }
             ElementsEnum element = Infusor.getElement(state);
             if (element == ElementsEnum.EMPTY) {
-                player.displayClientMessage(Component.translatable("overlay.croparia.recipe_wizard.infusor.missing.element"), true);
+                player.displayClientMessage(new TranslatableComponent("overlay.croparia.recipe_wizard.infusor.missing.element"), true);
                 return InteractionResult.FAIL;
             }
             ItemStack result = player.getOffhandItem();
             if (result.isEmpty()) {
-                player.displayClientMessage(Component.translatable("overlay.croparia.recipe_wizard.infusor.missing.result"), true);
+                player.displayClientMessage(new TranslatableComponent("overlay.croparia.recipe_wizard.infusor.missing.result"), true);
                 return InteractionResult.FAIL;
             }
             JsonObject recipe = assembleInfusor(element, optionalIngredient.get(), result);
@@ -113,7 +117,7 @@ public class RecipeWizard extends Item {
         if (!dirFile.isDirectory()) {
             dirFile.mkdirs();
         }
-        String recipeName = Util.getFilenameFormattedDateTime();
+        String recipeName = DATE_FORMAT.format(new Date());
         Path location = dir.resolve(recipeName + ".json");
         try (JsonWriter writer = new JsonWriter(new FileWriter(location.toFile()))) {
             writer.setIndent("  ");
@@ -125,10 +129,10 @@ public class RecipeWizard extends Item {
     }
 
     public void sendFeedback(String key, Path path, Player player) {
-        MutableComponent location = Component.literal(path.getFileName().toString()).withStyle(
+        MutableComponent location = new TextComponent(path.getFileName().toString()).withStyle(
             ServerCommandRoot.openFile(path.toString())
         ).withStyle(ServerCommandRoot.inlineMouseBehavior());
-        MutableComponent main = Component.translatable(key, location);
+        MutableComponent main = new TranslatableComponent(key, location);
         player.displayClientMessage(main, false);
     }
 
@@ -165,9 +169,13 @@ public class RecipeWizard extends Item {
     public @NotNull Optional<BlockState> getRitualInputBlock(ResourceLocation id, Level world, BlockPos pos) {
         RecipeManager recipeManager = world.getRecipeManager();
         AtomicReference<BlockState> result = new AtomicReference<>();
-        recipeManager.getRecipeFor(RecipeTypes.RITUAL_STRUCTURE.get(), RitualStructureContainer.INSTANCE, world, id).flatMap(
-            recipe -> recipe.getSecond().matches(pos, world)
-        ).ifPresent(result::set);
+        recipeManager.getRecipesFor(RecipeTypes.RITUAL_STRUCTURE.get(), RitualStructureContainer.INSTANCE, world).forEach(
+            recipe -> {
+                if (recipe.getId().equals(id)) {
+                    recipe.matches(pos, world).ifPresent(result::set);
+                }
+            }
+        );
         return Optional.ofNullable(result.get());
     }
 

@@ -6,8 +6,8 @@ import cool.muyucloud.croparia.data.crop.CropFileHandler;
 import cool.muyucloud.croparia.registry.Crops;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 
 public class DumpBuiltinCommand {
     private static final LiteralArgumentBuilder<CommandSourceStack> DUMP_BUILTIN = Commands.literal("dumpBuiltin")
@@ -15,11 +15,11 @@ public class DumpBuiltinCommand {
 
     public static int dumpAll(SuccessMessage success, boolean openFile) {
         int size = Crops.size();
-        MutableComponent component = Component.translatable("commands.croparia.dump.perform", size);
+        MutableComponent component = new TranslatableComponent("commands.croparia.dump.perform", size);
         if (openFile) {
             component.withStyle(ServerCommandRoot.openFile(CropariaIf.CONFIG.getDumpPath().toString())).withStyle(ServerCommandRoot.blockMouseBehavior());
         }
-        success.send(() -> component, false);
+        success.send(component, false);
         CropFileHandler.dumpBuiltinCrops();
         return size;
     }

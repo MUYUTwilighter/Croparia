@@ -20,7 +20,7 @@ public abstract class CropBlockMixin extends BushBlock implements BonemealableBl
     }
 
     @Shadow
-    protected abstract IntegerProperty getAgeProperty();
+    public abstract IntegerProperty getAgeProperty();
 
     @Unique
     @Override

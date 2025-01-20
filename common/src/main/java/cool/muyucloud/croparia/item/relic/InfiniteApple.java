@@ -12,7 +12,6 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-@SuppressWarnings("UnstableApiUsage")
 public class InfiniteApple extends Item {
 
     public InfiniteApple() {
@@ -23,7 +22,7 @@ public class InfiniteApple extends Item {
                 .effect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 100, 0), 1.0F)
                 .effect(new MobEffectInstance(MobEffects.ABSORPTION, 100, 3), 1.0F)
                 .build()
-        ).stacksTo(1).arch$tab(Tabs.MAIN).rarity(Rarity.EPIC));
+        ).stacksTo(1).tab(Tabs.MAIN).rarity(Rarity.EPIC));
     }
 
     public @NotNull ItemStack finishUsingItem(ItemStack stack, Level world, LivingEntity user) {

@@ -5,7 +5,6 @@ import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.util.Util;
 import net.minecraft.SharedConstants;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.PackSource;
 
 import java.io.File;
@@ -15,7 +14,7 @@ public class DataPackHandler extends PackHandler {
     public static final DataPackHandler INSTANCE = new DataPackHandler(CropariaIf.CONFIG.getPackPath());
 
     private final AlwaysEnabledFileResourcePackProvider datapack = new AlwaysEnabledFileResourcePackProvider(
-        root, PackType.SERVER_DATA, PackSource.BUILT_IN
+        root, PackSource.BUILT_IN
     );
 
     @Override
@@ -77,6 +76,6 @@ public class DataPackHandler extends PackHandler {
 
     @Override
     protected int getPackVersion() {
-        return SharedConstants.getCurrentVersion().getPackVersion(PackType.SERVER_DATA);
+        return SharedConstants.getCurrentVersion().getPackVersion(com.mojang.bridge.game.PackType.DATA);
     }
 }
