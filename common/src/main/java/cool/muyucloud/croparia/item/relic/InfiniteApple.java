@@ -12,8 +12,8 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
+@SuppressWarnings("UnstableApiUsage")
 public class InfiniteApple extends Item {
-
     public InfiniteApple() {
         super((new Properties()).food(
             new FoodProperties.Builder().alwaysEdible().nutrition(5).saturationModifier(4.0F)

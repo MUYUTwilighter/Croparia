@@ -19,6 +19,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+@SuppressWarnings("UnstableApiUsage")
 public class MagicRope extends Item {
     public MagicRope() {
         super(new Properties().arch$tab(Tabs.MAIN).rarity(Rarity.EPIC));

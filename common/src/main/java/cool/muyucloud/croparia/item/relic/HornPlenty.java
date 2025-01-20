@@ -16,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
+@SuppressWarnings("UnstableApiUsage")
 public class HornPlenty extends Item {
     private static final int MAX_ATTEMPT = 5;
 

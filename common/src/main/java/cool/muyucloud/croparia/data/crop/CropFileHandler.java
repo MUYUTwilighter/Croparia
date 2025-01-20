@@ -52,7 +52,7 @@ public class CropFileHandler {
                 writer.setIndent("  ");
                 GSON.toJson(crop.toJson(), writer);
             } catch (Throwable e) {
-                CropariaIf.LOGGER.error("Failed to dump crop {}", crop.getName(), e);
+                CropariaIf.LOGGER.error("Failed to dump crop \"%s\"".formatted(crop.getName()), e);
             }
         });
     }
@@ -68,7 +68,7 @@ public class CropFileHandler {
                 writer.setIndent("  ");
                 GSON.toJson(crop.toJson(), writer);
             } catch (Throwable e) {
-                CropariaIf.LOGGER.error("Failed to dump crop {}", crop.getName(), e);
+                CropariaIf.LOGGER.error("Failed to dump crop \"%s\"".formatted(crop.getName()), e);
             }
         });
     }
@@ -84,7 +84,7 @@ public class CropFileHandler {
             GSON.toJson(crop.toJson(), writer);
             return true;
         } catch (Throwable e) {
-            CropariaIf.LOGGER.error("Failed to dump crop {}", crop.getName(), e);
+            CropariaIf.LOGGER.error("Failed to dump crop \"%s\"".formatted(crop.getName()), e);
         }
         return false;
     }

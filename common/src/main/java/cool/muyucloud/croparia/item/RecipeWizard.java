@@ -104,7 +104,7 @@ public class RecipeWizard extends Item {
     }
 
     public void addCooldown(Player player) {
-        player.getCooldowns().addCooldown(this, 1);
+        player.getCooldowns().addCooldown(this, 5);
     }
 
     public Path dumpRecipe(ResourceLocation recipeType, JsonObject recipe) {
