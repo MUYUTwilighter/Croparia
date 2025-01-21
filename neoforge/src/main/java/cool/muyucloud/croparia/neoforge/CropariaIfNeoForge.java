@@ -1,14 +1,14 @@
 package cool.muyucloud.croparia.neoforge;
 
 import cool.muyucloud.croparia.CropariaIf;
-import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 
 @Mod(CropariaIf.MOD_ID)
-@EventBusSubscriber(modid = CropariaIf.MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.DEDICATED_SERVER)
+@EventBusSubscriber(modid = CropariaIf.MOD_ID)
 public class CropariaIfNeoForge {
     public CropariaIfNeoForge() {
         CompatCrops.init();
@@ -16,7 +16,7 @@ public class CropariaIfNeoForge {
     }
 
     @SubscribeEvent
-    public static void onServerStarting() {
+    public static void onServerStarting(ServerStartingEvent event) {
         CropariaIf.onServerStarting();
     }
 
