@@ -60,6 +60,9 @@ allprojects {
                 includeGroup "com.github.llamalad7.mixinextras"
             }
         }
+        maven {
+            url "https://cursemaven.com"
+        }
     }
 
     tasks.withType(JavaCompile) {

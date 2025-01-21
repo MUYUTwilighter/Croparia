@@ -38,6 +38,9 @@ dependencies {
     modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-forge:$rei_version"
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-forge:$rei_version"
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-default-plugin-forge:$rei_version"
+    // RER
+    modRuntimeOnly "curse.maven:roughly-enough-resources-325625:4721546"
+
     // EMI
     modCompileOnly "dev.emi:emi-forge:${emi_version}:api"
     modCompileOnly "dev.emi:emi-forge:${emi_version}"
