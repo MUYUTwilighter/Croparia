@@ -48,6 +48,9 @@ subprojects {
                 includeGroup "com.github.llamalad7.mixinextras"
             }
         }
+        maven {
+            url "https://cursemaven.com"
+        }
     }
 
     loom {

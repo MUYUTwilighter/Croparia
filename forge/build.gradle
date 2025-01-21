@@ -43,6 +43,8 @@ dependencies {
     modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-forge:$rei_version"
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-forge:$rei_version"
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-default-plugin-forge:$rei_version"
+    // RER
+    modRuntimeOnly "curse.maven:roughly-enough-resources-325625:3929204"
     // No EMI as it does not support forge 1.18.2
 }
 

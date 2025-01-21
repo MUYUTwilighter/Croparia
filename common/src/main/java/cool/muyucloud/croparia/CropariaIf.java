@@ -14,6 +14,7 @@ import cool.muyucloud.croparia.generator.RecipeGenerator;
 import cool.muyucloud.croparia.registry.*;
 import cool.muyucloud.croparia.util.pack.DataPackHandler;
 import cool.muyucloud.croparia.util.pack.ResourcePackHandler;
+import dev.architectury.event.events.common.LifecycleEvent;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 
@@ -41,7 +42,7 @@ public class CropariaIf {
         ResourcePackHandler.INSTANCE.registerGenerator(ItemModelGenerator::init);
         ResourcePackHandler.INSTANCE.registerGenerator(BlockStateModelGenerator::init);
         ResourcePackHandler.INSTANCE.registerGenerator(LangGenerator::init);
-        PlacedFeatures.register();
+        LifecycleEvent.SETUP.register(PlacedFeatures::init);
         ServerCommandRoot.register();
         CropariaIf.LOGGER.info("=== Croparia common setup done ===");
     }

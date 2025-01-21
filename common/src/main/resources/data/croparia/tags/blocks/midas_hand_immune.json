@@ -11,7 +11,7 @@
     "minecraft:chain_command_block",
     "minecraft:structure_block",
     "minecraft:jigsaw",
-    "#minecraft:replaceable",
+    "#minecraft:replaceable_plants",
     "minecraft:gold_block"
   ]
 }

@@ -40,6 +40,8 @@ dependencies {
     modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:$rei_version"
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-fabric:$rei_version"
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-default-plugin-fabric:$rei_version"
+    // RER
+    modRuntimeOnly "curse.maven:roughly-enough-resources-325625:3736226"
 
     // EMI
     modCompileOnly "dev.emi:emi:${emi_version}:api"

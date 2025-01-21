@@ -9,7 +9,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
 import org.jetbrains.annotations.NotNull;
 
 public class TagUtil {
@@ -33,9 +32,5 @@ public class TagUtil {
 
     public static Iterable<Holder<Item>> forItems(TagKey<Item> tag) {
         return Registry.ITEM.getTagOrEmpty(tag);
-    }
-
-    public static Iterable<Holder<Block>> forBlocks(TagKey<Block> tag) {
-        return Registry.BLOCK.getTagOrEmpty(tag);
     }
 }
