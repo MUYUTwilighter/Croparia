@@ -1,0 +1,15 @@
+@enabled=true
+@path=croparia/recipes/crafting/material/{name}.json
+@dependency=minecraft
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "{fruit}"
+    }
+  ],
+  "result": {
+    "item": "{result}",
+    "count": {result_count.2}
+  }
+}

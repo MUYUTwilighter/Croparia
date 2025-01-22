@@ -9,8 +9,6 @@ import cool.muyucloud.croparia.data.config.Config;
 import cool.muyucloud.croparia.data.config.ConfigFileHandler;
 import cool.muyucloud.croparia.generator.BlockTagGenerator;
 import cool.muyucloud.croparia.generator.ItemTagGenerator;
-import cool.muyucloud.croparia.generator.LootTableGenerator;
-import cool.muyucloud.croparia.generator.RecipeGenerator;
 import cool.muyucloud.croparia.registry.*;
 import cool.muyucloud.croparia.util.pack.DataPackHandler;
 import cool.muyucloud.croparia.util.pack.ResourcePackHandler;
@@ -33,8 +31,6 @@ public class CropariaIf {
         CropariaItems.register();
         Tabs.register();
         CropariaIf.LOGGER.debug("Adding data generators");
-        DataPackHandler.INSTANCE.registerGenerator(RecipeGenerator::init);
-        DataPackHandler.INSTANCE.registerGenerator(LootTableGenerator::init);
         DataPackHandler.INSTANCE.registerGenerator(ItemTagGenerator::init);
         DataPackHandler.INSTANCE.registerGenerator(BlockTagGenerator::init);
         ResourcePackHandler.INSTANCE.registerGenerator(ItemModelGenerator::init);
