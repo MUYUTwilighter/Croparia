@@ -5,6 +5,7 @@ import cool.muyucloud.croparia.entity.FakePlayer;
 import cool.muyucloud.croparia.recipe.RitualStructure;
 import cool.muyucloud.croparia.recipe.container.RitualContainer;
 import cool.muyucloud.croparia.recipe.container.RitualStructureContainer;
+import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.registry.RecipeTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -46,6 +47,9 @@ public class RitualStand extends Block {
     @Override
     protected @NotNull ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level world, BlockPos pos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (!world.isClientSide) {
+            if (itemStack.getItem() == CropariaItems.RECIPE_WIZARD.get()) {
+                return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+            }
             ItemStack newStack = itemStack.copyAndClear();
             world.addFreshEntity(new ItemEntity(world, (double) pos.getX() + 0.5, (double) pos.getY() + 0.6, (double) pos.getZ() + 0.5, newStack, 0, 0, 0));
             return ItemInteractionResult.CONSUME;

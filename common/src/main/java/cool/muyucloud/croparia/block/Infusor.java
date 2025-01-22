@@ -71,7 +71,7 @@ public class Infusor extends Block {
                     player.addItem(CropariaItems.getPotion(state.getValue(TYPE)).getDefaultInstance());
                 }
                 return ItemInteractionResult.SUCCESS;
-            } else {
+            } else if (item == CropariaItems.RECIPE_WIZARD.get()) {
                 ItemStack newStack = itemStack.copyAndClear();
                 world.addFreshEntity(new ItemEntity(world, (double) pos.getX() + 0.5, (double) pos.getY() + 0.6, (double) pos.getZ() + 0.5, newStack, 0, 0, 0));
                 return ItemInteractionResult.CONSUME;
