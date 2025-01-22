@@ -46,9 +46,9 @@ public class Infusor extends Block {
     }
 
     public @NotNull InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, @Nullable BlockHitResult hit) {
-        if (!world.isClientSide && hand == InteractionHand.MAIN_HAND) {
-            ItemStack itemstack = player.getMainHandItem();
-            Item item = itemstack.getItem();
+        if (!world.isClientSide) {
+            ItemStack stack = player.getItemInHand(hand);
+            Item item = stack.getItem();
             ElementsEnum element = CropariaItems.elementFromPotion(item);
             if (state.getValue(TYPE) == ElementsEnum.EMPTY && element != ElementsEnum.EMPTY) {
                 world.setBlockAndUpdate(pos, this.defaultBlockState().setValue(TYPE, element));
@@ -66,13 +66,18 @@ public class Infusor extends Block {
                     });
                 }
                 return InteractionResult.SUCCESS;
-            } else if (state.getValue(TYPE) != ElementsEnum.EMPTY && player.getMainHandItem().getItem() == Items.GLASS_BOTTLE) {
+            } else if (state.getValue(TYPE) != ElementsEnum.EMPTY && item == Items.GLASS_BOTTLE) {
                 world.setBlockAndUpdate(pos, this.defaultBlockState().setValue(TYPE, ElementsEnum.EMPTY));
                 if (!player.isCreative()) {
                     player.getMainHandItem().shrink(1);
                     player.addItem(CropariaItems.getPotion(element).getDefaultInstance());
                 }
                 return InteractionResult.SUCCESS;
+            } else if (item != CropariaItems.RECIPE_WIZARD.get()) {
+                ItemStack newStack = stack.copy();
+                stack.setCount(0);
+                world.addFreshEntity(new ItemEntity(world, (double) pos.getX() + 0.5, (double) pos.getY() + 0.6, (double) pos.getZ() + 0.5, newStack, 0, 0, 0));
+                return InteractionResult.CONSUME;
             }
         }
         return InteractionResult.FAIL;

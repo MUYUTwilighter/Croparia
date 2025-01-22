@@ -1,0 +1,26 @@
+@enabled=true
+@path=croparia/recipes/crafting/seeds/{name}.json
+@dependency=minecraft
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "item": "{croparia}"
+    },
+    "M": {
+      "{material_type}": "{material}"
+    },
+    "S": {
+      "tag": "croparia:seed_ingredient"
+    }
+  },
+  "pattern": [
+    "MSM",
+    "SCS",
+    "MSM"
+  ],
+  "result": {
+    "item": "{seed}",
+    "count": 1
+  }
+}

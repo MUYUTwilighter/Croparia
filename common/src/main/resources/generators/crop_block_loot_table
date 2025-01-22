@@ -1,0 +1,35 @@
+@enabled=true
+@path=croparia/loot_tables/blocks/{crop_block_path}.json
+@dependency=minecraft
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "{seed}"
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "{fruit}",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "{crop_block}",
+              "properties": {
+                "age": "7"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
