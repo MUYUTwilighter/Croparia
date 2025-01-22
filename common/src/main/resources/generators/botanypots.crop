@@ -1,0 +1,25 @@
+@enabled=true
+@path=croparia/recipe/crafting/botanypots/crop/{name}.json
+@dependency=botanypots
+{
+  "type": "botanypots:crop",
+  "seed": {
+    "item": "{seed}"
+  },
+  "categories": [
+    "crop", "farmland"
+  ],
+  "growthTicks": 1200,
+  "display": {
+    "type": "botanypots:aging",
+    "block": "{crop_block}"
+  },
+  "drops": [
+    {
+      "chance": 1.00,
+      "output": {
+        "item": "{fruit}"
+      }
+    }
+  ]
+}

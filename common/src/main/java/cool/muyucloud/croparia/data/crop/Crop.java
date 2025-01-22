@@ -2,7 +2,9 @@ package cool.muyucloud.croparia.data.crop;
 
 import com.google.gson.JsonObject;
 import cool.muyucloud.croparia.CropariaIf;
+import cool.muyucloud.croparia.annotation.PostGen;
 import cool.muyucloud.croparia.block.CropariaCropBlock;
+import cool.muyucloud.croparia.data.PlaceHolder;
 import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.util.BiOptional;
 import cool.muyucloud.croparia.util.Util;
@@ -18,6 +20,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Crop {
     @NotNull
@@ -250,7 +254,7 @@ public class Crop {
         return translations.getOrDefault(lang, translations.get("en_us"));
     }
 
-    public String serializeMaterial() {
+    public String taggableMaterial() {
         return this.tag ? "#" + this.material : this.material.toString();
     }
 
@@ -275,5 +279,71 @@ public class Crop {
     @Override
     public String toString() {
         return "Crop{" + "name='" + name + '\'' + ", material=" + material + ", type=" + type + ", translationKey='" + translationKey + '\'' + ", translations=" + translations + ", color=" + color + ", tier=" + tier + ", tag=" + tag + '}';
+    }
+
+    private static final Pattern NAME = Pattern.compile("\\{name}");
+    private static final Pattern MATERIAL = Pattern.compile("\\{material}");
+    private static final Pattern MATERIAL_PATH = Pattern.compile("\\{material_path}");
+    private static final Pattern MATERIAL_TYPE = Pattern.compile("\\{material_type}");
+    private static final Pattern MATERIAL_TAGGABLE = Pattern.compile("\\{material_taggable}");
+    private static final Pattern COLOR = Pattern.compile("\\{color}");
+    private static final Pattern COLOR_HEX = Pattern.compile("\\{color_hex}");
+    private static final Pattern TYPE = Pattern.compile("\\{type}");
+    private static final Pattern TIER = Pattern.compile("\\{tier}");
+    private static final Pattern SEED = Pattern.compile("\\{seed}");
+    private static final Pattern SEED_PATH = Pattern.compile("\\{seed_path}");
+    private static final Pattern FRUIT = Pattern.compile("\\{fruit}");
+    private static final Pattern FRUIT_PATH = Pattern.compile("\\{fruit_path}");
+    private static final Pattern CROP_BLOCK = Pattern.compile("\\{crop_block}");
+    private static final Pattern CROP_BLOCK_PATH = Pattern.compile("\\{crop_block_path}");
+    private static final Pattern RESULT = Pattern.compile("\\{result}");
+    private static final Pattern RESULT_PATH = Pattern.compile("\\{result_path}");
+    private static final Pattern TRANSLATION_KEY = Pattern.compile("\\{translation_key}");
+    private static final Pattern RESULT_COUNT = Pattern.compile("\\{result_count\\.(\\d+)}");
+    private static final Pattern CROPARIA = Pattern.compile("\\{croparia}");
+    private static final Pattern CROPARIA_PATH = Pattern.compile("\\{croparia_path}");
+    private static final Pattern TRANSLATIONS = Pattern.compile("\\{translations\\.([^}]+)}");
+
+    @PostGen
+    public Map<Pattern, PlaceHolder> placeholders() {
+        Map<Pattern, PlaceHolder> map = new HashMap<>();
+        map.put(COLOR, placeholder -> Integer.toString(this.color));
+        map.put(COLOR_HEX, placeholder -> Integer.toHexString(this.color));
+        map.put(CROPARIA, placeholder -> CropariaItems.getCroparia(this.getTier()).getId().toString());
+        map.put(CROPARIA_PATH, placeholder -> CropariaItems.getCroparia(this.getTier()).getId().getPath());
+        map.put(CROP_BLOCK, placeholder -> this.getBlockId().toString());
+        map.put(CROP_BLOCK_PATH, placeholder -> this.getBlockId().getPath());
+        map.put(FRUIT, placeholder -> this.getFruitId().toString());
+        map.put(FRUIT_PATH, placeholder -> this.getFruitId().getPath());
+        map.put(MATERIAL, placeholder -> this.getMaterial().toString());
+        map.put(MATERIAL_PATH, placeholder -> this.getMaterial().getPath());
+        map.put(MATERIAL_TYPE, placeholder -> this.isTag() ? "tag" : "item");
+        map.put(MATERIAL_TAGGABLE, placeholder -> this.taggableMaterial());
+        map.put(NAME, placeholder -> this.name);
+        map.put(SEED, placeholder -> this.getSeedId().toString());
+        map.put(SEED_PATH, placeholder -> this.getSeedId().getPath());
+        map.put(RESULT, placeholder -> Objects.requireNonNull(this.getMaterialItem().arch$registryName()).toString());
+        map.put(RESULT_COUNT, placeholder -> {
+            Matcher matcher = RESULT_COUNT.matcher(placeholder);
+            if (matcher.find()) {
+                int count = Integer.parseInt(matcher.group(1));
+                return String.valueOf(Math.min(this.getMaterialItem().getDefaultMaxStackSize(), count));
+            } else {
+                throw new RuntimeException("Invalid result count placeholder: " + placeholder);
+            }
+        });
+        map.put(RESULT_PATH, placeholder -> Objects.requireNonNull(this.getMaterialItem().arch$registryName()).getPath());
+        map.put(TIER, placeholder -> Integer.toString(this.tier));
+        map.put(TYPE, placeholder -> this.type.getModelName());
+        map.put(TRANSLATION_KEY, placeholder -> this.translationKey);
+        map.put(TRANSLATIONS, placeholder -> {
+            Matcher matcher = TRANSLATIONS.matcher(placeholder);
+            if (matcher.find()) {
+                return this.translate(matcher.group(1));
+            } else {
+                throw new RuntimeException("Invalid translation placeholder: " + placeholder);
+            }
+        });
+        return map;
     }
 }

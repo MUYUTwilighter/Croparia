@@ -1,0 +1,22 @@
+@enabled=true
+@path=croparia/recipe/crafting/thermal/insolator/{name}.json
+@dependency=thermal_cultivation
+{
+  "type": "thermal:insolator",
+  "ingredient": {
+    "item": "{seed}"
+  },
+  "result": [
+    {
+      "item": "{seed}",
+      "chance": 2.0
+    },
+    {
+      "item": "{fruit}",
+      "chance": 1.0
+    }
+  ],
+  "energy_mod": 1.5,
+  "water_mod": 1.5,
+  "experience": 0.2
+}

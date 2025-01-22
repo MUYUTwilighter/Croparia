@@ -1,0 +1,20 @@
+@enabled=true
+@path=croparia/recipe/crafting/modern_industrialization/packer/{name}.json
+@dependency=modern_industrialization
+{
+  "type": "modern_industrialization:packer",
+  "duration": 100,
+  "eu": 2,
+  "item_inputs": [
+    {
+      "item": "{seed}",
+      "count": 1
+    }
+  ],
+  "item_outputs": [
+    {
+      "item": "{fruit}",
+      "count": 1
+    }
+  ]
+}
