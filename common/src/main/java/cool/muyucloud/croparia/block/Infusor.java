@@ -72,7 +72,7 @@ public class Infusor extends Block {
                     player.addItem(CropariaItems.getPotion(element).getDefaultInstance());
                 }
                 return InteractionResult.SUCCESS;
-            } else if (!itemstack.isEmpty()) {
+            } else if (item != CropariaItems.RECIPE_WIZARD.get()) {
                 ItemStack newStack = itemstack.copyAndClear();
                 world.addFreshEntity(new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 0.6, pos.getZ() + 0.5, newStack, 0, 0, 0));
                 return InteractionResult.CONSUME;
