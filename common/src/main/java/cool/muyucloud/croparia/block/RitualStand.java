@@ -9,6 +9,8 @@ import cool.muyucloud.croparia.registry.RecipeTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -20,6 +22,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -38,6 +41,16 @@ public class RitualStand extends Block {
     public RitualStand(int tier) {
         super(Properties.of().strength(1.0F, 1.0F).sound(SoundType.ANVIL).requiresCorrectToolForDrops());
         this.tier = tier;
+    }
+
+    @Override
+    protected @NotNull ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level world, BlockPos pos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+        if (!world.isClientSide) {
+            ItemStack newStack = itemStack.copyAndClear();
+            world.addFreshEntity(new ItemEntity(world, (double) pos.getX() + 0.5, (double) pos.getY() + 0.6, (double) pos.getZ() + 0.5, newStack, 0, 0, 0));
+            return ItemInteractionResult.CONSUME;
+        }
+        return super.useItemOn(itemStack, blockState, world, pos, player, interactionHand, blockHitResult);
     }
 
     public void stepOn(Level world, BlockPos pos, BlockState state, Entity entity) {

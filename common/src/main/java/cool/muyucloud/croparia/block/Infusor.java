@@ -45,14 +45,13 @@ public class Infusor extends Block {
 
     @Override
     protected @NotNull ItemInteractionResult useItemOn(ItemStack itemStack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
-        if (!world.isClientSide && hand == InteractionHand.MAIN_HAND) {
-            ItemStack itemstack = player.getMainHandItem();
-            Item item = itemstack.getItem();
+        if (!world.isClientSide) {
+            Item item = itemStack.getItem();
             ElementsEnum element = CropariaItems.elementFromPotion(item);
             if (state.getValue(TYPE) == ElementsEnum.EMPTY && element != ElementsEnum.EMPTY) {
                 world.setBlockAndUpdate(pos, this.defaultBlockState().setValue(TYPE, element));
                 if (!player.isCreative()) {
-                    itemstack.shrink(1);
+                    itemStack.shrink(1);
                     player.addItem(Objects.requireNonNull(item.getCraftingRemainingItem()).getDefaultInstance());
                 }
                 if (world instanceof ServerLevel serverWorld) {
@@ -72,6 +71,10 @@ public class Infusor extends Block {
                     player.addItem(CropariaItems.getPotion(state.getValue(TYPE)).getDefaultInstance());
                 }
                 return ItemInteractionResult.SUCCESS;
+            } else {
+                ItemStack newStack = itemStack.copyAndClear();
+                world.addFreshEntity(new ItemEntity(world, (double) pos.getX() + 0.5, (double) pos.getY() + 0.6, (double) pos.getZ() + 0.5, newStack, 0, 0, 0));
+                return ItemInteractionResult.CONSUME;
             }
         }
         return ItemInteractionResult.FAIL;
