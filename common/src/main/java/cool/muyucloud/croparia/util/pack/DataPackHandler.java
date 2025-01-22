@@ -6,6 +6,7 @@ import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.generator.DataGenerator;
 import cool.muyucloud.croparia.registry.Crops;
 import cool.muyucloud.croparia.util.Util;
+import dev.architectury.platform.Platform;
 import net.minecraft.SharedConstants;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
@@ -113,7 +114,7 @@ public class DataPackHandler extends PackHandler {
                         if (entry.getName().startsWith("generators/") && !entry.isDirectory()) {
                             String filename = entry.getName().substring("generators/".length());
                             File targetFile = targetDir.resolve(filename).toFile();
-                            if (!targetFile.isFile()) {
+                            if (!targetFile.isFile() || Platform.isDevelopmentEnvironment()) {
                                 try (OutputStream stream = new FileOutputStream(targetFile)) {
                                     jar.getInputStream(entry).transferTo(stream);
                                 }
