@@ -6,7 +6,6 @@ import cool.muyucloud.croparia.data.crop.Crop;
 import cool.muyucloud.croparia.registry.Crops;
 import dev.architectury.platform.Platform;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -17,7 +16,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public record DataGenerator(
-    boolean enabled, @NotNull String path, @Nullable String dependency, @NotNull Collection<String> crops,
+    boolean enabled, @NotNull String path, @NotNull String dependency, @NotNull Collection<String> crops,
     @NotNull String template
 ) {
     public void generate(@NotNull Path root) {
