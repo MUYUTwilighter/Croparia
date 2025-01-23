@@ -10,7 +10,6 @@ import cool.muyucloud.croparia.item.relic.HornPlenty;
 import cool.muyucloud.croparia.item.relic.InfiniteApple;
 import cool.muyucloud.croparia.item.relic.MagicRope;
 import cool.muyucloud.croparia.item.relic.MidasHand;
-import dev.architectury.core.item.ArchitecturyBucketItem;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
@@ -84,29 +83,25 @@ public class CropariaItems {
         () -> new BlockItem(CropariaBlocks.DEEPSLATE_ELEMATILIUS_ORE.get(), new Item.Properties().arch$tab(Tabs.MAIN))
     );
     @PostReg
-    public static final RegistrySupplier<Item> POTION_ELEMATILIUS = registerItem(
+    public static final RegistrySupplier<ElementalPotion> POTION_ELEMATILIUS = registerItem(
         "potion_elematilius",
-        () -> new Item(new Item.Properties().arch$tab(Tabs.MAIN).craftRemainder(Items.GLASS_BOTTLE))
+        () -> new ElementalPotion(ElementsEnum.ELEMENTAL, new Item.Properties().arch$tab(Tabs.MAIN).craftRemainder(Items.GLASS_BOTTLE))
     );
-    @PostReg
-    public static final RegistrySupplier<Item> POTION_WATER = registerItem(
+    public static final RegistrySupplier<ElementalPotion> POTION_WATER = registerItem(
         "potion_water",
-        () -> new Item(new Item.Properties().arch$tab(Tabs.MAIN).craftRemainder(Items.GLASS_BOTTLE))
+        () -> new ElementalPotion(ElementsEnum.WATER, new Item.Properties().arch$tab(Tabs.MAIN).craftRemainder(Items.GLASS_BOTTLE))
     );
-    @PostReg
-    public static final RegistrySupplier<Item> POTION_FIRE = registerItem(
+    public static final RegistrySupplier<ElementalPotion> POTION_FIRE = registerItem(
         "potion_fire",
-        () -> new Item(new Item.Properties().arch$tab(Tabs.MAIN).craftRemainder(Items.GLASS_BOTTLE))
+        () -> new ElementalPotion(ElementsEnum.FIRE, new Item.Properties().arch$tab(Tabs.MAIN).craftRemainder(Items.GLASS_BOTTLE))
     );
-    @PostReg
-    public static final RegistrySupplier<Item> POTION_EARTH = registerItem(
+    public static final RegistrySupplier<ElementalPotion> POTION_EARTH = registerItem(
         "potion_earth",
-        () -> new Item(new Item.Properties().arch$tab(Tabs.MAIN).craftRemainder(Items.GLASS_BOTTLE))
+        () -> new ElementalPotion(ElementsEnum.EARTH, new Item.Properties().arch$tab(Tabs.MAIN).craftRemainder(Items.GLASS_BOTTLE))
     );
-    @PostReg
-    public static final RegistrySupplier<Item> POTION_AIR = registerItem(
+    public static final RegistrySupplier<ElementalPotion> POTION_AIR = registerItem(
         "potion_air",
-        () -> new Item(new Item.Properties().arch$tab(Tabs.MAIN).craftRemainder(Items.GLASS_BOTTLE))
+        () -> new ElementalPotion(ElementsEnum.AIR, new Item.Properties().arch$tab(Tabs.MAIN).craftRemainder(Items.GLASS_BOTTLE))
     );
     @PostReg
     public static final RegistrySupplier<Elematilius> ELEMATILIUS = registerItem(
@@ -165,27 +160,27 @@ public class CropariaItems {
     @PostReg
     public static final RegistrySupplier<Item> ELEMATILIUS_BUCKET = registerItem(
         "elematilius_bucket",
-        () -> new ArchitecturyBucketItem(Fluids.ELEMATILIUS, new Item.Properties().arch$tab(Tabs.MAIN).stacksTo(1).craftRemainder(Items.BUCKET))
+        () -> new ElementalBucket(ElementsEnum.ELEMENTAL, Fluids.ELEMATILIUS, new Item.Properties().arch$tab(Tabs.MAIN).stacksTo(1).craftRemainder(Items.BUCKET))
     );
     @PostReg
     public static final RegistrySupplier<Item> EARTH_BUCKET = registerItem(
         "earth_bucket",
-        () -> new ArchitecturyBucketItem(Fluids.EARTH, new Item.Properties().arch$tab(Tabs.MAIN).stacksTo(1).craftRemainder(Items.BUCKET))
+        () -> new ElementalBucket(ElementsEnum.EARTH, Fluids.EARTH, new Item.Properties().arch$tab(Tabs.MAIN).stacksTo(1).craftRemainder(Items.BUCKET))
     );
     @PostReg
     public static final RegistrySupplier<Item> WATER_BUCKET = registerItem(
         "water_bucket",
-        () -> new ArchitecturyBucketItem(Fluids.WATER, new Item.Properties().arch$tab(Tabs.MAIN).stacksTo(1).craftRemainder(Items.BUCKET))
+        () -> new ElementalBucket(ElementsEnum.WATER, Fluids.WATER, new Item.Properties().arch$tab(Tabs.MAIN).stacksTo(1).craftRemainder(Items.BUCKET))
     );
     @PostReg
     public static final RegistrySupplier<Item> FIRE_BUCKET = registerItem(
         "fire_bucket",
-        () -> new ArchitecturyBucketItem(Fluids.FIRE, new Item.Properties().arch$tab(Tabs.MAIN).stacksTo(1).craftRemainder(Items.BUCKET))
+        () -> new ElementalBucket(ElementsEnum.FIRE, Fluids.FIRE, new Item.Properties().arch$tab(Tabs.MAIN).stacksTo(1).craftRemainder(Items.BUCKET))
     );
     @PostReg
     public static final RegistrySupplier<Item> AIR_BUCKET = registerItem(
         "air_bucket",
-        () -> new ArchitecturyBucketItem(Fluids.AIR, new Item.Properties().arch$tab(Tabs.MAIN).stacksTo(1).craftRemainder(Items.BUCKET))
+        () -> new ElementalBucket(ElementsEnum.AIR, Fluids.AIR, new Item.Properties().arch$tab(Tabs.MAIN).stacksTo(1).craftRemainder(Items.BUCKET))
     );
 
     @PostReg
@@ -213,41 +208,6 @@ public class CropariaItems {
     public static void register() {
         CropariaIf.LOGGER.debug("Registering items");
         ITEMS.register();
-    }
-
-    @PostReg
-    @NotNull
-    public static ElementsEnum elementFromPotion(@NotNull Item item) {
-        if (item == POTION_ELEMATILIUS.get()) return ElementsEnum.ELEMENTAL;
-        else if (item == POTION_WATER.get()) return ElementsEnum.WATER;
-        else if (item == POTION_FIRE.get()) return ElementsEnum.FIRE;
-        else if (item == POTION_EARTH.get()) return ElementsEnum.EARTH;
-        else if (item == POTION_AIR.get()) return ElementsEnum.AIR;
-        return ElementsEnum.EMPTY;
-    }
-
-    @PostReg
-    public static @NotNull Item getPotion(@NotNull ElementsEnum element) {
-        return switch (element) {
-            case WATER -> POTION_WATER.get();
-            case FIRE -> POTION_FIRE.get();
-            case EARTH -> POTION_EARTH.get();
-            case AIR -> POTION_AIR.get();
-            case ELEMENTAL -> POTION_ELEMATILIUS.get();
-            case EMPTY -> Items.AIR;
-        };
-    }
-
-    @PostReg
-    public static @NotNull Item getElementilius(@NotNull ElementsEnum element) {
-        return switch (element) {
-            case WATER -> ELEMENTAL_WATER.get();
-            case FIRE -> ELEMENTAL_FIRE.get();
-            case EARTH -> ELEMENTAL_EARTH.get();
-            case AIR -> ELEMENTAL_AIR.get();
-            case ELEMENTAL -> ELEMATILIUS.get();
-            case EMPTY -> Items.AIR;
-        };
     }
 
     public static @NotNull @PostReg RegistrySupplier<Item> getCroparia(int tier) {

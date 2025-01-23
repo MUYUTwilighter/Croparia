@@ -1,9 +1,9 @@
 package cool.muyucloud.croparia.recipe;
 
 import cool.muyucloud.croparia.data.ElementsEnum;
+import cool.muyucloud.croparia.item.ElementalPotion;
 import cool.muyucloud.croparia.recipe.container.InfusorContainer;
 import cool.muyucloud.croparia.recipe.serializer.InfusorRecipeSerializer;
-import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.registry.RecipeSerializers;
 import cool.muyucloud.croparia.registry.RecipeTypes;
 import cool.muyucloud.croparia.util.predicate.GenericIngredient;
@@ -29,8 +29,8 @@ public class InfusorRecipe implements Recipe<InfusorContainer> {
     protected GenericIngredient ingredient;
     protected ItemStack result = ItemStack.EMPTY;
 
-    public ItemStack getElementPotion() {
-        return CropariaItems.getPotion(this.element).getDefaultInstance();
+    public Item getPotion() {
+        return ElementalPotion.fromElement(element).orElseThrow();
     }
 
     public ItemStack getResult() {
@@ -73,10 +73,6 @@ public class InfusorRecipe implements Recipe<InfusorContainer> {
         } else {
             return ItemStack.EMPTY;
         }
-    }
-
-    public Item getPotion() {
-        return CropariaItems.getPotion(this.getElement());
     }
 
     @Override

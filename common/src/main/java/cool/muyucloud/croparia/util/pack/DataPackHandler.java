@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableSet;
 import com.google.gson.JsonObject;
 import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.generator.DataGenerator;
-import cool.muyucloud.croparia.registry.Crops;
 import cool.muyucloud.croparia.util.Util;
 import dev.architectury.platform.Platform;
 import net.minecraft.SharedConstants;
@@ -52,11 +51,9 @@ public class DataPackHandler extends PackHandler {
     @Override
     protected void generate() {
         super.generate();
-        Crops.forEachCrop(crop -> {
-            for (DataGenerator generator : this.generators) {
-                generator.generate(crop, this.root.resolve("data"));
-            }
-        });
+        for (DataGenerator generator : this.generators) {
+            generator.generate(this.root.resolve("data"));
+        }
     }
 
     public DataPackHandler(Path path) {
@@ -100,8 +97,8 @@ public class DataPackHandler extends PackHandler {
         try {
             Path targetDir = this.root.resolve("generators");
             File targetDirFile = targetDir.toFile();
-            if (!targetDirFile.isDirectory()) {
-                targetDirFile.mkdirs();
+            if (!targetDirFile.isDirectory() && !targetDirFile.mkdirs()) {
+                throw new IllegalStateException("Failed to establish directory \"%s\"".formatted(targetDir));
             }
             URL url = CropariaIf.class.getClassLoader().getResource("generators");
             assert url != null : "Built-in generator directory not found";
@@ -132,9 +129,8 @@ public class DataPackHandler extends PackHandler {
         try {
             Map<Integer, DataGenerator> generators = new HashMap<>();
             File root = this.root.resolve("generators").toFile();
-            if (!root.isDirectory()) {
-                root.mkdirs();
-                root = this.root.resolve("generators").toFile();
+            if (!root.isDirectory() && !root.mkdirs()) {
+                throw new IllegalStateException("Failed to establish directory \"%s\"".formatted(root));
             }
             for (File file : root.listFiles()) {
                 if (file.isFile()) {
