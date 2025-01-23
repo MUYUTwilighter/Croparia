@@ -2,7 +2,7 @@ package cool.muyucloud.croparia.registry;
 
 import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.annotation.PostReg;
-import cool.muyucloud.croparia.block.ElementalBucket;
+import cool.muyucloud.croparia.item.ElementalBucket;
 import cool.muyucloud.croparia.data.ElementsEnum;
 import cool.muyucloud.croparia.data.crop.Crop;
 import cool.muyucloud.croparia.item.*;
@@ -68,23 +68,23 @@ public class CropariaItems {
         "deepslate_elematilius_ore",
         () -> new BlockItem(CropariaBlocks.DEEPSLATE_ELEMATILIUS_ORE.get(), new Item.Properties().arch$tab(Tabs.MAIN))
     );
-    public static final RegistrySupplier<Item> POTION_ELEMATILIUS = registerItem(
+    public static final RegistrySupplier<ElementalPotion> POTION_ELEMATILIUS = registerItem(
         "potion_elematilius",
         () -> new ElementalPotion(ElementsEnum.ELEMENTAL, new Item.Properties().arch$tab(Tabs.MAIN).craftRemainder(Items.GLASS_BOTTLE))
     );
-    public static final RegistrySupplier<Item> POTION_WATER = registerItem(
+    public static final RegistrySupplier<ElementalPotion> POTION_WATER = registerItem(
         "potion_water",
         () -> new ElementalPotion(ElementsEnum.WATER, new Item.Properties().arch$tab(Tabs.MAIN).craftRemainder(Items.GLASS_BOTTLE))
     );
-    public static final RegistrySupplier<Item> POTION_FIRE = registerItem(
+    public static final RegistrySupplier<ElementalPotion> POTION_FIRE = registerItem(
         "potion_fire",
         () -> new ElementalPotion(ElementsEnum.FIRE, new Item.Properties().arch$tab(Tabs.MAIN).craftRemainder(Items.GLASS_BOTTLE))
     );
-    public static final RegistrySupplier<Item> POTION_EARTH = registerItem(
+    public static final RegistrySupplier<ElementalPotion> POTION_EARTH = registerItem(
         "potion_earth",
         () -> new ElementalPotion(ElementsEnum.EARTH, new Item.Properties().arch$tab(Tabs.MAIN).craftRemainder(Items.GLASS_BOTTLE))
     );
-    public static final RegistrySupplier<Item> POTION_AIR = registerItem(
+    public static final RegistrySupplier<ElementalPotion> POTION_AIR = registerItem(
         "potion_air",
         () -> new ElementalPotion(ElementsEnum.AIR, new Item.Properties().arch$tab(Tabs.MAIN).craftRemainder(Items.GLASS_BOTTLE))
     );

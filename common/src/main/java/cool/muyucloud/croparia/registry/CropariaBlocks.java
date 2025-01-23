@@ -67,27 +67,27 @@ public class CropariaBlocks {
         )
     );
     @PostReg
-    public static final RegistrySupplier<LiquidBlock> FLUID_ELEMATILIUS = registerBlock(
+    public static final RegistrySupplier<ElementalLiquidBlock> FLUID_ELEMATILIUS = registerBlock(
         "fluid_elematilius",
         () -> new ElementalLiquidBlock(ElementsEnum.ELEMENTAL, Fluids.ELEMATILIUS, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER))
     );
     @PostReg
-    public static final RegistrySupplier<LiquidBlock> FLUID_EARTH = registerBlock(
+    public static final RegistrySupplier<ElementalLiquidBlock> FLUID_EARTH = registerBlock(
         "fluid_earth",
         () -> new ElementalLiquidBlock(ElementsEnum.EARTH, Fluids.EARTH, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER))
     );
     @PostReg
-    public static final RegistrySupplier<LiquidBlock> FLUID_WATER = registerBlock(
+    public static final RegistrySupplier<ElementalLiquidBlock> FLUID_WATER = registerBlock(
         "fluid_water",
         () -> new ElementalLiquidBlock(ElementsEnum.WATER, Fluids.WATER, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER))
     );
     @PostReg
-    public static final RegistrySupplier<LiquidBlock> FLUID_FIRE = registerBlock(
+    public static final RegistrySupplier<ElementalLiquidBlock> FLUID_FIRE = registerBlock(
         "fluid_fire",
         () -> new ElementalLiquidBlock(ElementsEnum.FIRE, Fluids.FIRE, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER))
     );
     @PostReg
-    public static final RegistrySupplier<LiquidBlock> FLUID_AIR = registerBlock(
+    public static final RegistrySupplier<ElementalLiquidBlock> FLUID_AIR = registerBlock(
         "fluid_air",
         () -> new ElementalLiquidBlock(ElementsEnum.AIR, Fluids.AIR, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER))
     );

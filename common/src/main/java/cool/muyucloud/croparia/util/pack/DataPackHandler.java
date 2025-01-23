@@ -1,6 +1,5 @@
 package cool.muyucloud.croparia.util.pack;
 
-import com.google.common.collect.ImmutableSet;
 import com.google.gson.JsonObject;
 import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.generator.DataGenerator;
@@ -16,10 +15,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.nio.file.Path;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -29,7 +25,7 @@ public class DataPackHandler extends PackHandler {
     private final AlwaysEnabledFileResourcePackProvider datapack = new AlwaysEnabledFileResourcePackProvider(
         root, PackType.SERVER_DATA, PackSource.BUILT_IN
     );
-    private Set<DataGenerator> generators = ImmutableSet.of();
+    private final Set<DataGenerator> generators = new HashSet<>();
 
     @Override
     public void onInitial() {
@@ -144,9 +140,14 @@ public class DataPackHandler extends PackHandler {
                     });
                 }
             }
-            this.generators = ImmutableSet.copyOf(generators.values());
+            this.generators.clear();
+            this.generators.addAll(generators.values());
         } catch (Throwable e) {
             CropariaIf.LOGGER.error("Failed to read generators", e);
         }
+    }
+
+    public void addGenerator(DataGenerator generator) {
+        this.generators.add(generator);
     }
 }
