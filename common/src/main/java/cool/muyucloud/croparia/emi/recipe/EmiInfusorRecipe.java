@@ -32,7 +32,7 @@ public class EmiInfusorRecipe implements EmiRecipe {
     public EmiInfusorRecipe(RecipeHolder<InfusorRecipe> holder) {
         InfusorRecipe recipe = holder.value();
         this.id = holder.id();
-        this.element = EmiIngredient.of(Ingredient.of(recipe.getElementPotion()));
+        this.element = EmiIngredient.of(Ingredient.of(recipe.getPotion()));
         this.ingredient = EmiIngredient.of(Ingredient.of(recipe.getIngredient().availableStacks().stream()));
         this.result = EmiIngredient.of(Ingredient.of(recipe.getResult()));
         this.inputs = List.of(element, ingredient);

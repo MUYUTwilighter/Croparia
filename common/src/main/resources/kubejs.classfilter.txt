@@ -1,1 +1,1 @@
-+cool.muyucloud.croparia.kubejs
++cool.muyucloud.croparia

@@ -3,8 +3,8 @@ package cool.muyucloud.croparia.registry;
 import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.annotation.PostReg;
 import cool.muyucloud.croparia.block.*;
+import cool.muyucloud.croparia.data.ElementsEnum;
 import cool.muyucloud.croparia.data.crop.Crop;
-import dev.architectury.core.block.ArchitecturyLiquidBlock;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
@@ -14,7 +14,6 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
 import java.util.function.Supplier;
 
 public class CropariaBlocks {
@@ -70,27 +69,27 @@ public class CropariaBlocks {
     @PostReg
     public static final RegistrySupplier<LiquidBlock> FLUID_ELEMATILIUS = registerBlock(
         "fluid_elematilius",
-        () -> new ArchitecturyLiquidBlock(Fluids.ELEMATILIUS, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER))
+        () -> new ElementalLiquidBlock(ElementsEnum.ELEMENTAL, Fluids.ELEMATILIUS, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER))
     );
     @PostReg
     public static final RegistrySupplier<LiquidBlock> FLUID_EARTH = registerBlock(
         "fluid_earth",
-        () -> new ArchitecturyLiquidBlock(Fluids.EARTH, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER))
+        () -> new ElementalLiquidBlock(ElementsEnum.EARTH, Fluids.EARTH, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER))
     );
     @PostReg
     public static final RegistrySupplier<LiquidBlock> FLUID_WATER = registerBlock(
         "fluid_water",
-        () -> new ArchitecturyLiquidBlock(Fluids.WATER, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER))
+        () -> new ElementalLiquidBlock(ElementsEnum.WATER, Fluids.WATER, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER))
     );
     @PostReg
     public static final RegistrySupplier<LiquidBlock> FLUID_FIRE = registerBlock(
         "fluid_fire",
-        () -> new ArchitecturyLiquidBlock(Fluids.FIRE, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER))
+        () -> new ElementalLiquidBlock(ElementsEnum.FIRE, Fluids.FIRE, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER))
     );
     @PostReg
     public static final RegistrySupplier<LiquidBlock> FLUID_AIR = registerBlock(
         "fluid_air",
-        () -> new ArchitecturyLiquidBlock(Fluids.AIR, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER))
+        () -> new ElementalLiquidBlock(ElementsEnum.AIR, Fluids.AIR, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER))
     );
 
 
@@ -106,11 +105,5 @@ public class CropariaBlocks {
     public static void register() {
         CropariaIf.LOGGER.debug("Registering blocks");
         BLOCKS.register();
-    }
-
-    protected static final List<RegistrySupplier<RitualStand>> RITUAL_STANDS = List.of(RITUAL_STAND, RITUAL_STAND_2, RITUAL_STAND_3);
-
-    public static @NotNull RegistrySupplier<RitualStand> getRitualStand(int tier) throws IndexOutOfBoundsException {
-        return RITUAL_STANDS.get(tier - 1);
     }
 }
