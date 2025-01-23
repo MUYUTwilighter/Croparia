@@ -55,22 +55,39 @@ public class Util {
         return server.getLevel(ResourceKey.create(Registries.DIMENSION, id));
     }
 
+    /**
+     * Returns the block position that the player is currently looking at.
+     *
+     * @param player The player whose line of sight is being checked.
+     * @return The block position that the player is looking at.
+     */
     public static BlockPos lookingAt(@NotNull Player player) {
         Level world = player.level();
-        ClipContext context = new ClipContext(
-            player.getEyePosition(),
-            player.getEyePosition().add(player.getLookAngle().multiply(5, 5, 5)),
-            ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player
-        );
+        ClipContext context = new ClipContext(player.getEyePosition(), player.getEyePosition().add(player.getLookAngle().multiply(5, 5, 5)), ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player);
         BlockHitResult result = world.clip(context);
         return result.getBlockPos();
     }
 
+    /**
+     * Places an item at the specified position in the world.
+     *
+     * @param world The world where the item will be placed.
+     * @param pos   The position where the item will be placed.
+     * @param stack The item stack to be placed.
+     */
     public static void placeItem(Level world, BlockPos pos, ItemStack stack) {
         ItemStack newStack = stack.copyAndClear();
         world.addFreshEntity(new ItemEntity(world, (double) pos.getX() + 0.5, (double) pos.getY() + 0.6, (double) pos.getZ() + 0.5, newStack, 0, 0, 0));
     }
 
+    /**
+     * Attempts to store an item stack in a container below the specified position.
+     *
+     * @param world The world where the item will be stored.
+     * @param pos   The position below which the container is located.
+     * @param stack The item stack to be stored.
+     * @return The remaining item stack if it couldn't be fully stored, or an empty stack if it was fully stored.
+     */
     public static ItemStack tryStoreItemBelow(Level world, BlockPos pos, ItemStack stack) {
         BlockEntity below = world.getBlockEntity(pos.below());
         if (below instanceof Container container) {
@@ -90,6 +107,15 @@ public class Util {
         return stack;
     }
 
+    /**
+     * Exports an item to the world, attempting to store it in a container below the specified position.
+     * If the item cannot be stored, it will be added to the player's inventory or dropped as an item entity.
+     *
+     * @param world  the level to export the item to
+     * @param pos    the position to export the item at
+     * @param stack  the item stack to export
+     * @param player the player to add the item to, or null to drop the item
+     */
     public static void exportItem(Level world, BlockPos pos, ItemStack stack, @Nullable Player player) {
         ItemStack remain = tryStoreItemBelow(world, pos, stack);
         if (remain.isEmpty()) {
