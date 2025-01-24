@@ -143,7 +143,7 @@ public class DataPackHandler extends PackHandler {
     public void addGenerator(DataGenerator generator) {
         Integer hash = generator.hashCode();
         if (this.generators.containsKey(hash)) {
-            CropariaIf.LOGGER.warn("Generator with same path: %s".formatted(generator.path()));
+            CropariaIf.LOGGER.warn("Skip generator with same path: %s".formatted(generator.path()));
         } else {
             this.generators.put(hash, generator);
         }
