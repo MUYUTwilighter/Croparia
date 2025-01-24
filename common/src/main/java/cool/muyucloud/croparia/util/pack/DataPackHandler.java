@@ -135,8 +135,7 @@ public class DataPackHandler extends PackHandler {
     public void readGenerators() {
         try {
             this.generators.clear();
-            DataGeneratorCreator.dumpInto((hash, generator) -> this.saveGeneratorIfAbsent(generator));
-            DataGeneratorCreator.clearCache();
+            DataGeneratorCreator.flushInto(this::saveGeneratorIfAbsent);
             File root = this.root.resolve("generators").toFile();
             if (!root.isDirectory() && !root.mkdirs()) {
                 throw new IllegalStateException("Failed to establish directory \"%s\"".formatted(root));
