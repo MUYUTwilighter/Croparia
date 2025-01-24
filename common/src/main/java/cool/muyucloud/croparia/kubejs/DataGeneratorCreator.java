@@ -2,17 +2,21 @@ package cool.muyucloud.croparia.kubejs;
 
 import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.generator.DataGenerator;
-import cool.muyucloud.croparia.util.pack.DataPackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.Consumer;
 
 @SuppressWarnings("unused")
 public class DataGeneratorCreator {
+    private static final Set<DataGenerator> GENERATOR_CACHE = new HashSet<>();
+
     public static void create(
-        @Nullable Boolean enabled, @NotNull String path,
-        @Nullable String dependency, @NotNull Collection<String> crops, @NotNull String template
+        @Nullable Boolean enabled, @NotNull String path, @Nullable String dependency,
+        @NotNull Collection<String> crops, @NotNull String template
     ) {
         enabled = enabled == null || enabled;
         dependency = dependency == null ? "minecraft" : dependency;
@@ -21,6 +25,12 @@ public class DataGeneratorCreator {
             CropariaIf.LOGGER.error("Empty template, generator of path {} is skipped", path);
             return;
         }
-        DataPackHandler.INSTANCE.addGenerator(new DataGenerator(enabled, path, dependency, crops, template));
+        DataGenerator generator = new DataGenerator(enabled, path, dependency, crops, template);
+        GENERATOR_CACHE.add(generator);
+    }
+
+    public static void flushInto(Consumer<DataGenerator> consumer) {
+        GENERATOR_CACHE.forEach(consumer);
+        GENERATOR_CACHE.clear();
     }
 }
