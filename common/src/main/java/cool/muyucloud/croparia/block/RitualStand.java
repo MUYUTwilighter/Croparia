@@ -57,6 +57,7 @@ public class RitualStand extends Block implements ItemPlaceable {
         return super.useItemOn(itemStack, blockState, world, pos, player, interactionHand, blockHitResult);
     }
 
+    @Override
     public void stepOn(Level world, BlockPos pos, BlockState state, Entity entity) {
         LinkedList<ItemEntity> filtered = new LinkedList<>();
         items.stream().filter(item -> !item.isRemoved()).forEach(filtered::add);
