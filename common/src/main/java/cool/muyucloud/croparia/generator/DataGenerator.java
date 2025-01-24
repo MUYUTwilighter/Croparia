@@ -1,31 +1,48 @@
 package cool.muyucloud.croparia.generator;
+
 import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.data.PlaceHolder;
 import cool.muyucloud.croparia.data.crop.Crop;
+import cool.muyucloud.croparia.registry.Crops;
 import dev.architectury.platform.Platform;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-public record DataGenerator(boolean enabled, @NotNull String path, @Nullable String dependency, @NotNull String template) {
-    public void generate(@NotNull Crop crop, @NotNull Path root) {
-        if (!this.enabled()) {
+
+public record DataGenerator(
+    boolean enabled, @NotNull String path, @Nullable String dependency, @NotNull Collection<String> crops,
+    @NotNull String template
+) {
+    public void generate(@NotNull Path root) {
+        if (!this.enabled() || !Platform.isModLoaded(dependency)) {
             return;
         }
-        if (dependency != null && !Platform.isModLoaded(dependency)) {
-            return;
+        if (this.crops.isEmpty()) {
+            Crops.forEachCrop(crop -> this.generate(crop, root));
+        } else {
+            crops.forEach(name -> {
+                Crop crop = Crops.forName(name);
+                if (crop != null) {
+                    this.generate(crop, root);
+                } else {
+                    CropariaIf.LOGGER.error("Crop \"{}\" not found for generator with path \"{}\"", name, this.path());
+                }
+            });
         }
+    }
+
+    private void generate(@NotNull Crop crop, @NotNull Path root) {
         Path path = root.resolve(replace(this.path(), crop));
         File parent = path.getParent().toFile();
-        if (!parent.isDirectory()) {
-            parent.mkdirs();
+        if (!parent.isDirectory() && !parent.mkdirs()) {
+            CropariaIf.LOGGER.error("Failed to establish data pack directory, path: \"%s\"".formatted(parent.getAbsolutePath()));
         }
         String replaced = replace(this.template(), crop);
         try (FileWriter writer = new FileWriter(path.toFile())) {
@@ -34,6 +51,7 @@ public record DataGenerator(boolean enabled, @NotNull String path, @Nullable Str
             CropariaIf.LOGGER.error("Failed to generate data for crop \"%s\", template path: \"%s\"".formatted(crop.getName(), this.path()), e);
         }
     }
+
     public static @NotNull Optional<DataGenerator> read(@NotNull Path file) {
         try {
             return Optional.of(read(Files.readString(file)));
@@ -42,6 +60,7 @@ public record DataGenerator(boolean enabled, @NotNull String path, @Nullable Str
         }
         return Optional.empty();
     }
+
     /**
      * Read data generator definition from string.<br/>
      * <p>
@@ -71,18 +90,22 @@ public record DataGenerator(boolean enabled, @NotNull String path, @Nullable Str
         Map<String, String> meta = readMeta(content);
         boolean enabled = Boolean.parseBoolean(meta.getOrDefault("enabled", "true"));
         String path = meta.getOrDefault("path", "");
-        String dependency = meta.getOrDefault("dependency", null);
+        String dependency = meta.getOrDefault("dependency", "minecraft");
+        List<String> crops = Arrays.stream(meta.getOrDefault("crops", "").split(",")).filter(crop -> !crop.isEmpty()).map(String::trim).toList();
         // template
         for (int i = meta.size(); i < lines.length; i++) {
-            builder.append(lines[i]).append("\n");
+            String line = lines[i].trim().replace("\r", "");
+            builder.append(line).append("\n");
         }
-        assert builder.isEmpty() : "Empty template content";
+        assert !builder.isEmpty() : "Empty template content";
         String template = builder.toString();
-        return new DataGenerator(enabled, path, dependency, template);
+        return new DataGenerator(enabled, path, dependency, crops, template);
     }
+
     public static Map<String, String> readMeta(String content) {
         Map<String, String> map = new HashMap<>();
         for (String line : content.split("\n")) {
+            line = line.trim();
             if (line.startsWith("@")) {
                 String[] split = line.split("=");
                 if (split.length == 2) {
@@ -94,10 +117,12 @@ public record DataGenerator(boolean enabled, @NotNull String path, @Nullable Str
         }
         return map;
     }
+
     @Override
     public @NotNull String toString() {
         return "@enabled=" + this.enabled() + "\n" + "@path=" + this.path() + "\n" + this.template();
     }
+
     public @NotNull String replace(@NotNull String template, @NotNull Crop crop) {
         for (Map.Entry<Pattern, PlaceHolder> entry : crop.placeholders().entrySet()) {
             Pattern pattern = entry.getKey();
@@ -109,6 +134,7 @@ public record DataGenerator(boolean enabled, @NotNull String path, @Nullable Str
         }
         return template;
     }
+
     @Override
     public int hashCode() {
         return this.path().hashCode();

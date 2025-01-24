@@ -1,10 +1,9 @@
 package cool.muyucloud.croparia.util.pack;
 
-import com.google.common.collect.ImmutableSet;
 import com.google.gson.JsonObject;
 import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.generator.DataGenerator;
-import cool.muyucloud.croparia.registry.Crops;
+import cool.muyucloud.croparia.kubejs.DataGeneratorCreator;
 import cool.muyucloud.croparia.util.Util;
 import dev.architectury.platform.Platform;
 import net.minecraft.SharedConstants;
@@ -19,7 +18,7 @@ import java.nio.file.Path;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
+import java.util.Objects;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -29,7 +28,7 @@ public class DataPackHandler extends PackHandler {
     private final AlwaysEnabledFileResourcePackProvider datapack = new AlwaysEnabledFileResourcePackProvider(
         root, PackSource.BUILT_IN
     );
-    private Set<DataGenerator> generators = Set.of();
+    private final Map<Integer, DataGenerator> generators = new HashMap<>();
 
     @Override
     public void onInitial() {
@@ -51,11 +50,9 @@ public class DataPackHandler extends PackHandler {
     @Override
     protected void generate() {
         super.generate();
-        Crops.forEachCrop(crop -> {
-            for (DataGenerator generator : this.generators) {
-                generator.generate(crop, this.root.resolve("data"));
-            }
-        });
+        for (DataGenerator generator : this.generators.values()) {
+            generator.generate(this.root.resolve("data"));
+        }
     }
 
     public DataPackHandler(Path path) {
@@ -99,8 +96,8 @@ public class DataPackHandler extends PackHandler {
         try {
             Path targetDir = this.root.resolve("generators");
             File targetDirFile = targetDir.toFile();
-            if (!targetDirFile.isDirectory()) {
-                targetDirFile.mkdirs();
+            if (!targetDirFile.isDirectory() && !targetDirFile.mkdirs()) {
+                throw new IllegalStateException("Failed to establish directory \"%s\"".formatted(targetDir));
             }
             URL url = CropariaIf.class.getClassLoader().getResource("generators");
             assert url != null : "Built-in generator directory not found";
@@ -127,27 +124,28 @@ public class DataPackHandler extends PackHandler {
         }
     }
 
+    private void saveGeneratorIfAbsent(DataGenerator generator) {
+        Integer hash = generator.hashCode();
+        if (this.generators.containsKey(hash)) {
+            CropariaIf.LOGGER.warn("Skip generator with same path: %s".formatted(generator.path()));
+        }
+        this.generators.put(hash, generator);
+    }
+
     public void readGenerators() {
         try {
-            Map<Integer, DataGenerator> generators = new HashMap<>();
+            this.generators.clear();
+            DataGeneratorCreator.dumpInto((hash, generator) -> this.saveGeneratorIfAbsent(generator));
+            DataGeneratorCreator.clearCache();
             File root = this.root.resolve("generators").toFile();
-            if (!root.isDirectory()) {
-                root.mkdirs();
-                root = this.root.resolve("generators").toFile();
+            if (!root.isDirectory() && !root.mkdirs()) {
+                throw new IllegalStateException("Failed to establish directory \"%s\"".formatted(root));
             }
-            for (File file : root.listFiles()) {
+            for (File file : Objects.requireNonNull(root.listFiles())) {
                 if (file.isFile()) {
-                    DataGenerator.read(file.toPath()).ifPresent(generator -> {
-                        int hash = generator.hashCode();
-                        if (!generators.containsKey(hash)) {
-                            generators.put(hash, generator);
-                        } else {
-                            CropariaIf.LOGGER.warn("Generator with same path: %s".formatted(generator.path()));
-                        }
-                    });
+                    DataGenerator.read(file.toPath()).ifPresent(this::saveGeneratorIfAbsent);
                 }
             }
-            this.generators = ImmutableSet.copyOf(generators.values());
         } catch (Throwable e) {
             CropariaIf.LOGGER.error("Failed to read generators", e);
         }

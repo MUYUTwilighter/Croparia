@@ -2,10 +2,14 @@ package cool.muyucloud.croparia.block;
 
 import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.data.ElementsEnum;
+import cool.muyucloud.croparia.item.ElementalPotion;
 import cool.muyucloud.croparia.recipe.InfusorRecipe;
 import cool.muyucloud.croparia.recipe.container.InfusorContainer;
+import cool.muyucloud.croparia.registry.CropariaBlocks;
 import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.registry.RecipeTypes;
+import cool.muyucloud.croparia.util.ItemPlaceable;
+import cool.muyucloud.croparia.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -15,7 +19,6 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -36,7 +39,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 @SuppressWarnings("deprecation")
-public class Infusor extends Block {
+public class Infusor extends Block implements ItemPlaceable {
     protected final VoxelShape SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 8.0, 16.0);
     public static final EnumProperty<ElementsEnum> TYPE = EnumProperty.create("infusor_type", ElementsEnum.class);
 
@@ -47,55 +50,80 @@ public class Infusor extends Block {
 
     public @NotNull InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, @Nullable BlockHitResult hit) {
         if (!world.isClientSide) {
-            ItemStack stack = player.getItemInHand(hand);
-            Item item = stack.getItem();
-            ElementsEnum element = CropariaItems.elementFromPotion(item);
-            if (state.getValue(TYPE) == ElementsEnum.EMPTY && element != ElementsEnum.EMPTY) {
-                world.setBlockAndUpdate(pos, this.defaultBlockState().setValue(TYPE, element));
-                if (!player.isCreative()) {
-                    player.getMainHandItem().shrink(1);
-                    player.addItem(Objects.requireNonNull(item.getCraftingRemainingItem()).getDefaultInstance());
-                }
+            ItemStack itemStack = player.getItemInHand(hand);
+            Item item = itemStack.getItem();
+            if (item instanceof ElementalPotion potion && this.tryInfuse(world, pos, potion, itemStack, player)) {
                 if (world instanceof ServerLevel serverWorld) {
-                    world.getEntities(
-                        EntityTypeTest.forClass(ItemEntity.class),
-                        AABB.of(new BoundingBox(pos)), entity -> !entity.getItem().isEmpty()
-                    ).forEach(entity -> {
-                        ItemStack input = entity.getItem();
-                        this.tryCraft(serverWorld, pos, input, element);
-                    });
+                    this.forceCraft(serverWorld, pos, player);
                 }
                 return InteractionResult.SUCCESS;
-            } else if (state.getValue(TYPE) != ElementsEnum.EMPTY && item == Items.GLASS_BOTTLE) {
-                world.setBlockAndUpdate(pos, this.defaultBlockState().setValue(TYPE, ElementsEnum.EMPTY));
-                if (!player.isCreative()) {
-                    player.getMainHandItem().shrink(1);
-                    player.addItem(CropariaItems.getPotion(element).getDefaultInstance());
-                }
+            } else if (
+                player.getItemInHand(hand).getItem() == ElementalPotion.fromElement(state.getValue(TYPE)).orElseThrow().getCraftingRemainingItem()
+                    && this.tryDefuse(world, pos, itemStack, player)
+            ) {
                 return InteractionResult.SUCCESS;
             } else if (item != CropariaItems.RECIPE_WIZARD.get()) {
-                ItemStack newStack = stack.copy();
-                stack.setCount(0);
-                world.addFreshEntity(new ItemEntity(world, (double) pos.getX() + 0.5, (double) pos.getY() + 0.6, (double) pos.getZ() + 0.5, newStack, 0, 0, 0));
+                this.placeItem(world, pos, itemStack);
                 return InteractionResult.CONSUME;
             }
         }
         return InteractionResult.FAIL;
     }
 
-    public void onCrafting(InfusorRecipe recipe, InfusorContainer container, Level world, BlockPos pos) {
+    public boolean tryInfuse(Level world, BlockPos pos, ElementalPotion potion, @NotNull ItemStack stack, @Nullable Player player) {
+        BlockState state = world.getBlockState(pos);
+        if (state.getValue(TYPE) == ElementsEnum.EMPTY) {
+            world.setBlockAndUpdate(pos, CropariaBlocks.INFUSOR.get().defaultBlockState().setValue(TYPE, potion.getElement()));
+        } else {
+            return false;
+        }
+        if (player != null && player.getAbilities().instabuild) {
+            return true;
+        }
+        stack.shrink(1);
+        ItemStack returnStack = Objects.requireNonNull(potion.getCraftingRemainingItem()).getDefaultInstance();
+        Util.exportItem(world, pos, returnStack, player);
+        return true;
+    }
+
+    public void forceCraft(ServerLevel world, BlockPos pos, @Nullable Player player) {
+        ElementsEnum element = world.getBlockState(pos).getValue(TYPE);
+        world.getEntities(EntityTypeTest.forClass(ItemEntity.class),
+            AABB.of(new BoundingBox(pos)), entity -> !entity.getItem().isEmpty()
+        ).forEach(entity -> {
+            ItemStack input = entity.getItem();
+            this.tryCraft(world, pos, input, element, player != null ? player : entity.getOwner() == null ? null : world.getPlayerByUUID(entity.getOwner()));
+        });
+    }
+
+    public boolean tryDefuse(Level world, BlockPos pos, ItemStack stack, @Nullable Player player) {
+        Item item = stack.getItem();
+        BlockState state = world.getBlockState(pos);
+        ElementsEnum element = state.getValue(TYPE);
+        if (element != ElementsEnum.EMPTY && ElementalPotion.fromElement(element).orElseThrow().getCraftingRemainingItem() == item) {
+            world.setBlockAndUpdate(pos, CropariaBlocks.INFUSOR.get().defaultBlockState().setValue(TYPE, ElementsEnum.EMPTY));
+        } else {
+            return false;
+        }
+        if (player == null || !player.getAbilities().instabuild) {
+            stack.shrink(1);
+        }
+        ItemStack returnStack = ElementalPotion.fromElement(element).orElseThrow().getDefaultInstance();
+        Util.exportItem(world, pos, returnStack, player);
+        return false;
+    }
+
+    public void onCrafting(InfusorRecipe recipe, InfusorContainer container, Level world, BlockPos pos, @Nullable Player player) {
         ItemStack stack = recipe.assemble(container);
-        world.addFreshEntity(new ItemEntity(
-            world, (double) pos.getX() + 0.5, (double) pos.getY() + 0.5, (double) pos.getZ() + 0.5, stack
-        ));
+        Util.exportItem(world, pos, stack, player);
         world.setBlockAndUpdate(pos, this.defaultBlockState());
     }
 
-    public void tryCraft(ServerLevel world, BlockPos pos, ItemStack input, ElementsEnum element) {
+    public void tryCraft(ServerLevel world, BlockPos pos, ItemStack input, ElementsEnum element, Player player) {
         RecipeManager manager = world.getServer().getRecipeManager();
         InfusorContainer container = InfusorContainer.of(element, input);
         manager.getRecipeFor(RecipeTypes.INFUSOR.get(), container, world).ifPresent(
-            recipe -> onCrafting(recipe, container, world, pos)
+            recipe -> onCrafting(recipe, container, world, pos, player)
         );
     }
 
@@ -104,7 +132,7 @@ public class Infusor extends Block {
         if (entity instanceof ItemEntity itemEntity && world instanceof ServerLevel serverWorld && CropariaIf.CONFIG.getInfusor()) {
             ItemStack input = itemEntity.getItem();
             ElementsEnum element = state.getValue(TYPE);
-            this.tryCraft(serverWorld, pos, input, element);
+            this.tryCraft(serverWorld, pos, input, element, itemEntity.getOwner() == null ? null : world.getPlayerByUUID(itemEntity.getOwner()));
         }
     }
 
@@ -127,5 +155,10 @@ public class Infusor extends Block {
 
     public static ElementsEnum getElement(BlockState state) {
         return state.getValue(TYPE);
+    }
+
+    @Override
+    public void placeItem(Level world, BlockPos pos, ItemStack stack) {
+        Util.placeItem(world, pos, stack);
     }
 }

@@ -1,6 +1,9 @@
 package cool.muyucloud.croparia.registry;
 
 import cool.muyucloud.croparia.CropariaIf;
+import cool.muyucloud.croparia.data.ElementsEnum;
+import cool.muyucloud.croparia.fluid.ElementalFlowing;
+import cool.muyucloud.croparia.fluid.ElementalSource;
 import dev.architectury.core.fluid.ArchitecturyFlowingFluid;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
@@ -13,34 +16,34 @@ public class Fluids {
     public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(CropariaIf.MOD_ID, Registry.FLUID_REGISTRY);
 
     public static final RegistrySupplier<ArchitecturyFlowingFluid> ELEMATILIUS = register(
-        "elematilius", () -> new ArchitecturyFlowingFluid.Source(FluidAttributes.ELEMATILIUS)
+        "elematilius", () -> new ElementalSource(ElementsEnum.ELEMENTAL, FluidAttributes.ELEMATILIUS)
     );
     public static final RegistrySupplier<ArchitecturyFlowingFluid> ELEMATILIUS_FLOWING = register(
-        "elematilius_flowing", () -> new ArchitecturyFlowingFluid.Flowing(FluidAttributes.ELEMATILIUS)
+        "elematilius_flowing", () -> new ElementalFlowing(ElementsEnum.ELEMENTAL, FluidAttributes.ELEMATILIUS)
     );
     public static final RegistrySupplier<ArchitecturyFlowingFluid> EARTH = register(
-        "earth", () -> new ArchitecturyFlowingFluid.Source(FluidAttributes.EARTH)
+        "earth", () -> new ElementalSource(ElementsEnum.EARTH, FluidAttributes.EARTH)
     );
     public static final RegistrySupplier<ArchitecturyFlowingFluid> EARTH_FLOWING = register(
-        "earth_flowing", () -> new ArchitecturyFlowingFluid.Flowing(FluidAttributes.EARTH)
+        "earth_flowing", () -> new ElementalFlowing(ElementsEnum.EARTH, FluidAttributes.EARTH)
     );
     public static final RegistrySupplier<ArchitecturyFlowingFluid> WATER = register(
-        "water", () -> new ArchitecturyFlowingFluid.Source(FluidAttributes.WATER)
+        "water", () -> new ElementalSource(ElementsEnum.WATER, FluidAttributes.WATER)
     );
     public static final RegistrySupplier<ArchitecturyFlowingFluid> WATER_FLOWING = register(
-        "water_flowing", () -> new ArchitecturyFlowingFluid.Flowing(FluidAttributes.WATER)
+        "water_flowing", () -> new ElementalFlowing(ElementsEnum.WATER, FluidAttributes.WATER)
     );
     public static final RegistrySupplier<ArchitecturyFlowingFluid> FIRE = register(
-        "fire", () -> new ArchitecturyFlowingFluid.Source(FluidAttributes.FIRE)
+        "fire", () -> new ElementalSource(ElementsEnum.FIRE, FluidAttributes.FIRE)
     );
     public static final RegistrySupplier<ArchitecturyFlowingFluid> FIRE_FLOWING = register(
-        "fire_flowing", () -> new ArchitecturyFlowingFluid.Flowing(FluidAttributes.FIRE)
+        "fire_flowing", () -> new ElementalFlowing(ElementsEnum.FIRE, FluidAttributes.FIRE)
     );
     public static final RegistrySupplier<ArchitecturyFlowingFluid> AIR = register(
-        "air", () -> new ArchitecturyFlowingFluid.Source(FluidAttributes.AIR)
+        "air", () -> new ElementalSource(ElementsEnum.AIR, FluidAttributes.AIR)
     );
     public static final RegistrySupplier<ArchitecturyFlowingFluid> AIR_FLOWING = register(
-        "air_flowing", () -> new ArchitecturyFlowingFluid.Flowing(FluidAttributes.AIR)
+        "air_flowing", () -> new ElementalFlowing(ElementsEnum.AIR, FluidAttributes.AIR)
     );
 
     public static <T extends Fluid> RegistrySupplier<T> register(String id, Supplier<T> supplier) {

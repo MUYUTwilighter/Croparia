@@ -7,6 +7,8 @@ import cool.muyucloud.croparia.recipe.container.RitualContainer;
 import cool.muyucloud.croparia.recipe.container.RitualStructureContainer;
 import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.registry.RecipeTypes;
+import cool.muyucloud.croparia.util.ItemPlaceable;
+import cool.muyucloud.croparia.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerLevel;
@@ -25,7 +27,6 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
@@ -37,7 +38,7 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 @SuppressWarnings("deprecation")
-public class RitualStand extends Block {
+public class RitualStand extends Block implements ItemPlaceable {
     protected final VoxelShape SHAPE = Block.box(0.0, 0.3, 0.0, 16.0, 6.0, 16.0);
     private final int tier;
     private LinkedList<ItemEntity> items = new LinkedList<>();
@@ -51,12 +52,10 @@ public class RitualStand extends Block {
     public @NotNull InteractionResult use(BlockState blockState, Level world, BlockPos pos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (!world.isClientSide()) {
             ItemStack stack = player.getItemInHand(interactionHand);
-            if (stack.getItem() == CropariaItems.RECIPE_WIZARD.get())  {
+            if (stack.getItem() == CropariaItems.RECIPE_WIZARD.get()) {
                 return InteractionResult.PASS;
             }
-            ItemStack newStack = stack.copy();
-            stack.setCount(0);
-            world.addFreshEntity(new ItemEntity(world, (double) pos.getX() + 0.5, (double) pos.getY() + 0.6, (double) pos.getZ() + 0.5, newStack, 0, 0, 0));
+            this.placeItem(world, pos, stack);
             return InteractionResult.CONSUME;
         }
         return super.use(blockState, world, pos, player, interactionHand, blockHitResult);
@@ -108,13 +107,7 @@ public class RitualStand extends Block {
             if (result.getItem() instanceof SpawnEggItem) {
                 FakePlayer.useAllItemsOn(world, pos, result);
             } else {
-                Vec3 itemPos = new Vec3(pos.getX() - 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
-                if (player != null) {
-                    itemPos = player.position();
-                }
-                world.addFreshEntity(new ItemEntity(
-                    world, itemPos.x, itemPos.y, itemPos.z, result, 0, 0, 0
-                ));
+                Util.exportItem(world, pos, result, player);
             }
         }, () -> {
             if (player != null) {
@@ -141,5 +134,10 @@ public class RitualStand extends Block {
 
     public int getTier() {
         return this.tier;
+    }
+
+    @Override
+    public void placeItem(Level world, BlockPos pos, ItemStack stack) {
+        Util.placeItem(world, pos, stack);
     }
 }
