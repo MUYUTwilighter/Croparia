@@ -35,12 +35,5 @@ versionRange = "*"
 ordering = "AFTER"
 side = "BOTH"
 
-[[dependencies.croparia]]
-modId = "rei"
-type = "optional"
-versionRange = "*"
-ordering = "AFTER"
-side = "CLIENT"
-
 [[mixins]]
 config = "croparia-if-common.mixins.json"

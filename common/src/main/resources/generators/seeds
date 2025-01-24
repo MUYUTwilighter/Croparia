@@ -4,15 +4,9 @@
 {
   "type": "minecraft:crafting_shaped",
   "key": {
-    "C": {
-      "item": "{croparia}"
-    },
-    "M": {
-      "{material_type}": "{material}"
-    },
-    "S": {
-      "tag": "croparia:seed_ingredient"
-    }
+    "C": "{croparia}",
+    "M": "{material_taggable}",
+    "S": "#croparia:seed_ingredient"
   },
   "pattern": [
     "MSM",

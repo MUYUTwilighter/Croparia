@@ -34,7 +34,7 @@ public class ElementalPotion extends Item implements ElementAccess {
             BlockPos sourcePos = blockSource.pos();
             BlockState sourceState = blockSource.state();
             Direction direction = sourceState.getValue(DispenserBlock.FACING);
-            BlockPos targetPos = sourcePos.offset(direction.getNormal());
+            BlockPos targetPos = sourcePos.offset(direction.getUnitVec3i());
             BlockState targetState = blockSource.level().getBlockState(targetPos);
             Block targetBlock = targetState.getBlock();
             if (targetBlock instanceof Infusor infusor) {

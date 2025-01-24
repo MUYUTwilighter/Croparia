@@ -24,9 +24,9 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.SpawnUtil;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.entity.monster.warden.WardenSpawnTracker;
@@ -53,12 +53,6 @@ import java.util.OptionalInt;
  */
 public class ActivatedShriekerBlockEntity extends BlockEntity implements GameEventListener.Provider<VibrationSystem.Listener>, VibrationSystem {
     private static final Logger LOGGER = LogUtils.getLogger();
-    private static final int WARNING_SOUND_RADIUS = 10;
-    private static final int WARDEN_SPAWN_ATTEMPTS = 20;
-    private static final int WARDEN_SPAWN_RANGE_XZ = 5;
-    private static final int WARDEN_SPAWN_RANGE_Y = 6;
-    private static final int DARKNESS_RADIUS = 40;
-    private static final int SHRIEKING_TICKS = 90;
     private static final Int2ObjectMap<SoundEvent> SOUND_BY_LEVEL = Util.make(new Int2ObjectOpenHashMap<>(), map -> {
         map.put(1, SoundEvents.WARDEN_NEARBY_CLOSE);
         map.put(2, SoundEvents.WARDEN_NEARBY_CLOSER);
@@ -86,11 +80,9 @@ public class ActivatedShriekerBlockEntity extends BlockEntity implements GameEve
 
         RegistryOps<Tag> registryOps = provider.createSerializationContext(NbtOps.INSTANCE);
         if (compoundTag.contains("listener", 10)) {
-            Data.CODEC.parse(registryOps, compoundTag.getCompound("listener")).resultOrPartial((string) -> {
-                LOGGER.error("Failed to parse vibration listener for Sculk Shrieker: '{}'", string);
-            }).ifPresent((data) -> {
-                this.vibrationData = data;
-            });
+            Data.CODEC.parse(registryOps, compoundTag.getCompound("listener")).resultOrPartial(
+                string -> LOGGER.error("Failed to parse vibration listener for Sculk Shrieker: '{}'", string)
+            ).ifPresent((data) -> this.vibrationData = data);
         }
 
     }
@@ -98,11 +90,9 @@ public class ActivatedShriekerBlockEntity extends BlockEntity implements GameEve
     protected void saveAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
         super.saveAdditional(compoundTag, provider);
         RegistryOps<Tag> registryOps = provider.createSerializationContext(NbtOps.INSTANCE);
-        Data.CODEC.encodeStart(registryOps, this.vibrationData).resultOrPartial((string) -> {
-            LOGGER.error("Failed to encode vibration listener for Sculk Shrieker: '{}'", string);
-        }).ifPresent((tag) -> {
-            compoundTag.put("listener", tag);
-        });
+        Data.CODEC.encodeStart(registryOps, this.vibrationData).resultOrPartial(
+            string -> LOGGER.error("Failed to encode vibration listener for Sculk Shrieker: '{}'", string)
+        ).ifPresent((tag) -> compoundTag.put("listener", tag));
     }
 
     @Nullable
@@ -186,7 +176,7 @@ public class ActivatedShriekerBlockEntity extends BlockEntity implements GameEve
     }
 
     private boolean trySummonWarden(ServerLevel serverLevel) {
-        return SpawnUtil.trySpawnMob(EntityType.WARDEN, MobSpawnType.TRIGGERED, serverLevel, this.getBlockPos(), 20, 5, 6, SpawnUtil.Strategy.ON_TOP_OF_COLLIDER).isPresent();
+        return SpawnUtil.trySpawnMob(EntityType.WARDEN, EntitySpawnReason.TRIGGERED, serverLevel, this.getBlockPos(), 20, 5, 6, SpawnUtil.Strategy.ON_TOP_OF_COLLIDER).isPresent();
     }
 
     public VibrationSystem.@NotNull Listener getListener() {

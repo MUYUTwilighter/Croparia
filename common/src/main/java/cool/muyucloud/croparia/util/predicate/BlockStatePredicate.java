@@ -85,7 +85,7 @@ public class BlockStatePredicate implements Predicate<BlockState> {
                 blocks.forEachRemaining(
                     holder -> {
                         ItemStack item = holder.value().asItem().getDefaultInstance();
-                        item.set(DataComponents.CUSTOM_NAME, Component.literal(builder.block));
+                        item.set(DataComponents.CUSTOM_NAME, Component.literal(builder.getBlock()));
                         list.add(item);
                     }
                 );
@@ -158,7 +158,7 @@ public class BlockStatePredicate implements Predicate<BlockState> {
                 TagKey<Block> tag = TagKey.create(Registries.BLOCK, ResourceLocation.tryParse(block.substring(1)));
                 blockPredicate = b -> b.is(tag);
             } else {
-                Block block = BuiltInRegistries.BLOCK.get(ResourceLocation.tryParse(this.block));
+                Block block = BuiltInRegistries.BLOCK.getValue(ResourceLocation.tryParse(this.block));
                 if (block == Blocks.AIR) {
                     throw new IllegalArgumentException("Invalid block: " + this.block);
                 }

@@ -20,7 +20,7 @@ public class DropperBlockMixin {
         at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;getValue(Lnet/minecraft/world/level/block/state/properties/Property;)Ljava/lang/Comparable;")
     )
     private void onDrop(ServerLevel world, BlockState blockState, BlockPos pos, CallbackInfo ci, @Local ItemStack itemStack) {
-        pos = pos.offset(blockState.getValue(DropperBlock.FACING).getNormal());
+        pos = pos.offset(blockState.getValue(DropperBlock.FACING).getUnitVec3i());
         Block block = world.getBlockState(pos).getBlock();
         if (block instanceof ItemPlaceable placeable) {
             placeable.placeItem(world, pos, itemStack.split(1));

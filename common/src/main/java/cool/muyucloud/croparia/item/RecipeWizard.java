@@ -18,8 +18,10 @@ import net.minecraft.Util;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -38,6 +40,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -53,6 +56,7 @@ public class RecipeWizard extends Item {
         if (!(context.getLevel() instanceof ClientLevel level) || !(context.getPlayer() instanceof AbstractClientPlayer player)) {
             return InteractionResult.PASS;
         }
+        ItemStack stack = context.getItemInHand();
         BlockPos targetPos = context.getClickedPos();
         BlockState state = level.getBlockState(targetPos);
         Block target = state.getBlock();
@@ -76,7 +80,7 @@ public class RecipeWizard extends Item {
             JsonObject recipe = assembleRitual(ritualStand, optionalBlock.get(), optionalIngredient.get(), result);
             Path path = this.dumpRecipe(RecipeTypes.RITUAL.getId(), recipe);
             this.sendFeedback("chat.croparia.recipe_wizard.ritual", path, player);
-            this.addCooldown(player);
+            this.addCooldown(stack, player);
             return InteractionResult.SUCCESS;
         } else if (target instanceof Infusor) {
             Optional<ItemStack> optionalIngredient = getItemInput(level, targetPos);
@@ -97,21 +101,21 @@ public class RecipeWizard extends Item {
             JsonObject recipe = assembleInfusor(element, optionalIngredient.get(), result);
             Path path = this.dumpRecipe(RecipeTypes.INFUSOR.getId(), recipe);
             this.sendFeedback("chat.croparia.recipe_wizard.infusor", path, player);
-            this.addCooldown(player);
+            this.addCooldown(stack, player);
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.FAIL;
     }
 
-    public void addCooldown(Player player) {
-        player.getCooldowns().addCooldown(this, 5);
+    public void addCooldown(ItemStack stack, Player player) {
+        player.getCooldowns().addCooldown(stack, 5);
     }
 
     public Path dumpRecipe(ResourceLocation recipeType, JsonObject recipe) {
         Path dir = CropariaIf.CONFIG.getDumpPath().resolve(recipeType.getPath());
         File dirFile = dir.toFile();
-        if (!dirFile.isDirectory()) {
-            dirFile.mkdirs();
+        if (!dirFile.isDirectory() && !dirFile.mkdirs()) {
+            throw new IllegalStateException("Failed to create directory " + dir);
         }
         String recipeName = Util.getFilenameFormattedDateTime();
         Path location = dir.resolve(recipeName + ".json");
@@ -163,9 +167,9 @@ public class RecipeWizard extends Item {
     }
 
     public @NotNull Optional<BlockState> getRitualInputBlock(ResourceLocation id, Level world, BlockPos pos) {
-        RecipeManager recipeManager = world.getRecipeManager();
+        RecipeManager recipeManager = Objects.requireNonNull(world.getServer()).getRecipeManager();
         AtomicReference<BlockState> result = new AtomicReference<>();
-        recipeManager.getRecipeFor(RecipeTypes.RITUAL_STRUCTURE.get(), RitualStructureContainer.INSTANCE, world, id).flatMap(
+        recipeManager.getRecipeFor(RecipeTypes.RITUAL_STRUCTURE.get(), RitualStructureContainer.INSTANCE, world, ResourceKey.create(Registries.RECIPE, id)).flatMap(
             recipe -> recipe.value().matches(pos, world)
         ).ifPresent(result::set);
         return Optional.ofNullable(result.get());

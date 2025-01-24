@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "croparia:potion_earth"
+    }
+  ],
+  "result": {
+    "id": "croparia:elemental_earth"
+  }
+}

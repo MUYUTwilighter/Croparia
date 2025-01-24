@@ -4,9 +4,7 @@
 {
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
-    {
-      "item": "{fruit}"
-    }
+    "{fruit}"
   ],
   "result": {
     "id": "{result}",

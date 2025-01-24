@@ -1,5 +1,6 @@
 package cool.muyucloud.croparia.recipe;
 
+import cool.muyucloud.croparia.recipe.container.InfusorContainer;
 import cool.muyucloud.croparia.recipe.serializer.OldInfusorRecipeSerializer;
 import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.registry.RecipeSerializers;
@@ -9,10 +10,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeHolder;
-import net.minecraft.world.item.crafting.RecipeInput;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
@@ -44,7 +42,7 @@ public class OldInfusorRecipe extends InfusorRecipe {
         if (stacks.isEmpty()) {
             throw new AssertionError("Empty input item in recipe %s".formatted(this));
         } else {
-            return stacks.get(0);
+            return stacks.getFirst();
         }
     }
 
@@ -72,7 +70,7 @@ public class OldInfusorRecipe extends InfusorRecipe {
     }
 
     @Override
-    public @NotNull RecipeSerializer<?> getSerializer() {
+    public @NotNull RecipeSerializer<? extends Recipe<InfusorContainer>> getSerializer() {
         return RecipeSerializers.INFUSOR_OLD.get();
     }
 }

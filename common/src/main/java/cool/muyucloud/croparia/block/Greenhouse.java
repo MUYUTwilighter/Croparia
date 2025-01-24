@@ -14,7 +14,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -66,7 +66,7 @@ public class Greenhouse extends BaseEntityBlock {
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack itemStack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+    protected @NotNull InteractionResult useItemOn(ItemStack itemStack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (!world.isClientSide) {
             MenuProvider screenHandlerFactory = state.getMenuProvider(world, pos);
             if (screenHandlerFactory != null) {
@@ -74,7 +74,7 @@ public class Greenhouse extends BaseEntityBlock {
             }
         }
 
-        return ItemInteractionResult.SUCCESS;
+        return InteractionResult.SUCCESS;
     }
 
     public void randomTick(@Nullable BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
@@ -89,9 +89,10 @@ public class Greenhouse extends BaseEntityBlock {
     }
 
     public <T extends BlockEntity> @Nullable BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-        return createTickerHelper(type, BlockEntities.GREENHOUSE_BE.get(), (world1, pos, state1, be) -> {
-            GreenhouseBlockEntity.tick(world1, pos, be);
-        });
+        return createTickerHelper(
+            type, BlockEntities.GREENHOUSE_BE.get(),
+            (world1, pos, state1, be) -> GreenhouseBlockEntity.tick(world1, pos, be)
+        );
     }
 
     public @NotNull RenderShape getRenderShape(BlockState state) {

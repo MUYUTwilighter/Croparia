@@ -36,7 +36,7 @@ public class GenericIngredient implements Predicate<ItemStack> {
         int count = optionalCount.orElse(1);
         DataComponentMap nbt = optionalNbt.orElse(null);
         AtomicReference<GenericIngredient> ingredient = new AtomicReference<>();
-        id.map(BuiltInRegistries.ITEM::get).map(item -> new GenericIngredient(item, count, nbt)).ifPresentOrElse(
+        id.map(BuiltInRegistries.ITEM::getValue).map(item -> new GenericIngredient(item, count, nbt)).ifPresentOrElse(
             ingredient::set, () -> rawTag.map(raw -> TagKey.create(Registries.ITEM, raw)).ifPresentOrElse(
                 tag -> ingredient.set(new GenericIngredient(tag, count, nbt)),
                 () -> ingredient.set(new GenericIngredient(count, nbt))

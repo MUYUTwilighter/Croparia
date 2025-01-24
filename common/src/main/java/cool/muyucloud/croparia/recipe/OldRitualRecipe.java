@@ -1,5 +1,6 @@
 package cool.muyucloud.croparia.recipe;
 
+import cool.muyucloud.croparia.recipe.container.RitualContainer;
 import cool.muyucloud.croparia.registry.RecipeSerializers;
 import cool.muyucloud.croparia.util.predicate.BlockStatePredicate;
 import cool.muyucloud.croparia.util.predicate.GenericIngredient;
@@ -7,6 +8,7 @@ import jdk.jfr.Experimental;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -14,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Objects;
 
 @Experimental
 public class OldRitualRecipe extends RitualRecipe {
@@ -44,8 +47,8 @@ public class OldRitualRecipe extends RitualRecipe {
 
     public Block extractBlock() {
         if (this.getStateBuilder().isTag()) {
-            @Nullable ResourceLocation id = ResourceLocation.tryParse(this.getBlock().getBuilder().getBlock());
-            return BuiltInRegistries.BLOCK.get(id);
+            @Nullable ResourceLocation id = ResourceLocation.tryParse(Objects.requireNonNull(this.getBlock().getBuilder().getBlock()));
+            return BuiltInRegistries.BLOCK.getValue(id);
         } else {
             return Blocks.AIR;
         }
@@ -56,7 +59,7 @@ public class OldRitualRecipe extends RitualRecipe {
         if (stacks.isEmpty()) {
             return ItemStack.EMPTY;
         } else {
-            return stacks.get(0);
+            return stacks.getFirst();
         }
     }
 
@@ -65,7 +68,7 @@ public class OldRitualRecipe extends RitualRecipe {
     }
 
     @Override
-    public @NotNull RecipeSerializer<?> getSerializer() {
+    public @NotNull RecipeSerializer<? extends Recipe<RitualContainer>> getSerializer() {
         return RecipeSerializers.RITUAL_OLD.get();
     }
 }

@@ -10,9 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
@@ -170,25 +168,28 @@ public class RitualStructure implements Recipe<RitualStructureContainer> {
 
     @Override
     @Deprecated
-    public boolean canCraftInDimensions(int i, int j) {
-        return true;
-    }
-
-    @Override
-    @Deprecated
-    public @NotNull ItemStack getResultItem(HolderLookup.Provider provider) {
-        return ItemStack.EMPTY;
-    }
-
-    @Override
-    @Deprecated
-    public @NotNull RecipeSerializer<?> getSerializer() {
+    public @NotNull RecipeSerializer<? extends Recipe<RitualStructureContainer>> getSerializer() {
         return RecipeSerializers.RITUAL_STRUCTURE.get();
     }
 
     @Override
     @Deprecated
-    public @NotNull RecipeType<?> getType() {
+    public @NotNull RecipeType<? extends Recipe<RitualStructureContainer>> getType() {
         return RecipeTypes.RITUAL_STRUCTURE.get();
+    }
+
+    @Override
+    public @NotNull PlacementInfo placementInfo() {
+        return PlacementInfo.NOT_PLACEABLE;
+    }
+
+    @Override
+    public @NotNull RecipeBookCategory recipeBookCategory() {
+        return new RecipeBookCategory();
+    }
+
+    @Override
+    public boolean isSpecial() {
+        return true;
     }
 }

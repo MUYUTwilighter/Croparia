@@ -4,8 +4,10 @@ import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.access.CropAccess;
 import cool.muyucloud.croparia.data.crop.Crop;
 import cool.muyucloud.croparia.registry.Tabs;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.Item;
@@ -13,11 +15,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import org.jetbrains.annotations.NotNull;
 
+@SuppressWarnings("UnstableApiUsage")
 public class CropFruit extends Item implements CropAccess {
     public Crop crop;
 
     public CropFruit(Crop crop) {
-        super(new Properties().arch$tab(Tabs.CROPS));
+        super(new Properties().arch$tab(Tabs.CROPS).setId(ResourceKey.create(Registries.ITEM, crop.getFruitId())));
         this.crop = crop;
     }
 
@@ -43,12 +46,7 @@ public class CropFruit extends Item implements CropAccess {
     @Override
     public @NotNull Component getName(ItemStack itemStack) {
         MutableComponent cropName = Component.translatable(this.crop.getTranslationKey());
-        return Component.translatable(this.getDescriptionId(itemStack), cropName);
-    }
-
-    @Override
-    public @NotNull String getDescriptionId() {
-        return "item." + CropariaIf.MOD_ID + ".crop.fruit";
+        return Component.translatable("item." + CropariaIf.MOD_ID + ".crop.fruit", cropName);
     }
 
     @Override

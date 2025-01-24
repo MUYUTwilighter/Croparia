@@ -23,9 +23,6 @@
     "client": [
       "cool.muyucloud.croparia.fabric.CropariaIfClientFabric"
     ],
-    "rei_client": [
-      "cool.muyucloud.croparia.fabric.ReiClientFabric"
-    ],
     "emi": [
       "cool.muyucloud.croparia.fabric.EmiFabric"
     ]
@@ -37,8 +34,5 @@
     "fabric": "*",
     "minecraft": "~1.21",
     "architectury": "*"
-  },
-  "suggests": {
-    "rei": "*"
   }
 }

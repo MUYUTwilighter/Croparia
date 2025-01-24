@@ -1,0 +1,14 @@
+{
+  "type": "croparia:ritual",
+  "tier": 1,
+  "ingredient": {
+    "id": "croparia:elematilius"
+  },
+  "block": {
+    "block": "minecraft:purpur_block"
+  },
+  "result": {
+    "id": "croparia:elemental_air",
+    "Count": 1
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "croparia:infusor",
+  "element": "fire",
+  "ingredient": {
+    "id": "croparia:croparia4",
+    "count": 2
+  },
+  "result": {
+    "id": "croparia:croparia5",
+    "Count": 1
+  }
+}

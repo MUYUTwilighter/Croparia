@@ -26,6 +26,7 @@ public class DumpCommand {
         MutableComponent component = Component.translatable("commands.croparia.dump.perform", size);
         if (openFile) {
             component.withStyle(ServerCommandRoot.openFile(CropariaIf.CONFIG.getDumpPath().toString()));
+            component.withStyle(ServerCommandRoot.blockMouseBehavior());
         }
         success.send(() -> component, true);
         CropFileHandler.dumpCrops();

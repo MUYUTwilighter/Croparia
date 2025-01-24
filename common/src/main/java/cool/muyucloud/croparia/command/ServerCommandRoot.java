@@ -44,7 +44,7 @@ public class ServerCommandRoot {
     }
 
     public static Style hoverItem(ResourceLocation id) {
-        return hoverItem(BuiltInRegistries.ITEM.get(id));
+        return hoverItem(BuiltInRegistries.ITEM.getValue(id));
     }
 
     public static Style hoverItem(Item item) {

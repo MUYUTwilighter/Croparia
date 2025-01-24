@@ -1,0 +1,14 @@
+{
+  "type": "croparia:ritual",
+  "tier": 3,
+  "ingredient": {
+    "id": "minecraft:brewing_stand"
+  },
+  "block": {
+    "block": "minecraft:gold_block"
+  },
+  "result": {
+    "id": "croparia:midas_hand",
+    "Count": 1
+  }
+}

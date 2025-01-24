@@ -7,6 +7,10 @@ architectury {
     fabric()
 }
 
+loom {
+    accessWidenerPath = project(":common").loom.accessWidenerPath
+}
+
 configurations {
     common {
         canBeResolved = true
@@ -38,9 +42,9 @@ dependencies {
     modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:$rei_version"
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-fabric:$rei_version"
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-default-plugin-fabric:$rei_version"
-    // EMI
-    modCompileOnly "dev.emi:emi-fabric:${emi_version}:api"
-    modLocalRuntime "dev.emi:emi-fabric:${emi_version}"
+    // EMI: waiting for update to 1.21.3
+//    modCompileOnly "dev.emi:emi-fabric:${emi_version}:api"
+//    modLocalRuntime "dev.emi:emi-fabric:${emi_version}"
     // No kubeJs as it no longer supports fabric after 1.20.1
 }
 

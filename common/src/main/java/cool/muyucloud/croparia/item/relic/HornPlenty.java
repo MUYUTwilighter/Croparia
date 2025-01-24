@@ -1,6 +1,5 @@
 package cool.muyucloud.croparia.item.relic;
 
-import cool.muyucloud.croparia.registry.Tabs;
 import cool.muyucloud.croparia.util.Constants;
 import cool.muyucloud.croparia.util.PostConstants;
 import cool.muyucloud.croparia.util.Util;
@@ -10,18 +9,16 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.context.UseOnContext;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-@SuppressWarnings("UnstableApiUsage")
 public class HornPlenty extends Item {
     private static final int MAX_ATTEMPT = 5;
 
-    public HornPlenty() {
-        super(new Properties().stacksTo(1).arch$tab(Tabs.MAIN).rarity(Rarity.EPIC));
+    public HornPlenty(Properties properties) {
+        super(properties);
     }
 
     public @NotNull InteractionResult useOn(UseOnContext context) {
@@ -49,7 +46,7 @@ public class HornPlenty extends Item {
             return InteractionResult.FAIL;
         }
         player.giveExperiencePoints(-xp);
-        player.getCooldowns().addCooldown(this, 100);
+        player.getCooldowns().addCooldown(context.getItemInHand(), 100);
         context.getLevel().addFreshEntity(new ItemEntity(
             context.getLevel(),
             context.getClickedPos().getX() + 0.5D,

@@ -10,10 +10,12 @@ import cool.muyucloud.croparia.registry.RecipeTypes;
 import cool.muyucloud.croparia.util.ItemPlaceable;
 import cool.muyucloud.croparia.util.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -23,7 +25,6 @@ import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -40,19 +41,19 @@ public class RitualStand extends Block implements ItemPlaceable {
     private final int tier;
     private LinkedList<ItemEntity> items = new LinkedList<>();
 
-    public RitualStand(int tier) {
-        super(Properties.of().strength(1.0F, 1.0F).sound(SoundType.ANVIL).requiresCorrectToolForDrops());
+    public RitualStand(int tier, Properties properties) {
+        super(properties);
         this.tier = tier;
     }
 
     @Override
-    protected @NotNull ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level world, BlockPos pos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+    protected @NotNull InteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level world, BlockPos pos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
         if (!world.isClientSide) {
             if (itemStack.getItem() == CropariaItems.RECIPE_WIZARD.get()) {
-                return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+                return InteractionResult.PASS;
             }
             Util.placeItem(world, pos, itemStack);
-            return ItemInteractionResult.CONSUME;
+            return InteractionResult.CONSUME;
         }
         return super.useItemOn(itemStack, blockState, world, pos, player, interactionHand, blockHitResult);
     }
@@ -87,7 +88,7 @@ public class RitualStand extends Block implements ItemPlaceable {
     protected Optional<RitualStructure> getRitualStructure(@NotNull RecipeManager recipeManager) {
         AtomicReference<RitualStructure> recipe = new AtomicReference<>();
         recipeManager.getRecipeFor(
-            RecipeTypes.RITUAL_STRUCTURE.get(), RitualStructureContainer.INSTANCE, null, this.arch$registryName()
+            RecipeTypes.RITUAL_STRUCTURE.get(), RitualStructureContainer.INSTANCE, null, ResourceKey.create(Registries.RECIPE, RecipeTypes.RITUAL_STRUCTURE.getId())
         ).ifPresent(result -> recipe.set(result.value()));
         return Optional.ofNullable(recipe.get());
     }

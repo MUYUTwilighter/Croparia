@@ -10,6 +10,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Set;
 import java.util.function.Supplier;
 
 public class BlockEntities {
@@ -17,11 +18,11 @@ public class BlockEntities {
 
     public static final RegistrySupplier<BlockEntityType<GreenhouseBlockEntity>> GREENHOUSE_BE = register(
         "greenhouse",
-        () -> BlockEntityType.Builder.of(GreenhouseBlockEntity::new, CropariaBlocks.GREENHOUSE.get()).build(null)
+        () -> new BlockEntityType<>(GreenhouseBlockEntity::new, Set.of(CropariaBlocks.GREENHOUSE.get()))
     );
     public static final RegistrySupplier<BlockEntityType<ActivatedShriekerBlockEntity>> ACTIVATED_SHRIEKER = register(
         "activated_shrieker",
-        () -> BlockEntityType.Builder.of(ActivatedShriekerBlockEntity::new, CropariaBlocks.ACTIVATED_SHRIEKER.get()).build(null)
+        () -> new BlockEntityType<>(ActivatedShriekerBlockEntity::new, Set.of(CropariaBlocks.ACTIVATED_SHRIEKER.get()))
     );
 
     @NotNull

@@ -187,7 +187,7 @@ public class Crop {
                 return set.iterator().next().value();
             }
         } else {
-            return BuiltInRegistries.ITEM.get(this.material);
+            return BuiltInRegistries.ITEM.getValue(this.material);
         }
         return Items.AIR;
     }
@@ -221,7 +221,7 @@ public class Crop {
 
     @NotNull
     public CropariaCropBlock getCropBlock() {
-        return (CropariaCropBlock) BuiltInRegistries.BLOCK.get(blockId);
+        return (CropariaCropBlock) BuiltInRegistries.BLOCK.getValue(blockId);
     }
 
     @NotNull
@@ -231,7 +231,7 @@ public class Crop {
 
     @NotNull
     public Item getSeedItem() {
-        return BuiltInRegistries.ITEM.get(seedId);
+        return BuiltInRegistries.ITEM.getValue(seedId);
     }
 
     @NotNull
@@ -241,7 +241,7 @@ public class Crop {
 
     @NotNull
     public Item getFruitItem() {
-        return BuiltInRegistries.ITEM.get(fruitId);
+        return BuiltInRegistries.ITEM.getValue(fruitId);
     }
 
     @NotNull

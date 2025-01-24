@@ -10,9 +10,7 @@ import cool.muyucloud.croparia.util.predicate.GenericIngredient;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -88,22 +86,27 @@ public class InfusorRecipe implements Recipe<InfusorContainer> {
     }
 
     @Override
-    public boolean canCraftInDimensions(int i, int j) {
-        return i >= 1 && j >= 2 || i >= 2 && j >= 1;
+    public boolean isSpecial() {
+        return true;
     }
 
     @Override
-    public @NotNull ItemStack getResultItem(HolderLookup.Provider provider) {
-        return result.copy();
-    }
-
-    @Override
-    public @NotNull RecipeSerializer<?> getSerializer() {
+    public @NotNull RecipeSerializer<? extends Recipe<InfusorContainer>> getSerializer() {
         return RecipeSerializers.INFUSOR.get();
     }
 
     @Override
-    public @NotNull RecipeType<?> getType() {
+    public @NotNull RecipeType<? extends Recipe<InfusorContainer>> getType() {
         return RecipeTypes.INFUSOR.get();
+    }
+
+    @Override
+    public @NotNull PlacementInfo placementInfo() {
+        return PlacementInfo.NOT_PLACEABLE;
+    }
+
+    @Override
+    public @NotNull RecipeBookCategory recipeBookCategory() {
+        return new RecipeBookCategory();
     }
 }

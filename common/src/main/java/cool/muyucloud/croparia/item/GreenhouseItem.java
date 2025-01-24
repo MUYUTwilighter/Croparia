@@ -29,7 +29,6 @@ public class GreenhouseItem extends BlockItem {
                 player.getMainHandItem().shrink(1);
                 return InteractionResult.SUCCESS;
             }
-
             if (world.isEmptyBlock(pos.above(2)) && world.isEmptyBlock(pos.above())) {
                 world.setBlockAndUpdate(pos.above(2), this.getBlock().defaultBlockState());
                 assert player != null;
@@ -37,7 +36,6 @@ public class GreenhouseItem extends BlockItem {
                 return InteractionResult.SUCCESS;
             }
         }
-
         return InteractionResult.FAIL;
     }
 }

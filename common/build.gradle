@@ -2,6 +2,10 @@ architectury {
     common rootProject.enabled_platforms.split(',')
 }
 
+loom {
+    accessWidenerPath = file("src/main/resources/croparia-if.accesswidener")
+}
+
 dependencies {
     // We depend on Fabric Loader here to use the Fabric @Environment annotations,
     // which get remapped to the correct annotations on each platform.
@@ -10,8 +14,11 @@ dependencies {
 
     // Architectury API. This is optional, and you can comment it out if you don't need it.
     modImplementation "dev.architectury:architectury:$rootProject.architectury_api_version"
-    
+
+    // REI
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-api:$rei_version"
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-default-plugin:$rei_version"
-    modCompileOnly "dev.emi:emi-xplat-intermediary:${emi_version}:api"
+
+    // EMI: waiting for update to 1.21.3
+//    modCompileOnly "dev.emi:emi-xplat-intermediary:${emi_version}:api"
 }

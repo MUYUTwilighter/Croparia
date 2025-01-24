@@ -8,9 +8,7 @@ import cool.muyucloud.croparia.util.predicate.BlockStatePredicate;
 import cool.muyucloud.croparia.util.predicate.GenericIngredient;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
@@ -94,22 +92,27 @@ public class RitualRecipe implements Recipe<RitualContainer> {
     }
 
     @Override
-    public boolean canCraftInDimensions(int i, int j) {
-        return false;
-    }
-
-    @Override
-    public @NotNull ItemStack getResultItem(HolderLookup.Provider provider) {
-        return this.getResult();
-    }
-
-    @Override
-    public @NotNull RecipeSerializer<?> getSerializer() {
+    public @NotNull RecipeSerializer<? extends Recipe<RitualContainer>> getSerializer() {
         return RecipeSerializers.RITUAL.get();
     }
 
     @Override
-    public @NotNull RecipeType<?> getType() {
+    public @NotNull RecipeType<? extends Recipe<RitualContainer>> getType() {
         return RecipeTypes.RITUAL.get();
+    }
+
+    @Override
+    public @NotNull PlacementInfo placementInfo() {
+        return PlacementInfo.NOT_PLACEABLE;
+    }
+
+    @Override
+    public @NotNull RecipeBookCategory recipeBookCategory() {
+        return new RecipeBookCategory();
+    }
+
+    @Override
+    public boolean isSpecial() {
+        return true;
     }
 }

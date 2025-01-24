@@ -2,7 +2,6 @@ package cool.muyucloud.croparia.item.relic;
 
 import cool.muyucloud.croparia.registry.CropariaComponents;
 import cool.muyucloud.croparia.registry.CropariaItems;
-import cool.muyucloud.croparia.registry.Tabs;
 import cool.muyucloud.croparia.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -11,23 +10,22 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Relative;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-@SuppressWarnings("UnstableApiUsage")
 public class MagicRope extends Item {
-    public MagicRope() {
-        super(new Properties().arch$tab(Tabs.MAIN).rarity(Rarity.EPIC));
+    public MagicRope(Properties properties) {
+        super(properties);
     }
 
     public @NotNull InteractionResult useOn(UseOnContext context) {
         Level level = context.getLevel();
-        if (!level.isClientSide && context.getPlayer() instanceof ServerPlayer player) {
+        if (!level.isClientSide && context.getPlayer() instanceof ServerPlayer player && player.getServer() != null) {
             ServerLevel world = (ServerLevel) player.level();
             MinecraftServer server = player.getServer();
             ItemStack itemStack = context.getItemInHand();
@@ -45,12 +43,10 @@ public class MagicRope extends Item {
             @NotNull ResourceLocation targetWorld = itemStack.getOrDefault(
                 CropariaComponents.TARGET_WORLD.get(), ResourceLocation.tryParse("minecraft:overworld")
             );
-            @Nullable BlockPos targetPos = itemStack.getOrDefault(CropariaComponents.TARGET_POSITION.get(), null);
-            if (targetPos != null) {
-                ServerLevel target = Util.getLevel(targetWorld, server);
-                player.teleportTo(target, targetPos.getX(), targetPos.getY(), targetPos.getZ(), 0.0F, 0.0F);
-                return InteractionResult.SUCCESS;
-            }
+            @Nullable BlockPos targetPos = itemStack.getOrDefault(CropariaComponents.TARGET_POSITION.get(), context.getClickedPos());
+            ServerLevel target = Util.getLevel(targetWorld, server);
+            player.teleportTo(target, targetPos.getX(), targetPos.getY(), targetPos.getZ(), Relative.ALL, 0, 0, true);
+            return InteractionResult.SUCCESS;
         }
 
         return InteractionResult.FAIL;

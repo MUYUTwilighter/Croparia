@@ -14,7 +14,7 @@ import cool.muyucloud.croparia.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -36,19 +36,17 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Objects;
-
 public class Infusor extends Block implements ItemPlaceable {
     protected final VoxelShape SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 8.0, 16.0);
     public static final EnumProperty<ElementsEnum> TYPE = EnumProperty.create("infusor_type", ElementsEnum.class);
 
-    public Infusor() {
-        super(Properties.of().strength(1.0F, 1.0F).requiresCorrectToolForDrops());
+    public Infusor(Properties properties) {
+        super(properties);
         this.registerDefaultState(this.defaultBlockState().setValue(TYPE, ElementsEnum.EMPTY));
     }
 
     @Override
-    protected @NotNull ItemInteractionResult useItemOn(
+    protected @NotNull InteractionResult useItemOn(
         ItemStack itemStack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand,
         BlockHitResult blockHitResult
     ) {
@@ -58,18 +56,18 @@ public class Infusor extends Block implements ItemPlaceable {
                 if (world instanceof ServerLevel serverWorld) {
                     this.forceCraft(serverWorld, pos, player);
                 }
-                return ItemInteractionResult.SUCCESS;
+                return InteractionResult.SUCCESS;
             } else if (
-                player.getItemInHand(hand).getItem() == ElementalPotion.fromElement(state.getValue(TYPE)).orElseThrow().getCraftingRemainingItem()
+                player.getItemInHand(hand).getItem() == ElementalPotion.fromElement(state.getValue(TYPE)).orElseThrow().getCraftingRemainder().getItem()
                     && this.tryDefuse(world, pos, itemStack, player)
             ) {
-                return ItemInteractionResult.SUCCESS;
+                return InteractionResult.SUCCESS;
             } else if (!(item instanceof RecipeWizard)) {
                 Util.placeItem(world, pos, itemStack);
-                return ItemInteractionResult.CONSUME;
+                return InteractionResult.CONSUME;
             }
         }
-        return ItemInteractionResult.FAIL;
+        return InteractionResult.FAIL;
     }
 
     public boolean tryInfuse(Level world, BlockPos pos, ElementalPotion potion, @NotNull ItemStack stack, @Nullable Player player) {
@@ -83,7 +81,7 @@ public class Infusor extends Block implements ItemPlaceable {
             return true;
         }
         stack.shrink(1);
-        ItemStack returnStack = Objects.requireNonNull(potion.getCraftingRemainingItem()).getDefaultInstance();
+        ItemStack returnStack = potion.getCraftingRemainder();
         Util.exportItem(world, pos, returnStack, player);
         return true;
     }
@@ -102,7 +100,7 @@ public class Infusor extends Block implements ItemPlaceable {
         Item item = stack.getItem();
         BlockState state = world.getBlockState(pos);
         ElementsEnum element = state.getValue(TYPE);
-        if (element != ElementsEnum.EMPTY && ElementalPotion.fromElement(element).orElseThrow().getCraftingRemainingItem() == item) {
+        if (element != ElementsEnum.EMPTY && ElementalPotion.fromElement(element).orElseThrow().getCraftingRemainder().getItem() == item) {
             world.setBlockAndUpdate(pos, CropariaBlocks.INFUSOR.get().defaultBlockState().setValue(TYPE, ElementsEnum.EMPTY));
         } else {
             return false;

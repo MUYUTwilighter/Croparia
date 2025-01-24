@@ -14,6 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
@@ -27,8 +28,8 @@ public class OldRitualRecipeSerializer implements RecipeSerializer<OldRitualReci
         Codec.INT.fieldOf("count").forGetter(OldRitualRecipe::getCount)
     ).apply(instance, (tier, block, input, output, count) -> {
         BlockStatePredicate state = BlockStatePredicate.builder().block(block.toString()).build();
-        ItemStack stack = new ItemStack(BuiltInRegistries.ITEM.get(input), count);
-        ItemStack result = new ItemStack(BuiltInRegistries.ITEM.get(output), count);
+        ItemStack stack = new ItemStack(BuiltInRegistries.ITEM.getValue(input), count);
+        ItemStack result = new ItemStack(BuiltInRegistries.ITEM.getValue(output), count);
         return new OldRitualRecipe(tier, state, stack, result);
     }));
     public static final StreamCodec<RegistryFriendlyByteBuf, OldRitualRecipe> STREAM_CODEC = StreamCodec.ofMember(
@@ -63,12 +64,12 @@ public class OldRitualRecipeSerializer implements RecipeSerializer<OldRitualReci
     );
 
     @Override
-    public MapCodec<OldRitualRecipe> codec() {
+    public @NotNull MapCodec<OldRitualRecipe> codec() {
         return CODEC;
     }
 
     @Override
-    public StreamCodec<RegistryFriendlyByteBuf, OldRitualRecipe> streamCodec() {
+    public @NotNull StreamCodec<RegistryFriendlyByteBuf, OldRitualRecipe> streamCodec() {
         return STREAM_CODEC;
     }
 }
