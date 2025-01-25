@@ -26,7 +26,7 @@ public class DataPackHandler extends PackHandler {
     private final AlwaysEnabledFileResourcePackProvider datapack = new AlwaysEnabledFileResourcePackProvider(
         root, PackType.SERVER_DATA, PackSource.BUILT_IN
     );
-    private final Map<Integer, DataGenerator> generators = new HashMap<>();
+    private final List<DataGenerator> generators = new LinkedList<>();
 
     @Override
     public void onInitial() {
@@ -71,7 +71,7 @@ public class DataPackHandler extends PackHandler {
     @Override
     protected void generate() {
         super.generate();
-        for (DataGenerator generator : this.generators.values()) {
+        for (DataGenerator generator : this.generators) {
             generator.generate(this.root.resolve("data"));
         }
     }
@@ -125,7 +125,6 @@ public class DataPackHandler extends PackHandler {
     public void readGenerators() {
         try {
             this.generators.clear();
-            DataGeneratorCreator.flushInto(this::addGenerator);
             File root = this.root.resolve("generators").toFile();
             if (!root.isDirectory() && !root.mkdirs()) {
                 throw new IllegalStateException("Failed to establish directory \"%s\"".formatted(root));
@@ -135,17 +134,13 @@ public class DataPackHandler extends PackHandler {
                     DataGenerator.read(file.toPath()).ifPresent(this::addGenerator);
                 }
             }
+            DataGeneratorCreator.flushInto(this::addGenerator);
         } catch (Throwable e) {
             CropariaIf.LOGGER.error("Failed to read generators", e);
         }
     }
 
     public void addGenerator(DataGenerator generator) {
-        int hash = generator.hashCode();
-        if (!this.generators.containsKey(hash)) {
-            this.generators.put(hash, generator);
-        } else {
-            CropariaIf.LOGGER.error("Duplicate generator: {}", generator);
-        }
+        this.generators.add(generator);
     }
 }
