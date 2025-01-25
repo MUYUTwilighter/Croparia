@@ -6,13 +6,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.function.Consumer;
 
 @SuppressWarnings("unused")
 public class DataGeneratorCreator {
-    private static final Set<DataGenerator> GENERATOR_CACHE = new HashSet<>();
+    private static final List<DataGenerator> GENERATOR_CACHE = new LinkedList<>();
 
     public static void create(
         @Nullable Boolean enabled, @NotNull String path,
