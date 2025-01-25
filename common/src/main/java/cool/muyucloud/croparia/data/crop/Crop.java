@@ -297,6 +297,8 @@ public class Crop {
             '}';
     }
 
+    private static final Pattern CROPARIA = Pattern.compile("\\{croparia}");
+    private static final Pattern CROPARIA_PATH = Pattern.compile("\\{croparia_path}");
     private static final Pattern NAME = Pattern.compile("\\{name}");
     private static final Pattern MATERIAL = Pattern.compile("\\{material}");
     private static final Pattern MATERIAL_PATH = Pattern.compile("\\{material_path}");
@@ -313,11 +315,9 @@ public class Crop {
     private static final Pattern CROP_BLOCK = Pattern.compile("\\{crop_block}");
     private static final Pattern CROP_BLOCK_PATH = Pattern.compile("\\{crop_block_path}");
     private static final Pattern RESULT = Pattern.compile("\\{result}");
+    private static final Pattern RESULT_COUNT = Pattern.compile("\\{result_count\\.(\\d+)}");
     private static final Pattern RESULT_PATH = Pattern.compile("\\{result_path}");
     private static final Pattern TRANSLATION_KEY = Pattern.compile("\\{translation_key}");
-    private static final Pattern RESULT_COUNT = Pattern.compile("\\{result_count\\.(\\d+)}");
-    private static final Pattern CROPARIA = Pattern.compile("\\{croparia}");
-    private static final Pattern CROPARIA_PATH = Pattern.compile("\\{croparia_path}");
     private static final Pattern TRANSLATIONS = Pattern.compile("\\{translations\\.([^}]+)}");
 
     @PostGen
