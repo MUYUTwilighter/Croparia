@@ -16,10 +16,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.nio.file.Path;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -29,7 +26,7 @@ public class DataPackHandler extends PackHandler {
     private final AlwaysEnabledFileResourcePackProvider datapack = new AlwaysEnabledFileResourcePackProvider(
         root, PackType.SERVER_DATA, PackSource.BUILT_IN
     );
-    private final Map<Integer, DataGenerator> generators = new HashMap<>();
+    private final List<DataGenerator> generators = new LinkedList<>();
 
     @Override
     public void onInitial() {
@@ -74,7 +71,7 @@ public class DataPackHandler extends PackHandler {
     @Override
     protected void generate() {
         super.generate();
-        for (DataGenerator generator : this.generators.values()) {
+        for (DataGenerator generator : this.generators) {
             generator.generate(this.root.resolve("data"));
         }
     }
@@ -144,11 +141,6 @@ public class DataPackHandler extends PackHandler {
     }
 
     public void addGenerator(DataGenerator generator) {
-        int hash = generator.hashCode();
-        if (!this.generators.containsKey(hash)) {
-            this.generators.put(hash, generator);
-        } else {
-            CropariaIf.LOGGER.error("Duplicate generator: {}", generator);
-        }
+        this.generators.add(generator);
     }
 }
