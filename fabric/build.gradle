@@ -1,6 +1,7 @@
 plugins {
     id "com.github.johnrengelman.shadow" version "7.1.2"
     id "com.modrinth.minotaur" version "2.+"
+    id 'com.matthewprenger.cursegradle' version '1.4.0'
 }
 
 architectury {
@@ -106,5 +107,21 @@ modrinth {
     dependencies {
         required.project "architectury-api"
         incompatible.project "croparia"
+    }
+}
+
+curseforge {
+    project {
+        apiKey = System.getenv("CURSEFORGE_MOD_PUBLISH")
+        id = '971004'
+        releaseType = 'release'
+        addGameVersion minecraft_version
+        relations {
+            requiredDependency "architectury-api"
+            incompatible "croparia"
+        }
+        mainArtifact(remapJar) {
+            displayName = archives_base_name + "-fabric-" + mod_version
+        }
     }
 }
