@@ -10,10 +10,9 @@ import net.minecraft.SharedConstants;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.PackSource;
+import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.Enumeration;
@@ -100,16 +99,16 @@ public class DataPackHandler extends PackHandler {
             if (!targetDirFile.isDirectory() && !targetDirFile.mkdirs()) {
                 throw new IllegalStateException("Failed to establish directory \"%s\"".formatted(targetDir));
             }
-            URL url = CropariaIf.class.getClassLoader().getResource("generators");
-            assert url != null : "Built-in generator directory not found";
-            if (url.getProtocol().equals("jar")) {
-                String jarPath = url.getPath().substring(5, url.getPath().indexOf("!"));
+            Enumeration<URL> urls = CropariaIf.class.getClassLoader().getResources("croparia_if_generators");
+            while (urls.hasMoreElements()) {
+                URL url = urls.nextElement();
+                String jarPath = unifyUrl(url);
                 try (JarFile jar = new JarFile(jarPath)) {
                     Enumeration<JarEntry> entries = jar.entries();
                     while (entries.hasMoreElements()) {
                         JarEntry entry = entries.nextElement();
-                        if (entry.getName().startsWith("generators/") && !entry.isDirectory()) {
-                            String filename = entry.getName().substring("generators/".length());
+                        if (entry.getName().startsWith("croparia_if_generators/") && !entry.isDirectory()) {
+                            String filename = entry.getName().substring("croparia_if_generators/".length());
                             File targetFile = targetDir.resolve(filename).toFile();
                             if (!targetFile.isFile() || Platform.isDevelopmentEnvironment()) {
                                 try (OutputStream stream = new FileOutputStream(targetFile)) {
@@ -123,6 +122,26 @@ public class DataPackHandler extends PackHandler {
         } catch (Throwable e) {
             CropariaIf.LOGGER.error("Failed to move built-in generators", e);
         }
+    }
+
+    private static @NotNull String unifyUrl(URL url) {
+        String jarPath;
+        if (Platform.isFabric()) {
+            if (url.getProtocol().equals("jar")) {
+                jarPath = url.getPath().substring(5, url.getPath().indexOf("!"));
+            } else {
+                throw new IllegalStateException("Unsupported protocol: %s".formatted(url.getProtocol()));
+            }
+        } else if (Platform.isForge()) {
+            if (url.getProtocol().equals("union")) {
+                jarPath = url.getPath().substring(1, url.getPath().indexOf("%"));
+            } else {
+                throw new IllegalStateException("Unsupported protocol: %s".formatted(url.getProtocol()));
+            }
+        } else {
+            throw new IllegalStateException("You are running Croparia IF on an unsupported platform");
+        }
+        return jarPath;
     }
 
     public void readGenerators() {

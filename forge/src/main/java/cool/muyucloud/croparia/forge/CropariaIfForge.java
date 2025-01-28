@@ -1,6 +1,7 @@
 package cool.muyucloud.croparia.forge;
 
 import cool.muyucloud.croparia.CropariaIf;
+import cpw.mods.niofs.union.UnionFileSystem;
 import dev.architectury.platform.forge.EventBuses;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.event.server.ServerStoppingEvent;
