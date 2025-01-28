@@ -104,6 +104,7 @@ modrinth {
     uploadFile = remapJar
     gameVersions = ["1.20.1"]
     loaders = ["fabric"]
+    changelog = rootProject.file("changelog.md").text
     dependencies {
         required.project "architectury-api"
         incompatible.project "croparia"
@@ -116,6 +117,7 @@ curseforge {
         id = '971004'
         releaseType = 'release'
         addGameVersion minecraft_version
+        changelog = rootProject.file("changelog.md")
         relations {
             requiredDependency "architectury-api"
             incompatible "croparia"
@@ -123,5 +125,6 @@ curseforge {
         mainArtifact(remapJar) {
             displayName = archives_base_name + "-fabric-" + mod_version
         }
+        changelog = file("changelog.md")
     }
 }

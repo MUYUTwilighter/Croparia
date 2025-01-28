@@ -19,4 +19,4 @@ classes/
 *.launch
 */venv/
 
-./changelog.md
+changelog.md
