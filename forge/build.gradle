@@ -133,8 +133,9 @@ tasks.register('curseforge', TaskPublishCurseForge) {
     mainFile.changelog = rootProject.file("changelog.md").text
     mainFile.changelogType = 'markdown'
     mainFile.gameVersions = [minecraft_version]
-    mainFile.addJavaVersion(17)
+    mainFile.addJavaVersion("Java 17")
     mainFile.addEnvironment("server", "client")
+    mainFile.addModLoader("forge")
     mainFile.addRequirement("architectury-api")
     mainFile.addIncompatibility("croparia")
 }
