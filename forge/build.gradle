@@ -112,7 +112,7 @@ modrinth {
     token = System.getenv("MODRINTH_MOD_PUBLISH")
     projectId = "croparia-if"
     versionName = archives_base_name + "-forge-" + mod_version
-    versionNumber = mod_version // You don't need to set this manually. Will fail if Modrinth has this version already
+    versionNumber = mod_version
     uploadFile = remapJar
     gameVersions = ["1.20.1"]
     loaders = ["forge"]
@@ -129,6 +129,7 @@ curseforge {
         id = '971004'
         releaseType = 'release'
         addGameVersion minecraft_version
+        enabled_platforms = "forge"
         changelog = rootProject.file("changelog.md")
         relations {
             requiredDependency "architectury-api"

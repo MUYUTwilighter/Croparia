@@ -117,6 +117,7 @@ curseforge {
         id = '971004'
         releaseType = 'release'
         addGameVersion minecraft_version
+        enabled_platforms = "fabric"
         changelog = rootProject.file("changelog.md")
         relations {
             requiredDependency "architectury-api"
