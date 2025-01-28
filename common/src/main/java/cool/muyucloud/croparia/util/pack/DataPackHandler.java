@@ -12,7 +12,9 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.PackSource;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.Enumeration;

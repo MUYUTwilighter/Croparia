@@ -9,7 +9,6 @@
   "mixins": [
     "BlockMixin",
     "CropBlockMixin",
-    "DropperBlockMixin",
     "MainMixin",
     "MinecraftServerMixin",
     "PackRepositoryMixin",

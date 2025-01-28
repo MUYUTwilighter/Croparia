@@ -15,7 +15,7 @@ loom {
         convertAccessWideners = true
         extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
 
-        mixinConfig "croparia-if-common.mixins.json"
+        mixinConfig "croparia-if-common.mixins.json", "croparia-if-forge.mixins.json"
     }
 }
 
