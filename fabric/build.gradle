@@ -1,7 +1,9 @@
+import net.darkhax.curseforgegradle.TaskPublishCurseForge
+
 plugins {
     id "com.github.johnrengelman.shadow" version "7.1.2"
     id "com.modrinth.minotaur" version "2.+"
-    id 'com.matthewprenger.cursegradle' version '1.4.0'
+    id 'net.darkhax.curseforgegradle' version '1.1.26'
 }
 
 architectury {
@@ -111,21 +113,16 @@ modrinth {
     }
 }
 
-curseforge {
-    apiKey = System.getenv("CURSEFORGE_MOD_PUBLISH")
-    project {
-        apiKey = System.getenv("CURSEFORGE_MOD_PUBLISH")
-        id = '971004'
-        releaseType = 'release'
-        addGameVersion minecraft_version
-        changelog = rootProject.file("changelog.md")
-        changelogType = 'markdown'
-        relations {
-            requiredDependency "architectury-api"
-            incompatible "croparia"
-        }
-        mainArtifact(remapJar) {
-            displayName = archives_base_name + "-fabric-" + mod_version
-        }
-    }
+tasks.register('curseforge', TaskPublishCurseForge) {
+    apiToken = System.getenv("CURSEFORGE_MOD_PUBLISH")
+    def mainFile = upload('971004', remapJar)
+    mainFile.displayName = archives_base_name + "-fabric-" + mod_version
+    mainFile.releaseType = mod_version.contains("pre") ? "beta" : "release"
+    mainFile.changelog = rootProject.file("changelog.md").text
+    mainFile.changelogType = 'markdown'
+    mainFile.gameVersions = [minecraft_version]
+    mainFile.addJavaVersion(17)
+    mainFile.addEnvironment("server", "client")
+    mainFile.addRequirement("architectury-api")
+    mainFile.addIncompatibility("croparia")
 }
