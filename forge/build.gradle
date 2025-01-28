@@ -124,19 +124,20 @@ modrinth {
 }
 
 curseforge {
+    apiKey = System.getenv("CURSEFORGE_MOD_PUBLISH")
     project {
         apiKey = System.getenv("CURSEFORGE_MOD_PUBLISH")
         id = '971004'
         releaseType = 'release'
         addGameVersion minecraft_version
-        enabled_platforms = "forge"
         changelog = rootProject.file("changelog.md")
+        changelogType = 'markdown'
         relations {
             requiredDependency "architectury-api"
             incompatible "croparia"
         }
         mainArtifact(remapJar) {
-            displayName = archives_base_name + "-fabric-" + mod_version
+            displayName = archives_base_name + "-forge-" + mod_version
         }
     }
 }
