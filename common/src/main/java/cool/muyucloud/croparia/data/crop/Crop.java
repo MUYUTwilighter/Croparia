@@ -53,10 +53,10 @@ public class Crop {
         this.material = parseMaterialId(raw.material(), raw.tag());
         this.type = parseType(raw.type());
         this.translationKey = raw.translationKey() == null ? "croparia.crop." + this.name : raw.translationKey();
-        if (raw.translationKey() == null || raw.translations() != null) {
-            this.translations = parseTranslation(raw.translations(), parseDefaultTranslation(this.name));
-        } else {
+        if (raw.translationKey() != null) {
             this.translations = Map.of();
+        } else {
+            this.translations = parseTranslation(raw.translations(), parseDefaultTranslation(this.name));
         }
         this.color = raw.color().startsWith("0x") ? Integer.parseInt(raw.color().substring(2), 16) : Integer.parseInt(raw.color());
         this.tier = parseTier(raw.tier());
