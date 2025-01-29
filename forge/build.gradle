@@ -115,8 +115,9 @@ modrinth {
     projectId = "croparia-if"
     versionName = archives_base_name + "-forge-" + mod_version
     versionNumber = mod_version
+    versionType = mod_version.contains("pre") ? "beta" : "release"
     uploadFile = remapJar
-    gameVersions = ["1.20.1"]
+    gameVersions = [minecraft_version]
     loaders = ["forge"]
     changelog = rootProject.file("changelog.md").text
     dependencies {

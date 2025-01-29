@@ -95,7 +95,7 @@ publishing {
 }
 
 base {
-    archivesName = rootProject.archives_base_name + "-fabric"
+    archivesName = archives_base_name + "-fabric"
 }
 
 modrinth {
@@ -103,6 +103,7 @@ modrinth {
     projectId = "croparia-if"
     versionName = archives_base_name + "-fabric-" + mod_version
     versionNumber = mod_version
+    versionType = mod_version.contains("pre") ? "beta" : "release"
     uploadFile = remapJar
     gameVersions = [minecraft_version]
     loaders = ["fabric"]
