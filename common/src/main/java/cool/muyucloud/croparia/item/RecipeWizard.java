@@ -114,8 +114,8 @@ public class RecipeWizard extends Item {
     public Path dumpRecipe(ResourceLocation recipeType, JsonObject recipe) {
         Path dir = CropariaIf.CONFIG.getDumpPath().resolve(recipeType.getPath());
         File dirFile = dir.toFile();
-        if (!dirFile.isDirectory()) {
-            dirFile.mkdirs();
+        if (!dirFile.isDirectory() && !dirFile.mkdirs()) {
+            throw new IllegalStateException("Failed to establish directory \"%s\"".formatted(dir));
         }
         String recipeName = DATE_FORMAT.format(new Date());
         Path location = dir.resolve(recipeName + ".json");

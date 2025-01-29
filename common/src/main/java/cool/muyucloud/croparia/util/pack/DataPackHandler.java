@@ -100,7 +100,7 @@ public class DataPackHandler extends PackHandler {
             if (!targetDirFile.isDirectory() && !targetDirFile.mkdirs()) {
                 throw new IllegalStateException("Failed to establish directory \"%s\"".formatted(targetDir));
             }
-            Enumeration<URL> urls = CropariaIf.class.getClassLoader().getResources("croparia_if_generators");
+            Enumeration<URL> urls = CropariaIf.class.getClassLoader().getResources("croparia-if-generators");
             while (urls.hasMoreElements()) {
                 URL url = urls.nextElement();
                 String jarPath = unifyUrl(url);
@@ -108,8 +108,8 @@ public class DataPackHandler extends PackHandler {
                     Enumeration<JarEntry> entries = jar.entries();
                     while (entries.hasMoreElements()) {
                         JarEntry entry = entries.nextElement();
-                        if (entry.getName().startsWith("croparia_if_generators/") && !entry.isDirectory()) {
-                            String filename = entry.getName().substring("croparia_if_generators/".length());
+                        if (entry.getName().startsWith("croparia-if-generators/") && !entry.isDirectory()) {
+                            String filename = entry.getName().substring("croparia-if-generators/".length());
                             File targetFile = targetDir.resolve(filename).toFile();
                             if (!targetFile.isFile() || Platform.isDevelopmentEnvironment()) {
                                 try (OutputStream stream = new FileOutputStream(targetFile)) {
