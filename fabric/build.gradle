@@ -83,6 +83,7 @@ modrinth {
     projectId = "croparia-if"
     versionName = archives_name + "-fabric-" + mod_version
     versionNumber = mod_version
+    versionType = mod_version.contains("pre") ? "beta" : "release"
     uploadFile = remapJar
     gameVersions = [minecraft_version]
     loaders = ["fabric"]
