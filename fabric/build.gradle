@@ -1,5 +1,9 @@
+import net.darkhax.curseforgegradle.TaskPublishCurseForge
+
 plugins {
     id 'com.github.johnrengelman.shadow'
+    id "com.modrinth.minotaur" version "2.+"
+    id 'net.darkhax.curseforgegradle' version '1.1.26'
 }
 
 architectury {
@@ -68,4 +72,35 @@ remapJar {
 
 base {
     archivesName = rootProject.archives_name + "-fabric"
+}
+
+modrinth {
+    token = System.getenv("MODRINTH_MOD_PUBLISH")
+    projectId = "croparia-if"
+    versionName = archives_name + "-fabric-" + mod_version
+    versionNumber = mod_version
+    versionType = mod_version.contains("pre") ? "beta" : "release"
+    uploadFile = remapJar
+    gameVersions = [minecraft_version]
+    loaders = ["fabric"]
+    changelog = rootProject.file("changelog.md").text
+    dependencies {
+        required.project "architectury-api"
+        incompatible.project "croparia"
+    }
+}
+
+tasks.register('curseforge', TaskPublishCurseForge) {
+    apiToken = System.getenv("CURSEFORGE_MOD_PUBLISH")
+    def mainFile = upload('971004', remapJar)
+    mainFile.displayName = archives_name + "-fabric-" + mod_version
+    mainFile.releaseType = mod_version.contains("pre") ? "beta" : "release"
+    mainFile.changelog = rootProject.file("changelog.md").text
+    mainFile.changelogType = 'markdown'
+    mainFile.gameVersions = [minecraft_version]
+    mainFile.addJavaVersion("Java 21")
+    mainFile.addEnvironment("server", "client")
+    mainFile.addModLoader("fabric")
+    mainFile.addRequirement("architectury-api")
+    mainFile.addIncompatibility("croparia")
 }

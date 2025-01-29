@@ -15,8 +15,6 @@ import cool.muyucloud.croparia.registry.RecipeTypes;
 import cool.muyucloud.croparia.util.predicate.BlockStatePredicate;
 import cool.muyucloud.croparia.util.predicate.GenericIngredient;
 import net.minecraft.Util;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -53,7 +51,9 @@ public class RecipeWizard extends Item {
 
     @Override
     public @NotNull InteractionResult useOn(UseOnContext context) {
-        if (!(context.getLevel() instanceof ClientLevel level) || !(context.getPlayer() instanceof AbstractClientPlayer player)) {
+        Level level = context.getLevel();
+        Player player = context.getPlayer();
+        if (!level.isClientSide() || player == null || player.isLocalPlayer()) {
             return InteractionResult.PASS;
         }
         ItemStack stack = context.getItemInHand();
