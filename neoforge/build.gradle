@@ -1,5 +1,9 @@
+import net.darkhax.curseforgegradle.TaskPublishCurseForge
+
 plugins {
     id 'com.github.johnrengelman.shadow'
+    id "com.modrinth.minotaur" version "2.+"
+    id 'net.darkhax.curseforgegradle' version '1.1.26'
 }
 
 architectury {
@@ -32,10 +36,10 @@ repositories {
 }
 
 dependencies {
-    neoForge "net.neoforged:neoforge:$rootProject.neoforge_version"
+    neoForge "net.neoforged:neoforge:$neoforge_version"
 
     // Architectury API. This is optional, and you can comment it out if you don't need it.
-    modImplementation "dev.architectury:architectury-neoforge:$rootProject.architectury_api_version"
+    modImplementation "dev.architectury:architectury-neoforge:$architectury_api_version"
 
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowBundle project(path: ':common', configuration: 'transformProductionNeoForge')
@@ -69,5 +73,36 @@ remapJar {
 }
 
 base {
-    archivesName = rootProject.archives_name + "-neoforge"
+    archivesName = archives_name + "-neoforge"
+}
+
+modrinth {
+    token = System.getenv("MODRINTH_MOD_PUBLISH")
+    projectId = "croparia-if"
+    versionName = archives_name + "-neoforge-" + mod_version
+    versionNumber = mod_version
+    versionType = mod_version.contains("pre") ? "beta" : "release"
+    uploadFile = remapJar
+    gameVersions = [minecraft_version]
+    loaders = ["neoforge"]
+    changelog = rootProject.file("changelog.md").text
+    dependencies {
+        required.project "architectury-api"
+        incompatible.project "croparia"
+    }
+}
+
+tasks.register('curseforge', TaskPublishCurseForge) {
+    apiToken = System.getenv("CURSEFORGE_MOD_PUBLISH")
+    def mainFile = upload('971004', remapJar)
+    mainFile.displayName = archives_name + "-neoforge-" + mod_version
+    mainFile.releaseType = mod_version.contains("pre") ? "beta" : "release"
+    mainFile.changelog = rootProject.file("changelog.md").text
+    mainFile.changelogType = 'markdown'
+    mainFile.gameVersions = [minecraft_version]
+    mainFile.addJavaVersion("Java 21")
+    mainFile.addEnvironment("server", "client")
+    mainFile.addModLoader("neoforge")
+    mainFile.addRequirement("architectury-api")
+    mainFile.addIncompatibility("croparia")
 }
