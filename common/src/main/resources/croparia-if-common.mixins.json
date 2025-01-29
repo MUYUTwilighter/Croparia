@@ -8,7 +8,6 @@
   "mixins": [
     "BlockMixin",
     "CropBlockMixin",
-    "DropperBlockMixin",
     "MinecraftServerMixin",
     "PackRepositoryMixin",
     "ReloadableResourceManagerImplMixin",

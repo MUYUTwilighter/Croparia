@@ -77,7 +77,8 @@ public class CompatCrops {
     @Nullable
     public static final Crop LEAD = Crops.compat("lead_conventional", "#forge:ingots/lead", 0x6F6B77, 3, CropType.CROP, Map.of(
         "modern_industrialization", "item.modern_industrialization.lead_ingot",
-        "mekanism", "item.mekanism.ingot_lead"
+        "mekanism", "item.mekanism.ingot_lead",
+        "thermal", "item.thermal.lead_ingot"
     ));
     @Nullable
     public static final Crop LIMONITE = Crops.compat("limonite", "#forge:ingots/limonite", 0xE79353, 3, CropType.CROP, Map.of(
@@ -97,7 +98,8 @@ public class CompatCrops {
     ));
     @Nullable
     public static final Crop NICKEL = Crops.compat("nickel", "#forge:ingots/nickel", 0x8F9E9A, 3, CropType.CROP, Map.of(
-        "modern_industrialization", "item.modern_industrialization.nickel_ingot"
+        "modern_industrialization", "item.modern_industrialization.nickel_ingot",
+        "thermal_foundation", "item.thermal.nickel_ingot"
     ));
     @Nullable
     public static final Crop IRIDIUM = Crops.compat("iridium", "#forge:ingots/iridium", 0x8F9E9A, 3, CropType.CROP, Map.of(
@@ -128,6 +130,10 @@ public class CompatCrops {
         "aoa3", "item.aoa3.shyregem"
     ));
     @Nullable
+    public static final Crop SILVER = Crops.compat("silver", "#forge:ingots/silver", 0x9E9E9E, 3, CropType.CROP, Map.of(
+        "thermal_foundation", "item.thermal.silver_ingot"
+    ));
+    @Nullable
     public static final Crop SILICON = Crops.compat("silicon", "#forge:silicon", 0x66546D, 3, CropType.CROP, Map.of(
         "ae2", "item.ae2.silicon"
     ));
@@ -147,7 +153,8 @@ public class CompatCrops {
     @Nullable
     public static final Crop TIN = Crops.compat("tin_conventional", "#forge:ingots/tin_conventional", 0xE3E3E0, 3, CropType.CROP, Map.of(
         "modern_industrialization", "item.modern_industrialization.tin_ingot",
-        "mekanism", "item.mekanism.ingot_tin"
+        "mekanism", "item.mekanism.ingot_tin",
+        "thermal_foundation", "item.thermal.tin_ingot"
     ));
     @Nullable
     public static final Crop TITANIUM = Crops.compat("titanium", "#forge:ingots/titanium", 0x8F9E9A, 3, CropType.CROP, Map.of(
@@ -172,6 +179,6 @@ public class CompatCrops {
     ));
 
     public static void init() {
-        CropariaIf.LOGGER.debug("Initializing forge CompatCrops");
+        CropariaIf.LOGGER.debug("Initializing neoforge CompatCrops");
     }
 }

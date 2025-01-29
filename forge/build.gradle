@@ -1,10 +1,14 @@
+import net.darkhax.curseforgegradle.TaskPublishCurseForge
+
 plugins {
     id 'com.github.johnrengelman.shadow'
+    id "com.modrinth.minotaur" version "2.+"
+    id 'net.darkhax.curseforgegradle' version '1.1.26'
 }
 
 loom {
     forge {
-        mixinConfig "croparia-if-common.mixins.json"
+        mixinConfig "croparia-if-common.mixins.json", "croparia-if-forge.mixins.json"
     }
 }
 
@@ -39,6 +43,9 @@ dependencies {
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowBundle project(path: ':common', configuration: 'transformProductionForge')
 
+    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.1"))
+    implementation(include("io.github.llamalad7:mixinextras-forge:0.4.1"))
+
     // REI
     modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-forge:$rei_version"
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-forge:$rei_version"
@@ -63,4 +70,34 @@ shadowJar {
 
 remapJar {
     inputFile.set shadowJar.archiveFile
+}
+
+modrinth {
+    token = System.getenv("MODRINTH_MOD_PUBLISH")
+    projectId = "croparia-if"
+    versionName = archives_name + "-forge-" + mod_version
+    versionNumber = mod_version
+    uploadFile = remapJar
+    gameVersions = [minecraft_version]
+    loaders = ["forge"]
+    changelog = rootProject.file("changelog.md").text
+    dependencies {
+        required.project "architectury-api"
+        incompatible.project "croparia"
+    }
+}
+
+tasks.register('curseforge', TaskPublishCurseForge) {
+    apiToken = System.getenv("CURSEFORGE_MOD_PUBLISH")
+    def mainFile = upload('971004', remapJar)
+    mainFile.displayName = archives_name + "-forge-" + mod_version
+    mainFile.releaseType = mod_version.contains("pre") ? "beta" : "release"
+    mainFile.changelog = rootProject.file("changelog.md").text
+    mainFile.changelogType = 'markdown'
+    mainFile.gameVersions = [minecraft_version]
+    mainFile.addJavaVersion("Java 17")
+    mainFile.addEnvironment("server", "client")
+    mainFile.addModLoader("forge")
+    mainFile.addRequirement("architectury-api")
+    mainFile.addIncompatibility("croparia")
 }
