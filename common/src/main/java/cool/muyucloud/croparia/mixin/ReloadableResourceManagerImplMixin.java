@@ -1,6 +1,6 @@
 package cool.muyucloud.croparia.mixin;
 
-import cool.muyucloud.croparia.util.pack.ResourcePackHandler;
+import cool.muyucloud.croparia.api.generator.pack.ResourcePackHandler;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.server.packs.resources.ResourceManager;

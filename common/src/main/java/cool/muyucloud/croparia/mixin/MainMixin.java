@@ -1,6 +1,6 @@
 package cool.muyucloud.croparia.mixin;
 
-import cool.muyucloud.croparia.util.pack.DataPackHandler;
+import cool.muyucloud.croparia.api.generator.pack.DataPackHandler;
 import net.minecraft.server.Main;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

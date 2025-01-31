@@ -1,7 +1,7 @@
 package cool.muyucloud.croparia.kubejs;
 
 import cool.muyucloud.croparia.CropariaIf;
-import cool.muyucloud.croparia.generator.DataGenerator;
+import cool.muyucloud.croparia.api.generator.DataGenerator;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

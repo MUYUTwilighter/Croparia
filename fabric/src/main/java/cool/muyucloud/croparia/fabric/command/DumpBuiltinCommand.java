@@ -3,7 +3,7 @@ package cool.muyucloud.croparia.fabric.command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 
-import static cool.muyucloud.croparia.command.DumpBuiltinCommand.dumpAll;
+import static cool.muyucloud.croparia.api.crop.command.DumpBuiltinCommand.dumpAll;
 
 public class DumpBuiltinCommand {
     private static final LiteralArgumentBuilder<FabricClientCommandSource> DUMP_BUILTIN =

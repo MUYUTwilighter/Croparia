@@ -1,9 +1,9 @@
 package cool.muyucloud.croparia.registry;
 
 import cool.muyucloud.croparia.CropariaIf;
-import cool.muyucloud.croparia.data.ElementsEnum;
-import cool.muyucloud.croparia.fluid.ElementalFlowing;
-import cool.muyucloud.croparia.fluid.ElementalSource;
+import cool.muyucloud.croparia.api.element.ElementsEnum;
+import cool.muyucloud.croparia.api.element.fluid.ElementalFlowing;
+import cool.muyucloud.croparia.api.element.fluid.ElementalSource;
 import dev.architectury.core.fluid.ArchitecturyFlowingFluid;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
