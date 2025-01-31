@@ -78,7 +78,7 @@ public class CompatCrops {
     public static final Crop LEAD = Crops.compat("lead_conventional", "#forge:ingots/lead", 0x6F6B77, 3, CropType.CROP, Map.of(
         "modern_industrialization", "item.modern_industrialization.lead_ingot",
         "mekanism", "item.mekanism.ingot_lead",
-        "thermal", "item.thermal.lead_ingot"
+        "thermal_foundation", "item.thermal.lead_ingot"
     ));
     @Nullable
     public static final Crop LIMONITE = Crops.compat("limonite", "#forge:ingots/limonite", 0xE79353, 3, CropType.CROP, Map.of(
@@ -151,7 +151,7 @@ public class CompatCrops {
         "aoa3", "item.aoa3.skeletal_ingot"
     ));
     @Nullable
-    public static final Crop TIN = Crops.compat("tin_conventional", "#forge:ingots/tin_conventional", 0xE3E3E0, 3, CropType.CROP, Map.of(
+    public static final Crop TIN = Crops.compat("tin_conventional", "#forge:ingots/tin", 0xE3E3E0, 3, CropType.CROP, Map.of(
         "modern_industrialization", "item.modern_industrialization.tin_ingot",
         "mekanism", "item.mekanism.ingot_tin",
         "thermal_foundation", "item.thermal.tin_ingot"
