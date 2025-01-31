@@ -3,13 +3,13 @@ package cool.muyucloud.croparia.client.command;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
-import cool.muyucloud.croparia.registry.Crops;
+import cool.muyucloud.croparia.api.crop.Crops;
 import dev.architectury.event.events.client.ClientCommandRegistrationEvent;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.network.chat.Component;
 
-import static cool.muyucloud.croparia.command.CropCommand.reportForPlayer;
-import static cool.muyucloud.croparia.command.CropCommand.reportSingular;
+import static cool.muyucloud.croparia.api.crop.command.CropCommand.reportForPlayer;
+import static cool.muyucloud.croparia.api.crop.command.CropCommand.reportSingular;
 
 public class CropCommand {
     private static final LiteralArgumentBuilder<ClientCommandRegistrationEvent.ClientCommandSourceStack> CROP =

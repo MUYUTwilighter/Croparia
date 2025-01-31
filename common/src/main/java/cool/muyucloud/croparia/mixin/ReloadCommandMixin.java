@@ -1,7 +1,7 @@
 package cool.muyucloud.croparia.mixin;
 
 import cool.muyucloud.croparia.CropariaIf;
-import cool.muyucloud.croparia.util.pack.DataPackHandler;
+import cool.muyucloud.croparia.api.generator.pack.DataPackHandler;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.commands.ReloadCommand;

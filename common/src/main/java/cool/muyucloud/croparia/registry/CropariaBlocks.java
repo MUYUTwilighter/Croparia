@@ -2,9 +2,11 @@ package cool.muyucloud.croparia.registry;
 
 import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.annotation.PostReg;
-import cool.muyucloud.croparia.block.*;
-import cool.muyucloud.croparia.data.ElementsEnum;
-import cool.muyucloud.croparia.data.crop.Crop;
+import cool.muyucloud.croparia.api.core.block.*;
+import cool.muyucloud.croparia.api.crop.block.CropariaCropBlock;
+import cool.muyucloud.croparia.api.element.block.ElementalLiquidBlock;
+import cool.muyucloud.croparia.api.element.ElementsEnum;
+import cool.muyucloud.croparia.api.crop.Crop;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;

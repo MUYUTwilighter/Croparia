@@ -5,8 +5,8 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import dev.architectury.event.events.client.ClientCommandRegistrationEvent;
 
-import static cool.muyucloud.croparia.command.DumpCommand.dump;
-import static cool.muyucloud.croparia.command.DumpCommand.dumpAll;
+import static cool.muyucloud.croparia.api.crop.command.DumpCommand.dump;
+import static cool.muyucloud.croparia.api.crop.command.DumpCommand.dumpAll;
 
 public class DumpCommand {
     private static final LiteralArgumentBuilder<ClientCommandRegistrationEvent.ClientCommandSourceStack> DUMP =

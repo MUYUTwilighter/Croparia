@@ -1,9 +1,9 @@
 package cool.muyucloud.croparia.neoforge;
 
 import cool.muyucloud.croparia.CropariaIf;
-import cool.muyucloud.croparia.data.crop.Crop;
-import cool.muyucloud.croparia.data.crop.CropType;
-import cool.muyucloud.croparia.registry.Crops;
+import cool.muyucloud.croparia.api.crop.Crop;
+import cool.muyucloud.croparia.api.crop.CropType;
+import cool.muyucloud.croparia.api.crop.Crops;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
