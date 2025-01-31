@@ -51,13 +51,8 @@ public class Crop {
         this.name = parseName(raw.name);
         this.material = parseMaterialId(raw.material, raw.tag);
         this.type = parseType(raw.type);
-        if (raw.translationKey != null) {
-            this.translations = Map.of();
-            this.translationKey = raw.translationKey;
-        } else {
-            this.translationKey = "crop.croparia." + this.name;
-            this.translations = parseTranslation(raw.translations, parseDefaultTranslation(this.name));
-        }
+        this.translationKey = raw.translationKey == null ? "crop.croparia." + this.name : raw.translationKey;
+        this.translations = parseTranslation(raw.translations, parseDefaultTranslation(this.name));
         this.color = raw.color.startsWith("0x") ? Integer.parseInt(raw.color.substring(2), 16) : Integer.parseInt(raw.color);
         this.tier = parseTier(raw.tier);
         this.tag = raw.material.trim().startsWith("#");
@@ -72,13 +67,8 @@ public class Crop {
         this.color = color;
         this.tier = parseTier(tier);
         this.type = type == null ? CropType.CROP : type;
-        if (translationKey != null) {
-            this.translations = Map.of();
-            this.translationKey = translationKey;
-        } else {
-            this.translationKey = "crop.croparia." + this.name;
-            this.translations = parseTranslation(translations, parseDefaultTranslation(this.name));
-        }
+        this.translationKey = translationKey == null ? "crop.croparia." + this.name : translationKey;
+        this.translations = translations == null ? Map.of() : parseTranslation(translations, parseDefaultTranslation(this.name));
         this.tag = material.trim().startsWith("#");
         this.blockId = CropariaIf.of("block_crop_" + this.name);
         this.seedId = CropariaIf.of("seed_crop_" + this.name);
@@ -284,6 +274,7 @@ public class Crop {
         return tag;
     }
 
+    @SuppressWarnings("unused")
     protected Map<String, String> getTranslations() {
         return Map.copyOf(translations);
     }
