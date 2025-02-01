@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("unused")
 public class ElementalFlowing extends ArchitecturyFlowingFluid.Flowing implements ElementAccess {
     private static final Map<ElementsEnum, ElementalFlowing> FLOWING_MAP = new HashMap<>();
     private final ElementsEnum element;

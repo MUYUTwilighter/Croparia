@@ -117,6 +117,7 @@ public class BlockStatePredicate implements Predicate<BlockState> {
         return builder;
     }
 
+    @SuppressWarnings("UnusedReturnValue")
     public static class Builder {
         public static final Codec<Builder> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.STRING.optionalFieldOf("block").forGetter(builder -> Optional.ofNullable(builder.getBlock())),

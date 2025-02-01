@@ -16,6 +16,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class Item2DWidget extends WidgetWithBounds {
     private static final int SLOT_SIZE = 18;
 
@@ -87,7 +88,7 @@ public class Item2DWidget extends WidgetWithBounds {
     }
 
     @Override
-    public List<? extends GuiEventListener> children() {
+    public @NotNull List<? extends GuiEventListener> children() {
         return List.of();
     }
 

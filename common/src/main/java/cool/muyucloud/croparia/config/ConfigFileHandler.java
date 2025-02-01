@@ -17,8 +17,8 @@ public class ConfigFileHandler {
     public static void save(Config config) {
         CropariaIf.LOGGER.info("Saving config");
         File parent = CONFIG_PATH.getParent().toFile();
-        if (!parent.exists()) {
-            parent.mkdirs();
+        if (!parent.exists() && !parent.mkdirs()) {
+            throw new RuntimeException("Failed to create config folder");
         }
         try (JsonWriter writer = new JsonWriter(new FileWriter(CONFIG_PATH.toFile()))) {
             writer.setIndent("  ");

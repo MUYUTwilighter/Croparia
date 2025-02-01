@@ -36,6 +36,7 @@ public class RitualStructureDisplay implements Display {
     private final ResourceLocation id;
     private int lastRead = 0;
 
+    @SuppressWarnings("unchecked")
     public RitualStructureDisplay(RitualStructure structure) {
         this.structure = new Collection[structure.maxY()][structure.maxZ()][structure.maxX()];
         this.input = structure.getPredicates().stream().map(predicate -> EntryIngredients.of(VanillaEntryTypes.ITEM, predicate.availableBlockItems())).toList();

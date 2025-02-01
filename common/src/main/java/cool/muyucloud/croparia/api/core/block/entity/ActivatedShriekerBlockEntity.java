@@ -52,12 +52,6 @@ import java.util.OptionalInt;
  */
 public class ActivatedShriekerBlockEntity extends BlockEntity implements GameEventListener.Holder<VibrationSystem.Listener>, VibrationSystem {
     private static final Logger LOGGER = LogUtils.getLogger();
-    private static final int WARNING_SOUND_RADIUS = 10;
-    private static final int WARDEN_SPAWN_ATTEMPTS = 20;
-    private static final int WARDEN_SPAWN_RANGE_XZ = 5;
-    private static final int WARDEN_SPAWN_RANGE_Y = 6;
-    private static final int DARKNESS_RADIUS = 40;
-    private static final int SHRIEKING_TICKS = 90;
     private static final Int2ObjectMap<SoundEvent> SOUND_BY_LEVEL = Util.make(new Int2ObjectOpenHashMap<>(), map -> {
         map.put(1, SoundEvents.WARDEN_NEARBY_CLOSE);
         map.put(2, SoundEvents.WARDEN_NEARBY_CLOSER);
@@ -86,9 +80,7 @@ public class ActivatedShriekerBlockEntity extends BlockEntity implements GameEve
         super.load(compoundTag);
         if (compoundTag.contains("listener", 10)) {
             DataResult<VibrationSystem.Data> listener = Data.CODEC.parse(new Dynamic<>(NbtOps.INSTANCE, compoundTag.getCompound("listener")));
-            listener.resultOrPartial(LOGGER::error).ifPresent((data) -> {
-                this.vibrationData = data;
-            });
+            listener.resultOrPartial(LOGGER::error).ifPresent(data -> this.vibrationData = data);
         }
 
     }
@@ -96,9 +88,7 @@ public class ActivatedShriekerBlockEntity extends BlockEntity implements GameEve
     protected void saveAdditional(CompoundTag compoundTag) {
         super.saveAdditional(compoundTag);
         DataResult<Tag> vibrationData = Data.CODEC.encodeStart(NbtOps.INSTANCE, this.vibrationData);
-        vibrationData.resultOrPartial(LOGGER::error).ifPresent((tag) -> {
-            compoundTag.put("listener", tag);
-        });
+        vibrationData.resultOrPartial(LOGGER::error).ifPresent(tag -> compoundTag.put("listener", tag));
     }
 
     @Nullable
@@ -164,7 +154,7 @@ public class ActivatedShriekerBlockEntity extends BlockEntity implements GameEve
                 this.playWardenReplySound(serverLevel);
             }
 
-            Warden.applyDarknessAround(serverLevel, Vec3.atCenterOf(this.getBlockPos()), (Entity) null, 40);
+            Warden.applyDarknessAround(serverLevel, Vec3.atCenterOf(this.getBlockPos()), null, 40);
         }
 
     }
@@ -190,7 +180,6 @@ public class ActivatedShriekerBlockEntity extends BlockEntity implements GameEve
     }
 
     private class VibrationUser implements VibrationSystem.User {
-        private static final int LISTENER_RADIUS = 8;
         private final PositionSource positionSource;
 
         public VibrationUser() {

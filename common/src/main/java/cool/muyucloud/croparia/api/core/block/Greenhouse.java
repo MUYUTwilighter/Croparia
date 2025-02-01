@@ -36,6 +36,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("deprecation")
 public class Greenhouse extends BaseEntityBlock {
     public static List<Greenhouse> blockGreenhouse = new ArrayList<>();
     protected final VoxelShape SHAPE = Block.box(1.0, 1.0, 0.0, 15.0, 3.0, 15.0);
@@ -80,9 +81,10 @@ public class Greenhouse extends BaseEntityBlock {
     }
 
     public <T extends BlockEntity> @Nullable BlockEntityTicker<T> getTicker(Level world, BlockState state, BlockEntityType<T> type) {
-        return createTickerHelper(type, BlockEntities.GREENHOUSE_BE.get(), (world1, pos, state1, be) -> {
-            GreenhouseBlockEntity.tick(world1, pos, be);
-        });
+        return createTickerHelper(
+            type, BlockEntities.GREENHOUSE_BE.get(),
+            (world1, pos, state1, be) -> GreenhouseBlockEntity.tick(world1, pos, be)
+        );
     }
 
     public @NotNull RenderShape getRenderShape(BlockState state) {

@@ -25,6 +25,7 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Predicate;
 
+@SuppressWarnings("unused")
 public class GenericIngredient implements Predicate<ItemStack> {
     public static final Codec<GenericIngredient> CODEC = RecordCodecBuilder.create(instance -> instance.group(
         ResourceLocation.CODEC.optionalFieldOf("id").forGetter(GenericIngredient::getId),

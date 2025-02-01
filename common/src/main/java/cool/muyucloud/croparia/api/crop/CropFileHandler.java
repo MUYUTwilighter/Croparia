@@ -43,8 +43,8 @@ public class CropFileHandler {
     public static void dumpCrops() {
         Path dir = CropariaIf.CONFIG.getDumpPath().resolve("crops");
         File dirFile = dir.toFile();
-        if (!dirFile.isDirectory()) {
-            dirFile.mkdirs();
+        if (!dirFile.isDirectory() && !dirFile.mkdirs()) {
+            throw new IllegalStateException("Failed to create directory " + dir);
         }
         Crops.forEachCrop(crop -> {
             try (JsonWriter writer = new JsonWriter(new FileWriter(dir.resolve(crop.getName() + ".json").toFile()))) {
@@ -59,8 +59,8 @@ public class CropFileHandler {
     public static void dumpBuiltinCrops() {
         Path dir = CropariaIf.CONFIG.getDumpPath().resolve("builtin_crops");
         File dirFile = dir.toFile();
-        if (!dirFile.isDirectory()) {
-            dirFile.mkdirs();
+        if (!dirFile.isDirectory() && !dirFile.mkdirs()) {
+            throw new IllegalStateException("Failed to create directory " + dir);
         }
         Crops.forEachBuiltinCrop(crop -> {
             try (JsonWriter writer = new JsonWriter(new FileWriter(dir.resolve(crop.getName() + ".json").toFile()))) {
@@ -75,8 +75,8 @@ public class CropFileHandler {
     public static boolean dumpCrop(@NotNull Crop crop) {
         Path dir = CropariaIf.CONFIG.getDumpPath().resolve("crops");
         File dirFile = dir.toFile();
-        if (!dirFile.isDirectory()) {
-            dirFile.mkdirs();
+        if (!dirFile.isDirectory() && !dirFile.mkdirs()) {
+            throw new IllegalStateException("Failed to create directory " + dir);
         }
         try (JsonWriter writer = new JsonWriter(new FileWriter(dir.resolve(crop.getName() + ".json").toFile()))) {
             writer.setIndent("  ");

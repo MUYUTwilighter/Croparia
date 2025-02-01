@@ -5,6 +5,7 @@ import net.minecraft.core.Vec3i;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class Char3DWithMark extends Char3D {
     private final Vec3i mark;
 

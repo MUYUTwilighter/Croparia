@@ -51,8 +51,8 @@ public abstract class PackHandler {
     }
 
     protected void writeJson(JsonElement element, File file) throws IOException {
-        if (!file.getParentFile().exists()) {
-            file.getParentFile().mkdirs();
+        if (!file.getParentFile().exists() && !file.getParentFile().mkdirs()) {
+            throw new IOException("Failed to create parent directory");
         }
         if (!file.exists() || file.exists() && CropariaIf.CONFIG.getOverride()) {
             FileWriter writer = new FileWriter(file);   // FileWriter will auto create the file if it doesn't exist

@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
+@SuppressWarnings("unused")
 public class Char2D implements Iterable<Character> {
     public static final Codec<Char2D> CODEC = new ListCodec<>(Codec.STRING).xmap(Char2D::new, Char2D::surface);
 
