@@ -151,7 +151,7 @@ public class CompatCrops {
         "aoa3", "item.aoa3.skeletal_ingot"
     ));
     @Nullable
-    public static final Crop TIN = Crops.compat("tin_conventional", "#c:ingots/tin_conventional", 0xE3E3E0, 3, CropType.CROP, Map.of(
+    public static final Crop TIN = Crops.compat("tin_conventional", "#c:ingots/tin", 0xE3E3E0, 3, CropType.CROP, Map.of(
         "modern_industrialization", "item.modern_industrialization.tin_ingot",
         "mekanism", "item.mekanism.ingot_tin",
         "thermal_foundation", "item.thermal.tin_ingot"
