@@ -41,7 +41,7 @@ public class RitualRecipe implements Recipe<RitualContainer> {
     public ItemStack assemble(RitualContainer recipeInput) {
         if (matches(recipeInput)) {
             recipeInput.item().shrink(this.ingredient.getCount());
-            return this.getResult();
+            return this.getResult().copy();
         }
         return ItemStack.EMPTY;
     }
