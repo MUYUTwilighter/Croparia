@@ -1,4 +1,4 @@
-package cool.muyucloud.croparia.data.config;
+package cool.muyucloud.croparia.config;
 
 import cool.muyucloud.croparia.api.crop.Crop;
 import dev.architectury.platform.Platform;

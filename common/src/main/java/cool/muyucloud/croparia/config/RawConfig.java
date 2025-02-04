@@ -1,4 +1,4 @@
-package cool.muyucloud.croparia.data.config;
+package cool.muyucloud.croparia.config;
 
 import java.util.List;
 

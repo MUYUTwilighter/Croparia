@@ -3,7 +3,7 @@ package cool.muyucloud.croparia.api.crop;
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import cool.muyucloud.croparia.CropariaIf;
-import cool.muyucloud.croparia.data.config.Config;
+import cool.muyucloud.croparia.config.Config;
 import cool.muyucloud.croparia.registry.CropariaBlocks;
 import cool.muyucloud.croparia.registry.CropariaItems;
 import dev.architectury.platform.Platform;

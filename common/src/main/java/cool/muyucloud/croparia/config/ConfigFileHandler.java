@@ -1,4 +1,4 @@
-package cool.muyucloud.croparia.data.config;
+package cool.muyucloud.croparia.config;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonWriter;
@@ -17,8 +17,8 @@ public class ConfigFileHandler {
     public static void save(Config config) {
         CropariaIf.LOGGER.info("Saving config");
         File parent = CONFIG_PATH.getParent().toFile();
-        if (!parent.exists()) {
-            parent.mkdirs();
+        if (!parent.exists() && !parent.mkdirs()) {
+            throw new IllegalStateException("Failed to create directory " + parent);
         }
         try (JsonWriter writer = new JsonWriter(new FileWriter(CONFIG_PATH.toFile()))) {
             writer.setIndent("  ");
