@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.jar.JarEntry;
@@ -124,16 +125,22 @@ public class DataPackHandler extends PackHandler {
     }
 
     private static @NotNull String unifyUrl(URL url) {
+        String urlPath;
+        try {
+            urlPath = URLDecoder.decode(url.getPath(), System.getProperty("sun.jnu.encoding", "UTF-8"));
+        } catch (Exception e) {
+            throw new IllegalStateException("Failed to decode URL", e);
+        }
         String jarPath;
         if (Platform.isFabric()) {
             if (url.getProtocol().equals("jar")) {
-                jarPath = url.getPath().substring(5, url.getPath().indexOf("!"));
+                jarPath = urlPath.substring(5, url.getPath().indexOf("!"));
             } else {
                 throw new IllegalStateException("Unsupported protocol: %s".formatted(url.getProtocol()));
             }
         } else if (Platform.isNeoForge()) {
             if (url.getProtocol().equals("union")) {
-                jarPath = url.getPath().substring(1, url.getPath().indexOf("%"));
+                jarPath = urlPath.substring(1, url.getPath().indexOf("%"));
             } else {
                 throw new IllegalStateException("Unsupported protocol: %s".formatted(url.getProtocol()));
             }
