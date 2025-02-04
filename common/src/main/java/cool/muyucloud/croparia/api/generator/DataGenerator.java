@@ -95,7 +95,7 @@ public record DataGenerator(
             String line = lines[i].trim().replace("\r", "");
             builder.append(line).append("\n");
         }
-        assert !builder.isEmpty() : "Empty template content";
+        if (builder.isEmpty()) throw new RuntimeException("Template is empty");
         String template = builder.toString();
         return new DataGenerator(enabled, path, dependency, crops, template);
     }

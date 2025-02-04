@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.nio.file.Path;
 import java.util.Enumeration;
 import java.util.LinkedList;
@@ -127,21 +128,33 @@ public class DataPackHandler extends PackHandler {
     }
 
     private static @NotNull String unifyUrl(URL url) {
+        // Compat with encoding
+        String urlPath;
+        try {
+            urlPath = URLDecoder.decode(url.getPath(), System.getProperty("sun.jnu.encoding", "UTF-8"));
+        } catch (Exception e) {
+            throw new IllegalStateException("Failed to decode URL", e);
+        }
+        // Compat with platform
         String jarPath;
         if (Platform.isFabric()) {
             if (url.getProtocol().equals("jar")) {
-                jarPath = url.getPath().substring(5, url.getPath().indexOf("!"));
+                jarPath = urlPath.substring(5, url.getPath().indexOf("!"));
             } else {
                 throw new IllegalStateException("Unsupported protocol: %s".formatted(url.getProtocol()));
             }
         } else if (Platform.isForge()) {
             if (url.getProtocol().equals("union")) {
-                jarPath = url.getPath().substring(1, url.getPath().indexOf("%"));
+                jarPath = urlPath.substring(1, url.getPath().indexOf("%"));
             } else {
                 throw new IllegalStateException("Unsupported protocol: %s".formatted(url.getProtocol()));
             }
         } else {
             throw new IllegalStateException("You are running Croparia IF on an unsupported platform");
+        }
+        // Compat with file system that require "/" prefix
+        if (!Path.of(jarPath).isAbsolute()) {
+            jarPath = "/" + jarPath;
         }
         return jarPath;
     }
