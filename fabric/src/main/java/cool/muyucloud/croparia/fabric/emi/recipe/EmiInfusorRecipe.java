@@ -1,6 +1,6 @@
 package cool.muyucloud.croparia.fabric.emi.recipe;
 
-import cool.muyucloud.croparia.recipe.InfusorRecipe;
+import cool.muyucloud.croparia.api.core.recipe.InfusorRecipe;
 import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.util.Constants;
 import dev.emi.emi.api.recipe.EmiRecipe;

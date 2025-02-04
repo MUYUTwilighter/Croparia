@@ -1,7 +1,7 @@
 package cool.muyucloud.croparia.registry;
 
 import cool.muyucloud.croparia.CropariaIf;
-import cool.muyucloud.croparia.recipe.*;
+import cool.muyucloud.croparia.api.core.recipe.*;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.Registry;
@@ -13,7 +13,7 @@ import net.minecraft.world.item.crafting.RecipeType;
  * <br/>
  *
  * @see RecipeSerializers
- * @see cool.muyucloud.croparia.recipe.serializer
+ * @see cool.muyucloud.croparia.api.core.recipe.serializer
  */
 @SuppressWarnings("unused")
 public class RecipeTypes {

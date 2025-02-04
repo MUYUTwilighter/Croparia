@@ -1,6 +1,6 @@
 package cool.muyucloud.croparia.access;
 
-import cool.muyucloud.croparia.data.ElementsEnum;
+import cool.muyucloud.croparia.api.element.ElementsEnum;
 import org.jetbrains.annotations.NotNull;
 
 public interface ElementAccess {
