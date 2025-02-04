@@ -1,7 +1,7 @@
 package cool.muyucloud.croparia.registry;
 
 import cool.muyucloud.croparia.CropariaIf;
-import cool.muyucloud.croparia.recipe.serializer.*;
+import cool.muyucloud.croparia.api.core.recipe.serializer.*;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;

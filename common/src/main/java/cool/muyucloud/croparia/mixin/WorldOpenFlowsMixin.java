@@ -1,7 +1,7 @@
 package cool.muyucloud.croparia.mixin;
 
 import com.mojang.serialization.Dynamic;
-import cool.muyucloud.croparia.util.pack.DataPackHandler;
+import cool.muyucloud.croparia.api.generator.pack.DataPackHandler;
 import net.minecraft.client.gui.screens.worldselection.WorldOpenFlows;
 import net.minecraft.world.level.storage.LevelStorageSource;
 import org.spongepowered.asm.mixin.Mixin;

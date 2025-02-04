@@ -1,8 +1,8 @@
 package cool.muyucloud.croparia.registry;
 
 import cool.muyucloud.croparia.CropariaIf;
-import cool.muyucloud.croparia.block.entity.ActivatedShriekerBlockEntity;
-import cool.muyucloud.croparia.block.entity.GreenhouseBlockEntity;
+import cool.muyucloud.croparia.api.core.block.entity.ActivatedShriekerBlockEntity;
+import cool.muyucloud.croparia.api.core.block.entity.GreenhouseBlockEntity;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;

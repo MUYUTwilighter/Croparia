@@ -1,7 +1,7 @@
 package cool.muyucloud.croparia.mixin;
 
 import cool.muyucloud.croparia.CropariaIf;
-import cool.muyucloud.croparia.util.pack.DataPackHandler;
+import cool.muyucloud.croparia.api.generator.pack.DataPackHandler;
 import net.minecraft.commands.CommandSource;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.TickTask;

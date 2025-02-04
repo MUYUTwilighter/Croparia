@@ -2,9 +2,9 @@ package cool.muyucloud.croparia.client.generator;
 
 import com.google.gson.JsonObject;
 import cool.muyucloud.croparia.CropariaIf;
-import cool.muyucloud.croparia.data.crop.Crop;
+import cool.muyucloud.croparia.api.crop.Crop;
+import cool.muyucloud.croparia.api.generator.pack.ResourcePackHandler;
 import cool.muyucloud.croparia.registry.Crops;
-import cool.muyucloud.croparia.util.pack.ResourcePackHandler;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.HashMap;

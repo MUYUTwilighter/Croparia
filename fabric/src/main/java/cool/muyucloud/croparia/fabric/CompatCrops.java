@@ -1,13 +1,14 @@
 package cool.muyucloud.croparia.fabric;
 
 import cool.muyucloud.croparia.CropariaIf;
-import cool.muyucloud.croparia.data.crop.Crop;
-import cool.muyucloud.croparia.data.crop.CropType;
+import cool.muyucloud.croparia.api.crop.Crop;
+import cool.muyucloud.croparia.api.crop.CropType;
 import cool.muyucloud.croparia.registry.Crops;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 
+@SuppressWarnings("unused")
 public class CompatCrops {
     @Nullable
     public static final Crop TIN = Crops.compat("tin", "#c:tin_ingots", 0xE3E3E0, 3, CropType.CROP, Map.of(
