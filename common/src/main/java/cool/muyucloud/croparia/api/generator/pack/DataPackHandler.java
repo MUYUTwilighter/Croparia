@@ -17,6 +17,7 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.util.Enumeration;
 import java.util.LinkedList;
@@ -131,7 +132,7 @@ public class DataPackHandler extends PackHandler {
         // Compat with encoding
         String urlPath;
         try {
-            urlPath = URLDecoder.decode(url.getPath(), System.getProperty("sun.jnu.encoding", "UTF-8"));
+            urlPath = URLDecoder.decode(url.getPath(), Charset.defaultCharset());
         } catch (Exception e) {
             throw new IllegalStateException("Failed to decode URL", e);
         }
