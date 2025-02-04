@@ -122,8 +122,7 @@ public class GreenhouseBlockEntity extends BlockEntity implements MenuProvider, 
     }
 
     public boolean stillValid(Player player) {
-        assert this.level != null;
-        if (this.level.getBlockEntity(this.worldPosition) != this) {
+        if (this.level == null || this.level.getBlockEntity(this.worldPosition) != this) {
             return false;
         } else {
             return player.distanceToSqr((double) this.worldPosition.getX() + 0.5, (double) this.worldPosition.getY() + 0.5, (double) this.worldPosition.getZ() + 0.5) <= 64.0;
