@@ -125,12 +125,14 @@ public class DataPackHandler extends PackHandler {
     }
 
     private static @NotNull String unifyUrl(URL url) {
+        // Compat with encoding
         String urlPath;
         try {
             urlPath = URLDecoder.decode(url.getPath(), System.getProperty("sun.jnu.encoding", "UTF-8"));
         } catch (Exception e) {
             throw new IllegalStateException("Failed to decode URL", e);
         }
+        // Compat with platform
         String jarPath;
         if (Platform.isFabric()) {
             if (url.getProtocol().equals("jar")) {
@@ -146,6 +148,10 @@ public class DataPackHandler extends PackHandler {
             }
         } else {
             throw new IllegalStateException("You are running Croparia IF on an unsupported platform");
+        }
+        // Compat with file system that require "/" prefix
+        if (!Path.of(jarPath).isAbsolute()) {
+            jarPath = "/" + jarPath;
         }
         return jarPath;
     }
