@@ -22,22 +22,18 @@ public class GreenhouseItem extends BlockItem {
         Level world = context.getLevel();
         Player player = context.getPlayer();
         BlockPos pos = context.getClickedPos();
-        if (!world.isClientSide) {
+        if (!world.isClientSide && player != null) {
             if (world.isEmptyBlock(pos.above()) && (world.getBlockState(pos).getBlock() instanceof CropBlock || world.getBlockState(pos).getBlock() instanceof StemBlock || world.getBlockState(pos).getBlock() instanceof AttachedStemBlock)) {
                 world.setBlockAndUpdate(pos.above(), this.getBlock().defaultBlockState());
-                assert player != null;
                 player.getMainHandItem().shrink(1);
                 return InteractionResult.SUCCESS;
             }
-
             if (world.isEmptyBlock(pos.above(2)) && world.isEmptyBlock(pos.above())) {
                 world.setBlockAndUpdate(pos.above(2), this.getBlock().defaultBlockState());
-                assert player != null;
                 player.getMainHandItem().shrink(1);
                 return InteractionResult.SUCCESS;
             }
         }
-
         return InteractionResult.FAIL;
     }
 }
