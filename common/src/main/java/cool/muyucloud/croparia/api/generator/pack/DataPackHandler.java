@@ -1,6 +1,7 @@
 package cool.muyucloud.croparia.api.generator.pack;
 
 import com.google.gson.JsonObject;
+import com.mojang.bridge.game.PackType;
 import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.api.generator.DataGenerator;
 import cool.muyucloud.croparia.kubejs.DataGeneratorCreator;
@@ -92,7 +93,7 @@ public class DataPackHandler extends PackHandler {
 
     @Override
     protected int getPackVersion() {
-        return SharedConstants.getCurrentVersion().getPackVersion(com.mojang.bridge.game.PackType.DATA);
+        return SharedConstants.getCurrentVersion().getPackVersion(PackType.DATA);
     }
 
     public void moveBuiltInGenerators() {
