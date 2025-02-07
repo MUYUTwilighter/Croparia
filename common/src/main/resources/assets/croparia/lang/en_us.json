@@ -123,6 +123,7 @@
   "tooltip.croparia.input": "Input Block",
   "tooltip.croparia.any": "Any Block",
   "tooltip.croparia.unknown": "Unknown Block",
+  "tooltip.croparia.ritual": "Click to view ritual structure",
   "gui.croparia.ritual_structure.title": "Ritual Structure",
   "gui.croparia.ritual_structure.label": "Layer %s",
   "gui.croparia.ritual_structure.lower": "Lower Layer",

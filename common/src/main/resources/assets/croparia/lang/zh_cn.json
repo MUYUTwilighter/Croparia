@@ -123,6 +123,7 @@
   "tooltip.croparia.input": "输入方块",
   "tooltip.croparia.any": "任意方块",
   "tooltip.croparia.unknown": "未知方块",
+  "tooltip.croparia.ritual": "点击以查看仪式结构",
   "gui.croparia.ritual_structure.title": "仪式结构",
   "gui.croparia.ritual_structure.label": "第 %s 层",
   "gui.croparia.ritual_structure.lower": "往低一层",

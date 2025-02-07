@@ -69,7 +69,7 @@ public class RitualRecipeDisplay implements SimpleDisplay<RitualRecipe> {
     }
 
     public EntryStack<ItemStack> getRitual() {
-        return EntryStacks.of(recipe.getRitualItem());
+        return EntryStacks.of(recipe.getRitualItem()).tooltip(Constants.TOOLTIP_RITUAL);
     }
 
     @Override
