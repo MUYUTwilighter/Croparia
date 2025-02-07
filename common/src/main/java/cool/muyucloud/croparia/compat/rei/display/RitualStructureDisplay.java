@@ -17,10 +17,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class RitualStructureDisplay implements Display {
     private static final EntryStack<ItemStack> AIR = EntryStacks.of(BlockStatePredicate.STACK_AIR);
@@ -39,10 +36,13 @@ public class RitualStructureDisplay implements Display {
     @SuppressWarnings("unchecked")
     public RitualStructureDisplay(RitualStructure structure) {
         this.structure = new Collection[structure.maxY()][structure.maxZ()][structure.maxX()];
-        this.input = structure.getPredicates().stream().map(predicate -> EntryIngredients.of(VanillaEntryTypes.ITEM, predicate.availableBlockItems())).toList();
+        this.input = new LinkedList<>(structure.getPredicates().stream().map(
+            predicate -> EntryIngredients.of(VanillaEntryTypes.ITEM, predicate.availableBlockItems())
+        ).toList());
         this.id = structure.getId();
-        this.ritual = EntryStacks.of(BuiltInRegistries.ITEM.get(structure.getId()));
+        this.ritual = EntryStacks.of(BuiltInRegistries.ITEM.get(id));
         this.extractStructure(structure);
+        this.input.add(EntryIngredient.of(ritual));
     }
 
     private void extractStructure(RitualStructure structure) {

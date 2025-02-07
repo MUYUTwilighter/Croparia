@@ -19,6 +19,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class EmiRitualStructure implements EmiRecipe {
@@ -46,7 +47,8 @@ public class EmiRitualStructure implements EmiRecipe {
         this.structure = new EmiIngredient[recipe.maxY()][recipe.maxZ()][recipe.maxX()];
         this.ritual = EmiStack.of(BuiltInRegistries.ITEM.get(recipe.getId()));
         this.id = recipe.getId();
-        this.inputs = recipe.getPredicates().stream().map(predicate -> EmiIngredient.of(predicate.availableBlockItems().stream().map(EmiStack::of).toList())).toList();
+        this.inputs = new LinkedList<>(recipe.getPredicates().stream().map(predicate -> EmiIngredient.of(predicate.availableBlockItems().stream().map(EmiStack::of).toList())).toList());
+        this.inputs.add(this.ritual);
         this.outputs = ritual.getEmiStacks();
         this.extractStructure(recipe);
         this.size = new Vec3i(recipe.maxX(), recipe.maxY(), recipe.maxZ());
