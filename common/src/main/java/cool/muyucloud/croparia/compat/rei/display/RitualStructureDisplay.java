@@ -21,10 +21,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class RitualStructureDisplay implements SimpleDisplay<RitualStructure> {
     public static final DisplaySerializer<RitualStructureDisplay> SERIALIZER = DisplayFactory.serializer(RitualStructureSerializer.CODEC.codec(), RitualStructureDisplay::new);
@@ -51,10 +48,13 @@ public class RitualStructureDisplay implements SimpleDisplay<RitualStructure> {
     public RitualStructureDisplay(RitualStructure structure, ResourceLocation id) {
         this.recipe = structure;
         this.structure = new Collection[structure.maxY()][structure.maxZ()][structure.maxX()];
-        this.input = structure.getPredicates().stream().map(predicate -> EntryIngredients.of(VanillaEntryTypes.ITEM, predicate.availableBlockItems())).toList();
+        this.input = new LinkedList<>(structure.getPredicates().stream().map(
+            predicate -> EntryIngredients.of(VanillaEntryTypes.ITEM, predicate.availableBlockItems())
+        ).toList());
         this.id = id;
         this.ritual = EntryStacks.of(BuiltInRegistries.ITEM.getValue(id));
         this.extractStructure(structure);
+        this.input.add(EntryIngredient.of(ritual));
     }
 
     public RitualStructure getRecipe() {
