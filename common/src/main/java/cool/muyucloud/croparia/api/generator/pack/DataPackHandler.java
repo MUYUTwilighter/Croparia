@@ -136,23 +136,8 @@ public class DataPackHandler extends PackHandler {
         } catch (Exception e) {
             throw new IllegalStateException("Failed to decode URL", e);
         }
-        // Compat with platform
-        String jarPath;
-        if (Platform.isFabric()) {
-            if (url.getProtocol().equals("jar")) {
-                jarPath = urlPath.substring(5, url.getPath().indexOf("!"));
-            } else {
-                throw new IllegalStateException("Unsupported protocol: %s".formatted(url.getProtocol()));
-            }
-        } else if (Platform.isNeoForge()) {
-            if (url.getProtocol().equals("union")) {
-                jarPath = urlPath.substring(1, url.getPath().indexOf("%"));
-            } else {
-                throw new IllegalStateException("Unsupported protocol: %s".formatted(url.getProtocol()));
-            }
-        } else {
-            throw new IllegalStateException("You are running Croparia IF on an unsupported platform");
-        }
+        // Extract jar path
+        String jarPath = urlPath.substring(urlPath.indexOf("/") + 1, urlPath.lastIndexOf(".jar") + 4);
         // Compat with file system that require "/" prefix
         if (!Path.of(jarPath).isAbsolute()) {
             jarPath = "/" + jarPath;
