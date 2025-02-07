@@ -32,4 +32,5 @@ public class Constants {
     public static final MutableComponent TOOLTIP_UNKNOWN = new TranslatableComponent("tooltip.croparia.unknown");
     public static final MutableComponent TOOLTIP_AIR = new TranslatableComponent("tooltip.croparia.air");
     public static final MutableComponent TOOLTIP_ANY = new TranslatableComponent("tooltip.croparia.any");
+    public static final MutableComponent TOOLTIP_RITUAL = new TranslatableComponent("tooltip.croparia.ritual");
 }
