@@ -73,7 +73,7 @@ public class EmiRitualRecipe implements EmiRecipe {
     public void addWidgets(WidgetHolder widgets) {
         int centerX = getDisplayWidth() / 2;
         int centerY = getDisplayHeight() / 2;
-        widgets.add(new SlotWidget(this.ritual, centerX - 9, centerY + 8).drawBack(false));
+        widgets.add(new SlotWidget(this.ritual, centerX - 9, centerY + 8).drawBack(false).appendTooltip(Constants.TOOLTIP_RITUAL));
         widgets.add(new SlotWidget(this.ingredient, centerX - 9, centerY - 24).appendTooltip(Constants.ITEM_DROP_TOOLTIP).drawBack(false));
         widgets.add(new SlotWidget(this.block, centerX - 41, centerY + 8).appendTooltip(Constants.BLOCK_PLACE_TOOLTIP).drawBack(false));
         widgets.add(new SlotWidget(this.result, centerX + 35, centerY + 8).recipeContext(this).drawBack(false));
