@@ -1,5 +1,5 @@
 {
-  "advancements.croparia.root.title": "Croparia",
+  "advancements.croparia.root.title": "Croparia IF",
   "advancements.croparia.root.description": "The essence of mineral",
   "advancements.croparia.infusor.title": "Apply the elemental magic",
   "advancements.croparia.infusor.description": "Craft the infusor, where the elemental potion is used",
@@ -90,8 +90,8 @@
   "item.croparia.midas_hand": "Midas Hand",
   "item.croparia.placeholder": "Any item with matching tag",
   "item.croparia.recipe_wizard": "Recipe Wizard",
-  "tab.croparia.crops": "Croparia : Crops",
-  "tab.croparia.main": "Croparia",
+  "tab.croparia.crops": "Croparia IF: Crops",
+  "tab.croparia.main": "Croparia IF",
   "overlay.croparia.ritual.bad": "The elematilius does not respond to the ritual",
   "overlay.croparia.ritual.rejected": "The elematilius rejects your offerings",
   "overlay.croparia.recipe_wizard.ritual.missing.ingredient": "Throw the input item onto the ritual stand",
