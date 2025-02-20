@@ -1,4 +1,4 @@
-package cool.muyucloud.croparia.api.resource.forge;
+package cool.muyucloud.croparia.api.resource.neoforge;
 
 import cool.muyucloud.croparia.api.resource.type.FluidSpec;
 import net.minecraft.core.Holder;

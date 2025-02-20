@@ -35,17 +35,12 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Greenhouse extends BaseEntityBlock {
     public static final MapCodec<Greenhouse> CODEC = simpleCodec(Greenhouse::new);
-    public static List<Greenhouse> blockGreenhouse = new ArrayList<>();
     protected final VoxelShape SHAPE = Block.box(1.0, 1.0, 0.0, 15.0, 3.0, 15.0);
 
     public Greenhouse(Properties settings) {
         super(settings);
-        blockGreenhouse.add(this);
     }
 
     @Override
@@ -103,7 +98,7 @@ public class Greenhouse extends BaseEntityBlock {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
             if (blockEntity instanceof GreenhouseBlockEntity) {
-                Containers.dropContents(world, pos, (GreenhouseBlockEntity) blockEntity);
+                Containers.dropContentsOnDestroy(state, newState, world, pos);
             }
             super.onRemove(state, world, pos, newState, moved);
         }
