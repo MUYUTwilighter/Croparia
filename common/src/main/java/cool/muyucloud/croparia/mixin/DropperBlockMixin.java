@@ -1,4 +1,4 @@
-package cool.muyucloud.croparia.fabric.mixin;
+package cool.muyucloud.croparia.mixin;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import cool.muyucloud.croparia.util.ItemPlaceable;

@@ -6,8 +6,7 @@
   "client": [
   ],
   "mixins": [
-    "BlockEntityMixin",
-    "DropperBlockMixin"
+    "BlockEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1
