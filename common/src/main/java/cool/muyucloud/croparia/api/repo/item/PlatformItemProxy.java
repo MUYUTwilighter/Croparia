@@ -10,7 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 
 @SuppressWarnings("unused")
-public interface PlatformItemAgent extends Repo<ItemSpec> {
+public interface PlatformItemProxy extends Repo<ItemSpec> {
     @Override
     default TypeToken<ItemSpec> getType() {
         return ItemSpec.TYPE;

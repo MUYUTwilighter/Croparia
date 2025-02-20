@@ -9,7 +9,7 @@ import org.jetbrains.annotations.ApiStatus;
 import java.util.Optional;
 
 @SuppressWarnings("unused")
-public interface PlatformFluidAgent extends Repo<FluidSpec> {
+public interface PlatformFluidProxy extends Repo<FluidSpec> {
     /**
      * Simulates consuming the specified amount of fluid from the specified fluid storage unit.
      *

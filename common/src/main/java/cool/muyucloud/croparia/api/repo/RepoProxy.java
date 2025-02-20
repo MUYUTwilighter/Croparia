@@ -1,7 +1,7 @@
 package cool.muyucloud.croparia.api.repo;
 
-import cool.muyucloud.croparia.api.repo.fluid.FluidInterfaceProvider;
-import cool.muyucloud.croparia.api.repo.item.ItemInterfaceProvider;
+import cool.muyucloud.croparia.api.repo.fluid.FluidProxyProvider;
+import cool.muyucloud.croparia.api.repo.item.ItemProxyProvider;
 import cool.muyucloud.croparia.api.resource.ResourceType;
 import cool.muyucloud.croparia.api.resource.TypeToken;
 import cool.muyucloud.croparia.api.resource.type.FluidSpec;
@@ -13,35 +13,35 @@ import net.minecraft.world.level.block.entity.BlockEntity;
  * Unified storage interface for {@link BlockEntity}.<br>
  * It is used to connect your customized {@link Repo} to the fluid API from fabric / forge.<br>
  * <p>
- * You need to implement {@link FluidInterfaceProvider} or {@link ItemInterfaceProvider}in your {@code BlockEntity}.
+ * You need to implement {@link FluidProxyProvider} or {@link ItemProxyProvider}in your {@code BlockEntity}.
  * </p>
  * <p>
- * Use {@link #item(Repo)} or {@link #fluid(Repo)} to create a {@link RepoInterface}. <br>
+ * Use {@link #item(Repo)} or {@link #fluid(Repo)} to create a {@link RepoProxy}. <br>
  * <b>DO NOT INSTANTIATE THIS CLASS UNLESS YOU KNOW WHAT YOU ARE DOING</b>
  * </p>
  */
-public abstract class RepoInterface<T extends ResourceType> implements Repo<T> {
+public abstract class RepoProxy<T extends ResourceType> implements Repo<T> {
     /**
      * Create a fluid interface from your customized {@link Repo}. <br>
-     * You should only create {@link RepoInterface} from this method,
-     * and the implemented {@link RepoInterface} from fabric / forge module is returned.<br>
+     * You should only create {@link RepoProxy} from this method,
+     * and the implemented {@link RepoProxy} from fabric / forge module is returned.<br>
      *
      * @param repo the fluid repo
      * @return the fluid agent
      */
     @ExpectPlatform
-    public static RepoInterface<FluidSpec> fluid(Repo<ItemSpec> repo) {
+    public static RepoProxy<FluidSpec> fluid(Repo<FluidSpec> repo) {
         throw new AssertionError("Not implemented");
     }
 
     @ExpectPlatform
-    public static RepoInterface<ItemSpec> item(Repo<ItemSpec> repo) {
+    public static RepoProxy<ItemSpec> item(Repo<ItemSpec> repo) {
         throw new AssertionError("Not implemented");
     }
 
     private final Repo<T> repo;
 
-    private RepoInterface(Repo<T> repo) {
+    protected RepoProxy(Repo<T> repo) {
         this.repo = repo;
     }
 
