@@ -6,8 +6,13 @@
 package cool.muyucloud.croparia.api.core.block.entity;
 
 import cool.muyucloud.croparia.access.CropBlockAccess;
+import cool.muyucloud.croparia.api.repo.ContainerRepo;
+import cool.muyucloud.croparia.api.repo.RepoProxy;
+import cool.muyucloud.croparia.api.repo.item.ItemProxyProvider;
+import cool.muyucloud.croparia.api.resource.type.ItemSpec;
 import cool.muyucloud.croparia.registry.BlockEntities;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -28,13 +33,15 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class GreenhouseBlockEntity extends BlockEntity implements MenuProvider, Container {
+public class GreenhouseBlockEntity extends BlockEntity implements MenuProvider, Container, ItemProxyProvider {
     private final NonNullList<ItemStack> inventory;
+    private final RepoProxy<ItemSpec> proxy = RepoProxy.item(new ContainerRepo(this));
 
     public GreenhouseBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntities.GREENHOUSE_BE.get(), pos, state);
@@ -139,5 +146,10 @@ public class GreenhouseBlockEntity extends BlockEntity implements MenuProvider, 
 
     public AbstractContainerMenu createMenu(int syncId, Inventory inv, Player player) {
         return new DispenserMenu(syncId, inv, this);
+    }
+
+    @Override
+    public @Nullable RepoProxy<ItemSpec> visitItem(@Nullable Direction direction) {
+        return proxy;
     }
 }

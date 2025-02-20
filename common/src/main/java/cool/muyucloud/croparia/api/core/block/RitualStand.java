@@ -93,6 +93,9 @@ public class RitualStand extends Block implements ItemPlaceable {
     }
 
     protected void tryCraft(@NotNull RitualContainer container, @NotNull ServerLevel world, @NotNull BlockPos pos, @Nullable Player player) {
+        if (!CropariaIf.CONFIG.getRitual()) {
+            return;
+        }
         world.getServer().getRecipeManager().getRecipeFor(RecipeTypes.RITUAL.get(), container, world).ifPresentOrElse(recipe -> {
             ItemStack result = recipe.value().assemble(container);
             if (result.getItem() instanceof SpawnEggItem) {
