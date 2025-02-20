@@ -5,11 +5,15 @@ import com.google.gson.JsonObject;
 import dev.architectury.platform.Platform;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.Item;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
+import java.util.Optional;
 
 public class TagUtil {
     public static JsonObject create() {
@@ -32,5 +36,28 @@ public class TagUtil {
 
     public static Iterable<Holder<Item>> forItems(TagKey<Item> tag) {
         return Registry.ITEM.getTagOrEmpty(tag);
+    }
+
+    public static <T> boolean isIn(TagKey<T> tagKey, T entry) {
+        Optional<? extends Registry<?>> maybeRegistry;
+        Objects.requireNonNull(tagKey);
+        Objects.requireNonNull(entry);
+        maybeRegistry = Registry.REGISTRY.getOptional(tagKey.registry().location());
+
+        if (maybeRegistry.isPresent()) {
+            if (tagKey.isFor(maybeRegistry.get().key())) {
+                @SuppressWarnings("unchecked")
+                Registry<T> registry = (Registry<T>) maybeRegistry.get();
+
+                Optional<ResourceKey<T>> maybeKey = registry.getResourceKey(entry);
+
+                // Check synced tag
+                if (maybeKey.isPresent()) {
+                    return registry.getHolderOrThrow(maybeKey.get()).is(tagKey);
+                }
+            }
+        }
+
+        return false;
     }
 }

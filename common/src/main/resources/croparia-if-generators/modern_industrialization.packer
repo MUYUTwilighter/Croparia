@@ -7,14 +7,14 @@
   "eu": 2,
   "item_inputs": [
     {
-      "item": "{seed}",
+      "item": "{fruit}",
       "count": 1
     }
   ],
   "item_outputs": [
     {
-      "item": "{fruit}",
-      "count": 1
+      "item": "{result}",
+      "count": {result_count.2}
     }
   ]
 }
