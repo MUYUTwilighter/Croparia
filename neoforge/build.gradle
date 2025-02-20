@@ -53,6 +53,9 @@ dependencies {
     modRuntimeOnly "dev.emi:emi-neoforge:${emi_version}"
     // KubeJs
 //    modApi "dev.latvian.mods:kubejs-neoforge:${kubejs_version}"
+
+    // Mekanism
+    modRuntimeOnly "curse.maven:mekanism-268560:6018306"
 }
 
 processResources {
