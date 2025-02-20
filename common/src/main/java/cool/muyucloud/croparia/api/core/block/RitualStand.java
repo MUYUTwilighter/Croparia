@@ -64,7 +64,7 @@ public class RitualStand extends Block implements ItemPlaceable {
         items.stream().filter(item -> !item.isRemoved()).forEach(filtered::add);
         items = filtered;
         if (entity instanceof ItemEntity itemEntity && !this.items.contains(itemEntity)
-            && world instanceof ServerLevel serverWorld && CropariaIf.CONFIG.getRitual()) {
+            && world instanceof ServerLevel serverWorld) {
             this.items.add(itemEntity);
             ItemStack stack = itemEntity.getItem();
             RecipeManager recipeManager = serverWorld.getServer().getRecipeManager();
@@ -94,6 +94,9 @@ public class RitualStand extends Block implements ItemPlaceable {
     }
 
     protected void tryCraft(@NotNull RitualContainer container, @NotNull ServerLevel world, @NotNull BlockPos pos, @Nullable Player player) {
+        if (!CropariaIf.CONFIG.getRitual()) {
+            return;
+        }
         world.getServer().getRecipeManager().getRecipeFor(RecipeTypes.RITUAL.get(), container, world).ifPresentOrElse(recipe -> {
             ItemStack result = recipe.assemble(container, world.registryAccess());
             if (result.getItem() instanceof SpawnEggItem) {

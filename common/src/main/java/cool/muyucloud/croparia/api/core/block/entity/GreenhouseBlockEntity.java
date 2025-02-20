@@ -6,8 +6,13 @@
 package cool.muyucloud.croparia.api.core.block.entity;
 
 import cool.muyucloud.croparia.access.CropBlockAccess;
+import cool.muyucloud.croparia.api.repo.ContainerRepo;
+import cool.muyucloud.croparia.api.repo.RepoProxy;
+import cool.muyucloud.croparia.api.repo.item.ItemProxyProvider;
+import cool.muyucloud.croparia.api.resource.type.ItemSpec;
 import cool.muyucloud.croparia.registry.BlockEntities;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -27,13 +32,15 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class GreenhouseBlockEntity extends BlockEntity implements MenuProvider, Container {
+public class GreenhouseBlockEntity extends BlockEntity implements MenuProvider, Container, ItemProxyProvider {
     private final NonNullList<ItemStack> inventory;
+    private final RepoProxy<ItemSpec> proxy = RepoProxy.item(new ContainerRepo(this));
 
     public GreenhouseBlockEntity(BlockPos pos, BlockState state) {
         super(BlockEntities.GREENHOUSE_BE.get(), pos, state);
@@ -77,11 +84,13 @@ public class GreenhouseBlockEntity extends BlockEntity implements MenuProvider, 
 
     }
 
+    @Override
     public void load(CompoundTag nbt) {
         super.load(nbt);
         ContainerHelper.loadAllItems(nbt, this.inventory);
     }
 
+    @Override
     protected void saveAdditional(CompoundTag nbt) {
         ContainerHelper.saveAllItems(nbt, this.inventory);
         super.saveAdditional(nbt);
@@ -97,27 +106,31 @@ public class GreenhouseBlockEntity extends BlockEntity implements MenuProvider, 
             if (!itemStack.isEmpty()) {
                 empty.set(false);
             }
-
         });
         return empty.get();
     }
 
+    @Override
     public @NotNull ItemStack getItem(int slot) {
         return this.inventory.get(slot);
     }
 
+    @Override
     public @NotNull ItemStack removeItem(int slot, int amount) {
         return ContainerHelper.removeItem(this.inventory, slot, amount);
     }
 
+    @Override
     public @NotNull ItemStack removeItemNoUpdate(int slot) {
         return ContainerHelper.takeItem(this.inventory, slot);
     }
 
+    @Override
     public void setItem(int slot, ItemStack stack) {
         this.inventory.set(slot, stack);
     }
 
+    @Override
     public boolean stillValid(Player player) {
         if (this.level == null || this.level.getBlockEntity(this.worldPosition) != this) {
             return false;
@@ -126,15 +139,23 @@ public class GreenhouseBlockEntity extends BlockEntity implements MenuProvider, 
         }
     }
 
+    @Override
     public void clearContent() {
         this.inventory.clear();
     }
 
+    @Override
     public @NotNull Component getDisplayName() {
         return Component.nullToEmpty("Greenhouse");
     }
 
+    @Override
     public AbstractContainerMenu createMenu(int syncId, Inventory inv, Player player) {
         return new DispenserMenu(syncId, inv, this);
+    }
+
+    @Override
+    public @Nullable RepoProxy<ItemSpec> visitItem(@Nullable Direction direction) {
+        return proxy;
     }
 }

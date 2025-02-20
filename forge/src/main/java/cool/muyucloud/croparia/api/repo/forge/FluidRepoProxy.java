@@ -2,7 +2,7 @@ package cool.muyucloud.croparia.api.repo.forge;
 
 import cool.muyucloud.croparia.api.repo.Repo;
 import cool.muyucloud.croparia.api.repo.RepoProxy;
-import cool.muyucloud.croparia.api.resource.ForgeFluidSpec;
+import cool.muyucloud.croparia.api.resource.forge.ForgeFluidSpec;
 import cool.muyucloud.croparia.api.resource.type.FluidSpec;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -52,10 +52,10 @@ public class FluidRepoProxy extends RepoProxy<FluidSpec> implements IFluidHandle
     public @NotNull FluidStack drain(FluidStack input, FluidAction fluidAction) {
         FluidSpec fluid = ForgeFluidSpec.from(input);
         if (fluidAction.simulate()) {
-            long consumed = this.simConsume(fluid, input.getAmount() * 81L);
+            long consumed = this.simConsume(ForgeFluidSpec.from(input), input.getAmount() * 81L);
             return ForgeFluidSpec.of(fluid, consumed);
         } else if (fluidAction.execute()) {
-            long consumed = this.consume(fluid, input.getAmount() * 81L);
+            long consumed = this.consume(ForgeFluidSpec.from(input), input.getAmount() * 81L);
             return ForgeFluidSpec.of(fluid, consumed);
         } else {
             return FluidStack.EMPTY;

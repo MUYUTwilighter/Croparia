@@ -1,4 +1,4 @@
-package cool.muyucloud.croparia.api.resource;
+package cool.muyucloud.croparia.api.resource.forge;
 
 import cool.muyucloud.croparia.api.resource.type.FluidSpec;
 import net.minecraftforge.fluids.FluidStack;

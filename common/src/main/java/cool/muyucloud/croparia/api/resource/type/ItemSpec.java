@@ -80,6 +80,10 @@ public class ItemSpec implements ResourceType {
         return this.getItem() == item;
     }
 
+    public boolean is(ItemStack stack) {
+        return ItemStack.isSameItemSameTags(stack, this.toStack());
+    }
+
     public boolean isOf(ResourceLocation tag) {
         return TagUtil.isIn(TagKey.create(BuiltInRegistries.ITEM.key(), tag), this.getItem());
     }

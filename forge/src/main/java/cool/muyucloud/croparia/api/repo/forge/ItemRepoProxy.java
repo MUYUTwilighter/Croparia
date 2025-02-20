@@ -24,16 +24,15 @@ public class ItemRepoProxy extends RepoProxy<ItemSpec> implements IItemHandler {
 
     @Override
     public @NotNull ItemStack insertItem(int i, @NotNull ItemStack input, boolean simulate) {
-        ItemSpec item = this.resourceFor(i);
-        ItemStack result = item.toStack();
         long accepted;
         if (simulate) {
-            accepted = this.simConsume(i, item, input.getCount());
+            accepted = this.simAccept(i, ItemSpec.from(input), input.getCount());
         } else {
-            accepted = this.consume(i, item, input.getCount());
+            accepted = this.accept(i, ItemSpec.from(input), input.getCount());
         }
-        result.setCount((int) accepted);
-        return result;
+        input = input.copy();
+        input.shrink((int) accepted);
+        return input;
     }
 
     @Override
