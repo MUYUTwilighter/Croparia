@@ -103,7 +103,7 @@ public class Greenhouse extends BaseEntityBlock {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
             if (blockEntity instanceof GreenhouseBlockEntity) {
-                Containers.dropContents(world, pos, (GreenhouseBlockEntity) blockEntity);
+                Containers.dropContentsOnDestroy(state, newState, world, pos);
             }
             super.onRemove(state, world, pos, newState, moved);
         }

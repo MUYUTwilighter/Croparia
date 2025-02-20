@@ -124,6 +124,9 @@ public class Infusor extends Block implements ItemPlaceable {
     }
 
     public void tryCraft(ServerLevel world, BlockPos pos, ItemStack input, ElementsEnum element, Player player) {
+        if (!CropariaIf.CONFIG.getInfusor()) {
+            return;
+        }
         RecipeManager manager = world.getServer().getRecipeManager();
         InfusorContainer container = InfusorContainer.of(element, input);
         manager.getRecipeFor(RecipeTypes.INFUSOR.get(), container, world).ifPresent(
