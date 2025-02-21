@@ -1,7 +1,7 @@
 package cool.muyucloud.croparia.api.repo.neoforge;
 
 import cool.muyucloud.croparia.api.repo.Repo;
-import cool.muyucloud.croparia.api.repo.item.PlatformItemProxy;
+import cool.muyucloud.croparia.api.repo.platform.PlatformItemProxy;
 import cool.muyucloud.croparia.api.resource.type.ItemSpec;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.IItemHandler;

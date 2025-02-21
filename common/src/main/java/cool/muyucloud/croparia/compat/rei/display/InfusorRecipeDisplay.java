@@ -1,8 +1,8 @@
 package cool.muyucloud.croparia.compat.rei.display;
 
 import cool.muyucloud.croparia.api.core.recipe.InfusorRecipe;
-import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.compat.rei.category.InfusorRecipeDisplayCategory;
+import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.util.Constants;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.display.Display;

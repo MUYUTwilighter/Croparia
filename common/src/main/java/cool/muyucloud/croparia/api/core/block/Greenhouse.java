@@ -7,6 +7,7 @@ package cool.muyucloud.croparia.api.core.block;
 
 import com.mojang.serialization.MapCodec;
 import cool.muyucloud.croparia.api.core.block.entity.GreenhouseBlockEntity;
+import cool.muyucloud.croparia.api.repo.ProxyProvider;
 import cool.muyucloud.croparia.registry.BlockEntities;
 import cool.muyucloud.croparia.registry.CropariaItems;
 import net.minecraft.core.BlockPos;
@@ -41,6 +42,13 @@ public class Greenhouse extends BaseEntityBlock {
 
     public Greenhouse(Properties settings) {
         super(settings);
+        ProxyProvider.registerItem((world, pos, state, be, direction) -> {
+            if (be instanceof GreenhouseBlockEntity gbe) {
+                return gbe.visitItem();
+            } else {
+                return null;
+            }
+        }, this);
     }
 
     @Override

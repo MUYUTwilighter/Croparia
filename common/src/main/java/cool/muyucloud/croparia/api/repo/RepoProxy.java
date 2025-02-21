@@ -1,7 +1,5 @@
 package cool.muyucloud.croparia.api.repo;
 
-import cool.muyucloud.croparia.api.repo.fluid.FluidProxyProvider;
-import cool.muyucloud.croparia.api.repo.item.ItemProxyProvider;
 import cool.muyucloud.croparia.api.resource.ResourceType;
 import cool.muyucloud.croparia.api.resource.TypeToken;
 import cool.muyucloud.croparia.api.resource.type.FluidSpec;
@@ -12,9 +10,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 /**
  * Unified storage interface for {@link BlockEntity}.<br>
  * It is used to connect your customized {@link Repo} to the fluid API from fabric / forge.<br>
- * <p>
- * You need to implement {@link FluidProxyProvider} or {@link ItemProxyProvider}in your {@code BlockEntity}.
- * </p>
  * <p>
  * Use {@link #item(Repo)} or {@link #fluid(Repo)} to create a {@link RepoProxy}. <br>
  * <b>DO NOT INSTANTIATE THIS CLASS UNLESS YOU KNOW WHAT YOU ARE DOING</b>

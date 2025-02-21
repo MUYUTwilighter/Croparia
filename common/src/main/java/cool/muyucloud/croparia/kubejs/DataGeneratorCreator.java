@@ -5,7 +5,9 @@ import cool.muyucloud.croparia.api.generator.DataGenerator;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.function.Consumer;
 
 @SuppressWarnings("unused")

@@ -1,11 +1,11 @@
 package cool.muyucloud.croparia.api.core.recipe;
 
 import cool.muyucloud.croparia.api.core.recipe.container.RitualStructureContainer;
-import cool.muyucloud.croparia.registry.RecipeSerializers;
-import cool.muyucloud.croparia.registry.RecipeTypes;
+import cool.muyucloud.croparia.api.core.recipe.util.BlockStatePredicate;
 import cool.muyucloud.croparia.api.math.Char3D;
 import cool.muyucloud.croparia.api.math.Char3DWithMark;
-import cool.muyucloud.croparia.api.core.recipe.util.BlockStatePredicate;
+import cool.muyucloud.croparia.registry.RecipeSerializers;
+import cool.muyucloud.croparia.registry.RecipeTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Vec3i;

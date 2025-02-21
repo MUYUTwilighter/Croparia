@@ -44,3 +44,6 @@ side = "CLIENT"
 
 [[mixins]]
 config = "croparia-if-common.mixins.json"
+
+[[mixins]]
+config = "croparia-if-neoforge.mixins.json"
