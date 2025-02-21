@@ -4,6 +4,7 @@ import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.api.repo.fluid.FluidProxyProvider;
 import cool.muyucloud.croparia.api.repo.item.ItemProxyProvider;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.level.block.BaseEntityBlock;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -16,6 +17,9 @@ public class CropariaIfNeoForgeMod {
     @SubscribeEvent
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         BuiltInRegistries.BLOCK.forEach(block -> {
+            if (!(block instanceof BaseEntityBlock)) {
+                return;
+            }
             event.registerBlock(Capabilities.ItemHandler.BLOCK, (level, pos, state, be, direction) -> {
                 if (be instanceof ItemProxyProvider provider) {
                     return (IItemHandler) provider.visitItem(direction);
