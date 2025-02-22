@@ -1,5 +1,6 @@
 package cool.muyucloud.croparia.api.repo.fabric;
 
+import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.api.repo.ProxyProvider;
 import cool.muyucloud.croparia.api.repo.platform.PlatformFluidProxy;
 import cool.muyucloud.croparia.api.repo.platform.PlatformItemProxy;
@@ -13,6 +14,7 @@ import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 
 import java.util.Optional;
@@ -31,11 +33,21 @@ public class ProxyProviderImpl {
 
     @SuppressWarnings("unchecked")
     public static void registerItem(ProxyProvider<ItemSpec> provider, Block... blocks) {
+        for (Block block : blocks) {
+            if (!(block instanceof BaseEntityBlock)) {
+                ProxyProvider.LOGGER.debug("Registering item proxy on a non-entity block: {}, which will not work on forge", block);
+            }
+        }
         ItemStorage.SIDED.registerForBlocks((world, pos, state, be, context) -> (Storage<ItemVariant>) provider.visit(world, pos, state, be, context), blocks);
     }
 
     @SuppressWarnings("unchecked")
     public static void registerFluid(ProxyProvider<FluidSpec> provider, Block... blocks) {
+        for (Block block : blocks) {
+            if (!(block instanceof BaseEntityBlock)) {
+                ProxyProvider.LOGGER.debug("Registering fluid proxy on a non-entity block: {}, which will not work on forge", block);
+            }
+        }
         FluidStorage.SIDED.registerForBlocks((world, pos, state, be, context) -> (Storage<FluidVariant>) provider.visit(world, pos, state, be, context), blocks);
     }
 }

@@ -9,6 +9,7 @@ import cool.muyucloud.croparia.api.resource.type.ItemSpec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -36,12 +37,18 @@ public class ProxyProviderImpl {
 
     public static void registerItem(ProxyProvider<ItemSpec> provider, Block... blocks) {
         for (Block block : blocks) {
+            if (!(block instanceof BaseEntityBlock)) {
+                ProxyProvider.LOGGER.error("Registering item proxy on a non-entity block: {}, which will not work on forge", block);
+            }
             ITEMS.computeIfAbsent(block, k -> new ArrayList<>()).add(provider);
         }
     }
 
     public static void registerFluid(ProxyProvider<FluidSpec> provider, Block... blocks) {
         for (Block block : blocks) {
+            if (!(block instanceof BaseEntityBlock)) {
+                ProxyProvider.LOGGER.error("Registering fluid proxy on a non-entity block: {}, which will not work on forge", block);
+            }
             FLUIDS.computeIfAbsent(block, k -> new ArrayList<>()).add(provider);
         }
     }

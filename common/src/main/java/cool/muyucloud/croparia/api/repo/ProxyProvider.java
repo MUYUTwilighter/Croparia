@@ -1,5 +1,6 @@
 package cool.muyucloud.croparia.api.repo;
 
+import com.mojang.logging.LogUtils;
 import cool.muyucloud.croparia.api.repo.platform.PlatformFluidProxy;
 import cool.muyucloud.croparia.api.repo.platform.PlatformItemProxy;
 import cool.muyucloud.croparia.api.resource.ResourceType;
@@ -12,12 +13,15 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import org.slf4j.Logger;
 
 import java.util.Optional;
 
 @FunctionalInterface
 @SuppressWarnings("unused")
 public interface ProxyProvider<T extends ResourceType> {
+    Logger LOGGER = LogUtils.getLogger();
+
     @ExpectPlatform
     static Optional<PlatformItemProxy> findItem(Level world, BlockPos pos, Direction direction) {
         throw new AssertionError("Not implemented");
