@@ -1,7 +1,7 @@
 package cool.muyucloud.croparia.api.repo.forge;
 
 import cool.muyucloud.croparia.api.repo.Repo;
-import cool.muyucloud.croparia.api.repo.fluid.PlatformFluidProxy;
+import cool.muyucloud.croparia.api.repo.platform.PlatformFluidProxy;
 import cool.muyucloud.croparia.api.resource.forge.ForgeFluidSpec;
 import cool.muyucloud.croparia.api.resource.type.FluidSpec;
 import net.minecraftforge.fluids.FluidStack;

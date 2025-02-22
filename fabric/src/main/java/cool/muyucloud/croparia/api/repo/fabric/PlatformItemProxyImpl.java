@@ -1,7 +1,7 @@
 package cool.muyucloud.croparia.api.repo.fabric;
 
 import cool.muyucloud.croparia.api.repo.Repo;
-import cool.muyucloud.croparia.api.repo.item.PlatformItemProxy;
+import cool.muyucloud.croparia.api.repo.platform.PlatformItemProxy;
 import cool.muyucloud.croparia.api.resource.FabricItemSpec;
 import cool.muyucloud.croparia.api.resource.type.ItemSpec;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;

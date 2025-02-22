@@ -10,7 +10,7 @@ public class ClientCommandRoot {
         LiteralArgumentBuilder.literal("croparia");
 
     public static void register() {
-        CropariaIf.LOGGER.debug("Registering commands");
+        CropariaIf.LOGGER.debug("Registering client commands");
         ROOT.then(DumpCommand.build());
         ROOT.then(DumpBuiltinCommand.build());
         ROOT.then(CropCommand.build());

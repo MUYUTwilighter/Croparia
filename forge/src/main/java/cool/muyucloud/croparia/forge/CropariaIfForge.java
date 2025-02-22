@@ -1,11 +1,13 @@
 package cool.muyucloud.croparia.forge;
 
 import cool.muyucloud.croparia.CropariaIf;
+import cool.muyucloud.croparia.api.repo.forge.ProxyProviderImpl;
 import dev.architectury.platform.forge.EventBuses;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(CropariaIf.MOD_ID)
@@ -25,5 +27,10 @@ public class CropariaIfForge {
     @SubscribeEvent
     public static void onServerStopping(ServerStoppingEvent event) {
         CropariaIf.onServerStopping();
+    }
+
+    @SubscribeEvent
+    public static void onLoadComplete(FMLLoadCompleteEvent event) {
+        ProxyProviderImpl.freeze();
     }
 }

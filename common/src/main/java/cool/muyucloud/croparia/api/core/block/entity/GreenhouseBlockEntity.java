@@ -8,11 +8,9 @@ package cool.muyucloud.croparia.api.core.block.entity;
 import cool.muyucloud.croparia.access.CropBlockAccess;
 import cool.muyucloud.croparia.api.repo.ContainerRepo;
 import cool.muyucloud.croparia.api.repo.RepoProxy;
-import cool.muyucloud.croparia.api.repo.item.ItemProxyProvider;
 import cool.muyucloud.croparia.api.resource.type.ItemSpec;
 import cool.muyucloud.croparia.registry.BlockEntities;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -38,7 +36,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class GreenhouseBlockEntity extends BlockEntity implements MenuProvider, Container, ItemProxyProvider {
+public class GreenhouseBlockEntity extends BlockEntity implements MenuProvider, Container {
     private final NonNullList<ItemStack> inventory;
     private final RepoProxy<ItemSpec> proxy = RepoProxy.item(new ContainerRepo(this));
 
@@ -154,8 +152,7 @@ public class GreenhouseBlockEntity extends BlockEntity implements MenuProvider, 
         return new DispenserMenu(syncId, inv, this);
     }
 
-    @Override
-    public @Nullable RepoProxy<ItemSpec> visitItem(@Nullable Direction direction) {
+    public @Nullable RepoProxy<ItemSpec> visitItem() {
         return proxy;
     }
 }
