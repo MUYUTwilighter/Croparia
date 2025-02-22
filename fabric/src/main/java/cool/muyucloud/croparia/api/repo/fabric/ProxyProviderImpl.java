@@ -1,6 +1,5 @@
 package cool.muyucloud.croparia.api.repo.fabric;
 
-import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.api.repo.ProxyProvider;
 import cool.muyucloud.croparia.api.repo.platform.PlatformFluidProxy;
 import cool.muyucloud.croparia.api.repo.platform.PlatformItemProxy;
