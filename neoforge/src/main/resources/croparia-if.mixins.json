@@ -6,6 +6,7 @@
   "client": [
   ],
   "mixins": [
+    "BlockCapabilityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

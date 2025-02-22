@@ -7,6 +7,7 @@ package cool.muyucloud.croparia.api.core.block;
 
 import com.mojang.serialization.MapCodec;
 import cool.muyucloud.croparia.api.core.block.entity.GreenhouseBlockEntity;
+import cool.muyucloud.croparia.api.repo.ProxyProvider;
 import cool.muyucloud.croparia.registry.BlockEntities;
 import cool.muyucloud.croparia.registry.CropariaItems;
 import net.minecraft.core.BlockPos;
@@ -35,17 +36,19 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Greenhouse extends BaseEntityBlock {
     public static final MapCodec<Greenhouse> CODEC = simpleCodec(Greenhouse::new);
-    public static List<Greenhouse> blockGreenhouse = new ArrayList<>();
     protected final VoxelShape SHAPE = Block.box(1.0, 1.0, 0.0, 15.0, 3.0, 15.0);
 
     public Greenhouse(Properties settings) {
         super(settings);
-        blockGreenhouse.add(this);
+        ProxyProvider.registerItem((world, pos, state, be, direction) -> {
+            if (be instanceof GreenhouseBlockEntity gbe) {
+                return gbe.visitItem();
+            } else {
+                return null;
+            }
+        }, this);
     }
 
     @Override
