@@ -1,7 +1,7 @@
 package cool.muyucloud.croparia.api.repo.fabric;
 
 import cool.muyucloud.croparia.api.repo.Repo;
-import cool.muyucloud.croparia.api.repo.fluid.PlatformFluidProxy;
+import cool.muyucloud.croparia.api.repo.platform.PlatformFluidProxy;
 import cool.muyucloud.croparia.api.resource.FabricFluidSpec;
 import cool.muyucloud.croparia.api.resource.type.FluidSpec;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
