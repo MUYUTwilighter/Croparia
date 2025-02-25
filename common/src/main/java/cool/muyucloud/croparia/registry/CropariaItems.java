@@ -12,6 +12,7 @@ import cool.muyucloud.croparia.api.core.item.relic.MidasHand;
 import cool.muyucloud.croparia.api.crop.Crop;
 import cool.muyucloud.croparia.api.crop.item.CropFruit;
 import cool.muyucloud.croparia.api.crop.item.CropSeed;
+import cool.muyucloud.croparia.api.crop.item.Croparia;
 import cool.muyucloud.croparia.api.element.ElementsEnum;
 import cool.muyucloud.croparia.api.element.item.Elematilius;
 import cool.muyucloud.croparia.api.element.item.ElementalBucket;
@@ -116,20 +117,34 @@ public class CropariaItems {
         "elemental_air",
         () -> new Elematilius(ElementsEnum.AIR, new Item.Properties().setId(ResourceKey.create(Registries.ITEM, CropariaIf.of("elemental_air"))).arch$tab(Tabs.MAIN))
     );
+    @PostReg
     public static final RegistrySupplier<Item> CROPARIA = registerItem(
-        "croparia", () -> new Item(new Item.Properties().setId(ResourceKey.create(Registries.ITEM, CropariaIf.of("croparia"))).arch$tab(Tabs.MAIN)));
+        "croparia", () -> new Croparia(1, new Item.Properties().arch$tab(Tabs.MAIN).setId(ResourceKey.create(Registries.ITEM, CropariaIf.of("croparia"))))
+    );
+    @PostReg
     public static final RegistrySupplier<Item> CROPARIA2 = registerItem(
-        "croparia2", () -> new Item(new Item.Properties().setId(ResourceKey.create(Registries.ITEM, CropariaIf.of("croparia2"))).arch$tab(Tabs.MAIN)));
+        "croparia2", () -> new Croparia(2, new Item.Properties().arch$tab(Tabs.MAIN).setId(ResourceKey.create(Registries.ITEM, CropariaIf.of("croparia2"))))
+    );
+    @PostReg
     public static final RegistrySupplier<Item> CROPARIA3 = registerItem(
-        "croparia3", () -> new Item(new Item.Properties().setId(ResourceKey.create(Registries.ITEM, CropariaIf.of("croparia3"))).arch$tab(Tabs.MAIN)));
+        "croparia3", () -> new Croparia(3, new Item.Properties().arch$tab(Tabs.MAIN).setId(ResourceKey.create(Registries.ITEM, CropariaIf.of("croparia3"))))
+    );
+    @PostReg
     public static final RegistrySupplier<Item> CROPARIA4 = registerItem(
-        "croparia4", () -> new Item(new Item.Properties().setId(ResourceKey.create(Registries.ITEM, CropariaIf.of("croparia4"))).arch$tab(Tabs.MAIN)));
+        "croparia4", () -> new Croparia(4, new Item.Properties().arch$tab(Tabs.MAIN).setId(ResourceKey.create(Registries.ITEM, CropariaIf.of("croparia4"))))
+    );
+    @PostReg
     public static final RegistrySupplier<Item> CROPARIA5 = registerItem(
-        "croparia5", () -> new Item(new Item.Properties().setId(ResourceKey.create(Registries.ITEM, CropariaIf.of("croparia5"))).arch$tab(Tabs.MAIN)));
+        "croparia5", () -> new Croparia(5, new Item.Properties().arch$tab(Tabs.MAIN).setId(ResourceKey.create(Registries.ITEM, CropariaIf.of("croparia5"))))
+    );
+    @PostReg
     public static final RegistrySupplier<Item> CROPARIA6 = registerItem(
-        "croparia6", () -> new Item(new Item.Properties().setId(ResourceKey.create(Registries.ITEM, CropariaIf.of("croparia6"))).arch$tab(Tabs.MAIN)));
+        "croparia6", () -> new Croparia(6, new Item.Properties().arch$tab(Tabs.MAIN).setId(ResourceKey.create(Registries.ITEM, CropariaIf.of("croparia6"))))
+    );
+    @PostReg
     public static final RegistrySupplier<Item> CROPARIA7 = registerItem(
-        "croparia7", () -> new Item(new Item.Properties().setId(ResourceKey.create(Registries.ITEM, CropariaIf.of("croparia7"))).arch$tab(Tabs.MAIN)));
+        "croparia7", () -> new Croparia(7, new Item.Properties().arch$tab(Tabs.MAIN).setId(ResourceKey.create(Registries.ITEM, CropariaIf.of("croparia7"))))
+    );
     public static final RegistrySupplier<HornPlenty> HORN = registerItem("horn_plenty", () -> new HornPlenty(
         new Item.Properties().stacksTo(1).setId(ResourceKey.create(Registries.ITEM, CropariaIf.of("horn_plenty"))).arch$tab(Tabs.MAIN).rarity(Rarity.EPIC)
     ));

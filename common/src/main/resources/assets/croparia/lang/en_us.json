@@ -162,6 +162,11 @@
   "commands.croparia.crop.status.crop_block": "Crop block not found, did you register it?",
   "commands.croparia.config.infusor": "Infusor Status: %s",
   "commands.croparia.config.ritual": "Ritual Status: %s",
+  "commands.croparia.create.invalid_color": "Color %s is invalid",
+  "commands.croparia.create.invalid_croparia": "Item in your offhand is not a Croparia item",
+  "commands.croparia.create.no_material": "There's no material in your main hand",
+  "commands.croparia.create.invalid_type": "Type %s is invalid",
+  "commands.croparia.create.success": "Successfully created crop in %s",
   "chat.croparia.recipe_wizard.ritual": "Saved ritual recipe %s",
   "chat.croparia.recipe_wizard.infusor": "Saved infusor recipe %s"
 }
