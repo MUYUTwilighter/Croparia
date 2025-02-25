@@ -6,14 +6,14 @@ import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallba
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 
 public class ClientCommandRoot {
-    public static final LiteralArgumentBuilder<FabricClientCommandSource> ROOT =
-        LiteralArgumentBuilder.literal("croparia");
+    public static final LiteralArgumentBuilder<FabricClientCommandSource> ROOT = LiteralArgumentBuilder.literal("croparia");
 
     public static void register() {
         CropariaIf.LOGGER.debug("Registering client commands");
         ROOT.then(DumpCommand.build());
         ROOT.then(DumpBuiltinCommand.build());
         ROOT.then(CropCommand.build());
+        ROOT.then(CreateCommand.build());
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, context) -> dispatcher.register(ROOT));
     }
 }

@@ -14,6 +14,7 @@ public class ClientCommandRoot {
         ROOT.then(DumpCommand.build());
         ROOT.then(DumpBuiltinCommand.build());
         ROOT.then(CropCommand.build());
+        ROOT.then(CreateCommand.build());
         dispatcher.register(ROOT);
     }
 }
