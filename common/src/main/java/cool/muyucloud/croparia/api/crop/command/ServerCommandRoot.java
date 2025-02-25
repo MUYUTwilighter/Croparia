@@ -19,7 +19,8 @@ public class ServerCommandRoot {
         .then(DumpBuiltinCommand.build())
         .then(CropCommand.build())
         .then(ConfigCommand.buildInfusor())
-        .then(ConfigCommand.buildRitual());
+        .then(ConfigCommand.buildRitual())
+        .then(CreateCommand.build());
 
     public static void register() {
         CropariaIf.LOGGER.debug("Registering commands");

@@ -13,6 +13,7 @@ public class ClientCommandRoot {
         ROOT.then(DumpCommand.build());
         ROOT.then(DumpBuiltinCommand.build());
         ROOT.then(CropCommand.build());
+        ROOT.then(CreateCommand.build());
         ClientCommandRegistrationEvent.EVENT.register(dispatcher -> dispatcher.register(ROOT));
     }
 }

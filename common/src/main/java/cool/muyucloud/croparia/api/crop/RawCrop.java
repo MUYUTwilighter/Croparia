@@ -24,8 +24,6 @@ import java.util.Map;
  */
 @Nullable
 public class RawCrop {
-    //(String name, String material, String tag, String type, String translationKey, String color,
-    //                      int tier, Map<String, String> translations, List<List<String>> dependencies)
     public String name;
     public String material;
     public String tag;
