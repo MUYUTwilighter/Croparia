@@ -15,7 +15,7 @@ public class DumpCommand {
     private static final LiteralArgumentBuilder<CommandSourceStack> DUMP = Commands.literal("dump").requires(s -> s.hasPermission(2)).executes(
         context -> dumpAll(context.getSource()::sendSuccess, false)
     ).then(Commands.argument("crop", StringArgumentType.greedyString()).suggests(
-        (context, builder) -> Crops.cropSuggestions(builder.getInput(), builder.getStart())
+        (context, builder) -> Crops.cropSuggestions(builder)
     ).executes(context -> {
         String name = StringArgumentType.getString(context, "crop");
         return dump(name, context.getSource()::sendSuccess, context.getSource()::sendFailure, false);

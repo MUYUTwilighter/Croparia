@@ -24,10 +24,9 @@ public class Crops {
     // Crops including here and CompatCrops, but not KubeJS definition and file definition
     protected static final Map<String, Crop> BUILTIN_CROPS = new HashMap<>();
 
-    public static CompletableFuture<Suggestions> cropSuggestions(String input, int start) {
-        SuggestionsBuilder suggestionsBuilder = new SuggestionsBuilder(input, start);
-        Crops.cropNames().forEach(suggestionsBuilder::suggest);
-        return suggestionsBuilder.buildFuture();
+    public static CompletableFuture<Suggestions> cropSuggestions(SuggestionsBuilder builder) {
+        Crops.cropNames().forEach(builder::suggest);
+        return builder.buildFuture();
     }
 
     public static int size() {

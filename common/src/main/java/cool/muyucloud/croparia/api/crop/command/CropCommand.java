@@ -22,7 +22,7 @@ public class CropCommand {
     private static final LiteralArgumentBuilder<CommandSourceStack> CROP = Commands.literal("crop").then(
         Commands.argument("name", StringArgumentType.greedyString()
         ).suggests(
-            (context, builder) -> Crops.cropSuggestions(builder.getInput(), builder.getStart())
+            (context, builder) -> Crops.cropSuggestions(builder)
         ).executes(context -> {
             String name = StringArgumentType.getString(context, "name");
             return reportSingular(name, context.getSource()::sendSuccess, context.getSource()::sendFailure);
