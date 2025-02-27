@@ -55,6 +55,10 @@ public class Crops {
         BUILTIN_CROPS.values().forEach(consumer);
     }
 
+    public static boolean containsCrop(@NotNull String name) {
+        return CROPS.containsKey(name);
+    }
+
     /**
      * Record to both {@link #CROPS} and {@link #BUILTIN_CROPS}, it will be registered by {@link #register()}
      */

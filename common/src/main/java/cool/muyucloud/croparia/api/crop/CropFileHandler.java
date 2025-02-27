@@ -25,7 +25,12 @@ public class CropFileHandler {
             if (files != null) {
                 for (File file : files) {
                     Optional<RawCrop> crop = readCrop(file);
-                    crop.ifPresent(crops::add);
+                    crop.ifPresent(crop1 -> {
+                        if (!(crop1.name() + ".json").equals(file.getName())) {
+                            CropariaIf.LOGGER.warn("File name \"%s\" does not match crop name \"%s\", which is not conventional".formatted(file.getName(), crop1.name()));
+                        }
+                        crops.add(crop1);
+                    });
                 }
             }
         }
@@ -87,5 +92,10 @@ public class CropFileHandler {
             CropariaIf.LOGGER.error("Failed to dump crop \"%s\"".formatted(crop.getName()), e);
         }
         return false;
+    }
+
+    public static boolean containsFile(String name) {
+        File file = CropariaIf.CONFIG.getCropPath().resolve(name + ".json").toFile();
+        return file.isFile();
     }
 }
