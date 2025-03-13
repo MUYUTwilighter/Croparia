@@ -6,8 +6,7 @@ import cool.muyucloud.croparia.CropariaIf;
 import net.minecraft.commands.CommandSourceStack;
 
 public class ClientCommandRoot {
-    public static final LiteralArgumentBuilder<CommandSourceStack> ROOT =
-        LiteralArgumentBuilder.literal("croparia");
+    public static final LiteralArgumentBuilder<CommandSourceStack> ROOT = LiteralArgumentBuilder.literal("croparia");
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         CropariaIf.LOGGER.debug("Registering commands");

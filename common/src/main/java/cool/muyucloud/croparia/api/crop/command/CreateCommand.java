@@ -8,7 +8,9 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import cool.muyucloud.croparia.CropariaIf;
+import cool.muyucloud.croparia.api.crop.CropFileHandler;
 import cool.muyucloud.croparia.api.crop.CropType;
+import cool.muyucloud.croparia.api.crop.Crops;
 import cool.muyucloud.croparia.api.crop.item.Croparia;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -17,6 +19,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.FileWriter;
 import java.nio.file.Path;
@@ -30,8 +33,21 @@ public class CreateCommand {
     private static final RequiredArgumentBuilder<CommandSourceStack, String> COLOR = RequiredArgumentBuilder.argument(
         "color", StringArgumentType.word()
     );
+    private static final RequiredArgumentBuilder<CommandSourceStack, String> NAME = RequiredArgumentBuilder.argument(
+        "name", StringArgumentType.word()
+    );
 
-    public static LiteralArgumentBuilder<CommandSourceStack> build() {
+    static {
+        CREATE.requires(s -> s.hasPermission(2));
+        COLOR.executes(context -> create(
+            context.getSource().getPlayerOrException(),
+            null,
+            CropType.CROP.getModelName(),
+            StringArgumentType.getString(context, "color"),
+            context.getSource()::sendSuccess,
+            context.getSource()::sendFailure,
+            false
+        ));
         TYPE.suggests((context, builder) -> {
             for (CropType type : CropType.values()) {
                 builder.suggest(type.getModelName());
@@ -39,24 +55,32 @@ public class CreateCommand {
             return builder.buildFuture();
         }).executes(context -> create(
             context.getSource().getPlayerOrException(),
+            null,
             StringArgumentType.getString(context, "type"),
             StringArgumentType.getString(context, "color"),
             context.getSource()::sendSuccess,
             context.getSource()::sendFailure,
             false
         ));
-        COLOR.executes(context -> create(
+        NAME.executes(context -> create(
             context.getSource().getPlayerOrException(),
-            CropType.CROP.getModelName(),
+            StringArgumentType.getString(context, "name"),
+            StringArgumentType.getString(context, "type"),
             StringArgumentType.getString(context, "color"),
             context.getSource()::sendSuccess,
             context.getSource()::sendFailure,
             false
         ));
-        return CREATE.requires(s -> s.hasPermission(2)).then(COLOR.then(TYPE));
+        TYPE.then(NAME);
+        COLOR.then(TYPE);
+        CREATE.then(COLOR);
     }
 
-    public static int create(Player player, String rawType, String color, SuccessMessage success, FailureMessage failure, boolean openFile) {
+    public static LiteralArgumentBuilder<CommandSourceStack> build() {
+        return CREATE;
+    }
+
+    public static int create(Player player, @Nullable String name, String rawType, String color, SuccessMessage success, FailureMessage failure, boolean client) {
         CropType type;
         try {
             type = CropType.valueOf(rawType.toUpperCase());
@@ -70,12 +94,26 @@ public class CreateCommand {
         }
         Item material = main.getItem();
         Item rawCroparia = player.getOffhandItem().getItem();
+        name = name == null ? Objects.requireNonNull(material.arch$registryName()).getPath() : name;
+        if (Crops.contains(name) || CropFileHandler.exists(name)) {
+            MutableComponent crop = Component.literal(name);
+            if (Crops.contains(name)) {
+                crop.withStyle(CommonCommandRoot.runCommand(CommonCommandRoot.commandRoot(client), "crop", name))
+                    .withStyle(CommonCommandRoot.inlineMouseBehavior());
+            }
+            MutableComponent prompt = Component.translatable("commands.croparia.create.duplicated.prompt", name)
+                .withStyle(CommonCommandRoot.suggestCommand(CommonCommandRoot.commandRoot(client), "create", color, rawType, name + "_"))
+                .withStyle(CommonCommandRoot.inlineMouseBehavior());
+            MutableComponent duplication = Component.translatable("commands.croparia.create.duplicated", crop, prompt);
+            failure.send(duplication);
+            return -1;
+        }
         if (rawCroparia instanceof Croparia croparia) {
-            JsonObject built = buildCrop(material, color, croparia.getTier(), type);
+            JsonObject built = buildCrop(name, material, color, croparia.getTier(), type);
             Path result = dump(built);
             MutableComponent resultComponent = Component.literal(result.toString());
-            if (openFile) {
-                resultComponent.withStyle(ServerCommandRoot.openFile(result.toString())).withStyle(ServerCommandRoot.inlineMouseBehavior());
+            if (client) {
+                resultComponent.withStyle(CommonCommandRoot.openFile(result.toString())).withStyle(CommonCommandRoot.inlineMouseBehavior());
             }
             success.send(() -> Component.translatable("commands.croparia.create.success", resultComponent), true);
             return croparia.getTier();
@@ -85,8 +123,7 @@ public class CreateCommand {
         }
     }
 
-    public static JsonObject buildCrop(Item material, String color, int tier, CropType type) {
-        String name = Objects.requireNonNull(material.arch$registryName()).getPath();
+    public static JsonObject buildCrop(String name, Item material, String color, int tier, CropType type) {
         String materialId = Objects.requireNonNull(material.arch$registryName()).toString();
         String translationKey = material.getDescriptionId();
         String dependency = Objects.requireNonNull(material.arch$registryName()).getNamespace();

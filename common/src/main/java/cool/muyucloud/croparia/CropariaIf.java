@@ -5,7 +5,7 @@ import cool.muyucloud.croparia.api.crop.Crops;
 import cool.muyucloud.croparia.client.generator.BlockStateModelGenerator;
 import cool.muyucloud.croparia.client.generator.ItemModelGenerator;
 import cool.muyucloud.croparia.client.generator.LangGenerator;
-import cool.muyucloud.croparia.api.crop.command.ServerCommandRoot;
+import cool.muyucloud.croparia.api.crop.command.CommonCommandRoot;
 import cool.muyucloud.croparia.config.Config;
 import cool.muyucloud.croparia.config.ConfigFileHandler;
 import cool.muyucloud.croparia.api.generator.BlockTagGenerator;
@@ -38,7 +38,7 @@ public class CropariaIf {
         ResourcePackHandler.INSTANCE.registerGenerator(BlockStateModelGenerator::init);
         ResourcePackHandler.INSTANCE.registerGenerator(LangGenerator::init);
         PlacedFeatures.register();
-        ServerCommandRoot.register();
+        CommonCommandRoot.register();
         CropariaIf.LOGGER.info("=== Croparia common setup done ===");
     }
 

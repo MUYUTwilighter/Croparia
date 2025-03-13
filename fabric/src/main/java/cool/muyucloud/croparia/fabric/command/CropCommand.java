@@ -18,7 +18,7 @@ public class CropCommand {
         RequiredArgumentBuilder.argument("name", StringArgumentType.greedyString());
 
     public static LiteralArgumentBuilder<FabricClientCommandSource> build() {
-        NAME.suggests((context, builder) -> Crops.suggestCrops(builder.getInput(), builder.getStart()));
+        NAME.suggests((context, builder) -> Crops.suggestCrops(builder));
         NAME.executes(context -> {
             FabricClientCommandSource source = context.getSource();
             return reportSingular(StringArgumentType.getString(context, "name"), (msg, broadcast) -> source.sendFeedback(msg.get()), source::sendError);

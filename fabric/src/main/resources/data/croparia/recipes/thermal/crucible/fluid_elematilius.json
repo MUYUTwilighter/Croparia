@@ -15,7 +15,7 @@
   ],
   "type": "thermal:crucible",
   "ingredient": {
-    "item": "croparia:elemental_elematilius"
+    "item": "croparia:elematilius"
   },
   "result": [
     {

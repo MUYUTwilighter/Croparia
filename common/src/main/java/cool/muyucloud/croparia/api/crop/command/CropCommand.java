@@ -18,11 +18,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 public class CropCommand {
     private static final LiteralArgumentBuilder<CommandSourceStack> CROP = Commands.literal("crop").then(
         Commands.argument("name", StringArgumentType.greedyString()
         ).suggests(
-            (context, builder) -> Crops.suggestCrops(builder.getInput(), builder.getStart())
+            (context, builder) -> Crops.suggestCrops(builder)
         ).executes(context -> {
             String name = StringArgumentType.getString(context, "name");
             return reportSingular(name, context.getSource()::sendSuccess, context.getSource()::sendFailure);
@@ -61,16 +63,65 @@ public class CropCommand {
 
     public static MutableComponent buildReport(@NotNull Crop crop) {
         MutableComponent name = Component.translatable("commands.croparia.crop.name", crop.getName());
-        MutableComponent translation = Component.translatable("commands.croparia.crop.translation", Component.translatable(crop.getTranslationKey()).withStyle(ServerCommandRoot.hoverText(crop.getTranslationKey())).withStyle(ServerCommandRoot.copyText(crop.getTranslationKey())));
-        MutableComponent material = Component.translatable("commands.croparia.crop.material", Component.literal(crop.taggableMaterial()).withStyle(ServerCommandRoot.suggestCommand("/give @s %s", crop.getMaterialItem().arch$registryName())).withStyle(ServerCommandRoot.hoverItem(crop.getMaterialItem().arch$registryName())).withStyle(ServerCommandRoot.inlineMouseBehavior()));
-        MutableComponent tier = Component.translatable("commands.croparia.crop.tier", Component.literal(crop.getTier() + "").withStyle(ServerCommandRoot.suggestCommand("/give @s %s", CropariaItems.getCroparia(crop.getTier()).getId())).withStyle(ServerCommandRoot.hoverItem(CropariaItems.getCroparia(crop.getTier()).get())).withStyle(ServerCommandRoot.inlineMouseBehavior()));
-        MutableComponent color = Component.translatable("commands.croparia.crop.color", Component.literal(crop.serializeColor()).withStyle(ServerCommandRoot.color(crop.getColor())));
-        MutableComponent type = Component.translatable("commands.croparia.crop.type", crop.getType().getModelName());
-        MutableComponent seed = Component.translatable("commands.croparia.crop.seed", Component.literal(crop.getSeedId().toString()).withStyle(ServerCommandRoot.suggestCommand("/give @s %s", crop.getSeedId().toString())).withStyle(ServerCommandRoot.hoverItem(crop.getSeedItem())).withStyle(ServerCommandRoot.inlineMouseBehavior()));
-        MutableComponent fruit = Component.translatable("commands.croparia.crop.fruit", Component.literal(crop.getFruitId().toString()).withStyle(ServerCommandRoot.suggestCommand("/give @s %s", crop.getFruitId().toString())).withStyle(ServerCommandRoot.hoverItem(crop.getFruitItem())).withStyle(ServerCommandRoot.inlineMouseBehavior()));
-        MutableComponent cropBlock = Component.translatable("commands.croparia.crop.cropBlock", Component.literal(crop.getBlockId().toString()).withStyle(ServerCommandRoot.suggestCommand("/setblock ~ ~ ~ %s[age=7]", crop.getBlockId().toString())).withStyle(ServerCommandRoot.hoverText(crop.getCropBlock().getName())).withStyle(ServerCommandRoot.inlineMouseBehavior()));
+        MutableComponent translation = Component.translatable(
+            "commands.croparia.crop.translation",
+            Component.translatable(crop.getTranslationKey()).withStyle(CommonCommandRoot.copyText(crop.getTranslationKey()))
+        );
+        MutableComponent material = Component.translatable(
+            "commands.croparia.crop.material",
+            Component.literal(crop.taggableMaterial())
+                .withStyle(CommonCommandRoot.suggestCommand("give @s", Objects.requireNonNull(crop.getMaterialItem().arch$registryName()).toString()))
+                .withStyle(CommonCommandRoot.hoverItem(crop.getMaterialItem().arch$registryName()))
+                .withStyle(CommonCommandRoot.inlineMouseBehavior())
+        );
+        MutableComponent tier = Component.translatable(
+            "commands.croparia.crop.tier",
+            Component.literal(crop.getTier() + "")
+                .withStyle(CommonCommandRoot.suggestCommand("give @s", CropariaItems.getCroparia(crop.getTier()).getId().toString()))
+                .withStyle(CommonCommandRoot.hoverItem(CropariaItems.getCroparia(crop.getTier()).get()))
+                .withStyle(CommonCommandRoot.inlineMouseBehavior())
+        );
+        MutableComponent color = Component.translatable(
+            "commands.croparia.crop.color",
+            Component.literal(crop.serializeColor()).withStyle(CommonCommandRoot.color(crop.getColor()))
+                .withStyle(CommonCommandRoot.copyText(crop.serializeColor()))
+        );
+        MutableComponent type = Component.translatable(
+            "commands.croparia.crop.type",
+            Component.literal(crop.getType().getModelName()).withStyle(CommonCommandRoot.copyText(crop.getType().getModelName()))
+        );
+        MutableComponent seed = Component.translatable(
+            "commands.croparia.crop.seed",
+            Component.literal(crop.getSeedId().toString())
+                .withStyle(CommonCommandRoot.suggestCommand("give @s", crop.getSeedId().toString()))
+                .withStyle(CommonCommandRoot.hoverItem(crop.getSeedItem()))
+                .withStyle(CommonCommandRoot.inlineMouseBehavior())
+        );
+        MutableComponent fruit = Component.translatable(
+            "commands.croparia.crop.fruit",
+            Component.literal(crop.getFruitId().toString())
+                .withStyle(CommonCommandRoot.suggestCommand("give @s", crop.getFruitId().toString()))
+                .withStyle(CommonCommandRoot.hoverItem(crop.getFruitItem()))
+                .withStyle(CommonCommandRoot.inlineMouseBehavior())
+        );
+        MutableComponent cropBlock = Component.translatable(
+            "commands.croparia.crop.cropBlock",
+            Component.literal(crop.getBlockId().toString())
+                .withStyle(CommonCommandRoot.suggestCommand("setblock ~ ~ ~", crop.getBlockId() + "[age=7]"))
+                .withStyle(CommonCommandRoot.hoverText(crop.getCropBlock().getName()))
+                .withStyle(CommonCommandRoot.inlineMouseBehavior())
+        );
         MutableComponent status = diagnose(crop);
-        return name.append("\n").append(translation).append("\n").append(material).append("\n").append(tier).append("\n").append(color).append("\n").append(type).append("\n").append(seed).append("\n").append(fruit).append("\n").append(cropBlock).append("\n").append(status);
+        return name.append("\n")
+            .append(translation).append("\n")
+            .append(material).append("\n")
+            .append(tier).append("\n")
+            .append(color).append("\n")
+            .append(type).append("\n")
+            .append(seed).append("\n")
+            .append(fruit).append("\n")
+            .append(cropBlock).append("\n")
+            .append(status);
     }
 
     public static MutableComponent diagnose(@NotNull Crop crop) {

@@ -65,12 +65,15 @@ public class Crops {
         return true;
     }
 
-    public static CompletableFuture<Suggestions> suggestCrops(String input, int start) {
-        SuggestionsBuilder builder = new SuggestionsBuilder(input, start);
+    public static CompletableFuture<Suggestions> suggestCrops(SuggestionsBuilder builder) {
         for (String name : cropNames()) {
             builder.suggest(name);
         }
         return builder.buildFuture();
+    }
+
+    public static boolean contains(String name) {
+        return CROPS.containsKey(name);
     }
 
     /**

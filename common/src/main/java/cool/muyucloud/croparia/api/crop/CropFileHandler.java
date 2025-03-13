@@ -87,4 +87,8 @@ public class CropFileHandler {
         }
         return false;
     }
+
+    public static boolean exists(String name) {
+        return CropariaIf.CONFIG.getCropPath().resolve(name + ".json").toFile().isFile();
+    }
 }
