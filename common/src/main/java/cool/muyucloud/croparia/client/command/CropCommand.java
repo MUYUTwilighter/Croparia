@@ -18,7 +18,7 @@ public class CropCommand {
         RequiredArgumentBuilder.argument("name", StringArgumentType.greedyString());
 
     public static LiteralArgumentBuilder<ClientCommandRegistrationEvent.ClientCommandSourceStack> build() {
-        NAME.suggests((context, builder) -> Crops.suggestCrops(builder.getInput(), builder.getStart()));
+        NAME.suggests((context, builder) -> Crops.suggestCrops(builder));
         NAME.executes(context -> {
             ClientCommandRegistrationEvent.ClientCommandSourceStack source = context.getSource();
             return reportSingular(StringArgumentType.getString(context, "name"), source::arch$sendSuccess, source::arch$sendFailure);

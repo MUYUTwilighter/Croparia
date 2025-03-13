@@ -12,29 +12,27 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 
-public class ServerCommandRoot {
-    private static final LiteralArgumentBuilder<CommandSourceStack> ROOT = Commands.literal("cropariaServer")
-        .requires(s -> s.hasPermission(2))
-        .then(DumpCommand.build())
-        .then(DumpBuiltinCommand.build())
-        .then(CropCommand.build())
-        .then(ConfigCommand.buildInfusor())
-        .then(ConfigCommand.buildRitual())
-        .then(CreateCommand.build());
+@SuppressWarnings("unused")
+public class CommonCommandRoot {
+    private static final LiteralArgumentBuilder<CommandSourceStack> ROOT = Commands.literal("cropariaServer").requires(s -> s.hasPermission(2)).then(DumpCommand.build()).then(DumpBuiltinCommand.build()).then(CropCommand.build()).then(ConfigCommand.buildInfusor()).then(ConfigCommand.buildRitual()).then(CreateCommand.build());
 
     public static void register() {
         CropariaIf.LOGGER.debug("Registering commands");
         CommandRegistrationEvent.EVENT.register((dispatcher, selection) -> dispatcher.register(ROOT));
     }
 
-    public static Style suggestCommand(String command, Object... args) {
-        return Style.EMPTY.withUnderlined(true).withClickEvent(
-            new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, command.formatted(args))
-        );
+    public static Style suggestCommand(String... words) {
+        if (words.length == 0) return Style.EMPTY;
+        return Style.EMPTY.withUnderlined(true).withClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, (words[0].startsWith("/") ? "" : "/") + String.join(" ", words)));
+    }
+
+    public static Style runCommand(String... words) {
+        if (words.length == 0) return Style.EMPTY;
+        return Style.EMPTY.withUnderlined(true).withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, (words[0].startsWith("/") ? "" : "/") + String.join(" ", words)));
     }
 
     public static Style copyText(String text) {
-        return Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, text));
+        return Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, text)).applyTo(hoverText(new TranslatableComponent("commands.croparia.click2copy", text)));
     }
 
     public static Style hoverItem(ResourceLocation id) {
@@ -42,10 +40,7 @@ public class ServerCommandRoot {
     }
 
     public static Style hoverItem(Item item) {
-        return item == Items.AIR ? Style.EMPTY : Style.EMPTY.withHoverEvent(new HoverEvent(
-            HoverEvent.Action.SHOW_ITEM,
-            new HoverEvent.ItemStackInfo(item.getDefaultInstance())
-        ));
+        return item == Items.AIR ? Style.EMPTY : Style.EMPTY.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_ITEM, new HoverEvent.ItemStackInfo(item.getDefaultInstance())));
     }
 
     public static Style hoverText(String text) {
@@ -69,9 +64,13 @@ public class ServerCommandRoot {
     }
 
     /**
-     * Notice: This is only usable for client commands
-     * */
+     * @apiNote This is only usable for client commands
+     */
     public static Style openFile(String path) {
         return Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, path));
+    }
+
+    public static String commandRoot(boolean client) {
+        return client ? "croparia" : "cropariaServer";
     }
 }

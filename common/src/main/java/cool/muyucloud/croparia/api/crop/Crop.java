@@ -210,7 +210,9 @@ public class Crop {
     }
 
     public String serializeColor() {
-        return "0x" + Integer.toHexString(this.color);
+        String hex = Integer.toHexString(this.color);
+        hex = "0".repeat(6 - hex.length()) + hex;
+        return "0x" + hex;
     }
 
     public int getTier() {
