@@ -138,6 +138,7 @@
   "fluid.croparia.fire": "Fluid Fire",
   "fluid.croparia.water": "Fluid Water",
   "fluid.croparia.earth": "Fluid Earth",
+  "commands.croparia.click2copy": "Click to copy: %s",
   "commands.croparia.dump.perform": "Dumping %s crops",
   "commands.croparia.dump.singular": "Dumped crop %s",
   "commands.croparia.dump.singular.absent": "Crop %s not found",
@@ -167,8 +168,8 @@
   "commands.croparia.create.no_material": "There's no material in your main hand",
   "commands.croparia.create.invalid_type": "Type %s is invalid",
   "commands.croparia.create.success": "Successfully created crop in %s, reboot the game to apply changes",
-  "commands.croparia.create.exists": "Crop of name %s exists or there's a file with the same name, %s?",
-  "commands.croparia.create.force": "force to create",
+  "commands.croparia.create.duplicated": "Duplicated crop definition: %s, %s",
+  "commands.croparia.create.duplicated.prompt": "Try another name?",
   "chat.croparia.recipe_wizard.ritual": "Saved ritual recipe %s",
   "chat.croparia.recipe_wizard.infusor": "Saved infusor recipe %s"
 }

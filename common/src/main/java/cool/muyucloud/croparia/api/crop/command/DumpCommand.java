@@ -25,8 +25,8 @@ public class DumpCommand {
         int size = Crops.size();
         MutableComponent component = Component.translatable("commands.croparia.dump.perform", size);
         if (openFile) {
-            component.withStyle(ServerCommandRoot.openFile(CropariaIf.CONFIG.getDumpPath().toString()));
-            component.withStyle(ServerCommandRoot.blockMouseBehavior());
+            component.withStyle(CommonCommandRoot.openFile(CropariaIf.CONFIG.getDumpPath().toString()));
+            component.withStyle(CommonCommandRoot.blockMouseBehavior());
         }
         success.send(() -> component, true);
         CropFileHandler.dumpCrops();
@@ -43,7 +43,7 @@ public class DumpCommand {
         if (CropFileHandler.dumpCrop(crop)) {
             MutableComponent nameComponent = Component.literal(name);
             if (openFile) {
-                nameComponent.withStyle(ServerCommandRoot.openFile(CropariaIf.CONFIG.getDumpPath().resolve(name + ".json").toString()));
+                nameComponent.withStyle(CommonCommandRoot.openFile(CropariaIf.CONFIG.getDumpPath().resolve(name + ".json").toString()));
             }
             MutableComponent component = Component.translatable("commands.croparia.dump.singular", name);
             success.send(() -> component, true);
