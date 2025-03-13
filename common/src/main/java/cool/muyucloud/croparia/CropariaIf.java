@@ -1,8 +1,8 @@
 package cool.muyucloud.croparia;
 
 import com.mojang.logging.LogUtils;
-import cool.muyucloud.croparia.api.crop.Crops;
-import cool.muyucloud.croparia.api.crop.command.ServerCommandRoot;
+import cool.muyucloud.croparia.registry.Crops;
+import cool.muyucloud.croparia.api.crop.command.CommonCommandRoot;
 import cool.muyucloud.croparia.api.generator.BlockTagGenerator;
 import cool.muyucloud.croparia.api.generator.ItemTagGenerator;
 import cool.muyucloud.croparia.api.generator.pack.DataPackHandler;
@@ -32,7 +32,7 @@ public class CropariaIf {
         BlockEntities.register();
         CropariaItems.register();
         Tabs.register();
-        ServerCommandRoot.register();
+        CommonCommandRoot.register();
         CropariaIf.LOGGER.debug("Adding data generators");
         DataPackHandler.INSTANCE.registerGenerator(ItemTagGenerator::init);
         DataPackHandler.INSTANCE.registerGenerator(BlockTagGenerator::init);

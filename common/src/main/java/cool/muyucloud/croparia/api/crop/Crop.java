@@ -23,6 +23,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@SuppressWarnings("unused")
 public class Crop {
     @NotNull
     private final String name;
@@ -208,7 +209,9 @@ public class Crop {
     }
 
     public String serializeColor() {
-        return "0x" + Integer.toHexString(this.color);
+        String hex = Integer.toHexString(this.color);
+        hex = "0".repeat(6 - hex.length()) + hex;
+        return "0x" + hex;
     }
 
     public int getColor() {
@@ -277,7 +280,6 @@ public class Crop {
         return tag;
     }
 
-    @SuppressWarnings("unused")
     protected Map<String, String> getTranslations() {
         return Map.copyOf(translations);
     }

@@ -1,6 +1,7 @@
 package cool.muyucloud.croparia.api.crop.command;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import cool.muyucloud.croparia.CropariaIf;
 import dev.architectury.event.events.common.CommandRegistrationEvent;
 import net.minecraft.ChatFormatting;
@@ -12,10 +13,14 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.HoverEvent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 
-public class ServerCommandRoot {
+import static net.minecraft.commands.CommandSourceStack.ERROR_NOT_PLAYER;
+
+@SuppressWarnings("unused")
+public class CommonCommandRoot {
     private static final LiteralArgumentBuilder<CommandSourceStack> ROOT = Commands.literal("cropariaServer")
         .requires(s -> s.hasPermission(2))
         .then(DumpCommand.build())
@@ -30,14 +35,24 @@ public class ServerCommandRoot {
         CommandRegistrationEvent.EVENT.register((dispatcher, registry, selection) -> dispatcher.register(ROOT));
     }
 
-    public static Style suggestCommand(String command, Object... args) {
+    public static Style suggestCommand(String... words) {
+        if (words.length == 0) return Style.EMPTY;
         return Style.EMPTY.withUnderlined(true).withClickEvent(
-            new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, command.formatted(args))
+            new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, (words[0].startsWith("/") ? "" : "/") + String.join(" ", words))
+        );
+    }
+
+    public static Style runCommand(String... words) {
+        if (words.length == 0) return Style.EMPTY;
+        return Style.EMPTY.withUnderlined(true).withClickEvent(
+            new ClickEvent(ClickEvent.Action.RUN_COMMAND, (words[0].startsWith("/") ? "" : "/") + String.join(" ", words))
         );
     }
 
     public static Style copyText(String text) {
-        return Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, text));
+        return Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, text)).applyTo(
+            hoverText(Component.translatable("commands.croparia.click2copy", text))
+        );
     }
 
     public static Style openFile(String path) {
@@ -69,5 +84,17 @@ public class ServerCommandRoot {
 
     public static Style inlineMouseBehavior() {
         return Style.EMPTY.withUnderlined(true).withColor(ChatFormatting.GRAY);
+    }
+
+    public static Player playerOrThrow(CommandSourceStack source) throws CommandSyntaxException {
+        if (source.getEntity() instanceof Player player) {
+            return player;
+        } else {
+            throw ERROR_NOT_PLAYER.create();
+        }
+    }
+
+    public static String commandRoot(boolean client) {
+        return client ? "croparia" : "cropariaServer";
     }
 }

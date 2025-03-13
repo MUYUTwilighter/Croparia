@@ -1,7 +1,7 @@
 package cool.muyucloud.croparia.client;
 
 import cool.muyucloud.croparia.CropariaIf;
-import cool.muyucloud.croparia.api.crop.Crops;
+import cool.muyucloud.croparia.registry.Crops;
 import cool.muyucloud.croparia.client.command.ClientCommandRoot;
 import cool.muyucloud.croparia.registry.CropariaBlocks;
 import cool.muyucloud.croparia.registry.CropariaItems;

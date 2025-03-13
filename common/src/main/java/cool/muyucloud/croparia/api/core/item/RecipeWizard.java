@@ -11,7 +11,7 @@ import cool.muyucloud.croparia.api.core.block.RitualStand;
 import cool.muyucloud.croparia.api.core.recipe.container.RitualStructureContainer;
 import cool.muyucloud.croparia.api.core.recipe.util.BlockStatePredicate;
 import cool.muyucloud.croparia.api.core.recipe.util.GenericIngredient;
-import cool.muyucloud.croparia.api.crop.command.ServerCommandRoot;
+import cool.muyucloud.croparia.api.crop.command.CommonCommandRoot;
 import cool.muyucloud.croparia.api.element.ElementsEnum;
 import cool.muyucloud.croparia.registry.RecipeTypes;
 import net.minecraft.Util;
@@ -126,8 +126,8 @@ public class RecipeWizard extends Item {
 
     public void sendFeedback(String key, Path path, Player player) {
         MutableComponent location = Component.literal(path.getFileName().toString()).withStyle(
-            ServerCommandRoot.openFile(path.toString())
-        ).withStyle(ServerCommandRoot.inlineMouseBehavior());
+            CommonCommandRoot.openFile(path.toString())
+        ).withStyle(CommonCommandRoot.inlineMouseBehavior());
         MutableComponent main = Component.translatable(key, location);
         player.displayClientMessage(main, false);
     }

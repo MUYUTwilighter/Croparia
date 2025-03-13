@@ -1,10 +1,12 @@
-package cool.muyucloud.croparia.api.crop;
+package cool.muyucloud.croparia.registry;
 
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import cool.muyucloud.croparia.CropariaIf;
-import cool.muyucloud.croparia.registry.CropariaBlocks;
-import cool.muyucloud.croparia.registry.CropariaItems;
+import cool.muyucloud.croparia.api.crop.Crop;
+import cool.muyucloud.croparia.api.crop.CropFileHandler;
+import cool.muyucloud.croparia.api.crop.CropType;
+import cool.muyucloud.croparia.api.crop.RawCrop;
 import dev.architectury.platform.Platform;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -22,10 +24,9 @@ public class Crops {
     // Crops including here and CompatCrops, but not KubeJS definition and file definition
     protected static final Map<String, Crop> BUILTIN_CROPS = new HashMap<>();
 
-    public static CompletableFuture<Suggestions> cropSuggestions(String input, int start) {
-        SuggestionsBuilder suggestionsBuilder = new SuggestionsBuilder(input, start);
-        Crops.cropNames().forEach(suggestionsBuilder::suggest);
-        return suggestionsBuilder.buildFuture();
+    public static CompletableFuture<Suggestions> cropSuggestions(SuggestionsBuilder builder) {
+        Crops.cropNames().forEach(builder::suggest);
+        return builder.buildFuture();
     }
 
     public static int size() {
@@ -51,6 +52,10 @@ public class Crops {
 
     public static void forEachBuiltinCrop(@NotNull Consumer<Crop> consumer) {
         BUILTIN_CROPS.values().forEach(consumer);
+    }
+
+    public static boolean containsCrop(@NotNull String name) {
+        return CROPS.containsKey(name);
     }
 
     /**

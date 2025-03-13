@@ -3,6 +3,7 @@ package cool.muyucloud.croparia.api.crop;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonWriter;
 import cool.muyucloud.croparia.CropariaIf;
+import cool.muyucloud.croparia.registry.Crops;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -86,5 +87,9 @@ public class CropFileHandler {
             CropariaIf.LOGGER.error("Failed to dump crop \"%s\"".formatted(crop.getName()), e);
         }
         return false;
+    }
+
+    public static boolean containsFile(@NotNull String name) {
+        return CropariaIf.CONFIG.getCropPath().resolve(name + ".json").toFile().isFile();
     }
 }

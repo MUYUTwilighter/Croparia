@@ -5,6 +5,7 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import cool.muyucloud.croparia.api.crop.CropType;
 import dev.architectury.event.events.client.ClientCommandRegistrationEvent;
+import net.minecraft.network.chat.Component;
 
 import static cool.muyucloud.croparia.api.crop.command.CreateCommand.create;
 
@@ -16,29 +17,57 @@ public class CreateCommand {
     private static final RequiredArgumentBuilder<ClientCommandRegistrationEvent.ClientCommandSourceStack, String> COLOR = RequiredArgumentBuilder.argument(
         "color", StringArgumentType.word()
     );
+    private static final RequiredArgumentBuilder<ClientCommandRegistrationEvent.ClientCommandSourceStack, String> NAME = RequiredArgumentBuilder.argument(
+        "name", StringArgumentType.greedyString()
+    );
 
-    public static LiteralArgumentBuilder<ClientCommandRegistrationEvent.ClientCommandSourceStack> build() {
+    static {
+        CREATE.requires(s -> s.hasPermission(2));
+        COLOR.executes(context -> {
+            if (context.getSource().arch$getPlayer() != null) {
+                return create(
+                    context.getSource().arch$getPlayer(),
+                    null,
+                    CropType.CROP.getModelName(),
+                    StringArgumentType.getString(context, "color"),
+                    (msg, broadcast) -> context.getSource().arch$sendSuccess(msg, broadcast),
+                    context.getSource()::arch$sendFailure,
+                    true
+                );
+            } else {
+                context.getSource().arch$sendFailure(Component.translatable("commands.croparia.crop.not_player"));
+                return -1;
+            }
+        });
         TYPE.suggests((context, builder) -> {
             for (CropType type : CropType.values()) {
                 builder.suggest(type.getModelName());
             }
             return builder.buildFuture();
-        });
-        CREATE.requires(s -> s.hasPermission(2)).then(COLOR.then(TYPE.executes(context -> create(
+        }).executes(context -> create(
             context.getSource().arch$getPlayer(),
+            null,
             StringArgumentType.getString(context, "type"),
             StringArgumentType.getString(context, "color"),
-            context.getSource()::arch$sendSuccess,
+            (msg, broadcast) -> context.getSource().arch$sendSuccess(msg, broadcast),
             context.getSource()::arch$sendFailure,
             true
-        ))).executes(context -> create(
+        ));
+        NAME.executes(context -> create(
             context.getSource().arch$getPlayer(),
-            CropType.CROP.getModelName(),
+            StringArgumentType.getString(context, "name"),
+            StringArgumentType.getString(context, "type"),
             StringArgumentType.getString(context, "color"),
-            context.getSource()::arch$sendSuccess,
+            (msg, broadcast) -> context.getSource().arch$sendSuccess(msg, broadcast),
             context.getSource()::arch$sendFailure,
             true
-        )));
+        ));
+        TYPE.then(NAME);
+        COLOR.then(TYPE);
+        CREATE.then(COLOR);
+    }
+
+    public static LiteralArgumentBuilder<ClientCommandRegistrationEvent.ClientCommandSourceStack> build() {
         return CREATE;
     }
 }

@@ -22,7 +22,7 @@
     "probability": 0.0
   },
   "fluid_inputs": {
-    "fluid": "croparia:water",
+    "fluid": "croparia:elematilius",
     "amount": 250
   },
   "item_outputs": {
