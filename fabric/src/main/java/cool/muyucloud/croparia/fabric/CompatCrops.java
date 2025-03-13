@@ -3,7 +3,7 @@ package cool.muyucloud.croparia.fabric;
 import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.api.crop.Crop;
 import cool.muyucloud.croparia.api.crop.CropType;
-import cool.muyucloud.croparia.api.crop.Crops;
+import cool.muyucloud.croparia.registry.Crops;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;

@@ -3,7 +3,7 @@ package cool.muyucloud.croparia.forge.command;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
-import cool.muyucloud.croparia.api.crop.Crops;
+import cool.muyucloud.croparia.registry.Crops;
 import cool.muyucloud.croparia.api.crop.command.CommonCommandRoot;
 import net.minecraft.commands.CommandSourceStack;
 

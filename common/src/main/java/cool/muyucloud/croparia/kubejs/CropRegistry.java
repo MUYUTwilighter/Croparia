@@ -6,7 +6,7 @@ import cool.muyucloud.croparia.api.crop.Crop;
 import cool.muyucloud.croparia.api.crop.CropType;
 import cool.muyucloud.croparia.api.crop.item.CropFruit;
 import cool.muyucloud.croparia.api.crop.item.CropSeed;
-import cool.muyucloud.croparia.api.crop.Crops;
+import cool.muyucloud.croparia.registry.Crops;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;

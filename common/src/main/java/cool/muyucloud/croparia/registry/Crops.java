@@ -1,11 +1,13 @@
-package cool.muyucloud.croparia.api.crop;
+package cool.muyucloud.croparia.registry;
 
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import cool.muyucloud.croparia.CropariaIf;
+import cool.muyucloud.croparia.api.crop.Crop;
+import cool.muyucloud.croparia.api.crop.CropFileHandler;
+import cool.muyucloud.croparia.api.crop.CropType;
+import cool.muyucloud.croparia.api.crop.RawCrop;
 import cool.muyucloud.croparia.config.Config;
-import cool.muyucloud.croparia.registry.CropariaBlocks;
-import cool.muyucloud.croparia.registry.CropariaItems;
 import dev.architectury.platform.Platform;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -72,7 +74,7 @@ public class Crops {
         return builder.buildFuture();
     }
 
-    public static boolean contains(String name) {
+    public static boolean containsCrop(String name) {
         return CROPS.containsKey(name);
     }
 

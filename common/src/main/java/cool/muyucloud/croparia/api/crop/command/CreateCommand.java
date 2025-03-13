@@ -10,7 +10,7 @@ import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.api.crop.CropFileHandler;
 import cool.muyucloud.croparia.api.crop.CropType;
-import cool.muyucloud.croparia.api.crop.Crops;
+import cool.muyucloud.croparia.registry.Crops;
 import cool.muyucloud.croparia.api.crop.item.Croparia;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -95,9 +95,9 @@ public class CreateCommand {
         Item material = main.getItem();
         Item rawCroparia = player.getOffhandItem().getItem();
         name = name == null ? Objects.requireNonNull(material.arch$registryName()).getPath() : name;
-        if (Crops.contains(name) || CropFileHandler.exists(name)) {
+        if (Crops.containsCrop(name) || CropFileHandler.exists(name)) {
             MutableComponent crop = Component.literal(name);
-            if (Crops.contains(name)) {
+            if (Crops.containsCrop(name)) {
                 crop.withStyle(CommonCommandRoot.runCommand(CommonCommandRoot.commandRoot(client), "crop", name))
                     .withStyle(CommonCommandRoot.inlineMouseBehavior());
             }
