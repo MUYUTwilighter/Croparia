@@ -280,8 +280,7 @@ public class Crops {
 
     public static boolean shouldLoad(@NotNull List<List<String>> dependencies) {
         return dependencies.isEmpty()
-            || dependencies.stream().allMatch(list -> list.isEmpty()
-            || list.stream().anyMatch(Platform::isModLoaded));
+            || dependencies.stream().allMatch(list -> list.isEmpty() || list.stream().anyMatch(Platform::isModLoaded));
     }
 
     @SafeVarargs

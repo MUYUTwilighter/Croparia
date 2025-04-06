@@ -63,6 +63,7 @@ allprojects {
         maven {
             url "https://cursemaven.com"
         }
+        flatDir(dirs: rootProject.file("flatDir"))
     }
 
     tasks.withType(JavaCompile) {
