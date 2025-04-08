@@ -67,7 +67,7 @@ public class Infusor extends Block implements ItemPlaceable {
                 return InteractionResult.CONSUME;
             }
         }
-        return InteractionResult.FAIL;
+        return InteractionResult.PASS;
     }
 
     public boolean tryInfuse(Level world, BlockPos pos, ElementalPotion potion, @NotNull ItemStack stack, @Nullable Player player) {

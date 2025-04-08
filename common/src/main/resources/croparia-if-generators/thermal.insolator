@@ -1,5 +1,5 @@
 @enabled=true
-@path=croparia/recipe/crafting/thermal/insolator/{name}.json
+@path=croparia/recipe/thermal/insolator/{name}.json
 @dependency=thermal_cultivation
 {
   "type": "thermal:insolator",

@@ -46,8 +46,8 @@ public class Crop {
     private transient final ResourceLocation fruitId;
 
     private Crop(@NotNull RawCrop raw) throws RuntimeException {
-        if (Util.anyNull(raw.name(), raw.material())) {
-            throw new IllegalArgumentException("Crop name and material ID cannot be null");
+        if (raw.name() == null || Util.allNull(raw.material(), raw.tag())) {
+            throw new IllegalArgumentException("Crop name and material must be specified");
         }
         this.name = parseName(raw.name());
         this.material = parseMaterialId(raw.material(), raw.tag());

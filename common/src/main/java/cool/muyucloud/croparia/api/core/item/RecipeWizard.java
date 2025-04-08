@@ -53,7 +53,7 @@ public class RecipeWizard extends Item {
     public @NotNull InteractionResult useOn(UseOnContext context) {
         Level level = context.getLevel();
         Player player = context.getPlayer();
-        if (!level.isClientSide() || player == null || player.isLocalPlayer()) {
+        if (!level.isClientSide() || player == null || !player.isLocalPlayer()) {
             return InteractionResult.PASS;
         }
         ItemStack stack = context.getItemInHand();
