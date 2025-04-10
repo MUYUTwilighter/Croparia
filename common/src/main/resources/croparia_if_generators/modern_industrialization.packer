@@ -1,5 +1,5 @@
 @enabled=true
-@path=croparia/recipes/crafting/modern_industrialization/packer/{name}.json
+@path=croparia/recipes/modern_industrialization/packer/{name}.json
 @dependency=modern_industrialization
 {
   "type": "modern_industrialization:packer",
@@ -8,13 +8,13 @@
   "item_inputs": [
     {
       "item": "{fruit}",
-      "count": 1
+      "amount": 1
     }
   ],
   "item_outputs": [
     {
       "item": "{result}",
-      "count": {result_count.2}
+      "amount": {result_count.2}
     }
   ]
 }
