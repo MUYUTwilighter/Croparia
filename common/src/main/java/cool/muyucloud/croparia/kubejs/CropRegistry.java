@@ -65,8 +65,6 @@ public class CropRegistry {
             RegistrySupplier<CropSeed> seed = itemRegistry.register(crop.getSeedId(), () -> new CropSeed(crop));
             RegistrySupplier<CropFruit> fruit = itemRegistry.register(crop.getFruitId(), () -> new CropFruit(crop));
             CropariaIf.LOGGER.debug("Added crop \"{}\" for CropRegistry \"{}\"", name, this.name);
-        } else {
-            CropariaIf.LOGGER.error("Duplicated custom crop \"{}\" from KubeJS CropRegistry \"{}\"", name, this.name);
         }
     }
 

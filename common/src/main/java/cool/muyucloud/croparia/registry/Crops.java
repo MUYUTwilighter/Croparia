@@ -61,6 +61,7 @@ public class Crops {
 
     public static boolean recordCustom(Crop crop) {
         if (CROPS.containsKey(crop.getName())) {
+            CropariaIf.LOGGER.info("Replace existing crop \"{}\"", crop);
             return false;
         }
         CROPS.put(crop.getName(), crop);

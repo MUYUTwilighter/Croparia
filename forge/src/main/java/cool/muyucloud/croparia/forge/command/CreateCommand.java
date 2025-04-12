@@ -18,8 +18,9 @@ public class CreateCommand {
         "color", StringArgumentType.word()
     );
     private static final RequiredArgumentBuilder<CommandSourceStack, String> NAME = RequiredArgumentBuilder.argument(
-        "name", StringArgumentType.greedyString()
+        "name", StringArgumentType.word()
     );
+    private static final LiteralArgumentBuilder<CommandSourceStack> REPLACE = LiteralArgumentBuilder.literal("replace");
 
     static {
         CREATE.requires(s -> s.hasPermission(2));
@@ -30,7 +31,7 @@ public class CreateCommand {
             StringArgumentType.getString(context, "color"),
             context.getSource()::sendSuccess,
             context.getSource()::sendFailure,
-            true
+            true, false
         ));
         TYPE.suggests((context, builder) -> {
             for (CropType type : CropType.values()) {
@@ -44,7 +45,7 @@ public class CreateCommand {
             StringArgumentType.getString(context, "color"),
             context.getSource()::sendSuccess,
             context.getSource()::sendFailure,
-            true
+            true, false
         ));
         NAME.executes(context -> create(
             CommonCommandRoot.playerOrThrow(context.getSource()),
@@ -53,8 +54,18 @@ public class CreateCommand {
             StringArgumentType.getString(context, "color"),
             context.getSource()::sendSuccess,
             context.getSource()::sendFailure,
-            true
+            true, false
         ));
+        REPLACE.executes(context -> create(
+            CommonCommandRoot.playerOrThrow(context.getSource()),
+            StringArgumentType.getString(context, "name"),
+            StringArgumentType.getString(context, "type"),
+            StringArgumentType.getString(context, "color"),
+            context.getSource()::sendSuccess,
+            context.getSource()::sendFailure,
+            true, true
+        ));
+        NAME.then(REPLACE);
         TYPE.then(NAME);
         COLOR.then(TYPE);
         CREATE.then(COLOR);

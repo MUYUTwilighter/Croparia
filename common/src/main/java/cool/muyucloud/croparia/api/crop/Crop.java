@@ -103,6 +103,19 @@ public class Crop {
         }
     }
 
+    public Optional<Crop> forModified(@Nullable String material, @Nullable Integer color, @Nullable Integer tier, @Nullable CropType type, @Nullable Map<String, String> translations, @Nullable String translationKey) {
+        material = material == null ? this.taggableMaterial() : material;
+        color = color == null ? this.getColor() : color;
+        tier = tier == null ? this.getTier() : tier;
+        type = type == null ? this.getType() : type;
+        HashMap<String, String> mergedTranslations = new HashMap<>(this.getTranslations());
+        if (translations != null) {
+            mergedTranslations.putAll(translations);
+        }
+        translationKey = translationKey == null ? this.getTranslationKey() : translationKey;
+        return Crop.create(this.getName(), material, color, tier, type, translationKey, mergedTranslations);
+    }
+
     @NotNull
     protected static String parseName(@NotNull String name) {
         return name.trim().toLowerCase();

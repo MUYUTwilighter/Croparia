@@ -30,14 +30,8 @@ but was completely rewritten since beta 0.0.1, 2024-12, by [MUYU_Twilighter](htt
 
 Including:
 
-- Completely rewritten recipes and mission stream
-- Auto generate data files for crops, which is more customizable
-- Add fruit-to-material recipes on crafting table
-- Default resources (textures, models, etc.) for crops
-- Add more powerful custom crop format
-- Support REI and EMI
-- Add compat recipes for other mods (Modern Industrialization, Botany Pots, etc.)
-- Restore some of the removed features
-- Fix some bugs
+- [Completely rewritten recipes and mission line](https://github.com/MUYUTwilighter/Croparia/wiki/Basic-Guide-to-Croparia-IF)
+- [More convenient crop customization](https://github.com/MUYUTwilighter/Croparia/wiki/Add-Crops)
+- [More open interfaces & tools for mod-pack developers](https://github.com/MUYUTwilighter/Croparia/wiki/Datapack-customizations)
 
 For more information, see [wiki](https://github.com/MUYUTwilighter/Croparia/wiki).
