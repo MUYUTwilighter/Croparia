@@ -60,12 +60,13 @@ public class Crops {
     }
 
     public static boolean recordCustom(Crop crop) {
+        boolean r = true;
         if (CROPS.containsKey(crop.getName())) {
             CropariaIf.LOGGER.info("Replace existing crop \"{}\"", crop);
-            return false;
+            r = false;
         }
         CROPS.put(crop.getName(), crop);
-        return true;
+        return r;
     }
 
     public static CompletableFuture<Suggestions> suggestCrops(SuggestionsBuilder builder) {

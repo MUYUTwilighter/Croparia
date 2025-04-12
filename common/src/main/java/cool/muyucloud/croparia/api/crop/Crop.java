@@ -224,7 +224,7 @@ public class Crop {
     }
 
     public String serializeColor() {
-        String hex = Integer.toHexString(this.color);
+        String hex = Integer.toHexString(this.color).toUpperCase();
         hex = "0".repeat(6 - hex.length()) + hex;
         return "0x" + hex;
     }
