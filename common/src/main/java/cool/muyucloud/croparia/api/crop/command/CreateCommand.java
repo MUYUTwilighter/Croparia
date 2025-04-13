@@ -10,8 +10,8 @@ import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.api.crop.CropFileHandler;
 import cool.muyucloud.croparia.api.crop.CropType;
-import cool.muyucloud.croparia.api.crop.item.Croparia;
 import cool.muyucloud.croparia.registry.Crops;
+import cool.muyucloud.croparia.api.crop.item.Croparia;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
@@ -27,15 +27,16 @@ import java.util.Objects;
 
 public class CreateCommand {
     private static final LiteralArgumentBuilder<CommandSourceStack> CREATE = Commands.literal("create");
-    private static final RequiredArgumentBuilder<CommandSourceStack, String> COLOR = RequiredArgumentBuilder.argument(
-        "color", StringArgumentType.word()
-    );
     private static final RequiredArgumentBuilder<CommandSourceStack, String> TYPE = RequiredArgumentBuilder.argument(
         "type", StringArgumentType.word()
+    );
+    private static final RequiredArgumentBuilder<CommandSourceStack, String> COLOR = RequiredArgumentBuilder.argument(
+        "color", StringArgumentType.word()
     );
     private static final RequiredArgumentBuilder<CommandSourceStack, String> NAME = RequiredArgumentBuilder.argument(
         "name", StringArgumentType.word()
     );
+    private static final LiteralArgumentBuilder<CommandSourceStack> REPLACE = LiteralArgumentBuilder.literal("replace");
 
     static {
         CREATE.requires(s -> s.hasPermission(2));
@@ -46,7 +47,7 @@ public class CreateCommand {
             StringArgumentType.getString(context, "color"),
             context.getSource()::sendSuccess,
             context.getSource()::sendFailure,
-            false
+            false, false
         ));
         TYPE.suggests((context, builder) -> {
             for (CropType type : CropType.values()) {
@@ -60,7 +61,7 @@ public class CreateCommand {
             StringArgumentType.getString(context, "color"),
             context.getSource()::sendSuccess,
             context.getSource()::sendFailure,
-            false
+            false, false
         ));
         NAME.executes(context -> create(
             context.getSource().getPlayerOrException(),
@@ -69,21 +70,28 @@ public class CreateCommand {
             StringArgumentType.getString(context, "color"),
             context.getSource()::sendSuccess,
             context.getSource()::sendFailure,
-            false
+            false, false
         ));
+        REPLACE.executes(context -> create(
+            context.getSource().getPlayerOrException(),
+            StringArgumentType.getString(context, "name"),
+            StringArgumentType.getString(context, "type"),
+            StringArgumentType.getString(context, "color"),
+            context.getSource()::sendSuccess,
+            context.getSource()::sendFailure,
+            false, true
+        ));
+        NAME.then(REPLACE);
         TYPE.then(NAME);
         COLOR.then(TYPE);
         CREATE.then(COLOR);
     }
 
     public static LiteralArgumentBuilder<CommandSourceStack> build() {
-        return CREATE.requires(s -> s.hasPermission(2));
+        return CREATE;
     }
 
-    public static int create(
-        Player player, @Nullable String name, String rawType, String color,
-        SuccessMessage success, FailureMessage failure, boolean client
-    ) {
+    public static int create(Player player, @Nullable String name, String rawType, String color, SuccessMessage success, FailureMessage failure, boolean client, boolean forced) {
         CropType type;
         try {
             type = CropType.valueOf(rawType.toUpperCase());
@@ -92,22 +100,25 @@ public class CreateCommand {
             return -1;
         }
         ItemStack main = player.getMainHandItem();
-        Item rawCroparia = player.getOffhandItem().getItem();
         if (main.isEmpty()) {
             failure.send(Component.translatable("commands.croparia.create.no_material"));
         }
         Item material = main.getItem();
+        Item rawCroparia = player.getOffhandItem().getItem();
         name = name == null ? Objects.requireNonNull(material.arch$registryName()).getPath() : name;
-        if (Crops.containsCrop(name) || CropFileHandler.containsFile(name)) {
+        if (!forced && (Crops.containsCrop(name) || CropFileHandler.containsFile(name))) {
             MutableComponent crop = Component.literal(name);
             if (Crops.containsCrop(name)) {
                 crop.withStyle(CommonCommandRoot.runCommand(CommonCommandRoot.commandRoot(client), "crop", name))
                     .withStyle(CommonCommandRoot.inlineMouseBehavior());
             }
-            MutableComponent prompt = Component.translatable("commands.croparia.create.duplicated.prompt", name)
+            MutableComponent rename = Component.translatable("commands.croparia.create.duplicated.rename")
                 .withStyle(CommonCommandRoot.suggestCommand(CommonCommandRoot.commandRoot(client), "create", color, rawType, name + "_"))
                 .withStyle(CommonCommandRoot.inlineMouseBehavior());
-            MutableComponent duplication = Component.translatable("commands.croparia.create.duplicated", crop, prompt);
+            MutableComponent replace = Component.translatable("commands.croparia.create.duplicated.replace")
+                .withStyle(CommonCommandRoot.suggestCommand(CommonCommandRoot.commandRoot(client), "create", color, rawType, name, "replace"))
+                .withStyle(CommonCommandRoot.inlineMouseBehavior());
+            MutableComponent duplication = Component.translatable("commands.croparia.create.duplicated", crop, rename, replace);
             failure.send(duplication);
             return -1;
         }

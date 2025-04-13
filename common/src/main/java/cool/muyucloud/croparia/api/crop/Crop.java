@@ -113,6 +113,19 @@ public class Crop {
         }
     }
 
+    public Optional<Crop> forModified(@Nullable String material, @Nullable Integer color, @Nullable Integer tier, @Nullable CropType type, @Nullable Map<String, String> translations, @Nullable String translationKey) {
+        material = material == null ? this.taggableMaterial() : material;
+        color = color == null ? this.getColor() : color;
+        tier = tier == null ? this.getTier() : tier;
+        type = type == null ? this.getType() : type;
+        HashMap<String, String> mergedTranslations = new HashMap<>(this.getTranslations());
+        if (translations != null) {
+            mergedTranslations.putAll(translations);
+        }
+        translationKey = translationKey == null ? this.getTranslationKey() : translationKey;
+        return Crop.create(this.getName(), material, color, tier, type, translationKey, mergedTranslations);
+    }
+
     @NotNull
     public JsonObject toJson() {
         JsonObject root = new JsonObject();
@@ -209,7 +222,7 @@ public class Crop {
     }
 
     public String serializeColor() {
-        String hex = Integer.toHexString(this.color);
+        String hex = Integer.toHexString(this.color).toUpperCase();
         hex = "0".repeat(6 - hex.length()) + hex;
         return "0x" + hex;
     }
