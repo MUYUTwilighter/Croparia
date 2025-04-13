@@ -46,14 +46,18 @@ public class Crop {
     private transient final boolean tag;
 
     private Crop(@NotNull RawCrop raw) throws RuntimeException {
-        if (Util.anyNull(raw.name(), raw.material())) {
+        if ( Util.anyNull(raw.name(), raw.material())) {
             throw new IllegalArgumentException("Crop name and material ID cannot be null");
         }
         this.name = parseName(raw.name());
         this.material = parseMaterialId(raw.material(), raw.tag());
         this.type = parseType(raw.type());
         this.translationKey = raw.translationKey() == null ? "crop.croparia." + this.name : raw.translationKey();
-        this.translations = parseTranslation(raw.translations(), parseDefaultTranslation(this.name));
+        if (raw.translationKey() == null || raw.isTranslationSpecified()) {
+            this.translations = parseTranslation(raw.translations(), parseDefaultTranslation(this.name));
+        } else {
+            this.translations = Collections.emptyMap();
+        }
         this.color = raw.color().startsWith("0x") ? Integer.parseInt(raw.color().substring(2), 16) : Integer.parseInt(raw.color());
         this.tier = parseTier(raw.tier());
         this.tag = raw.material().trim().startsWith("#");
@@ -69,7 +73,11 @@ public class Crop {
         this.tier = parseTier(tier);
         this.type = type == null ? CropType.CROP : type;
         this.translationKey = translationKey == null ? "crop.croparia." + this.name : translationKey;
-        this.translations = parseTranslation(translations, parseDefaultTranslation(this.name));
+        if (translationKey == null || (translations != null && !translations.isEmpty())) {
+            this.translations = parseTranslation(translations, parseDefaultTranslation(this.name));
+        } else {
+            this.translations = Collections.emptyMap();
+        }
         this.tag = material.trim().startsWith("#");
         this.blockId = CropariaIf.of("block_crop_" + this.name);
         this.seedId = CropariaIf.of("seed_crop_" + this.name);
