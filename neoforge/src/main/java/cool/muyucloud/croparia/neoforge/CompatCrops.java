@@ -12,7 +12,8 @@ import java.util.Map;
 public class CompatCrops {
     @Nullable
     public static final Crop ALUMINUM = Crops.compat("aluminum", "#c:ingots/aluminum", 0x9E9E9E, 3, CropType.CROP, Map.of(
-        "modern_industrialization", "item.modern_industrialization.aluminum_ingot"
+        "modern_industrialization", "item.modern_industrialization.aluminum_ingot",
+        "gtceu", "item.gtceu.aluminum_ingot"
     ));
     @Nullable
     public static final Crop AMERICIUM = Crops.compat("americium", "#c:ingots/americium", 0x7F8C8D, 3, CropType.CROP, Map.of(
@@ -96,7 +97,7 @@ public class CompatCrops {
         "aoa3", "item.aoa3.jewelyte"
     ));
     @Nullable
-    public static final Crop LEAD = Crops.compat("lead_conventional", "#c:ingots/lead", 0x6F6B77, 3, CropType.CROP, Map.of(
+    public static final Crop LEAD = Crops.compat("lead", "#c:ingots/lead", 0x6F6B77, 3, CropType.CROP, Map.of(
         "modern_industrialization", "item.modern_industrialization.lead_ingot",
         "mekanism", "item.mekanism.ingot_lead",
         "thermal_foundation", "item.thermal.lead_ingot",
@@ -185,7 +186,7 @@ public class CompatCrops {
         "aoa3", "item.aoa3.skeletal_ingot"
     ));
     @Nullable
-    public static final Crop TIN = Crops.compat("tin_conventional", "#c:ingots/tin", 0xE3E3E0, 3, CropType.CROP, Map.of(
+    public static final Crop TIN = Crops.compat("tin", "#c:ingots/tin", 0xE3E3E0, 3, CropType.CROP, Map.of(
         "modern_industrialization", "item.modern_industrialization.tin_ingot",
         "mekanism", "item.mekanism.ingot_tin",
         "thermal_foundation", "item.thermal.tin_ingot",
@@ -202,7 +203,7 @@ public class CompatCrops {
         "gtceu", "item.gtceu.tungsten_ingot"
     ));
     @Nullable
-    public static final Crop URANIUM = Crops.compat("uranium_conventional", "#c:ingots/uranium", 0x32CE00, 3, CropType.CROP, Map.of(
+    public static final Crop URANIUM = Crops.compat("uranium", "#c:ingots/uranium", 0x32CE00, 3, CropType.CROP, Map.of(
         "modern_industrialization", "item.modern_industrialization.uranium_ingot",
         "mekanism", "item.mekanism.ingot_uranium"
     ));
