@@ -10,7 +10,7 @@ import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.api.crop.CropFileHandler;
 import cool.muyucloud.croparia.api.crop.CropType;
-import cool.muyucloud.croparia.api.crop.Crops;
+import cool.muyucloud.croparia.registry.Crops;
 import cool.muyucloud.croparia.api.crop.item.Croparia;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -32,9 +32,11 @@ public class CreateCommand {
     );
     private static final RequiredArgumentBuilder<CommandSourceStack, String> COLOR = RequiredArgumentBuilder.argument(
         "color", StringArgumentType.word()
-    );    private static final RequiredArgumentBuilder<CommandSourceStack, String> NAME = RequiredArgumentBuilder.argument(
+    );
+    private static final RequiredArgumentBuilder<CommandSourceStack, String> NAME = RequiredArgumentBuilder.argument(
         "name", StringArgumentType.word()
     );
+    private static final LiteralArgumentBuilder<CommandSourceStack> REPLACE = LiteralArgumentBuilder.literal("replace");
 
     static {
         CREATE.requires(s -> s.hasPermission(2));
@@ -45,7 +47,7 @@ public class CreateCommand {
             StringArgumentType.getString(context, "color"),
             context.getSource()::sendSuccess,
             context.getSource()::sendFailure,
-            false
+            false, false
         ));
         TYPE.suggests((context, builder) -> {
             for (CropType type : CropType.values()) {
@@ -59,7 +61,7 @@ public class CreateCommand {
             StringArgumentType.getString(context, "color"),
             context.getSource()::sendSuccess,
             context.getSource()::sendFailure,
-            false
+            false, false
         ));
         NAME.executes(context -> create(
             context.getSource().getPlayerOrException(),
@@ -68,8 +70,18 @@ public class CreateCommand {
             StringArgumentType.getString(context, "color"),
             context.getSource()::sendSuccess,
             context.getSource()::sendFailure,
-            false
+            false, false
         ));
+        REPLACE.executes(context -> create(
+            context.getSource().getPlayerOrException(),
+            StringArgumentType.getString(context, "name"),
+            StringArgumentType.getString(context, "type"),
+            StringArgumentType.getString(context, "color"),
+            context.getSource()::sendSuccess,
+            context.getSource()::sendFailure,
+            false, true
+        ));
+        NAME.then(REPLACE);
         TYPE.then(NAME);
         COLOR.then(TYPE);
         CREATE.then(COLOR);
@@ -79,7 +91,7 @@ public class CreateCommand {
         return CREATE;
     }
 
-    public static int create(Player player, String name, String rawType, String color, SuccessMessage success, FailureMessage failure, boolean client) {
+    public static int create(Player player, String name, String rawType, String color, SuccessMessage success, FailureMessage failure, boolean client, boolean replaced) {
         CropType type;
         try {
             type = CropType.valueOf(rawType.toUpperCase());
@@ -94,16 +106,19 @@ public class CreateCommand {
         Item material = main.getItem();
         Item rawCroparia = player.getOffhandItem().getItem();
         name = name == null ? Objects.requireNonNull(material.arch$registryName()).getPath() : name;
-        if (Crops.containsCrop(name) || CropFileHandler.containsFile(name)) {
+        if (!replaced && (Crops.containsCrop(name) || CropFileHandler.containsFile(name))) {
             MutableComponent crop = new TextComponent(name);
             if (Crops.containsCrop(name)) {
                 crop.withStyle(CommonCommandRoot.runCommand(CommonCommandRoot.commandRoot(client), "crop", name))
                     .withStyle(CommonCommandRoot.inlineMouseBehavior());
             }
-            MutableComponent prompt = new TranslatableComponent("commands.croparia.create.duplicated.prompt", name)
+            MutableComponent rename = new TranslatableComponent("commands.croparia.create.duplicated.rename", name)
                 .withStyle(CommonCommandRoot.suggestCommand(CommonCommandRoot.commandRoot(client), "create", color, rawType, name + "_"))
                 .withStyle(CommonCommandRoot.inlineMouseBehavior());
-            MutableComponent duplication = new TranslatableComponent("commands.croparia.create.duplicated", crop, prompt);
+            MutableComponent replace = new TranslatableComponent("commands.croparia.create.duplicated.replace")
+                .withStyle(CommonCommandRoot.suggestCommand(CommonCommandRoot.commandRoot(client), "create", color, rawType, name, "replace"))
+                .withStyle(CommonCommandRoot.inlineMouseBehavior());
+            MutableComponent duplication = new TranslatableComponent("commands.croparia.create.duplicated", crop, rename, replace);
             failure.send(duplication);
             return -1;
         }

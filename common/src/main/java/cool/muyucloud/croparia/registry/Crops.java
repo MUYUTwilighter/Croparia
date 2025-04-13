@@ -1,11 +1,13 @@
-package cool.muyucloud.croparia.api.crop;
+package cool.muyucloud.croparia.registry;
 
 import com.mojang.brigadier.suggestion.Suggestions;
 import com.mojang.brigadier.suggestion.SuggestionsBuilder;
 import cool.muyucloud.croparia.CropariaIf;
+import cool.muyucloud.croparia.api.crop.Crop;
+import cool.muyucloud.croparia.api.crop.CropFileHandler;
+import cool.muyucloud.croparia.api.crop.CropType;
+import cool.muyucloud.croparia.api.crop.RawCrop;
 import cool.muyucloud.croparia.config.Config;
-import cool.muyucloud.croparia.registry.CropariaBlocks;
-import cool.muyucloud.croparia.registry.CropariaItems;
 import dev.architectury.platform.Platform;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
@@ -58,11 +60,13 @@ public class Crops {
     }
 
     public static boolean recordCustom(Crop crop) {
+        boolean r = true;
         if (CROPS.containsKey(crop.getName())) {
-            return false;
+            CropariaIf.LOGGER.info("Replace existing crop \"{}\"", crop);
+            r = false;
         }
         CROPS.put(crop.getName(), crop);
-        return true;
+        return r;
     }
 
     public static CompletableFuture<Suggestions> suggestCrops(SuggestionsBuilder builder) {
@@ -304,8 +308,6 @@ public class Crops {
                     if (recordCustom(crop)) {
                         CropariaItems.registerCrop(crop);
                         CropariaBlocks.registerCrop(crop);
-                    } else {
-                        CropariaIf.LOGGER.error("Duplicated custom crop \"{}\" from file definition", raw.name);
                     }
                 },
                 () -> CropariaIf.LOGGER.error("Inadequate or invalid arguments for custom crop \"{}\" from file definition", raw.name)

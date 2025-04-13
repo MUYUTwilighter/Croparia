@@ -49,16 +49,16 @@ public class RitualStand extends Block implements ItemPlaceable {
     }
 
     @Override
-    public @NotNull InteractionResult use(BlockState blockState, Level world, BlockPos pos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
-        if (!world.isClientSide()) {
-            ItemStack stack = player.getItemInHand(interactionHand);
+    public @NotNull InteractionResult use(BlockState blockState, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
+        if (!world.isClientSide() && hand == InteractionHand.MAIN_HAND) {
+            ItemStack stack = player.getItemInHand(hand);
             if (stack.getItem() == CropariaItems.RECIPE_WIZARD.get()) {
                 return InteractionResult.PASS;
             }
             this.placeItem(world, pos, stack);
             return InteractionResult.CONSUME;
         }
-        return super.use(blockState, world, pos, player, interactionHand, blockHitResult);
+        return super.use(blockState, world, pos, player, hand, blockHitResult);
     }
 
     public void stepOn(Level world, BlockPos pos, BlockState state, Entity entity) {

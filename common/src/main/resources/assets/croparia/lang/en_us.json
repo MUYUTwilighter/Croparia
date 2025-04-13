@@ -153,8 +153,9 @@
   "commands.croparia.create.no_material": "There's no material in your main hand",
   "commands.croparia.create.invalid_type": "Type %s is invalid",
   "commands.croparia.create.success": "Successfully created crop in %s",
-  "commands.croparia.create.duplicated": "Duplicated crop definition: %s, %s",
-  "commands.croparia.create.duplicated.prompt": "Try another name?",
+  "commands.croparia.create.duplicated": "Duplicated crop definition: %s [%s] [%s]",
+  "commands.croparia.create.duplicated.rename": "Rename",
+  "commands.croparia.create.duplicated.replace": "Replace",
   "chat.croparia.recipe_wizard.ritual": "Saved ritual recipe %s",
   "chat.croparia.recipe_wizard.infusor": "Saved infusor recipe %s"
 }

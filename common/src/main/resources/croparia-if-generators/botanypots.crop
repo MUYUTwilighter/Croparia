@@ -1,5 +1,5 @@
 @enabled=true
-@path=croparia/recipes/crafting/botanypots/crop/{name}.json
+@path=croparia/recipes/botanypots/crop/{name}.json
 @dependency=botanypots
 {
   "type": "botanypots:crop",

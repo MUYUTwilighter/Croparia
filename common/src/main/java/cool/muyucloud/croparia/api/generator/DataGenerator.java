@@ -2,7 +2,7 @@ package cool.muyucloud.croparia.api.generator;
 
 import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.api.crop.Crop;
-import cool.muyucloud.croparia.api.crop.Crops;
+import cool.muyucloud.croparia.registry.Crops;
 import dev.architectury.platform.Platform;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

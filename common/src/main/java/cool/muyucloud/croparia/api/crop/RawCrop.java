@@ -1,5 +1,6 @@
 package cool.muyucloud.croparia.api.crop;
 
+import cool.muyucloud.croparia.registry.Crops;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;

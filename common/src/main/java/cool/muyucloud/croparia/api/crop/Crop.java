@@ -102,6 +102,19 @@ public class Crop {
         }
     }
 
+    public Optional<Crop> forModified(@Nullable String material, @Nullable Integer color, @Nullable Integer tier, @Nullable CropType type, @Nullable Map<String, String> translations, @Nullable String translationKey) {
+        material = material == null ? this.taggableMaterial() : material;
+        color = color == null ? this.getColor() : color;
+        tier = tier == null ? this.getTier() : tier;
+        type = type == null ? this.getType() : type;
+        HashMap<String, String> mergedTranslations = new HashMap<>(this.getTranslations());
+        if (translations != null) {
+            mergedTranslations.putAll(translations);
+        }
+        translationKey = translationKey == null ? this.getTranslationKey() : translationKey;
+        return Crop.create(this.getName(), material, color, tier, type, translationKey, mergedTranslations);
+    }
+
     @NotNull
     protected static String parseName(@NotNull String name) {
         return name.trim().toLowerCase();
@@ -110,18 +123,14 @@ public class Crop {
     @NotNull
     protected static ResourceLocation parseMaterialId(@Nullable String material, @Nullable String tag) {
         AtomicReference<ResourceLocation> id = new AtomicReference<>();
-        BiOptional.of(material, tag).ifEither(
-            l -> {
-                if (l.startsWith("#")) {
-                    l = l.substring(1);
-                }
-                id.set(new ResourceLocation(l));
-            },
-            r -> id.set(new ResourceLocation(r)),
-            () -> {
-                throw new IllegalArgumentException("Ambiguous material, should declare either material or tag");
+        BiOptional.of(material, tag).ifEither(l -> {
+            if (l.startsWith("#")) {
+                l = l.substring(1);
             }
-        );
+            id.set(new ResourceLocation(l));
+        }, r -> id.set(new ResourceLocation(r)), () -> {
+            throw new IllegalArgumentException("Ambiguous material, should declare either material or tag");
+        });
         return id.get();
     }
 
@@ -288,16 +297,7 @@ public class Crop {
 
     @Override
     public String toString() {
-        return "Crop{" +
-            "name='" + name + '\'' +
-            ", material=" + material +
-            ", type=" + type +
-            ", translationKey='" + translationKey + '\'' +
-            ", translations=" + translations +
-            ", color=" + color +
-            ", tier=" + tier +
-            ", tag=" + tag +
-            '}';
+        return "Crop{" + "name='" + name + '\'' + ", material=" + material + ", type=" + type + ", translationKey='" + translationKey + '\'' + ", translations=" + translations + ", color=" + color + ", tier=" + tier + ", tag=" + tag + '}';
     }
 
     private static final Pattern CROPARIA = Pattern.compile("\\{croparia}");

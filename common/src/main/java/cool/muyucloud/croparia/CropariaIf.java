@@ -1,7 +1,7 @@
 package cool.muyucloud.croparia;
 
 import com.mojang.logging.LogUtils;
-import cool.muyucloud.croparia.api.crop.Crops;
+import cool.muyucloud.croparia.registry.Crops;
 import cool.muyucloud.croparia.api.crop.command.CommonCommandRoot;
 import cool.muyucloud.croparia.api.generator.BlockTagGenerator;
 import cool.muyucloud.croparia.api.generator.ItemTagGenerator;

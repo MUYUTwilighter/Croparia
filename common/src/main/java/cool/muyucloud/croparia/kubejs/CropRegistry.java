@@ -3,7 +3,7 @@ package cool.muyucloud.croparia.kubejs;
 import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.api.crop.Crop;
 import cool.muyucloud.croparia.api.crop.CropType;
-import cool.muyucloud.croparia.api.crop.Crops;
+import cool.muyucloud.croparia.registry.Crops;
 import cool.muyucloud.croparia.api.crop.block.CropariaCropBlock;
 import cool.muyucloud.croparia.api.crop.item.CropFruit;
 import cool.muyucloud.croparia.api.crop.item.CropSeed;
@@ -65,8 +65,6 @@ public class CropRegistry {
             RegistrySupplier<CropSeed> seed = itemRegistry.register(crop.getSeedId(), () -> new CropSeed(crop));
             RegistrySupplier<CropFruit> fruit = itemRegistry.register(crop.getFruitId(), () -> new CropFruit(crop));
             CropariaIf.LOGGER.debug("Added crop \"{}\" for CropRegistry \"{}\"", name, this.name);
-        } else {
-            CropariaIf.LOGGER.error("Duplicated custom crop \"{}\" from KubeJS CropRegistry \"{}\"", name, this.name);
         }
     }
 
