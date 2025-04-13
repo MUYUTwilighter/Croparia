@@ -19,8 +19,8 @@ import java.util.Arrays;
 import java.util.Objects;
 
 public class Util {
-    public static boolean anyNull(Object... objects) {
-        return Arrays.stream(objects).anyMatch(Objects::isNull);
+    public static boolean allNull(Object... objects) {
+        return Arrays.stream(objects).allMatch(Objects::isNull);
     }
 
     public static void deleteDir(File dir) throws IOException {
