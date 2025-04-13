@@ -18,16 +18,16 @@ public class CompatCrops {
     public static final Crop ALUMINIUM = Crops.compat("aluminum", "#c:aluminum_ingots", 0xD9DCDC, 3, CropType.CROP, Map.of(
         "techreborn", "item.techreborn.aluminum_ingot",
         "modern_industrialization", "item.modern_industrialization.aluminum_ingot",
-        "gtceu", "item.gtceu.aluminum_ingot"
+        "gtceu", "material.gtceu.aluminum"
     ));
     @Nullable
     public static final Crop AMERICIUM = Crops.compat("americium", "#c:americium_ingots", 0x7F8C8D, 3, CropType.CROP, Map.of(
-        "gtceu", "item.gtceu.americium_ingot"
+        "gtceu", "material.gtceu.americium"
     ));
     @Nullable
     public static final Crop ANTIMONY = Crops.compat("antimony", "#c:antimony_ingots", 0x8A8A8A, 3, CropType.CROP, Map.of(
         "modern_industrialization", "item.modern_industrialization.antimony_ingot",
-        "gtceu", "item.gtceu.antimony_ingot"
+        "gtceu", "material.gtceu.antimony"
     ));
     @Nullable
     public static final Crop AQUARIUM = Crops.compat("aquarium", "#c:aquarium_ingots", 0x4392DC, 3, CropType.CROP, Map.of(
@@ -39,11 +39,11 @@ public class CompatCrops {
     ));
     @Nullable
     public static final Crop BERYLLIUM = Crops.compat("beryllium", "#c:beryllium_ingots", 0xA4C639, 3, CropType.CROP, Map.of(
-        "gtceu", "item.gtceu.beryllium_ingot"
+        "gtceu", "material.gtceu.beryllium"
     ));
     @Nullable
     public static final Crop BISMUTH = Crops.compat("bismuth", "#c:bismuth_ingots", 0xB87333, 3, CropType.CROP, Map.of(
-        "gtceu", "item.gtceu.bismuth_ingot"
+        "gtceu", "material.gtceu.bismuth"
     ));
     @Nullable
     public static final Crop BRONZE = Crops.compat("bronze", "#c:bronze_ingots", 0xC48553, 3, CropType.CROP, Map.of(
@@ -68,15 +68,15 @@ public class CompatCrops {
     public static final Crop CHROMIUM = Crops.compat("chromium", "#c:chromium_ingots", 0xDDCFD2, 3, CropType.CROP, Map.of(
         "techreborn", "item.techreborn.chromium_ingot",
         "modern_industrialization", "item.modern_industrialization.chromium_ingot",
-        "gtceu", "item.gtceu.chromium_ingot"
+        "gtceu", "material.gtceu.chromium"
     ));
     @Nullable
     public static final Crop COBALT = Crops.compat("cobalt", "#c:cobalt_ingots", 0x1E90FF, 3, CropType.CROP, Map.of(
-        "gtceu", "item.gtceu.cobalt_ingot"
+        "gtceu", "material.gtceu.cobalt"
     ));
     @Nullable
     public static final Crop DARMSTADTIUM = Crops.compat("darmstadtium", "#c:darmstadtium_ingots", 0xB67A56, 3, CropType.CROP, Map.of(
-        "gtceu", "item.gtceu.darmstadtium_ingot"
+        "gtceu", "material.gtceu.darmstadtium"
     ));
     @Nullable
     public static final Crop DURASTEEL = Crops.compat("durasteel", "#c:durasteel_ingots", 0x4B4B4B, 3, CropType.CROP, Map.of(
@@ -84,7 +84,7 @@ public class CompatCrops {
     ));
     @Nullable
     public static final Crop EUROPIUM = Crops.compat("europium", "#c:europium_ingots", 0xFFD700, 3, CropType.CROP, Map.of(
-        "gtceu", "item.gtceu.europium_ingot"
+        "gtceu", "material.gtceu.europium"
     ));
     @Nullable
     public static final Crop ELECTRUM = Crops.compat("electrum", "#c:electrum_ingots", 0xCCB36E, 3, CropType.CROP, Map.of(
@@ -98,7 +98,7 @@ public class CompatCrops {
     ));
     @Nullable
     public static final Crop GALLIUM = Crops.compat("gallium", "#c:gallium_ingots", 0xBCD2E8, 3, CropType.CROP, Map.of(
-        "gtceu", "item.gtceu.gallium_ingot"
+        "gtceu", "material.gtceu.gallium"
     ));
     @Nullable
     public static final Crop HALLOWED = Crops.compat("hallowed", "#c:hallowed_ingots", 0xFCF899, 3, CropType.CROP, Map.of(
@@ -106,7 +106,7 @@ public class CompatCrops {
     ));
     @Nullable
     public static final Crop INDIUM = Crops.compat("indium", "#c:indium_ingots", 0x4A7190, 3, CropType.CROP, Map.of(
-        "gtceu", "item.gtceu.indium_ingot"
+        "gtceu", "material.gtceu.indium"
     ));
     @Nullable
     public static final Crop INVAR = Crops.compat("invar", "#c:invar_ingots", 0x86928C, 3, CropType.CROP, Map.of(
@@ -127,16 +127,16 @@ public class CompatCrops {
         "techreborn", "item.techreborn.lead_ingot",
         "indrev", "item.indrev.lead_ingot",
         "modern_industrialization", "item.modern_industrialization.lead_ingot",
-        "gtceu", "item.gtceu.lead_ingot"
+        "gtceu", "material.gtceu.lead"
     ));
     @Nullable
     public static final Crop LITHIUM = Crops.compat("lithium", "#c:lithium_ingots", 0xC0C0C0, 3, CropType.CROP, Map.of(
-        "gtceu", "item.gtceu.lithium_ingot"
+        "gtceu", "material.gtceu.lithium"
     ));
     @Nullable
     public static final Crop MANGANESE = Crops.compat("manganese", "#c:manganese_ingots", 0xEBBED6, 3, CropType.CROP, Map.of(
         "mythicmetals", "item.mythicmetals.manganese_ingot",
-        "gtceu", "item.gtceu.manganese_ingot"
+        "gtceu", "material.gtceu.manganese"
     ));
     @Nullable
     public static final Crop METALLURGIUM = Crops.compat("metallurgium", "#c:metallurgium_ingots", 0x5417B4, 3, CropType.CROP, Map.of(
@@ -148,7 +148,7 @@ public class CompatCrops {
     ));
     @Nullable
     public static final Crop MOLYBDENUM = Crops.compat("molybdenum", "#c:molybdenum_ingots", 0x708090, 3, CropType.CROP, Map.of(
-        "gtceu", "item.gtceu.molybdenum_ingot"
+        "gtceu", "material.gtceu.molybdenum"
     ));
     @Nullable
     public static final Crop MYTHRIL = Crops.compat("mythril", "#c:mythril_ingots", 0x63E7F8, 3, CropType.CROP, Map.of(
@@ -156,21 +156,21 @@ public class CompatCrops {
     ));
     @Nullable
     public static final Crop NAQUADAH = Crops.compat("naquadah", "#c:naquadah_ingots", 0x556B2F, 3, CropType.CROP, Map.of(
-        "gtceu", "item.gtceu.naquadah_ingot"
+        "gtceu", "material.gtceu.naquadah"
     ));
     @Nullable
     public static final Crop NEODYMIUM = Crops.compat("neodymium", "#c:neodymium_ingots", 0x7F7F7F, 3, CropType.CROP, Map.of(
-        "gtceu", "item.gtceu.neodymium_ingot"
+        "gtceu", "material.gtceu.neodymium"
     ));
     @Nullable
     public static final Crop NICKEL = Crops.compat("nickel", "#c:nickel_ingots", 0xAEAC8C, 3, CropType.CROP, Map.of(
         "techreborn", "item.techreborn.nickel_ingot",
         "modern_industrialization", "item.modern_industrialization.nickel_ingot",
-        "gtceu", "item.gtceu.nickel_ingot"
+        "gtceu", "material.gtceu.nickel"
     ));
     @Nullable
     public static final Crop NIOBIUM = Crops.compat("niobium", "#c:niobium_ingots", 0x8E44AD, 3, CropType.CROP, Map.of(
-        "gtceu", "item.gtceu.niobium_ingot"
+        "gtceu", "material.gtceu.niobium"
     ));
     @Nullable
     public static final Crop ORICHALCUM = Crops.compat("orichalcum", "#c:orichalcum_ingots", 0x9EF1A5, 3, CropType.CROP, Map.of(
@@ -183,13 +183,13 @@ public class CompatCrops {
     @Nullable
     public static final Crop PALLADIUM = Crops.compat("palladium", "#c:palladium_ingots", 0xED9926, 3, CropType.CROP, Map.of(
         "mythicmetals", "item.mythicmetals.palladium_ingot",
-        "gtceu", "item.gtceu.palladium_ingot"
+        "gtceu", "material.gtceu.palladium"
     ));
     @Nullable
     public static final Crop PLATINUM = Crops.compat("platinum", "#c:platinum_ingots", 0xAABBC7, 3, CropType.CROP, Map.of(
         "techreborn", "item.techreborn.platinum_ingot",
         "mythicmetals", "item.mythicmetals.platinum_ingot",
-        "gtceu", "item.gtceu.platinum_ingot"
+        "gtceu", "material.gtceu.platinum"
     ));
     @Nullable
     public static final Crop PERIDOT = Crops.compat("peridot", "#c:peridot_gems", 0xAAD26F, 3, CropType.CROP, Map.of(
@@ -197,7 +197,7 @@ public class CompatCrops {
     ));
     @Nullable
     public static final Crop PLUTONIUM = Crops.compat("plutonium", "#c:plutonium_ingots", 0x4CFF00, 3, CropType.CROP, Map.of(
-        "gtceu", "item.gtceu.plutonium_ingot"
+        "gtceu", "material.gtceu.plutonium"
     ));
     @Nullable
     public static final Crop PROMETHEUM = Crops.compat("prometheum", "#c:prometheum_ingots", 0x396955, 3, CropType.CROP, Map.of(
@@ -217,11 +217,11 @@ public class CompatCrops {
     ));
     @Nullable
     public static final Crop RUTHENIUM = Crops.compat("ruthenium", "#c:ruthenium_ingots", 0x838B8B, 3, CropType.CROP, Map.of(
-        "gtceu", "item.gtceu.ruthenium_ingot"
+        "gtceu", "material.gtceu.ruthenium"
     ));
     @Nullable
     public static final Crop RHODIUM = Crops.compat("rhodium", "#c:rhodium_ingots", 0xB5BFC6, 3, CropType.CROP, Map.of(
-        "gtceu", "item.gtceu.rhodium_ingot"
+        "gtceu", "material.gtceu.rhodium"
     ));
     @Nullable
     public static final Crop RUNITE = Crops.compat("runite", "#c:runite_ingots", 0x00AECE, 3, CropType.CROP, Map.of(
@@ -229,7 +229,7 @@ public class CompatCrops {
     ));
     @Nullable
     public static final Crop SAMARIUM = Crops.compat("samarium", "#c:samarium_ingots", 0xFF4500, 3, CropType.CROP, Map.of(
-        "gtceu", "item.gtceu.samarium_ingot"
+        "gtceu", "material.gtceu.samarium"
     ));
     @Nullable
     public static final Crop SAPPHIRE = Crops.compat("sapphire", "#c:sapphires", 0x6D9BEC, 3, CropType.CROP, Map.of(
@@ -245,7 +245,7 @@ public class CompatCrops {
         "indrev", "item.indrev.silver_ingot",
         "modern_industrialization", "item.modern_industrialization.silver_ingot",
         "mythicmetals", "item.mythicmetals.silver_ingot",
-        "gtceu", "item.gtceu.silver_ingot"
+        "gtceu", "material.gtceu.silver"
     ));
     @Nullable
     public static final Crop STAR_PLATINUM = Crops.compat("star_platinum", "#c:star_platinum", 0xA199D3, 3, CropType.CROP, Map.of(
@@ -262,11 +262,11 @@ public class CompatCrops {
         "modern_industrialization", "item.modern_industrialization.steel_ingot",
         "mythicmetals", "item.mythicmetals.steel_ingot",
         "ad_astra", "item.ad_astra.ingot_steel",
-        "gtceu", "item.gtceu.steel_ingot"
+        "gtceu", "material.gtceu.steel"
     ));
     @Nullable
     public static final Crop TANTALUM = Crops.compat("tantalum", "#c:tantalum_ingots", 0xA9A9A9, 3, CropType.CROP, Map.of(
-        "gtceu", "item.gtceu.tantalum_ingot"
+        "gtceu", "material.gtceu.tantalum"
     ));
     @Nullable
     public static final Crop TIN = Crops.compat("tin", "#c:tin_ingots", 0xE3E3E0, 3, CropType.CROP, Map.of(
@@ -274,28 +274,28 @@ public class CompatCrops {
         "indrev", "item.indrev.tin_ingot",
         "modern_industrialization", "item.modern_industrialization.tin_ingot",
         "mythicmetals", "item.mythicmetals.tin_ingot",
-        "gtceu", "item.gtceu.tin_ingot"
+        "gtceu", "material.gtceu.tin"
     ));
     @Nullable
     public static final Crop TITANIUM = Crops.compat("titanium", "#c:titanium_ingots", 0xDDDDE3, 3, CropType.CROP, Map.of(
         "techreborn", "item.techreborn.titanium_ingot",
         "modern_industrialization", "item.modern_industrialization.titanium_ingot",
-        "gtceu", "item.gtceu.titanium_ingot"
+        "gtceu", "material.gtceu.titanium"
     ));
     @Nullable
     public static final Crop THORIUM = Crops.compat("thorium", "#c:thorium_ingots", 0x00CED1, 3, CropType.CROP, Map.of(
-        "gtceu", "item.gtceu.thorium_ingot"
+        "gtceu", "material.gtceu.thorium"
     ));
     @Nullable
     public static final Crop TRINIUM = Crops.compat("trinium", "#c:trinium_ingots", 0x4682B4, 3, CropType.CROP, Map.of(
-        "gtceu", "item.gtceu.trinium_ingot"
+        "gtceu", "material.gtceu.trinium"
     ));
     @Nullable
     public static final Crop TUNGSTEN = Crops.compat("tungsten", "#c:tungsten_ingots", 0x797D80, 3, CropType.CROP, Map.of(
         "techreborn", "item.techreborn.tungsten_ingot",
         "indrev", "item.indrev.tungsten_ingot",
         "modern_industrialization", "item.modern_industrialization.tungsten_ingot",
-        "gtceu", "item.gtceu.tungsten_ingot"
+        "gtceu", "material.gtceu.tungsten"
     ));
     @Nullable
     public static final Crop URANIUM = Crops.compat("uranium", "#c:uranium_ingots", 0x32CE00, 3, CropType.CROP, Map.of(
@@ -303,7 +303,7 @@ public class CompatCrops {
     ));
     @Nullable
     public static final Crop VANADIUM = Crops.compat("vanadium", "#c:vanadium_ingots", 0x228B22, 3, CropType.CROP, Map.of(
-        "gtceu", "item.gtceu.vanadium_ingot"
+        "gtceu", "material.gtceu.vanadium"
     ));
     @Nullable
     public static final Crop YELLOW_GARNET = Crops.compat("yellow_garnet", "#c:yellow_garnet_gems", 0xEACB5F, 3, CropType.CROP, Map.of(
@@ -311,7 +311,7 @@ public class CompatCrops {
     ));
     @Nullable
     public static final Crop YTTRIUM = Crops.compat("yttrium", "#c:yttrium_ingots", 0xFF6347, 3, CropType.CROP, Map.of(
-        "gtceu", "item.gtceu.yttrium_ingot"
+        "gtceu", "material.gtceu.yttrium"
     ));
     @Nullable
     public static final Crop ZINC = Crops.compat("zinc", "#c:zinc_ingots", 0xEDEEEC, 3, CropType.CROP, Map.of(
