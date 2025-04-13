@@ -16,6 +16,8 @@ Some interesting relics can be summoned by rituals with higher tiers, *which is 
 
 ![Tier 2 Ritual Structure](https://cdn.modrinth.com/data/d2EWn1lE/images/db282093425a237789f3b530fd4647ba65c8591a.png)
 
+There are even more features for mod-pack developers, see [wiki](https://github.com/MUYUTwilighter/Croparia/wiki/Datapack-customizations).
+
 ## What's the relationship from Dalarion's Croparia?
 
 Originally, This is a forked project from
@@ -30,14 +32,10 @@ but was completely rewritten since beta 0.0.1, 2024-12, by [MUYU_Twilighter](htt
 
 Including:
 
-- Completely rewritten recipes and mission stream
-- Auto generate data files for crops, which is more customizable
-- Add fruit-to-material recipes on crafting table
-- Default resources (textures, models, etc.) for crops
-- Add more powerful custom crop format
+- [Completely rewritten recipes and mission line](https://github.com/MUYUTwilighter/Croparia/wiki/Basic-Guide-to-Croparia-IF)
+- [More convenient crop customization](https://github.com/MUYUTwilighter/Croparia/wiki/Add-Crops)
+- [More open interfaces & tools for mod-pack developers](https://github.com/MUYUTwilighter/Croparia/wiki/Datapack-customizations)
 - Support REI and EMI
-- Add compat recipes for other mods (Modern Industrialization, Botany Pots, etc.)
-- Restore some of the removed features
-- Fix some bugs
+- Some bug fixes
 
 For more information, see [wiki](https://github.com/MUYUTwilighter/Croparia/wiki).
