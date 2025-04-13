@@ -46,15 +46,15 @@ public class RitualStand extends Block implements ItemPlaceable {
     }
 
     @Override
-    protected @NotNull ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level world, BlockPos pos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
-        if (!world.isClientSide) {
+    protected @NotNull ItemInteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult blockHitResult) {
+        if (!world.isClientSide && hand == InteractionHand.MAIN_HAND) {
             if (itemStack.getItem() == CropariaItems.RECIPE_WIZARD.get()) {
                 return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
             }
             Util.placeItem(world, pos, itemStack);
             return ItemInteractionResult.CONSUME;
         }
-        return super.useItemOn(itemStack, blockState, world, pos, player, interactionHand, blockHitResult);
+        return super.useItemOn(itemStack, blockState, world, pos, player, hand, blockHitResult);
     }
 
     @Override

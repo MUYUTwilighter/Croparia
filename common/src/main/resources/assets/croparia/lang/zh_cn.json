@@ -168,8 +168,9 @@
   "commands.croparia.create.no_material": "主手未持有材料",
   "commands.croparia.create.invalid_type": "%s 是无效的类别",
   "commands.croparia.create.success": "成功创建作物至 %s，重启游戏以生效",
-  "commands.croparia.create.duplicated": "已存在作物: %s，%s",
-  "commands.croparia.create.duplicated.prompt": "重命名？",
+  "commands.croparia.create.duplicated": "已存在作物: %s [%s] [%s]",
+  "commands.croparia.create.duplicated.rename": "重命名",
+  "commands.croparia.create.duplicated.replace": "覆盖",
   "chat.croparia.recipe_wizard.ritual": "已保存元素仪式配方 %s",
   "chat.croparia.recipe_wizard.infusor": "已保存注魔台配方 %s"
 }

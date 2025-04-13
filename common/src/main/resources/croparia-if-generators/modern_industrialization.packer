@@ -1,5 +1,5 @@
 @enabled=true
-@path=croparia/recipe/crafting/modern_industrialization/packer/{name}.json
+@path=croparia/recipe/modern_industrialization/packer/{name}.json
 @dependency=modern_industrialization
 {
   "type": "modern_industrialization:packer",

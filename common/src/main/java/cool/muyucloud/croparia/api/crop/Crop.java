@@ -46,8 +46,8 @@ public class Crop {
     private transient final ResourceLocation fruitId;
 
     private Crop(@NotNull RawCrop raw) throws RuntimeException {
-        if (Util.anyNull(raw.name(), raw.material())) {
-            throw new IllegalArgumentException("Crop name and material ID cannot be null");
+        if (raw.name() == null || Util.allNull(raw.material(), raw.tag())) {
+            throw new IllegalArgumentException("Crop name and material must be specified");
         }
         this.name = parseName(raw.name());
         this.material = parseMaterialId(raw.material(), raw.tag());
@@ -111,6 +111,19 @@ public class Crop {
             CropariaIf.LOGGER.error("Failed to create crop %s".formatted(name), e);
             return Optional.empty();
         }
+    }
+
+    public Optional<Crop> forModified(@Nullable String material, @Nullable Integer color, @Nullable Integer tier, @Nullable CropType type, @Nullable Map<String, String> translations, @Nullable String translationKey) {
+        material = material == null ? this.taggableMaterial() : material;
+        color = color == null ? this.getColor() : color;
+        tier = tier == null ? this.getTier() : tier;
+        type = type == null ? this.getType() : type;
+        HashMap<String, String> mergedTranslations = new HashMap<>(this.getTranslations());
+        if (translations != null) {
+            mergedTranslations.putAll(translations);
+        }
+        translationKey = translationKey == null ? this.getTranslationKey() : translationKey;
+        return Crop.create(this.getName(), material, color, tier, type, translationKey, mergedTranslations);
     }
 
     @NotNull
@@ -209,7 +222,7 @@ public class Crop {
     }
 
     public String serializeColor() {
-        String hex = Integer.toHexString(this.color);
+        String hex = Integer.toHexString(this.color).toUpperCase();
         hex = "0".repeat(6 - hex.length()) + hex;
         return "0x" + hex;
     }

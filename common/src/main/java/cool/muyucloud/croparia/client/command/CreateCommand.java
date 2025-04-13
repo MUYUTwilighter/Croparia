@@ -18,8 +18,9 @@ public class CreateCommand {
         "color", StringArgumentType.word()
     );
     private static final RequiredArgumentBuilder<ClientCommandRegistrationEvent.ClientCommandSourceStack, String> NAME = RequiredArgumentBuilder.argument(
-        "name", StringArgumentType.greedyString()
+        "name", StringArgumentType.word()
     );
+    private static final LiteralArgumentBuilder<ClientCommandRegistrationEvent.ClientCommandSourceStack> REPLACE = LiteralArgumentBuilder.literal("replace");
 
     static {
         CREATE.requires(s -> s.hasPermission(2));
@@ -32,7 +33,7 @@ public class CreateCommand {
                     StringArgumentType.getString(context, "color"),
                     (msg, broadcast) -> context.getSource().arch$sendSuccess(msg, broadcast),
                     context.getSource()::arch$sendFailure,
-                    true
+                    true, false
                 );
             } else {
                 context.getSource().arch$sendFailure(Component.translatable("commands.croparia.crop.not_player"));
@@ -51,7 +52,7 @@ public class CreateCommand {
             StringArgumentType.getString(context, "color"),
             (msg, broadcast) -> context.getSource().arch$sendSuccess(msg, broadcast),
             context.getSource()::arch$sendFailure,
-            true
+            true, false
         ));
         NAME.executes(context -> create(
             context.getSource().arch$getPlayer(),
@@ -60,8 +61,18 @@ public class CreateCommand {
             StringArgumentType.getString(context, "color"),
             (msg, broadcast) -> context.getSource().arch$sendSuccess(msg, broadcast),
             context.getSource()::arch$sendFailure,
-            true
+            true, false
         ));
+        REPLACE.executes(context -> create(
+            context.getSource().arch$getPlayer(),
+            StringArgumentType.getString(context, "name"),
+            StringArgumentType.getString(context, "type"),
+            StringArgumentType.getString(context, "color"),
+            (msg, broadcast) -> context.getSource().arch$sendSuccess(msg, broadcast),
+            context.getSource()::arch$sendFailure,
+            true, true
+        ));
+        NAME.then(REPLACE);
         TYPE.then(NAME);
         COLOR.then(TYPE);
         CREATE.then(COLOR);

@@ -60,11 +60,11 @@ public class Infusor extends Block implements ItemPlaceable {
                 }
                 return ItemInteractionResult.SUCCESS;
             } else if (
-                player.getItemInHand(hand).getItem() == ElementalPotion.fromElement(state.getValue(TYPE)).orElseThrow().getCraftingRemainingItem()
+                ElementalPotion.fromElement(state.getValue(TYPE)).map(potion -> potion.getCraftingRemainingItem() == item).orElse(false)
                     && this.tryDefuse(world, pos, itemStack, player)
             ) {
                 return ItemInteractionResult.SUCCESS;
-            } else if (!(item instanceof RecipeWizard)) {
+            } else if (!(item instanceof RecipeWizard) && hand == InteractionHand.MAIN_HAND) {
                 Util.placeItem(world, pos, itemStack);
                 return ItemInteractionResult.CONSUME;
             }

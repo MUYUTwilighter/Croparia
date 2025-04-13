@@ -20,3 +20,4 @@ classes/
 */venv/
 /changelog.md
 /.architectury-transformer/
+/flatDir/

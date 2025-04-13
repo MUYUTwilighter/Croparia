@@ -75,12 +75,14 @@ public class Crops {
      *
      * @return {@code true} if the crop is recorded, {@code false} if it already exists
      */
-    public static boolean recordCustom(@NotNull Crop crop) {
+    public static boolean recordCustom(Crop crop) {
+        boolean r = true;
         if (CROPS.containsKey(crop.getName())) {
-            return false;
+            CropariaIf.LOGGER.info("Replace existing crop \"{}\"", crop);
+            r = false;
         }
         CROPS.put(crop.getName(), crop);
-        return true;
+        return r;
     }
 
     /**
@@ -306,8 +308,6 @@ public class Crops {
                     if (recordCustom(crop)) {
                         CropariaItems.registerCrop(crop);
                         CropariaBlocks.registerCrop(crop);
-                    } else {
-                        CropariaIf.LOGGER.error("Duplicated custom crop \"{}\" from file definition", raw.name());
                     }
                 },
                 () -> CropariaIf.LOGGER.error("Inadequate or invalid arguments for custom crop \"{}\" from file definition", raw.name())
