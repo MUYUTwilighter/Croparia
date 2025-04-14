@@ -46,9 +46,9 @@ body:
           - **Minecraft & ModLoader**: 1.20.1 Fabric
           - **Modlist or Instance Source**: Croparia IF 0.2.7, Architectury API 14.0.4
       value: |
-        - **OS**: Windows 10
-        - **Minecraft & ModLoader**: 1.20.1 Fabric
-        - **Modlist or Instance Source**: Croparia IF 0.2.7, Architectury API 14.0.4
+        - **OS**:
+        - **Minecraft & ModLoader**:
+        - **Modlist or Instance Source**:
       render: markdown
     validations:
       required: true
@@ -56,13 +56,13 @@ body:
     attributes:
       label: Logs & Reports
       description: |
-        You may submit logs or crash reports on [HasteBin](https://hastebin.com/) or [Pastebin](https://pastebin.com/).
+        You may submit logs or crash reports on [HasteBin](https://hastebin.com/) or [Pastebin](https://pastebin.com/). |
         examples: 
-          - **Log**: https://hastebin.com/log.txt
-          - **Crash Report**: https://hastebin.com/log.txt
+          - Log: https://hastebin.com/log.txt
+          - Crash Report: https://hastebin.com/log.txt
       value: |
-        - **Log**: [log.txt](https://example.com/log.txt)
-        - **Crash Report**: [crash.txt](https://example.com/crash.txt)
+        - Log: [log.txt](https://example.com/log.txt)
+        - Crash Report: [crash.txt](https://example.com/crash.txt)
     validations:
       required: true
   - type: textarea
