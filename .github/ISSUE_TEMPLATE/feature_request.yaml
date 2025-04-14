@@ -1,0 +1,35 @@
+name: 🚀 Feature request
+description: Tell us what you think that may improve the mod
+title: "[Suggest] "
+labels: ["Suggest"]
+body:
+  - type: checkboxes
+    attributes:
+      label: I have checked following things before submitting
+      description: Please make sure you have checked all of the following.
+      options:
+        - label: I have searched and found no existing issues
+          required: true
+        - label: The issue happens in LTS or latest STS
+          required: true
+  - type: textarea
+    attributes:
+      label: Encountered issue
+      description: Tell us why you want a feature
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Your idea
+      description: Provide possible solutions
+    validations:
+      required: false
+  - type: textarea
+    attributes:
+      label: Other
+      description: |
+        Links? References? Anything that will give us more context about the issue you are encountering!
+        
+        Tip: You can attach files by clicking this area to highlight it and then dragging files in.
+    validations:
+      required: false
