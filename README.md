@@ -35,6 +35,8 @@ Long term support means they are continuously updated and maintained, no matter 
 Short term support means that they are only maintained when they are latest **supported** version of minecraft, and would 
 no longer receive further updates when Croparia IF is ported to even newer versions of Minecraft.
 
+- 1.21 *You may try Croparia IF for 1.21.1*
+- 1.21.2 *Only Dalarion-styled*
 - 1.21.3
 
 ## What's the relationship from Dalarion's Croparia?
