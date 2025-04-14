@@ -1,14 +1,18 @@
 name: 🐞 Bug
 description: File a bug/issue
-title: "[BUG] <title>"
-labels: ["Bug", "Needs Triage"]
+title: "[BUG] "
+labels: ["Bug"]
 body:
   - type: checkboxes
     attributes:
-      label: Is there an existing issue for this?
-      description: Please search to see if an issue already exists for the bug you encountered.
+      label: I have checked following things before submitting
+      description: Please make sure you have checked all of the following.
       options:
-        - label: I have searched the existing issues
+        - label: I have searched and found no existing issues
+          required: true
+        - label: The issue happens in LTS or latest STS
+          required: true
+        - label: Separated test for related mods only are done
           required: true
   - type: textarea
     attributes:
@@ -38,16 +42,29 @@ body:
       label: Environment
       description: |
         examples:
-          - **OS**: Ubuntu 20.04
-          - **Node**: 13.14.0
-          - **npm**: 7.6.3
+          - **OS**: Windows 10
+          - **Minecraft & ModLoader**: 1.20.1 Fabric
+          - **Modlist or Instance Source**: Croparia IF 0.2.7, Architectury API 14.0.4
       value: |
-        - OS:
-        - Node:
-        - npm:
+        - **OS**: Windows 10
+        - **Minecraft & ModLoader**: 1.20.1 Fabric
+        - **Modlist or Instance Source**: Croparia IF 0.2.7, Architectury API 14.0.4
       render: markdown
     validations:
-      required: false
+      required: true
+  - type: textarea
+    attributes:
+      label: Logs & Reports
+      description: |
+        You may submit logs or crash reports on [HasteBin](https://hastebin.com/) or [Pastebin](https://pastebin.com/).
+        examples: 
+          - **Log**: https://hastebin.com/log.txt
+          - **Crash Report**: https://hastebin.com/log.txt
+      value: |
+        - **Log**: [log.txt](https://example.com/log.txt)
+        - **Crash Report**: [crash.txt](https://example.com/crash.txt)
+    validations:
+      required: true
   - type: textarea
     attributes:
       label: Anything else?
