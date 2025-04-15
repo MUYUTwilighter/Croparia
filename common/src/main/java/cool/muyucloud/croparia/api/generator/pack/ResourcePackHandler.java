@@ -18,17 +18,10 @@ public class ResourcePackHandler extends PackHandler {
     private final FolderPackResources resourcePack = new FolderPackResources(this.root.toFile());
 
     @Override
-    public void onInitial() {
-        super.onInitial();
-        if (CropariaIf.CONFIG.getOverride()) {
-            this.clear();
-        }
+    public void beforeReload() {
+        super.beforeReload();
         CropariaIf.LOGGER.info("Generating resource pack data to file system");
         this.dump();
-    }
-
-    @Override
-    public void onSecondary() {
     }
 
     public ResourcePackHandler(Path path) {

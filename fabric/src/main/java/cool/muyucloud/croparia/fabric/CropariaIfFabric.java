@@ -14,6 +14,7 @@ public class CropariaIfFabric implements ModInitializer {
         CompatCrops.init();
         CropariaIf.init();
         ServerLifecycleEvents.SERVER_STARTING.register(server -> CropariaIf.onServerStarting());
+        ServerLifecycleEvents.SERVER_STARTED.register(CropariaIf::onServerStarted);
         ServerLifecycleEvents.SERVER_STOPPING.register(server -> CropariaIf.onServerStopping());
         BiomeModifications.addFeature(context -> context.canGenerateIn(LevelStem.OVERWORLD), GenerationStep.Decoration.UNDERGROUND_ORES, PlacedFeatures.ELEMATILIUS_ORE.unwrapKey().orElseThrow());
     }

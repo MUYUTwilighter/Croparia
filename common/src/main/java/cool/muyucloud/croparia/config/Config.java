@@ -41,6 +41,8 @@ public class Config {
     @NotNull
     private Path dumpPath;
     @NotNull
+    private Boolean autoReload;
+    @NotNull
     private Boolean override;
     @NotNull
     private Boolean fruitUse;
@@ -58,6 +60,7 @@ public class Config {
         this.cropPath = Platform.getGameFolder().resolve("crops");
         this.packPath = Platform.getGameFolder().resolve("config/croparia");
         this.dumpPath = Platform.getGameFolder().resolve("croparia");
+        this.autoReload = true;
         this.override = true;
         this.fruitUse = true;
         this.infusor = true;
@@ -72,6 +75,7 @@ public class Config {
         this.cropPath = parsePath(raw.cropPath).orElse(Platform.getGameFolder().resolve("crops"));
         this.packPath = parsePath(raw.packPath).orElse(Platform.getGameFolder().resolve("config/croparia"));
         this.dumpPath = Platform.getGameFolder().resolve("croparia");
+        this.autoReload = raw.autoReload != null ? raw.autoReload : true;
         this.override = raw.override != null ? raw.override : true;
         this.fruitUse = raw.fruitUse != null ? raw.fruitUse : true;
         this.infusor = raw.infusor != null ? raw.infusor : true;
@@ -80,7 +84,7 @@ public class Config {
     }
 
     public RawConfig toRaw() {
-        return new RawConfig(resolvePath(cropPath), resolvePath(packPath), resolvePath(dumpPath), override, fruitUse, infusor, ritual, blacklist);
+        return new RawConfig(resolvePath(cropPath), resolvePath(packPath), resolvePath(dumpPath), autoReload, override, fruitUse, infusor, ritual, blacklist);
     }
 
     public @NotNull Path getCropPath() {
@@ -105,6 +109,14 @@ public class Config {
 
     public void setDumpPath(@NotNull Path dumpPath) {
         this.dumpPath = dumpPath;
+    }
+
+    public @NotNull Boolean getAutoReload() {
+        return autoReload;
+    }
+
+    public void setAutoReload(@NotNull Boolean autoReload) {
+        this.autoReload = autoReload;
     }
 
     public @NotNull Boolean getOverride() {

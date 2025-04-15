@@ -46,4 +46,8 @@ public class RawCrop {
         this.translations = translations;
         this.dependencies = dependencies;
     }
+
+    public boolean isTranslationSpecified() {
+        return this.translations != null && !this.translations.isEmpty();
+    }
 }

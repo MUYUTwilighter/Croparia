@@ -15,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 public abstract class PackRepositoryMixin {
     @ModifyVariable(method = "<init>(Lnet/minecraft/server/packs/repository/Pack$PackConstructor;[Lnet/minecraft/server/packs/repository/RepositorySource;)V", at = @At("HEAD"), argsOnly = true)
     private static RepositorySource[] insertProviders(RepositorySource... providers) {
+        DataPackHandler.INSTANCE.beforeReload();
         RepositorySource[] newProviders = new RepositorySource[providers.length + 1];
         RepositorySource provider = DataPackHandler.INSTANCE.getDatapack();
         newProviders[0] = provider;

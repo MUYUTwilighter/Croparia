@@ -8,10 +8,8 @@
   "mixins": [
     "BlockMixin",
     "CropBlockMixin",
-    "MinecraftServerMixin",
     "PackRepositoryMixin",
     "ReloadableResourceManagerImplMixin",
-    "ReloadCommandMixin",
     "StateHolderMixin"
   ],
   "injectors": {

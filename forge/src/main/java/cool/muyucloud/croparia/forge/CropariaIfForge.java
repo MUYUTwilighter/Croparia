@@ -6,6 +6,7 @@ import cool.muyucloud.croparia.registry.PlacedFeatures;
 import dev.architectury.platform.forge.EventBuses;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
@@ -34,6 +35,11 @@ public class CropariaIfForge {
     @SubscribeEvent
     public static void onServerStarting(ServerStartingEvent event) {
         CropariaIf.onServerStarting();
+    }
+
+    @SubscribeEvent
+    public static void onServerStarted(ServerStartedEvent event) {
+        CropariaIf.onServerStarted(event.getServer());
     }
 
     @SubscribeEvent
