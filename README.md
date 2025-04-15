@@ -37,7 +37,7 @@ no longer receive further updates when Croparia IF is ported to even newer versi
 
 - 1.21 *You may try Croparia IF for 1.21.1*
 - 1.21.2 *Only Dalarion-styled*
-- 1.21.3
+- 1.21.3 *Latest supported version*
 
 ## What's the relationship from Dalarion's Croparia?
 
