@@ -10,6 +10,7 @@
     "CropBlockMixin",
     "PackRepositoryMixin",
     "ReloadableResourceManagerImplMixin",
+    "ReloadCommandMixin",
     "StateHolderMixin"
   ],
   "injectors": {
