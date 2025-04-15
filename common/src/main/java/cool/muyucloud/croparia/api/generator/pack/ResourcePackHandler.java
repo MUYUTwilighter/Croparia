@@ -29,17 +29,13 @@ public class ResourcePackHandler extends PackHandler {
     );
 
     @Override
-    public void onInitial() {
-        super.onInitial();
+    public void beforeReload() {
+        super.beforeReload();
         if (CropariaIf.CONFIG.getOverride()) {
             this.clear();
         }
         CropariaIf.LOGGER.info("Generating resource pack data to file system");
         this.dump();
-    }
-
-    @Override
-    public void onSecondary() {
     }
 
     @Override

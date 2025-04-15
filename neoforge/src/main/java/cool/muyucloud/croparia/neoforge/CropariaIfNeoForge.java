@@ -21,6 +21,11 @@ public class CropariaIfNeoForge {
     }
 
     @SubscribeEvent
+    public static void onServerStarted(ServerStartingEvent event) {
+        CropariaIf.onServerStarted(event.getServer());
+    }
+
+    @SubscribeEvent
     public static void onServerStopping(ServerStoppingEvent event) {
         CropariaIf.onServerStopping();
     }

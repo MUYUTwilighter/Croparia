@@ -15,8 +15,7 @@ import java.util.Collection;
 public class ReloadCommandMixin {
     @Inject(method = "reloadPacks", at = @At("HEAD"))
     private static void onReload(Collection<String> collection, CommandSourceStack commandSourceStack, CallbackInfo ci) {
-        DataPackHandler.INSTANCE.onInitial();
-        DataPackHandler.INSTANCE.onSecondary();
+        DataPackHandler.INSTANCE.beforeReload();
         CropariaIf.LOGGER.info("Data pack generation performed");
     }
 }
