@@ -21,16 +21,17 @@ public abstract class PackHandler {
     protected final Map<Path, JsonElement> cache = new HashMap<>();
     protected final Set<Runnable> GENERATORS = new HashSet<>();
 
-    public void onInitial() {
+    public void beforeReload() {
         try {
             File file = this.root.resolve("pack.mcmeta").toFile();
             this.writeJson(this.generateMetaFile(), file);
         } catch (Exception e) {
             throw new AssertionError("Failed to generate pack.mcmeta", e);
         }
+        if (CropariaIf.CONFIG.getOverride()) {
+            this.clear();
+        }
     }
-
-    public abstract void onSecondary();
 
     public abstract void clear();
 

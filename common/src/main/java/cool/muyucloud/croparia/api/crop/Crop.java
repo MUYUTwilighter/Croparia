@@ -52,12 +52,11 @@ public class Crop {
         this.name = parseName(raw.name());
         this.material = parseMaterialId(raw.material(), raw.tag());
         this.type = parseType(raw.type());
-        if (raw.translationKey() != null) {
-            this.translations = Map.of();
-            this.translationKey = raw.translationKey();
-        } else {
-            this.translationKey = "crop.croparia." + this.name;
+        this.translationKey = raw.translationKey() == null ? "crop.croparia." + this.name : raw.translationKey();
+        if (raw.translationKey() == null || raw.isTranslationSpecified()) {
             this.translations = parseTranslation(raw.translations(), parseDefaultTranslation(this.name));
+        } else {
+            this.translations = Collections.emptyMap();
         }
         this.color = raw.color().startsWith("0x") ? Integer.parseInt(raw.color().substring(2), 16) : Integer.parseInt(raw.color());
         this.tier = parseTier(raw.tier());
@@ -73,12 +72,11 @@ public class Crop {
         this.color = color;
         this.tier = parseTier(tier);
         this.type = type == null ? CropType.CROP : type;
-        if (translationKey != null) {
-            this.translations = Map.of();
-            this.translationKey = translationKey;
-        } else {
-            this.translationKey = "crop.croparia." + this.name;
+        this.translationKey = translationKey == null ? "crop.croparia." + this.name : translationKey;
+        if (translationKey == null || (translations != null && !translations.isEmpty())) {
             this.translations = parseTranslation(translations, parseDefaultTranslation(this.name));
+        } else {
+            this.translations = Collections.emptyMap();
         }
         this.tag = material.trim().startsWith("#");
         this.blockId = CropariaIf.of("block_crop_" + this.name);

@@ -35,19 +35,10 @@ public class DataPackHandler extends PackHandler {
     private final List<DataGenerator> generators = new LinkedList<>();
 
     @Override
-    public void onInitial() {
-        super.onInitial();
-        if (CropariaIf.CONFIG.getOverride()) {
-            this.clear();
-        }
-    }
-
-    @Override
-    public void onSecondary() {
+    public void beforeReload() {
+        super.beforeReload();
         this.moveBuiltInGenerators();
         this.readGenerators();
-        super.onInitial();
-        CropariaIf.LOGGER.info("Performing extra data pack reload");
         this.dump();
     }
 

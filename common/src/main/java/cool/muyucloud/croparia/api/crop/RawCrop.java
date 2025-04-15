@@ -25,6 +25,8 @@ import java.util.Map;
  */
 @Nullable
 public record RawCrop(String name, String material, String tag, String type, String translationKey, String color,
-                      int tier,
-                      Map<String, String> translations, List<List<String>> dependencies) {
+                      int tier, Map<String, String> translations, List<List<String>> dependencies) {
+    public boolean isTranslationSpecified() {
+        return translations != null && !translations.isEmpty();
+    }
 }

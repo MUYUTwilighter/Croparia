@@ -1,5 +1,6 @@
 package cool.muyucloud.croparia.mixin;
 
+import cool.muyucloud.croparia.api.generator.pack.DataPackHandler;
 import cool.muyucloud.croparia.api.generator.pack.ResourcePackHandler;
 import net.minecraft.server.packs.PackResources;
 import net.minecraft.server.packs.resources.ReloadableResourceManager;
@@ -19,8 +20,8 @@ import java.util.List;
 public abstract class ReloadableResourceManagerImplMixin implements ResourceManager, AutoCloseable {
     @ModifyVariable(method = "createReload", at = @At("HEAD"), argsOnly = true)
     public List<PackResources> onReload(List<PackResources> packs) {
+        DataPackHandler.INSTANCE.beforeReload();
         List<PackResources> newPacks = new LinkedList<>();
-        ResourcePackHandler.INSTANCE.onInitial();
         newPacks.add(ResourcePackHandler.INSTANCE.getResourcePack());
         newPacks.addAll(packs);
         packs = newPacks;
