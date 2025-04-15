@@ -2,8 +2,8 @@ package cool.muyucloud.croparia.client.generator;
 
 import com.google.gson.JsonObject;
 import cool.muyucloud.croparia.api.crop.Crop;
-import cool.muyucloud.croparia.registry.Crops;
 import cool.muyucloud.croparia.api.generator.pack.ResourcePackHandler;
+import cool.muyucloud.croparia.registry.Crops;
 
 public class BlockStateModelGenerator {
     public static void init() {

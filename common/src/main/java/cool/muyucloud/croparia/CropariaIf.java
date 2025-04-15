@@ -1,7 +1,6 @@
 package cool.muyucloud.croparia;
 
 import com.mojang.logging.LogUtils;
-import cool.muyucloud.croparia.registry.Crops;
 import cool.muyucloud.croparia.api.crop.command.CommonCommandRoot;
 import cool.muyucloud.croparia.api.generator.BlockTagGenerator;
 import cool.muyucloud.croparia.api.generator.ItemTagGenerator;
@@ -25,7 +24,7 @@ public class CropariaIf {
 
     public static void init() {
         CropariaIf.LOGGER.info("=== Croparia common setup ===");
-        DataPackHandler.INSTANCE.onInitial();
+        DataPackHandler.INSTANCE.beforeReload();
         RecipeTypes.register();
         RecipeSerializers.register();
         Crops.register();
