@@ -28,6 +28,8 @@ public class CommonCommandRoot {
         .then(CropCommand.build())
         .then(ConfigCommand.buildInfusor())
         .then(ConfigCommand.buildRitual())
+        .then(ConfigCommand.buildAutoReload())
+        .then(ConfigCommand.buildOverride())
         .then(CreateCommand.build());
 
     public static void register() {
