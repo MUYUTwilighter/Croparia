@@ -163,6 +163,7 @@
   "commands.croparia.crop.status.crop_block": "未找到作物方块，请确认是否成功注册",
   "commands.croparia.config.infusor": "启用注魔台: %s",
   "commands.croparia.config.ritual": "启用仪式台: %s",
+  "commands.croparia.config.fruitUse": "启用果实右键: %s",
   "commands.croparia.config.autoReload": "启动重载: %s",
   "commands.croparia.config.override": "覆盖生成: %s",
   "commands.croparia.create.invalid_color": "%s 是无效的颜色",
