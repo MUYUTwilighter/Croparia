@@ -14,7 +14,17 @@ import net.minecraft.world.item.Items;
 
 @SuppressWarnings("unused")
 public class CommonCommandRoot {
-    private static final LiteralArgumentBuilder<CommandSourceStack> ROOT = Commands.literal("cropariaServer").requires(s -> s.hasPermission(2)).then(DumpCommand.build()).then(DumpBuiltinCommand.build()).then(CropCommand.build()).then(ConfigCommand.buildInfusor()).then(ConfigCommand.buildRitual()).then(CreateCommand.build());
+    private static final LiteralArgumentBuilder<CommandSourceStack> ROOT = Commands.literal("cropariaServer")
+        .requires(s -> s.hasPermission(2))
+        .then(DumpCommand.build())
+        .then(DumpBuiltinCommand.build())
+        .then(CropCommand.build())
+        .then(ConfigCommand.buildInfusor())
+        .then(ConfigCommand.buildRitual())
+        .then(ConfigCommand.buildFruitUse())
+        .then(ConfigCommand.buildAutoReload())
+        .then(ConfigCommand.buildOverride())
+        .then(CreateCommand.build());
 
     public static void register() {
         CropariaIf.LOGGER.debug("Registering commands");
