@@ -163,6 +163,7 @@
   "commands.croparia.crop.status.crop_block": "Crop block not found, did you register it?",
   "commands.croparia.config.infusor": "Infusor Status: %s",
   "commands.croparia.config.ritual": "Ritual Status: %s",
+  "commands.croparia.config.fruitUse": "Fruit-Use: %s",
   "commands.croparia.config.autoReload": "Auto Reload: %s",
   "commands.croparia.config.override": "Override: %s",
   "commands.croparia.create.invalid_color": "Color %s is invalid",
