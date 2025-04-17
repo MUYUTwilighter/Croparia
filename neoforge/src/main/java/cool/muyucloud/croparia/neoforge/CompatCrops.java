@@ -45,10 +45,6 @@ public class CompatCrops {
         "aoa3", "item.aoa3.bloodstone"
     ));
     @Nullable
-    public static final Crop BRONZE = Crops.compat("bronze", "#c:ingots/bronze", 0xC48553, 3, CropType.CROP, Map.of(
-        "mekanism", "item.mekanism.ingot_bronze"
-    ));
-    @Nullable
     public static final Crop CERTUS = Crops.compat("certus", "#c:gems/certus_quartz", 0xB8D8FC, 3, CropType.CROP, Map.of(
         "ae2", "item.ae2.certus_quartz_crystal"
     ));
@@ -226,12 +222,6 @@ public class CompatCrops {
     @Nullable
     public static final Crop SILICON = Crops.compat("silicon", "#c:silicon", 0x66546D, 3, CropType.CROP, Map.of(
         "ae2", "item.ae2.silicon"
-    ));
-    @Nullable
-    public static final Crop STEEL = Crops.compat("steel", "#c:ingots/steel", 0xA0A0A0, 3, CropType.CROP, Map.of(
-        "ad_astra", "item.ad_astra.ingot_steel",
-        "mekanism", "item.mekanism.ingot_steel",
-        "gtceu", "material.gtceu.steel"
     ));
     @Nullable
     public static final Crop SKELETAL = Crops.compat("skeletal", "#c:ingots/skeletal", 0xB3A997, 3, CropType.CROP, Map.of(
