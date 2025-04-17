@@ -12,7 +12,8 @@ import java.util.Map;
 public class CompatCrops {
     @Nullable
     public static final Crop ALUMINUM = Crops.compat("aluminum", "#forge:ingots/aluminum", 0x9E9E9E, 3, CropType.CROP, Map.of(
-        "modern_industrialization", "item.modern_industrialization.aluminum_ingot"
+        "modern_industrialization", "item.modern_industrialization.aluminum_ingot",
+        "gtceu", "material.gtceu.aluminum"
     ));
     @Nullable
     public static final Crop AMERICIUM = Crops.compat("americium", "#forge:ingots/americium", 0x7F8C8D, 3, CropType.CROP, Map.of(
