@@ -149,7 +149,13 @@ public class Crop {
 
     @NotNull
     protected static String parseName(@NotNull String name) {
-        return name.trim().toLowerCase();
+        name = name.trim().toLowerCase();
+        ResourceLocation test = ResourceLocation.tryParse(name);
+        if (test == null) {
+            throw new IllegalArgumentException("Invalid crop name: " + name);
+        } else {
+            return name;
+        }
     }
 
     @NotNull
