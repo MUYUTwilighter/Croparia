@@ -16,6 +16,7 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -106,6 +107,22 @@ public class CreateCommand {
         Item material = main.getItem();
         Item rawCroparia = player.getOffhandItem().getItem();
         name = name == null ? Objects.requireNonNull(material.arch$registryName()).getPath() : name;
+        if (ResourceLocation.tryParse(name) == null) {
+            failure.send(Component.translatable("commands.croparia.create.invalid_name", name));
+            return -1;
+        }
+        try {
+            if (color.startsWith("#")) {
+                Integer.parseInt(color.substring(1), 16);
+            } else if (color.startsWith("0x")) {
+                Integer.parseInt(color.substring(2), 16);
+            } else {
+                Integer.parseInt(color, 10);
+            }
+        } catch (NumberFormatException e) {
+            failure.send(Component.translatable("commands.croparia.create.invalid_color", color));
+            return -1;
+        }
         if (!forced && (Crops.containsCrop(name) || CropFileHandler.containsFile(name))) {
             MutableComponent crop = Component.literal(name);
             if (Crops.containsCrop(name)) {
