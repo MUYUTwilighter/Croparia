@@ -19,7 +19,12 @@ public class CropModifier {
             return false;
         }
         translations = translations == null ? Map.of() : translations;
-        Optional<Crop> modified = old.forModified(material, color, tier, CropType.valueOf(type), translations, translationKey);
+        CropType cropType = null;
+        try {
+            cropType = CropType.valueOf(type.toUpperCase());
+        } catch (Throwable ignored) {
+        }
+        Optional<Crop> modified = old.forModified(material, color, tier, cropType, translations, translationKey);
         return modified.map(crop -> !Crops.recordCustom(crop)).isPresent();
     }
 }

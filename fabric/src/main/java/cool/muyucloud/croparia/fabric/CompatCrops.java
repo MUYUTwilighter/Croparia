@@ -39,11 +39,20 @@ public class CompatCrops {
     ));
     @Nullable
     public static final Crop BERYLLIUM = Crops.compat("beryllium", "#c:beryllium_ingots", 0xA4C639, 3, CropType.CROP, Map.of(
+        "modern_industrialization", "item.modern_industrialization.beryllium_ingot",
         "gtceu", "material.gtceu.beryllium"
     ));
     @Nullable
     public static final Crop BISMUTH = Crops.compat("bismuth", "#c:bismuth_ingots", 0xB87333, 3, CropType.CROP, Map.of(
         "gtceu", "material.gtceu.bismuth"
+    ));
+    @Nullable
+    public static final Crop CADMIUM = Crops.compat("cadmium", "#c:cadmium_ingots", 0x8B0000, 3, CropType.CROP, Map.of(
+        "modern_industrialization", "item.modern_industrialization.cadmium_ingot"
+    ));
+    @Nullable
+    public static final Crop CALORITE = Crops.compat("calorite", "#c:calorite_ingots", 0x8B0000, 3, CropType.CROP, Map.of(
+        "ad_astra", "item.ad_astra.calorite_ingot"
     ));
     @Nullable
     public static final Crop CARMOT = Crops.compat("carmot", "#c:carmot_ingots", 0xC1283F, 3, CropType.CROP, Map.of(
@@ -70,6 +79,10 @@ public class CompatCrops {
     @Nullable
     public static final Crop DARMSTADTIUM = Crops.compat("darmstadtium", "#c:darmstadtium_ingots", 0xB67A56, 3, CropType.CROP, Map.of(
         "gtceu", "material.gtceu.darmstadtium"
+    ));
+    @Nullable
+    public static final Crop DESH = Crops.compat("desh", "#c:desh_ingots", 0x8B0000, 3, CropType.CROP, Map.of(
+        "ad_astra", "item.ad_astra.desh_ingot"
     ));
     @Nullable
     public static final Crop DURASTEEL = Crops.compat("durasteel", "#c:durasteel_ingots", 0x4B4B4B, 3, CropType.CROP, Map.of(
@@ -161,6 +174,10 @@ public class CompatCrops {
     @Nullable
     public static final Crop OSMIUM = Crops.compat("osmium", "#c:osmium_ingots", 0x9EB1C8, 3, CropType.CROP, Map.of(
         "mythicmetals", "item.mythicmetals.osmium_ingot"
+    ));
+    @Nullable
+    public static final Crop OSTRUM = Crops.compat("ostrum", "#c:ostrum_ingots", 0x7F7F7F, 3, CropType.CROP, Map.of(
+        "ad_astra", "item.ad_astra.ostrum_ingot"
     ));
     @Nullable
     public static final Crop PALLADIUM = Crops.compat("palladium", "#c:palladium_ingots", 0xED9926, 3, CropType.CROP, Map.of(
