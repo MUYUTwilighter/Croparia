@@ -1,5 +1,5 @@
 @enabled=true
-@path=croparia/recipes/botanypots/crop/{name}.json
+@path=botanypots/recipe/croparia/seed/{name}.json
 @dependency=botanypots
 {
   "type": "botanypots:crop",
@@ -19,6 +19,12 @@
       "chance": 1.00,
       "output": {
         "item": "{fruit}"
+      }
+    },
+    {
+      "chance": 0.01,
+      "output": {
+        "item": "{seed}"
       }
     }
   ]
