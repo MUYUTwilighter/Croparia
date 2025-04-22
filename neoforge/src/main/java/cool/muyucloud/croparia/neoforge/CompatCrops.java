@@ -49,6 +49,10 @@ public class CompatCrops {
         "modern_industrialization", "item.modern_industrialization.cadmium_ingot"
     ));
     @Nullable
+    public static final Crop CALORITE = Crops.compat("calorite", "#forge:ingots/calorite", 0x9E9E9E, 3, CropType.CROP, Map.of(
+        "ad_astra", "item.ad_astral.calorite_ingot"
+    ));
+    @Nullable
     public static final Crop CERTUS = Crops.compat("certus", "#c:gems/certus_quartz", 0xB8D8FC, 3, CropType.CROP, Map.of(
         "ae2", "item.ae2.certus_quartz_crystal"
     ));
