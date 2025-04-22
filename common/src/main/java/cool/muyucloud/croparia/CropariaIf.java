@@ -60,6 +60,8 @@ public class CropariaIf {
     }
 
     public static ResourceLocation of(String path) {
-        return new ResourceLocation(MOD_ID, path);
+        ResourceLocation id = ResourceLocation.tryBuild(MOD_ID, path);
+        if (id == null) throw new IllegalArgumentException("Invalid path: " + path);
+        return id;
     }
 }

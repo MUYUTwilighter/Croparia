@@ -45,6 +45,10 @@ public class CompatCrops {
         "aoa3", "item.aoa3.bloodstone"
     ));
     @Nullable
+    public static final Crop CADMIUM = Crops.compat("cadmium", "#c:ingots/cadmium", 0x9E9E9E, 3, CropType.CROP, Map.of(
+        "modern_industrialization", "item.modern_industrialization.cadmium_ingot"
+    ));
+    @Nullable
     public static final Crop CERTUS = Crops.compat("certus", "#c:gems/certus_quartz", 0xB8D8FC, 3, CropType.CROP, Map.of(
         "ae2", "item.ae2.certus_quartz_crystal"
     ));
@@ -63,6 +67,10 @@ public class CompatCrops {
     @Nullable
     public static final Crop DARMSTADTIUM = Crops.compat("darmstadtium", "#c:ingots/darmstadtium", 0xB67A56, 3, CropType.CROP, Map.of(
         "gtceu", "material.gtceu.darmstadtium"
+    ));
+    @Nullable
+    public static final Crop DESH = Crops.compat("desh", "#c:ingots/desh", 0x8B0000, 3, CropType.CROP, Map.of(
+        "ad_astra", "item.ad_astra.desh_ingot"
     ));
     @Nullable
     public static final Crop ELECANIUM = Crops.compat("elecanium", "#c:ingots/elecanium", 0x34ACDE, 3, CropType.CROP, Map.of(
@@ -172,6 +180,10 @@ public class CompatCrops {
     @Nullable
     public static final Crop OSMIUM = Crops.compat("osmium", "#c:ingots/osmium", 0x9EB1C8, 3, CropType.CROP, Map.of(
         "mekanism", "item.mekanism.ingot_osmium"
+    ));
+    @Nullable
+    public static final Crop OSTRUM = Crops.compat("ostrum", "#c:ingots/ostrum", 0x7F7F7F, 3, CropType.CROP, Map.of(
+        "ad_astra", "item.ad_astra.ostrum_ingot"
     ));
     @Nullable
     public static final Crop PALLADIUM = Crops.compat("palladium", "#c:ingots/palladium", 0xA569BD, 3, CropType.CROP, Map.of(
