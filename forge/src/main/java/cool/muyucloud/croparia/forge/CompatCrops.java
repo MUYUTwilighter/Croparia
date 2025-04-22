@@ -53,6 +53,10 @@ public class CompatCrops {
         "ae2", "item.ae2.certus_quartz_crystal"
     ));
     @Nullable
+    public static final Crop CALORITE = Crops.compat("calorite", "#forge:ingots/calorite", 0x9E9E9E, 3, CropType.CROP, Map.of(
+        "ad_astra", "item.ad_astral.calorite_ingot"
+    ));
+    @Nullable
     public static final Crop CHROMIUM = Crops.compat("chromium", "#forge:ingots/chromium", 0xE0E0E0, 3, CropType.CROP, Map.of(
         "gtceu", "material.gtceu.chromium"
     ));
