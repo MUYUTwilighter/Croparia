@@ -49,7 +49,7 @@ public class CompatCrops {
         "modern_industrialization", "item.modern_industrialization.cadmium_ingot"
     ));
     @Nullable
-    public static final Crop CALORITE = Crops.compat("calorite", "#forge:ingots/calorite", 0x9E9E9E, 3, CropType.CROP, Map.of(
+    public static final Crop CALORITE = Crops.compat("calorite", "#c:ingots/calorite", 0x9E9E9E, 3, CropType.CROP, Map.of(
         "ad_astra", "item.ad_astral.calorite_ingot"
     ));
     @Nullable
