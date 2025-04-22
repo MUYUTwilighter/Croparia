@@ -103,6 +103,7 @@ public class CreateCommand {
         ItemStack main = player.getMainHandItem();
         if (main.isEmpty()) {
             failure.send(new TranslatableComponent("commands.croparia.create.no_material"));
+            return -1;
         }
         Item material = main.getItem();
         Item rawCroparia = player.getOffhandItem().getItem();
