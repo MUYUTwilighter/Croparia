@@ -8,7 +8,7 @@ import cool.muyucloud.croparia.api.crop.CropFileHandler;
 import cool.muyucloud.croparia.api.crop.CropType;
 import cool.muyucloud.croparia.api.crop.RawCrop;
 import cool.muyucloud.croparia.config.Config;
-import dev.architectury.platform.Platform;
+import me.shedaniel.architectury.platform.Platform;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.NotNull;

@@ -3,7 +3,7 @@ package cool.muyucloud.croparia.forge;
 import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.api.repo.forge.ProxyProviderImpl;
 import cool.muyucloud.croparia.registry.PlacedFeatures;
-import dev.architectury.platform.forge.EventBuses;
+import me.shedaniel.architectury.platform.forge.EventBuses;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraftforge.event.server.ServerStartedEvent;

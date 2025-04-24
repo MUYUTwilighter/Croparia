@@ -35,21 +35,20 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:$rootProject.fabric_api_version"
 
     // Architectury API. This is optional, and you can comment it out if you don't need it.
-    modImplementation "dev.architectury:architectury-fabric:$rootProject.architectury_api_version"
+    modImplementation "me.shedaniel:architectury-fabric:$rootProject.architectury_api_version"
 
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowBundle project(path: ':common', configuration: 'transformProductionFabric')
 
     // REI
-    modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-fabric:$rei_version"
-    modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-fabric:$rei_version"
-    modCompileOnly "me.shedaniel:RoughlyEnoughItems-default-plugin-fabric:$rei_version"
-    // RER
-    modRuntimeOnly "curse.maven:roughly-enough-resources-325625:3736226"
+    modImplementation "me.shedaniel:RoughlyEnoughItems:$rei_version"
 
-    // EMI
-    modCompileOnly "dev.emi:emi:${emi_version}:api"
-    modLocalRuntime "dev.emi:emi:${emi_version}"
+    // RER
+    modRuntimeOnly "curse.maven:roughly-enough-resources-325625:3343450"
+
+    // No EMI as they do not support 1.16.5
+//    modCompileOnly "dev.emi:emi:${emi_version}:api"
+//    modLocalRuntime "dev.emi:emi:${emi_version}"
 
     // KubeJS
     modImplementation "dev.latvian.mods:kubejs-fabric:${kubejs_version}"

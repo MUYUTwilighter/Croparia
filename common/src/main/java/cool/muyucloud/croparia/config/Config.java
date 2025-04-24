@@ -1,7 +1,7 @@
 package cool.muyucloud.croparia.config;
 
 import cool.muyucloud.croparia.api.crop.Crop;
-import dev.architectury.platform.Platform;
+import me.shedaniel.architectury.platform.Platform;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

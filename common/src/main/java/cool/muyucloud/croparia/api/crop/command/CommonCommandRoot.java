@@ -2,7 +2,7 @@ package cool.muyucloud.croparia.api.crop.command;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import cool.muyucloud.croparia.CropariaIf;
-import dev.architectury.event.events.common.CommandRegistrationEvent;
+import me.shedaniel.architectury.event.events.common.CommandRegistrationEvent;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;

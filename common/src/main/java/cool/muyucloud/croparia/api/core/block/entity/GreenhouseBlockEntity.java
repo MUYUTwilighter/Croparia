@@ -40,8 +40,8 @@ public class GreenhouseBlockEntity extends BlockEntity implements MenuProvider, 
     private final NonNullList<ItemStack> inventory;
     private final RepoProxy<ItemSpec> proxy = RepoProxy.item(new ContainerRepo(this));
 
-    public GreenhouseBlockEntity(BlockPos pos, BlockState state) {
-        super(BlockEntities.GREENHOUSE_BE.get(), pos, state);
+    public GreenhouseBlockEntity() {
+        super(BlockEntities.GREENHOUSE_BE.get());
         this.inventory = NonNullList.withSize(9, ItemStack.EMPTY);
     }
 
@@ -83,15 +83,15 @@ public class GreenhouseBlockEntity extends BlockEntity implements MenuProvider, 
     }
 
     @Override
-    public void load(CompoundTag nbt) {
-        super.load(nbt);
+    public void load(BlockState state, CompoundTag nbt) {
+        super.load(state, nbt);
         ContainerHelper.loadAllItems(nbt, this.inventory);
     }
 
     @Override
-    protected void saveAdditional(CompoundTag nbt) {
+    public CompoundTag save(CompoundTag nbt) {
         ContainerHelper.saveAllItems(nbt, this.inventory);
-        super.saveAdditional(nbt);
+        super.save(nbt);
     }
 
     @Override

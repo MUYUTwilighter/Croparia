@@ -4,7 +4,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import cool.muyucloud.croparia.api.crop.CropType;
-import dev.architectury.event.events.client.ClientCommandRegistrationEvent;
+import me.shedaniel.architectury.event.events.client.ClientCommandRegistrationEvent;
 import net.minecraft.network.chat.TranslatableComponent;
 
 import static cool.muyucloud.croparia.api.crop.command.CreateCommand.create;

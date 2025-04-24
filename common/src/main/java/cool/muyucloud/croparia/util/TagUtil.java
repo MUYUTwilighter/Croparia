@@ -2,7 +2,7 @@ package cool.muyucloud.croparia.util;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import dev.architectury.platform.Platform;
+import me.shedaniel.architectury.platform.Platform;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;

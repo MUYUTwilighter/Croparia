@@ -1,7 +1,7 @@
 package cool.muyucloud.croparia.registry;
 
 import cool.muyucloud.croparia.CropariaIf;
-import dev.architectury.registry.CreativeTabRegistry;
+import me.shedaniel.architectury.registry.CreativeTabRegistry;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 

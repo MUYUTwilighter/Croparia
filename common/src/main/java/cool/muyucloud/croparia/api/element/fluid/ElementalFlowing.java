@@ -2,8 +2,8 @@ package cool.muyucloud.croparia.api.element.fluid;
 
 import cool.muyucloud.croparia.access.ElementAccess;
 import cool.muyucloud.croparia.api.element.ElementsEnum;
-import dev.architectury.core.fluid.ArchitecturyFlowingFluid;
-import dev.architectury.core.fluid.ArchitecturyFluidAttributes;
+import me.shedaniel.architectury.core.fluid.ArchitecturyFlowingFluid;
+import me.shedaniel.architectury.core.fluid.ArchitecturyFluidAttributes;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

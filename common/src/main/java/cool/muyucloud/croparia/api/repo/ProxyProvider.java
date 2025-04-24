@@ -5,7 +5,7 @@ import cool.muyucloud.croparia.api.repo.platform.PlatformItemProxy;
 import cool.muyucloud.croparia.api.resource.ResourceType;
 import cool.muyucloud.croparia.api.resource.type.FluidSpec;
 import cool.muyucloud.croparia.api.resource.type.ItemSpec;
-import dev.architectury.injectables.annotations.ExpectPlatform;
+import me.shedaniel.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;

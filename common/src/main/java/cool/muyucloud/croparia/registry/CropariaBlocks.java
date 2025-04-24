@@ -11,10 +11,10 @@ import cool.muyucloud.croparia.api.crop.Crop;
 import cool.muyucloud.croparia.api.crop.block.CropariaCropBlock;
 import cool.muyucloud.croparia.api.element.ElementsEnum;
 import cool.muyucloud.croparia.api.element.block.ElementalLiquidBlock;
-import dev.architectury.registry.registries.DeferredRegister;
-import dev.architectury.registry.registries.RegistrySupplier;
+import me.shedaniel.architectury.registry.DeferredRegister;
+import me.shedaniel.architectury.registry.RegistrySupplier;
 import net.minecraft.core.Registry;
-import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.util.UniformInt;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.OreBlock;
@@ -66,16 +66,7 @@ public class CropariaBlocks {
     public static final RegistrySupplier<OreBlock> ELEMATILIUS_ORE = registerBlock(
         "elematilius_ore",
         () -> new OreBlock(
-            BlockBehaviour.Properties.of(Material.STONE).strength(1.0F, 1.0F).requiresCorrectToolForDrops(),
-            UniformInt.of(0, 2)
-        )
-    );
-    @PostReg
-    public static final RegistrySupplier<OreBlock> DEEPSLATE_ELEMATILIUS_ORE = registerBlock(
-        "deepslate_elematilius_ore",
-        () -> new OreBlock(
-            BlockBehaviour.Properties.of(Material.STONE).strength(1.0F, 1.0F).requiresCorrectToolForDrops().color(MaterialColor.DEEPSLATE).sound(SoundType.DEEPSLATE).requiresCorrectToolForDrops(),
-            UniformInt.of(0, 2)
+            BlockBehaviour.Properties.of(Material.STONE).strength(1.0F, 1.0F).requiresCorrectToolForDrops()
         )
     );
     @PostReg

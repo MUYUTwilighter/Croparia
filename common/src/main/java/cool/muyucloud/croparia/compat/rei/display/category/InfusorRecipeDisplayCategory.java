@@ -5,6 +5,7 @@ import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.util.Constants;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
+import me.shedaniel.rei.api.RecipeCategory;
 import me.shedaniel.rei.api.client.gui.Renderer;
 import me.shedaniel.rei.api.client.gui.widgets.Widget;
 import me.shedaniel.rei.api.client.gui.widgets.Widgets;
@@ -17,7 +18,7 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-public class InfusorRecipeDisplayCategory implements DisplayCategory<InfusorRecipeDisplay> {
+public class InfusorRecipeDisplayCategory implements RecipeCategory<InfusorRecipeDisplay> {
     public static final CategoryIdentifier<InfusorRecipeDisplay> ID = CategoryIdentifier.of("croparia:infusor");
     public static final EntryStack<ItemStack> INFUSOR = EntryStack.of(VanillaEntryTypes.ITEM, CropariaItems.INFUSOR.get().getDefaultInstance());
 

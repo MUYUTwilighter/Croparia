@@ -5,8 +5,8 @@ import cool.muyucloud.croparia.client.command.ClientCommandRoot;
 import cool.muyucloud.croparia.registry.CropariaBlocks;
 import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.registry.Crops;
-import dev.architectury.registry.client.rendering.ColorHandlerRegistry;
-import dev.architectury.registry.client.rendering.RenderTypeRegistry;
+import me.shedaniel.architectury.registry.client.rendering.ColorHandlerRegistry;
+import me.shedaniel.architectury.registry.client.rendering.RenderTypeRegistry;
 import net.minecraft.client.renderer.RenderType;
 
 public class CropariaIfClient {

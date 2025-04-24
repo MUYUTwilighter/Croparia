@@ -3,7 +3,7 @@ package cool.muyucloud.croparia.client.command;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
-import dev.architectury.event.events.client.ClientCommandRegistrationEvent;
+import me.shedaniel.architectury.event.events.client.ClientCommandRegistrationEvent;
 
 import static cool.muyucloud.croparia.api.crop.command.DumpCommand.dump;
 import static cool.muyucloud.croparia.api.crop.command.DumpCommand.dumpAll;

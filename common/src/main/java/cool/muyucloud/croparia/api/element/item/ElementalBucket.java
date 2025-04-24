@@ -2,7 +2,7 @@ package cool.muyucloud.croparia.api.element.item;
 
 import cool.muyucloud.croparia.access.ElementAccess;
 import cool.muyucloud.croparia.api.element.ElementsEnum;
-import dev.architectury.core.item.ArchitecturyBucketItem;
+import me.shedaniel.architectury.core.item.ArchitecturyBucketItem;
 import net.minecraft.world.level.material.Fluid;
 import org.jetbrains.annotations.NotNull;
 

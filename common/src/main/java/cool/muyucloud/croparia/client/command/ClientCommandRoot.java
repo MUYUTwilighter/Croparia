@@ -2,7 +2,7 @@ package cool.muyucloud.croparia.client.command;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import cool.muyucloud.croparia.CropariaIf;
-import dev.architectury.event.events.client.ClientCommandRegistrationEvent;
+import me.shedaniel.architectury.event.events.client.ClientCommandRegistrationEvent;
 
 public class ClientCommandRoot {
     public static final LiteralArgumentBuilder<ClientCommandRegistrationEvent.ClientCommandSourceStack> ROOT =

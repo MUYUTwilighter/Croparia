@@ -1,7 +1,7 @@
 package cool.muyucloud.croparia.client.command;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import dev.architectury.event.events.client.ClientCommandRegistrationEvent;
+import me.shedaniel.architectury.event.events.client.ClientCommandRegistrationEvent;
 
 import static cool.muyucloud.croparia.api.crop.command.DumpBuiltinCommand.dumpAll;
 

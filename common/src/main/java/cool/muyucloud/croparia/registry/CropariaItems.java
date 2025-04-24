@@ -18,8 +18,8 @@ import cool.muyucloud.croparia.api.element.ElementsEnum;
 import cool.muyucloud.croparia.api.element.item.Elematilius;
 import cool.muyucloud.croparia.api.element.item.ElementalBucket;
 import cool.muyucloud.croparia.api.element.item.ElementalPotion;
-import dev.architectury.registry.registries.DeferredRegister;
-import dev.architectury.registry.registries.RegistrySupplier;
+import me.shedaniel.architectury.registry.DeferredRegister;
+import me.shedaniel.architectury.registry.RegistrySupplier;
 import net.minecraft.core.Registry;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -79,11 +79,6 @@ public class CropariaItems {
     public static final RegistrySupplier<BlockItem> ELEMATILIUS_ORE = registerItem(
         "elematilius_ore",
         () -> new BlockItem(CropariaBlocks.ELEMATILIUS_ORE.get(), new Item.Properties().tab(Tabs.MAIN))
-    );
-    @PostReg
-    public static final RegistrySupplier<BlockItem> DEEPSLATE_ELEMATILIUS_ORE = registerItem(
-        "deepslate_elematilius_ore",
-        () -> new BlockItem(CropariaBlocks.DEEPSLATE_ELEMATILIUS_ORE.get(), new Item.Properties().tab(Tabs.MAIN))
     );
     @PostReg
     public static final RegistrySupplier<ElementalPotion> POTION_ELEMATILIUS = registerItem(

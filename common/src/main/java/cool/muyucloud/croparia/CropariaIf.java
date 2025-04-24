@@ -1,6 +1,5 @@
 package cool.muyucloud.croparia;
 
-import com.mojang.logging.LogUtils;
 import cool.muyucloud.croparia.api.crop.command.CommonCommandRoot;
 import cool.muyucloud.croparia.api.generator.BlockTagGenerator;
 import cool.muyucloud.croparia.api.generator.ItemTagGenerator;
@@ -12,14 +11,15 @@ import cool.muyucloud.croparia.client.generator.LangGenerator;
 import cool.muyucloud.croparia.config.Config;
 import cool.muyucloud.croparia.config.ConfigFileHandler;
 import cool.muyucloud.croparia.registry.*;
-import dev.architectury.event.events.common.LifecycleEvent;
+import me.shedaniel.architectury.event.events.LifecycleEvent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
-import org.slf4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class CropariaIf {
     public static final String MOD_ID = "croparia";
-    public static final Logger LOGGER = LogUtils.getLogger();
+    public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
     public static final Config CONFIG = ConfigFileHandler.load();
 
     public static void init() {

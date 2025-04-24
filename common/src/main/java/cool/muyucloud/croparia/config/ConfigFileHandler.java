@@ -3,7 +3,7 @@ package cool.muyucloud.croparia.config;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonWriter;
 import cool.muyucloud.croparia.CropariaIf;
-import dev.architectury.platform.Platform;
+import me.shedaniel.architectury.platform.Platform;
 
 import java.io.File;
 import java.io.FileReader;

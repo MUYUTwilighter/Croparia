@@ -2,11 +2,12 @@ package cool.muyucloud.croparia.api.element.fluid;
 
 import cool.muyucloud.croparia.access.ElementAccess;
 import cool.muyucloud.croparia.api.element.ElementsEnum;
-import dev.architectury.core.fluid.ArchitecturyFlowingFluid;
-import dev.architectury.core.fluid.ArchitecturyFluidAttributes;
+import me.shedaniel.architectury.core.fluid.ArchitecturyFlowingFluid;
+import me.shedaniel.architectury.core.fluid.ArchitecturyFluidAttributes;
+import net.minecraft.world.level.material.FlowingFluid;
 import org.jetbrains.annotations.NotNull;
 
-public class ElementalSource extends ArchitecturyFlowingFluid.Source implements ElementAccess {
+public class ElementalSource extends FlowingFluid implements ElementAccess {
     private final ElementsEnum element;
 
     public ElementalSource(@NotNull ElementsEnum element, @NotNull ArchitecturyFluidAttributes attributes) {

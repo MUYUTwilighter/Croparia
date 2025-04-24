@@ -1,7 +1,7 @@
 package cool.muyucloud.croparia.registry;
 
-import dev.architectury.core.fluid.ArchitecturyFluidAttributes;
-import dev.architectury.core.fluid.SimpleArchitecturyFluidAttributes;
+import me.shedaniel.architectury.core.fluid.ArchitecturyFluidAttributes;
+import me.shedaniel.architectury.core.fluid.SimpleArchitecturyFluidAttributes;
 import net.minecraft.resources.ResourceLocation;
 
 public class FluidAttributes {

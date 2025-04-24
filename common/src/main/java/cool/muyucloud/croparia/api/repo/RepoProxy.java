@@ -4,7 +4,7 @@ import cool.muyucloud.croparia.api.resource.ResourceType;
 import cool.muyucloud.croparia.api.resource.TypeToken;
 import cool.muyucloud.croparia.api.resource.type.FluidSpec;
 import cool.muyucloud.croparia.api.resource.type.ItemSpec;
-import dev.architectury.injectables.annotations.ExpectPlatform;
+import me.shedaniel.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 /**

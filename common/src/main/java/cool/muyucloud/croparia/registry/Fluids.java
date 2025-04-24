@@ -4,10 +4,11 @@ import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.api.element.ElementsEnum;
 import cool.muyucloud.croparia.api.element.fluid.ElementalFlowing;
 import cool.muyucloud.croparia.api.element.fluid.ElementalSource;
-import dev.architectury.core.fluid.ArchitecturyFlowingFluid;
-import dev.architectury.registry.registries.DeferredRegister;
-import dev.architectury.registry.registries.RegistrySupplier;
+import me.shedaniel.architectury.core.fluid.ArchitecturyFlowingFluid;
+import me.shedaniel.architectury.registry.DeferredRegister;
+import me.shedaniel.architectury.registry.RegistrySupplier;
 import net.minecraft.core.Registry;
+import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 
 import java.util.function.Supplier;
@@ -15,10 +16,10 @@ import java.util.function.Supplier;
 public class Fluids {
     public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(CropariaIf.MOD_ID, Registry.FLUID_REGISTRY);
 
-    public static final RegistrySupplier<ArchitecturyFlowingFluid> ELEMATILIUS = register(
+    public static final RegistrySupplier<FlowingFluid> ELEMATILIUS = register(
         "elematilius", () -> new ElementalSource(ElementsEnum.ELEMENTAL, FluidAttributes.ELEMATILIUS)
     );
-    public static final RegistrySupplier<ArchitecturyFlowingFluid> ELEMATILIUS_FLOWING = register(
+    public static final RegistrySupplier<FlowingFluid> ELEMATILIUS_FLOWING = register(
         "elematilius_flowing", () -> new ElementalFlowing(ElementsEnum.ELEMENTAL, FluidAttributes.ELEMATILIUS)
     );
     public static final RegistrySupplier<ArchitecturyFlowingFluid> EARTH = register(
