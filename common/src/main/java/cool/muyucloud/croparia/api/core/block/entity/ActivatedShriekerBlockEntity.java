@@ -176,7 +176,7 @@ public class ActivatedShriekerBlockEntity extends BlockEntity implements GameEve
     }
 
     private boolean trySummonWarden(ServerLevel serverLevel) {
-        return SpawnUtil.trySpawnMob(EntityType.WARDEN, EntitySpawnReason.TRIGGERED, serverLevel, this.getBlockPos(), 20, 5, 6, SpawnUtil.Strategy.ON_TOP_OF_COLLIDER).isPresent();
+        return SpawnUtil.trySpawnMob(EntityType.WARDEN, EntitySpawnReason.TRIGGERED, serverLevel, this.getBlockPos(), 20, 5, 6, SpawnUtil.Strategy.ON_TOP_OF_COLLIDER, false).isPresent();
     }
 
     public VibrationSystem.@NotNull Listener getListener() {

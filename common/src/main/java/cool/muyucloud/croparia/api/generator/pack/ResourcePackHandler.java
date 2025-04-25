@@ -16,6 +16,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.Optional;
 
+@SuppressWarnings("unused")
 public class ResourcePackHandler extends PackHandler {
     public static final ResourcePackHandler INSTANCE = new ResourcePackHandler(CropariaIf.CONFIG.getPackPath());
 
@@ -54,6 +55,11 @@ public class ResourcePackHandler extends PackHandler {
     public void addBlockStateModel(ResourceLocation location, JsonObject model) {
         String path = "assets/%s/blockstates/%s.json".formatted(location.getNamespace(), location.getPath());
         this.addFile(path, model);
+    }
+
+    public void addItemDef(ResourceLocation location, JsonObject itemDef) {
+        String path = "assets/%s/items/%s.json".formatted(location.getNamespace(), location.getPath());
+        this.addFile(path, itemDef);
     }
 
     public void addItemModel(ResourceLocation location, JsonObject model) {
