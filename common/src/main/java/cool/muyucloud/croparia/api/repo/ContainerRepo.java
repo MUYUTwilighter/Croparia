@@ -29,11 +29,11 @@ public record ContainerRepo(@NotNull Container container) implements Repo<ItemSp
 
     @Override
     public long simConsume(int i, ItemSpec resource, long amount) {
-        if (!this.container().canTakeItem(this.container(), i, resource.toStack(amount))) {
+        if (!this.container().canTakeItem(this.container(), i, resource.createStack(amount))) {
             return 0;
         }
         ItemStack stored = this.container().getItem(i);
-        if (resource.is(stored)) {
+        if (resource.isSameAs(stored)) {
             return Math.min(amount, stored.getCount());
         } else {
             return 0;
@@ -42,7 +42,7 @@ public record ContainerRepo(@NotNull Container container) implements Repo<ItemSp
 
     @Override
     public long consume(int i, ItemSpec resource, long amount) {
-        if (!this.container().canTakeItem(this.container(), i, resource.toStack(amount))) {
+        if (!this.container().canTakeItem(this.container(), i, resource.createStack(amount))) {
             return 0;
         }
         return this.container().removeItem(i, (int) amount).getCount();
@@ -50,11 +50,11 @@ public record ContainerRepo(@NotNull Container container) implements Repo<ItemSp
 
     @Override
     public long simAccept(int i, ItemSpec resource, long amount) {
-        if (!this.container().canPlaceItem(i, resource.toStack(amount))) {
+        if (!this.container().canPlaceItem(i, resource.createStack(amount))) {
             return 0;
         }
         ItemStack stored = this.container().getItem(i);
-        if (resource.is(stored) || stored.isEmpty()) {
+        if (resource.isSameAs(stored) || stored.isEmpty()) {
             int accepted = (int) Math.min(this.capacityFor(i, resource) - stored.getCount(), amount);
             return Math.max(accepted, 0);
         } else {
@@ -64,13 +64,13 @@ public record ContainerRepo(@NotNull Container container) implements Repo<ItemSp
 
     @Override
     public long accept(int i, ItemSpec resource, long amount) {
-        if (!this.container().canPlaceItem(i, resource.toStack(amount))) {
+        if (!this.container().canPlaceItem(i, resource.createStack(amount))) {
             return 0;
         }
         ItemStack stored = this.container().getItem(i);
-        if (resource.is(stored) || stored.isEmpty()) {
+        if (resource.isSameAs(stored) || stored.isEmpty()) {
             int accepted = (int) Math.min(this.capacityFor(i, resource) - stored.getCount(), amount);
-            this.container().setItem(i, resource.toStack(Math.max(accepted, 0) + stored.getCount()));
+            this.container().setItem(i, resource.createStack(Math.max(accepted, 0) + stored.getCount()));
             return accepted;
         } else {
             return 0;
@@ -85,7 +85,7 @@ public record ContainerRepo(@NotNull Container container) implements Repo<ItemSp
     @Override
     public long amountFor(int i, ItemSpec resource) {
         ItemStack stored = this.container().getItem(i);
-        if (resource.is(stored)) {
+        if (resource.isSameAs(stored)) {
             return stored.getCount();
         } else {
             return 0;

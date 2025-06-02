@@ -14,11 +14,29 @@
       ]
     },
     {
-      "rolls": 1,
+      "rolls":1,
       "entries": [
         {
           "type": "minecraft:item",
           "name": "{fruit}",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "{crop_block}",
+              "properties": {
+                "age": "7"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 0.01,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "{seed}",
           "conditions": [
             {
               "condition": "minecraft:block_state_property",

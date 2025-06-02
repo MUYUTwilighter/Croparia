@@ -2,7 +2,6 @@ package cool.muyucloud.croparia.api.repo;
 
 import cool.muyucloud.croparia.api.repo.platform.PlatformFluidProxy;
 import cool.muyucloud.croparia.api.repo.platform.PlatformItemProxy;
-import cool.muyucloud.croparia.api.resource.ResourceType;
 import cool.muyucloud.croparia.api.resource.type.FluidSpec;
 import cool.muyucloud.croparia.api.resource.type.ItemSpec;
 import dev.architectury.injectables.annotations.ExpectPlatform;
@@ -17,7 +16,7 @@ import java.util.Optional;
 
 @FunctionalInterface
 @SuppressWarnings("unused")
-public interface ProxyProvider<T extends ResourceType> {
+public interface ProxyProvider<T extends TypedResource> {
     @ExpectPlatform
     static Optional<PlatformItemProxy> findItem(Level world, BlockPos pos, Direction direction) {
         throw new AssertionError("Not implemented");

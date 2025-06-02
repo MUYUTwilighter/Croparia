@@ -1,7 +1,6 @@
 package cool.muyucloud.croparia.api.repo;
 
 import com.mojang.logging.LogUtils;
-import cool.muyucloud.croparia.api.resource.ResourceType;
 import cool.muyucloud.croparia.api.resource.TypeToken;
 import cool.muyucloud.croparia.api.resource.TypeTokenAccess;
 import org.slf4j.Logger;
@@ -10,7 +9,7 @@ import org.slf4j.Logger;
  * Abstraction of resource storage.<br>
  */
 @SuppressWarnings("unused")
-public interface Repo<T extends ResourceType> extends TypeTokenAccess {
+public interface Repo<T extends TypedResource<?>> extends TypeTokenAccess {
     Logger LOGGER = LogUtils.getLogger();
 
     /**

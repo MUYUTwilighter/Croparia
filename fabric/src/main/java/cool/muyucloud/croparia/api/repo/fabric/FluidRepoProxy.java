@@ -93,7 +93,7 @@ public class FluidRepoProxy extends RepoProxy<FluidSpec> implements Storage<Flui
 
         @Override
         public FluidVariant getResource() {
-            return FabricFluidSpec.of(this.repo.resourceFor(i));
+            return FabricFluidSpec.toVariant(this.repo.resourceFor(i));
         }
 
         @Override

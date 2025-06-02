@@ -2,7 +2,6 @@ package cool.muyucloud.croparia.api.repo;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import cool.muyucloud.croparia.api.resource.ResourceType;
 import cool.muyucloud.croparia.api.resource.TypeToken;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -16,18 +15,18 @@ import java.util.List;
  * A batch of {@link RepoUnit}s
  * */
 @SuppressWarnings("unused")
-public class RepoBatch<T extends ResourceType> implements Repo<T>, Iterable<RepoUnit<T>> {
-    public static <T extends ResourceType> RepoBatch<T> of(TypeToken<T> type) {
+public class RepoBatch<T extends TypedResource> implements Repo<T>, Iterable<RepoUnit<T>> {
+    public static <T extends TypedResource> RepoBatch<T> of(TypeToken<T> type) {
         return new RepoBatch<>(type);
     }
 
     @SafeVarargs
-    public static <T extends ResourceType> RepoBatch<T> of(TypeToken<T> type, RepoUnit<T>... units) {
+    public static <T extends TypedResource> RepoBatch<T> of(TypeToken<T> type, RepoUnit<T>... units) {
         return new RepoBatch<>(type, units);
     }
 
     @SafeVarargs
-    public static <T extends ResourceType> RepoBatch<T> of(TypeToken<T> type, RepoBatch<T>... batches) {
+    public static <T extends TypedResource> RepoBatch<T> of(TypeToken<T> type, RepoBatch<T>... batches) {
         RepoBatch<T> result = new RepoBatch<>(type);
         for (RepoBatch<T> batch : batches) {
             for (RepoUnit<T> unit : batch) {

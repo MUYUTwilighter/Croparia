@@ -2,7 +2,6 @@ package cool.muyucloud.croparia.compat.rei.display;
 
 import cool.muyucloud.croparia.api.core.recipe.RitualStructure;
 import cool.muyucloud.croparia.api.core.recipe.predicate.BlockStatePredicate;
-import cool.muyucloud.croparia.api.core.recipe.serializer.RitualStructureSerializer;
 import cool.muyucloud.croparia.compat.rei.category.RitualStructureDisplayCategory;
 import cool.muyucloud.croparia.registry.CropariaItems;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
@@ -62,7 +61,7 @@ public class RitualStructureDisplay implements SimpleDisplay<RitualStructure> {
     }
 
     @Override
-    public ResourceLocation getRecipeId() {
+    public ResourceLocation getId() {
         return this.id;
     }
 

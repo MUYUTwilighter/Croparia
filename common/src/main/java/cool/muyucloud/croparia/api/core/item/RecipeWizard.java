@@ -13,7 +13,7 @@ import cool.muyucloud.croparia.api.core.recipe.predicate.BlockStatePredicate;
 import cool.muyucloud.croparia.api.core.recipe.predicate.GenericIngredient;
 import cool.muyucloud.croparia.api.crop.command.CommonCommandRoot;
 import cool.muyucloud.croparia.api.element.ElementsEnum;
-import cool.muyucloud.croparia.registry.RecipeTypes;
+import cool.muyucloud.croparia.registry.Recipes;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
@@ -78,7 +78,7 @@ public class RecipeWizard extends Item {
                 return InteractionResult.FAIL;
             }
             JsonObject recipe = assembleRitual(ritualStand, optionalBlock.get(), optionalIngredient.get(), result);
-            Path path = this.dumpRecipe(RecipeTypes.RITUAL.getId(), recipe);
+            Path path = this.dumpRecipe(Recipes.RITUAL.getId(), recipe);
             this.sendFeedback("chat.croparia.recipe_wizard.ritual", path, player);
             this.addCooldown(stack, player);
             return InteractionResult.SUCCESS;
@@ -99,7 +99,7 @@ public class RecipeWizard extends Item {
                 return InteractionResult.FAIL;
             }
             JsonObject recipe = assembleInfusor(element, optionalIngredient.get(), result);
-            Path path = this.dumpRecipe(RecipeTypes.INFUSOR.getId(), recipe);
+            Path path = this.dumpRecipe(Recipes.INFUSOR.getId(), recipe);
             this.sendFeedback("chat.croparia.recipe_wizard.infusor", path, player);
             this.addCooldown(stack, player);
             return InteractionResult.SUCCESS;
@@ -169,7 +169,7 @@ public class RecipeWizard extends Item {
     public @NotNull Optional<BlockState> getRitualInputBlock(ResourceLocation id, Level world, BlockPos pos) {
         RecipeManager recipeManager = Objects.requireNonNull(world.getServer()).getRecipeManager();
         AtomicReference<BlockState> result = new AtomicReference<>();
-        recipeManager.getRecipeFor(RecipeTypes.RITUAL_STRUCTURE.get(), RitualStructureContainer.INSTANCE, world, ResourceKey.create(Registries.RECIPE, id)).flatMap(
+        recipeManager.getRecipeFor(Recipes.RITUAL_STRUCTURE.get(), RitualStructureContainer.INSTANCE, world, ResourceKey.create(Registries.RECIPE, id)).flatMap(
             recipe -> recipe.value().matches(pos, world)
         ).ifPresent(result::set);
         return Optional.ofNullable(result.get());

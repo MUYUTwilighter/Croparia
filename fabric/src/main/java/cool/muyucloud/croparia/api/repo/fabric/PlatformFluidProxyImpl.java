@@ -88,7 +88,7 @@ public class PlatformFluidProxyImpl implements PlatformFluidProxy {
         if (view == null) {
             return 0L;
         } else {
-            return StorageUtil.simulateExtract(view, FabricFluidSpec.of(resource), amount, null);
+            return StorageUtil.simulateExtract(view, FabricFluidSpec.toVariant(resource), amount, null);
         }
     }
 
@@ -98,7 +98,7 @@ public class PlatformFluidProxyImpl implements PlatformFluidProxy {
             return 0L;
         }
         try (Transaction transaction = Transaction.openOuter()) {
-            long result = this.get().extract(FabricFluidSpec.of(resource), amount, transaction);
+            long result = this.get().extract(FabricFluidSpec.toVariant(resource), amount, transaction);
             transaction.commit();
             return result;
         }
@@ -114,7 +114,7 @@ public class PlatformFluidProxyImpl implements PlatformFluidProxy {
             return 0L;
         } else {
             try (Transaction transaction = Transaction.openOuter()) {
-                long result = view.extract(FabricFluidSpec.of(resource), amount, transaction);
+                long result = view.extract(FabricFluidSpec.toVariant(resource), amount, transaction);
                 transaction.commit();
                 return result;
             }
@@ -133,7 +133,7 @@ public class PlatformFluidProxyImpl implements PlatformFluidProxy {
             try {
                 @SuppressWarnings("unchecked")
                 Storage<FluidVariant> storage = (Storage<FluidVariant>) s;
-                return StorageUtil.simulateInsert(storage, FabricFluidSpec.of(resource), amount, null);
+                return StorageUtil.simulateInsert(storage, FabricFluidSpec.toVariant(resource), amount, null);
             } catch (ClassCastException e) {
                 return 0L;
             }
@@ -153,7 +153,7 @@ public class PlatformFluidProxyImpl implements PlatformFluidProxy {
                 @SuppressWarnings("unchecked")
                 Storage<FluidVariant> storage = (Storage<FluidVariant>) s;
                 try (Transaction transaction = Transaction.openOuter()) {
-                    long result = storage.insert(FabricFluidSpec.of(fluid), amount, transaction);
+                    long result = storage.insert(FabricFluidSpec.toVariant(fluid), amount, transaction);
                     transaction.commit();
                     return result;
                 }
@@ -169,7 +169,7 @@ public class PlatformFluidProxyImpl implements PlatformFluidProxy {
             return 0L;
         }
         try (Transaction transaction = Transaction.openOuter()) {
-            long result = this.get().insert(FabricFluidSpec.of(fluid), amount, transaction);
+            long result = this.get().insert(FabricFluidSpec.toVariant(fluid), amount, transaction);
             transaction.commit();
             return result;
         }

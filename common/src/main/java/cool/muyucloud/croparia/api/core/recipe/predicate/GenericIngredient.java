@@ -159,7 +159,7 @@ public class GenericIngredient implements Predicate<ItemStack> {
             ItemStack stack = new ItemStack(this.item, this.count);
             stacks.add(stack);
         } else if (this.tag != null) {
-            for (Holder<Item> holder : TagUtil.forItems(this.tag)) {
+            for (Holder<Item> holder : TagUtil.forEntries(this.tag)) {
                 ItemStack stack = new ItemStack(holder.value(), this.count);
                 stacks.add(stack);
             }

@@ -3,30 +3,33 @@ package cool.muyucloud.croparia.api.math;
 import com.mojang.serialization.Codec;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 @SuppressWarnings("unused")
 public class Char2D implements Iterable<Character> {
-    public static final Codec<Char2D> CODEC = Codec.STRING.listOf().xmap(Char2D::new, Char2D::surface);
+    public static final Codec<Char2D> CODEC = Codec.STRING.listOf().xmap(Char2D::new, Char2D::layer);
 
     private final char[][] chars;
+    private final transient Map<Character, Integer> counts = new HashMap<>();
 
-    public Char2D(List<String> surface) {
-        if (surface.isEmpty()) {
+    public Char2D(List<String> layer) {
+        if (layer.isEmpty()) {
             throw new IllegalArgumentException("Empty surface");
         } else {
-            int cols = surface.getFirst().length();
-            int rows = surface.size();
+            int cols = layer.getFirst().length();
+            int rows = layer.size();
             this.chars = new char[rows][cols];
             for (int z = 0; z < rows; z++) {
-                String row = surface.get(z);
+                String row = layer.get(z);
                 if (row.length() != cols) {
-                    throw new IllegalArgumentException("Varying length: " + surface);
+                    throw new IllegalArgumentException("Varying length: " + layer);
                 }
                 this.chars[z] = row.toCharArray();
+                for (char c : this.chars[z]) {
+                    this.counts.compute(c, (character, integer) -> integer == null ? 1 : integer + 1);
+                }
             }
         }
     }
@@ -35,7 +38,7 @@ public class Char2D implements Iterable<Character> {
         this.chars = new char[maxZ][maxX];
     }
 
-    public List<String> surface() {
+    public List<String> layer() {
         return Arrays.stream(chars).map(String::new).toList();
     }
 
@@ -81,13 +84,15 @@ public class Char2D implements Iterable<Character> {
     }
 
     public int count(char c) {
-        int count = 0;
-        for (char character : this) {
-            if (character == c) {
-                count++;
-            }
-        }
-        return count;
+        return counts.getOrDefault(c, 0);
+    }
+
+    public Collection<Character> chars() {
+        return counts.keySet();
+    }
+
+    public void forEachChar(BiConsumer<Character, Integer> consumer) {
+        counts.forEach(consumer);
     }
 
     public Optional<Vec2i> find(char c) {
@@ -99,6 +104,18 @@ public class Char2D implements Iterable<Character> {
             }
         }
         return Optional.empty();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Char2D that)) return false;
+        return Objects.deepEquals(chars, that.chars);
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.deepHashCode(chars);
     }
 
     @Override

@@ -3,9 +3,7 @@ package cool.muyucloud.croparia.api.core.recipe;
 import cool.muyucloud.croparia.api.core.recipe.container.RitualStructureContainer;
 import cool.muyucloud.croparia.api.core.recipe.predicate.BlockStatePredicate;
 import cool.muyucloud.croparia.api.math.Char3D;
-import cool.muyucloud.croparia.api.math.Char3DWithMark;
-import cool.muyucloud.croparia.registry.RecipeSerializers;
-import cool.muyucloud.croparia.registry.RecipeTypes;
+import cool.muyucloud.croparia.api.math.MarkedChar3D;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Vec3i;
@@ -23,12 +21,12 @@ public class RitualStructure implements Recipe<RitualStructureContainer> {
     @NotNull
     private final Map<Character, BlockStatePredicate> keys;
     @NotNull
-    protected final List<Char3DWithMark> patterns;
+    protected final List<MarkedChar3D> patterns;
 
     public RitualStructure(@NotNull Map<String, BlockStatePredicate.Builder> keys, Char3D rawPattern) {
         this.patterns = new ArrayList<>(8);
         Vec3i ritualOffset = rawPattern.find('*').orElseThrow(() -> new IllegalArgumentException("Invalid pattern, missing ritual marker"));
-        Char3DWithMark pattern = new Char3DWithMark(rawPattern, ritualOffset);
+        MarkedChar3D pattern = new MarkedChar3D(rawPattern, ritualOffset);
         int i = 0;
         do {
             patterns.add(pattern);
@@ -59,7 +57,7 @@ public class RitualStructure implements Recipe<RitualStructureContainer> {
         return map;
     }
 
-    public Char3DWithMark getPattern() {
+    public MarkedChar3D getPattern() {
         return this.patterns.getFirst();
     }
 
@@ -135,7 +133,7 @@ public class RitualStructure implements Recipe<RitualStructureContainer> {
 
     public Optional<BlockState> matches(BlockPos ritualPos, Level level) {
         BlockState ritualBlock = level.getBlockState(ritualPos);
-        for (Char3DWithMark pattern : patterns) {
+        for (MarkedChar3D pattern : patterns) {
             BlockState inputBlock = matchTransformed(pattern.getOriginInWorld(ritualPos), level, pattern, ritualBlock, false);
             if (inputBlock != null) {
                 return Optional.of(inputBlock);
@@ -146,7 +144,7 @@ public class RitualStructure implements Recipe<RitualStructureContainer> {
 
     public Optional<BlockState> matchesAndDestroy(BlockPos ritualPos, Level level) {
         BlockState ritualBlock = level.getBlockState(ritualPos);
-        for (Char3DWithMark pattern : patterns) {
+        for (MarkedChar3D pattern : patterns) {
             BlockState inputBlock = matchTransformed(pattern.getOriginInWorld(ritualPos), level, pattern, ritualBlock, true);
             if (inputBlock != null) {
                 return Optional.of(inputBlock);

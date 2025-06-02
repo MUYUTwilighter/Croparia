@@ -5,30 +5,30 @@ import com.mojang.serialization.Codec;
 import net.minecraft.core.Vec3i;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.BiConsumer;
 
 public class Char3D implements Iterable<Character> {
-    public static final Codec<Char3D> CODEC = Char2D.CODEC.listOf().xmap(Char3D::new, Char3D::structure);
+    public static final Codec<Char3D> CODEC = Char2D.CODEC.listOf().xmap(Char3D::new, Char3D::layers);
 
     private final List<Char2D> pattern;
+    private final Map<Character, Integer> counts = new HashMap<>();
 
     public Char3D(List<Char2D> structure) {
         int height = structure.size();
         int maxZ = structure.getFirst().maxZ();
         int maxX = structure.getFirst().maxX();
         this.pattern = new ArrayList<>(height);
-        for (Char2D surface : structure) {
-            if (surface.maxZ() != maxZ || surface.maxX() != maxX) {
+        for (Char2D layer : structure) {
+            if (layer.maxZ() != maxZ || layer.maxX() != maxX) {
                 throw new IllegalArgumentException("Varying size: " + structure);
             }
-            this.pattern.add(surface);
+            this.pattern.add(layer);
+            layer.forEachChar((c, count) -> this.counts.compute(c, (character, integer) -> integer == null ? count : integer + count));
         }
     }
 
-    public List<Char2D> structure() {
+    public List<Char2D> layers() {
         return ImmutableList.copyOf(pattern);
     }
 
@@ -69,13 +69,15 @@ public class Char3D implements Iterable<Character> {
     }
 
     public int count(char c) {
-        int count = 0;
-        for (char ch : this) {
-            if (ch == c) {
-                count++;
-            }
-        }
-        return count;
+        return counts.getOrDefault(c, 0);
+    }
+
+    public Collection<Character> chars() {
+        return counts.keySet();
+    }
+
+    public void forEachChar(BiConsumer<Character, Integer> consumer) {
+        counts.forEach(consumer);
     }
 
     public @NotNull Optional<Vec3i> find(char c) {
@@ -92,6 +94,18 @@ public class Char3D implements Iterable<Character> {
     @Override
     public @NotNull Iterator<Character> iterator() {
         return new Char3DIterator(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Char3D that)) return false;
+        return Objects.equals(pattern, that.pattern);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(pattern);
     }
 
     public static class Char3DIterator implements Iterator<Character> {

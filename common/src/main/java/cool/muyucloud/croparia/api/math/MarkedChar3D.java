@@ -6,14 +6,14 @@ import net.minecraft.core.Vec3i;
 import java.util.List;
 
 @SuppressWarnings("unused")
-public class Char3DWithMark extends Char3D {
+public class MarkedChar3D extends Char3D {
     private final Vec3i mark;
 
-    public Char3DWithMark(Char3D pattern, Vec3i mark) {
-        this(pattern.structure(), mark);
+    public MarkedChar3D(Char3D pattern, Vec3i mark) {
+        this(pattern.layers(), mark);
     }
 
-    public Char3DWithMark(List<Char2D> structure, Vec3i mark) {
+    public MarkedChar3D(List<Char2D> structure, Vec3i mark) {
         super(structure);
         if (mark.getX() >= this.maxX() || mark.getY() >= this.maxY() || mark.getZ() >= this.maxZ() || mark.getX() < 0 || mark.getY() < 0 || mark.getZ() < 0) {
             throw new IllegalArgumentException("Mark position out of bounds");
@@ -25,18 +25,19 @@ public class Char3DWithMark extends Char3D {
         return mark;
     }
 
-    public Char3DWithMark rotate() {
+    @Override
+    public MarkedChar3D rotate() {
         int newX = mark.getZ();
         int newZ = maxZ() - 1 - mark.getX();
         Vec3i rotatedMark = new Vec3i(newX, mark.getY(), newZ);
-        return new Char3DWithMark(super.rotate(), rotatedMark);
+        return new MarkedChar3D(super.rotate(), rotatedMark);
     }
 
-    public Char3DWithMark mirror() {
+    public MarkedChar3D mirror() {
         int newX = maxX() - 1 - mark.getX();
         int newZ = mark.getZ();
         Vec3i mirroredMark = new Vec3i(newX, mark.getY(), newZ);
-        return new Char3DWithMark(super.mirror(), mirroredMark);
+        return new MarkedChar3D(super.mirror(), mirroredMark);
     }
 
     public BlockPos getOriginInWorld(BlockPos markInWorld) {

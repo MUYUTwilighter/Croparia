@@ -4,8 +4,8 @@ import cool.muyucloud.croparia.api.resource.type.FluidSpec;
 import net.fabricmc.fabric.api.transfer.v1.fluid.FluidVariant;
 
 public class FabricFluidSpec {
-    public static FluidVariant of(FluidSpec fluid) {
-        return FluidVariant.of(fluid.getFluid(), fluid.getNbt());
+    public static FluidVariant toVariant(FluidSpec fluid) {
+        return FluidVariant.of(fluid.getResource(), fluid.getComponentsPatch());
     }
 
     public static FluidSpec from(FluidVariant fluid) {
@@ -13,6 +13,10 @@ public class FabricFluidSpec {
     }
 
     public static boolean matches(FluidVariant a, FluidSpec b) {
-        return a.getFluid() == b.getFluid() && b.getNbt().equals(a.getComponents());
+        return a.getFluid() == b.getResource() && b.getComponentsPatch().equals(a.getComponents());
+    }
+
+    public static boolean matches(FluidSpec a, FluidVariant b) {
+        return b.getFluid() == a.getResource() && a.getComponentsPatch().equals(b.getComponents());
     }
 }

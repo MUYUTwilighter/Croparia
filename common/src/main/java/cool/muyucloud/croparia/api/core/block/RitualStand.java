@@ -6,7 +6,6 @@ import cool.muyucloud.croparia.api.core.recipe.RitualStructure;
 import cool.muyucloud.croparia.api.core.recipe.container.RitualContainer;
 import cool.muyucloud.croparia.api.core.recipe.container.RitualStructureContainer;
 import cool.muyucloud.croparia.registry.CropariaItems;
-import cool.muyucloud.croparia.registry.RecipeTypes;
 import cool.muyucloud.croparia.util.ItemPlaceable;
 import cool.muyucloud.croparia.util.Util;
 import net.minecraft.core.BlockPos;

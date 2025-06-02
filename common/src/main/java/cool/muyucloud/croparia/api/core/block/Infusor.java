@@ -8,7 +8,6 @@ import cool.muyucloud.croparia.api.element.ElementsEnum;
 import cool.muyucloud.croparia.api.element.item.ElementalPotion;
 import cool.muyucloud.croparia.registry.CropariaBlocks;
 import cool.muyucloud.croparia.registry.CropariaItems;
-import cool.muyucloud.croparia.registry.RecipeTypes;
 import cool.muyucloud.croparia.util.ItemPlaceable;
 import cool.muyucloud.croparia.util.Util;
 import net.minecraft.core.BlockPos;

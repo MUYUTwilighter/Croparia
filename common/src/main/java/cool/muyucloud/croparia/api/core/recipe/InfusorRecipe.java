@@ -1,78 +1,76 @@
 package cool.muyucloud.croparia.api.core.recipe;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import cool.muyucloud.croparia.api.core.recipe.container.InfusorContainer;
-import cool.muyucloud.croparia.api.core.recipe.predicate.GenericIngredient;
-import cool.muyucloud.croparia.api.core.recipe.serializer.InfusorRecipeSerializer;
+import cool.muyucloud.croparia.api.core.recipe.entry.ItemInput;
+import cool.muyucloud.croparia.api.core.recipe.entry.ItemOutput;
 import cool.muyucloud.croparia.api.element.ElementsEnum;
 import cool.muyucloud.croparia.api.element.item.ElementalPotion;
-import cool.muyucloud.croparia.registry.RecipeSerializers;
-import cool.muyucloud.croparia.registry.RecipeTypes;
+import cool.muyucloud.croparia.registry.CropariaItems;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * Recipe data entity for the infusor.<br/>
- * For serialization, see {@link InfusorRecipeSerializer}.<br/>
- * For old version of infusor recipe formed by Dalarion, see {@link OldInfusorRecipe}.
- */
-public class InfusorRecipe implements Recipe<InfusorContainer> {
-    protected ElementsEnum element = ElementsEnum.ELEMENTAL;
-    protected GenericIngredient ingredient;
-    protected ItemStack result = ItemStack.EMPTY;
+public class InfusorRecipe implements DisplayableRecipe<InfusorContainer> {
+    public static final TypedSerializer<InfusorRecipe> TYPED_SERIALIZER = new TypedSerializer<>(RecordCodecBuilder.mapCodec(instance -> instance.group(
+        ElementsEnum.CODEC.fieldOf("element").forGetter(InfusorRecipe::getElement),
+        ItemInput.CODEC.fieldOf("ingredient").forGetter(InfusorRecipe::getIngredient),
+        ItemOutput.CODEC.fieldOf("result").forGetter(InfusorRecipe::getResult)
+    ).apply(instance, InfusorRecipe::new)));
+    public static final SlotDisplay.ItemStackSlotDisplay STATION = new SlotDisplay.ItemStackSlotDisplay(CropariaItems.INFUSOR.get().getDefaultInstance());
+    public static final TypedSerializer<InfusorRecipe> OLD_TYPED_SERIALIZER = new TypedSerializer<>(RecordCodecBuilder.mapCodec(instance -> instance.group(
+        ElementsEnum.CODEC.fieldOf("element").forGetter(InfusorRecipe::getElement),
+        ResourceLocation.CODEC.fieldOf("input").forGetter(recipe -> recipe.getResult().getId()),
+        ResourceLocation.CODEC.fieldOf("output").forGetter(recipe -> recipe.getResult().getId()),
+        Codec.INT.fieldOf("count").forGetter(recipe -> Math.toIntExact(recipe.getResult().getAmount()))
+    ).apply(instance, (element, input, output, count) -> new InfusorRecipe(element, new ItemInput(input, 1), new ItemOutput(output, count)))));
 
-    public ItemStack getResult() {
-        return result;
+    protected final ElementsEnum element;
+    protected final ItemInput ingredient;
+    protected final ItemOutput result;
+
+    public InfusorRecipe(@NotNull ElementsEnum element, @NotNull ItemInput ingredient, @NotNull ItemOutput result) {
+        this.element = element;
+        this.ingredient = ingredient;
+        this.result = result;
     }
 
-    public void setResult(ItemStack result) {
-        if (result.isEmpty()) {
-            throw new IllegalArgumentException("Empty result item %s in recipe %s".formatted(result, this));
-        }
-        this.result = result;
+    public ItemInput getIngredient() {
+        return ingredient;
+    }
+
+    public ItemOutput getResult() {
+        return result;
     }
 
     public ElementsEnum getElement() {
         return element;
     }
 
-    public String getElementName() {
-        return element.getSerializedName();
-    }
-
-    public void setElement(ElementsEnum element) {
-        this.element = element;
-    }
-
-    public GenericIngredient getIngredient() {
-        return ingredient;
-    }
-
-    public void setIngredient(@NotNull GenericIngredient ingredient) {
-        this.ingredient = ingredient;
-    }
-
     public boolean matches(InfusorContainer container) {
         ItemStack input = container.getItem(0);
-        return ingredient.test(input) && container.getElement() == element;
+        return getIngredient().matches(input) && container.getElement() == getElement();
     }
 
     public @NotNull ItemStack assemble(@NotNull InfusorContainer container) {
         if (matches(container)) {
             ItemStack input = container.getItem(0);
-            input.shrink(ingredient.getCount());
-            return getResult().copy();
+            input.shrink((int) getIngredient().getAmount());
+            return getResult().createStack();
         } else {
             return ItemStack.EMPTY;
         }
     }
 
     public Item getPotion() {
-        return ElementalPotion.fromElement(element).orElseThrow();
+        return ElementalPotion.fromElement(getElement()).orElseThrow();
     }
 
     @Override
@@ -91,22 +89,24 @@ public class InfusorRecipe implements Recipe<InfusorContainer> {
     }
 
     @Override
-    public @NotNull RecipeSerializer<? extends Recipe<InfusorContainer>> getSerializer() {
-        return RecipeSerializers.INFUSOR.get();
-    }
-
-    @Override
-    public @NotNull RecipeType<? extends Recipe<InfusorContainer>> getType() {
-        return RecipeTypes.INFUSOR.get();
-    }
-
-    @Override
     public @NotNull PlacementInfo placementInfo() {
         return PlacementInfo.NOT_PLACEABLE;
     }
 
     @Override
-    public @NotNull RecipeBookCategory recipeBookCategory() {
-        return new RecipeBookCategory();
+    @NotNull
+    public ItemOutput result() {
+        return this.getResult();
+    }
+
+    @Override
+    @NotNull
+    public SlotDisplay craftingStation() {
+        return STATION;
+    }
+
+    @Override
+    public TypedSerializer<? extends InfusorRecipe> getTypedSerializer() {
+        return TYPED_SERIALIZER;
     }
 }

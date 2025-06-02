@@ -19,7 +19,7 @@ public class ItemRepoProxy extends RepoProxy<ItemSpec> implements IItemHandler {
 
     @Override
     public @NotNull ItemStack getStackInSlot(int i) {
-        return this.resourceFor(i).toStack();
+        return this.resourceFor(i).createStack();
     }
 
     @Override
@@ -38,7 +38,7 @@ public class ItemRepoProxy extends RepoProxy<ItemSpec> implements IItemHandler {
     @Override
     public @NotNull ItemStack extractItem(int i, int amount, boolean simulate) {
         ItemSpec item = this.resourceFor(i);
-        ItemStack result = item.toStack();
+        ItemStack result = item.createStack();
         long consumed;
         if (simulate) {
             consumed = this.simConsume(i, item, amount);

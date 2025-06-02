@@ -1,31 +1,80 @@
 package cool.muyucloud.croparia.api.core.recipe;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import cool.muyucloud.croparia.api.core.recipe.container.RitualContainer;
+import cool.muyucloud.croparia.api.core.recipe.entry.BlockInput;
+import cool.muyucloud.croparia.api.core.recipe.entry.ItemInput;
+import cool.muyucloud.croparia.api.core.recipe.entry.ItemOutput;
 import cool.muyucloud.croparia.api.core.recipe.predicate.BlockStatePredicate;
 import cool.muyucloud.croparia.api.core.recipe.predicate.GenericIngredient;
 import cool.muyucloud.croparia.registry.CropariaItems;
-import cool.muyucloud.croparia.registry.RecipeSerializers;
-import cool.muyucloud.croparia.registry.RecipeTypes;
+import cool.muyucloud.croparia.util.CodecUtil;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.display.RecipeDisplay;
+import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 
-public class RitualRecipe implements Recipe<RitualContainer> {
+public class RitualRecipe implements DisplayableRecipe<RitualContainer> {
+    public static final TypedSerializer<RitualRecipe> TYPED_SERIALIZER = new TypedSerializer<>(RecordCodecBuilder.mapCodec(instance -> instance.group(
+        Codec.INT.fieldOf("tier").orElse(1).forGetter(RitualRecipe::getTier),
+        BlockInput.CODEC.fieldOf("block").forGetter(RitualRecipe::getBlock),
+        ItemInput.CODEC.fieldOf("ingredient").forGetter(RitualRecipe::getIngredient),
+        ItemOutput.CODEC.fieldOf("result").forGetter(RitualRecipe::getResult)
+    ).apply(instance, RitualRecipe::new)));
+    public static final TypedSerializer<RitualRecipe> OLD_TYPED_SERIALIZER = new TypedSerializer<>(
+        RecordCodecBuilder.mapCodec(instance -> instance.group(
+            Codec.INT.fieldOf("tier").forGetter(RitualRecipe::getTier),
+            ResourceLocation.CODEC.fieldOf("block").forGetter(recipe -> recipe.getBlock().getDisplayId()),
+            ResourceLocation.CODEC.fieldOf("input").forGetter(recipe -> recipe.getIngredient().getDisplayId()),
+            ResourceLocation.CODEC.fieldOf("output").forGetter(recipe -> recipe.getResult().getId()),
+            Codec.INT.fieldOf("count").forGetter(recipe -> Math.toIntExact(recipe.getResult().getAmount()))
+        ).apply(instance, (tier, block, input, output, count) -> new RitualRecipe(tier, BlockInput.create(block), new ItemInput(input, 1), new ItemOutput(output, count)))),
+        StreamCodec.of((buf, recipe) -> {
+            buf.writeInt(recipe.getTier());
+            ItemStack stack = recipe.getIngredient().getDisplayStacks().getFirst();
+            buf.writeJsonWithCodec(ItemStack.CODEC, stack);
+            buf.writeJsonWithCodec(ItemStack.CODEC, recipe.getBlock().getDisplayStacks().getFirst());
+            buf.writeInt(Math.toIntExact(recipe.getResult().getAmount()));
+        }, buf -> {
+            int tier = buf.readInt();
+            ItemStack stack = buf.readJsonWithCodec(ItemStack.CODEC);
+            ResourceLocation block = buf.readJsonWithCodec(ItemStack.CODEC).getItem().arch$registryName();
+            int count = buf.readInt();
+            stack.setCount(count);
+            return new RitualRecipe(tier, BlockInput.create(Objects.requireNonNull(block)), new ItemInput(stack), new ItemOutput(stack));
+        })
+    );
+    public static final List<SlotDisplay.ItemSlotDisplay> STATIONS = List.of(
+        new SlotDisplay.ItemSlotDisplay(CropariaItems.RITUAL_STAND.get()),
+        new SlotDisplay.ItemSlotDisplay(CropariaItems.RITUAL_STAND_2.get()),
+        new SlotDisplay.ItemSlotDisplay(CropariaItems.RITUAL_STAND_3.get())
+    );
+
     private final int tier;
     @NotNull
-    private final BlockStatePredicate block;
+    private final BlockInput block;
     @NotNull
-    private final GenericIngredient ingredient;
+    private final ItemInput ingredient;
     @NotNull
-    private final ItemStack result;
+    private final ItemOutput result;
 
     public RitualRecipe(
-        int tier, @NotNull BlockStatePredicate state, @NotNull GenericIngredient ingredient, @NotNull ItemStack result
+        int tier, @NotNull BlockInput state, @NotNull ItemInput ingredient, @NotNull ItemOutput result
     ) {
         if (tier < 1) {
             throw new IllegalArgumentException("Tier must be at least 1");
@@ -36,49 +85,37 @@ public class RitualRecipe implements Recipe<RitualContainer> {
         this.result = result;
     }
 
-    public ItemStack assemble(RitualContainer recipeInput) {
-        if (matches(recipeInput)) {
-            recipeInput.item().shrink(this.ingredient.getCount());
-            return this.getResult().copy();
-        }
-        return ItemStack.EMPTY;
-    }
-
-    public @NotNull ItemStack getRitualItem() {
-        return CropariaItems.getRitualStand(this.tier).get().getDefaultInstance();
-    }
-
-    public @NotNull Collection<ItemStack> extractBlockItems() {
-        return this.block.availableBlockItems();
-    }
-
-    public @NotNull GenericIngredient getIngredient() {
+    public @NotNull ItemInput getIngredient() {
         return ingredient;
     }
 
-    public @NotNull BlockStatePredicate getBlock() {
-        return block;
-    }
-
-    public @NotNull ItemStack getResult() {
+    public @NotNull ItemOutput getResult() {
         return result;
     }
 
-    public BlockStatePredicate.Builder getStateBuilder() {
-        return block.getBuilder();
+    public @NotNull BlockInput getBlock() {
+        return block;
     }
 
     public int getTier() {
         return tier;
     }
 
+    public ItemStack assemble(RitualContainer recipeInput) {
+        if (matches(recipeInput)) {
+            recipeInput.item().shrink(Math.toIntExact(this.getIngredient().getAmount()));
+            return this.getResult().createStack();
+        }
+        return ItemStack.EMPTY;
+    }
+
     public boolean matches(RitualContainer container) {
         int tier = container.tier();
         ItemStack input = container.item();
         BlockState state = container.state();
-        return this.ingredient.test(input)
-            && this.block.test(state)
-            && tier >= this.tier;
+        return this.getIngredient().matches(input)
+            && this.getBlock().matches(state)
+            && tier >= this.getTier();
     }
 
     @Override
@@ -92,27 +129,29 @@ public class RitualRecipe implements Recipe<RitualContainer> {
     }
 
     @Override
-    public @NotNull RecipeSerializer<? extends Recipe<RitualContainer>> getSerializer() {
-        return RecipeSerializers.RITUAL.get();
-    }
-
-    @Override
-    public @NotNull RecipeType<? extends Recipe<RitualContainer>> getType() {
-        return RecipeTypes.RITUAL.get();
-    }
-
-    @Override
     public @NotNull PlacementInfo placementInfo() {
         return PlacementInfo.NOT_PLACEABLE;
     }
 
     @Override
-    public @NotNull RecipeBookCategory recipeBookCategory() {
-        return new RecipeBookCategory();
+    public boolean isSpecial() {
+        return true;
     }
 
     @Override
-    public boolean isSpecial() {
-        return true;
+    @NotNull
+    public ItemOutput result() {
+        return this.getResult();
+    }
+
+    @Override
+    @NotNull
+    public SlotDisplay.ItemSlotDisplay craftingStation() {
+        return STATIONS.get(this.getTier() - 1);
+    }
+
+    @Override
+    public TypedSerializer<? extends DisplayableRecipe<RitualContainer>> getTypedSerializer() {
+        return TYPED_SERIALIZER;
     }
 }

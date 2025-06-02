@@ -1,7 +1,10 @@
 package cool.muyucloud.croparia.util;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.component.DataComponentPredicate;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.component.TypedDataComponent;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -125,5 +128,11 @@ public class Util {
             player.addItem(remain);
         }
         world.addFreshEntity(new ItemEntity(world, (double) pos.getX() + 0.5, (double) pos.getY() + 0.6, (double) pos.getZ() + 0.5, remain, 0, 0, 0));
+    }
+
+    public static DataComponentPredicate extractPredicate(DataComponentPatch patch) {
+        DataComponentPredicate.Builder builder = DataComponentPredicate.builder();
+        patch.entrySet().forEach(entry -> builder.expect(TypedDataComponent.createUnchecked(entry.getKey(), entry.getValue())));
+        return builder.build();
     }
 }

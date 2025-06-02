@@ -6,7 +6,7 @@ import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 @SuppressWarnings({"unused"})
 public class FabricItemSpec {
     public static ItemVariant of(ItemSpec item) {
-        return ItemVariant.of(item.toStack());
+        return ItemVariant.of(item.createStack());
     }
 
     public static ItemSpec from(ItemVariant variant) {
@@ -14,10 +14,10 @@ public class FabricItemSpec {
     }
 
     public static boolean matches(ItemSpec a, ItemVariant b) {
-        return b.matches(a.toStack());
+        return a.getResource() == b.getItem() && a.getComponentsPatch().equals(b.getComponents());
     }
 
     public static boolean matches(ItemVariant a, ItemSpec b) {
-        return a.matches(b.toStack());
+        return b.getResource() == a.getItem() && b.getComponentsPatch().equals(a.getComponents());
     }
 }

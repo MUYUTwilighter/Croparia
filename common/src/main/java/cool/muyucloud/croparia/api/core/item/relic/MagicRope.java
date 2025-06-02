@@ -1,5 +1,6 @@
 package cool.muyucloud.croparia.api.core.item.relic;
 
+import cool.muyucloud.croparia.api.core.component.TargetPos;
 import cool.muyucloud.croparia.registry.CropariaComponents;
 import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.util.Util;
@@ -26,26 +27,24 @@ public class MagicRope extends Item {
     public @NotNull InteractionResult useOn(UseOnContext context) {
         Level level = context.getLevel();
         if (!level.isClientSide && context.getPlayer() instanceof ServerPlayer player && player.getServer() != null) {
-            ServerLevel world = (ServerLevel) player.level();
             MinecraftServer server = player.getServer();
             ItemStack itemStack = context.getItemInHand();
             if (player.isShiftKeyDown()) {
                 itemStack.shrink(1);
                 ItemStack newStack = CropariaItems.MAGIC_ROPE.get().getDefaultInstance();
-                BlockPos targetPos = player.blockPosition();
-                ResourceLocation targetWorld = world.dimension().location();
-                newStack.set(CropariaComponents.TARGET_WORLD.get(), targetWorld);
-                newStack.set(CropariaComponents.TARGET_POSITION.get(), targetPos);
+                TargetPos targetPos = new TargetPos(player);
+                newStack.set(CropariaComponents.TARGET_POS.get(), targetPos);
                 player.addItem(newStack);
-                player.displayClientMessage(Component.literal("%s[x=%s, y=%s, z=%s]".formatted(targetWorld, targetPos.getX(), targetPos.getY(), targetPos.getZ())), true);
+                player.displayClientMessage(targetPos.getTooltip(), true);
                 return InteractionResult.SUCCESS;
             }
-            @NotNull ResourceLocation targetWorld = itemStack.getOrDefault(
-                CropariaComponents.TARGET_WORLD.get(), ResourceLocation.tryParse("minecraft:overworld")
-            );
-            @Nullable BlockPos targetPos = itemStack.getOrDefault(CropariaComponents.TARGET_POSITION.get(), context.getClickedPos());
-            ServerLevel target = Util.getLevel(targetWorld, server);
-            player.teleportTo(target, targetPos.getX(), targetPos.getY(), targetPos.getZ(), Relative.ALL, 0, 0, true);
+            @Nullable TargetPos targetPos = itemStack.get(CropariaComponents.TARGET_POS.get());
+            if (targetPos == null) {
+                player.displayClientMessage(Component.translatable("overlay.croparia.magic_rope.no_target"), true);
+                return InteractionResult.FAIL;
+            } else {
+                targetPos.teleport(player, server);
+            }
             return InteractionResult.SUCCESS;
         }
 
