@@ -1,12 +1,12 @@
 package cool.muyucloud.croparia.api.core.recipe;
 
 import cool.muyucloud.croparia.api.core.recipe.container.InfusorContainer;
+import cool.muyucloud.croparia.api.core.recipe.predicate.GenericIngredient;
 import cool.muyucloud.croparia.api.core.recipe.serializer.InfusorRecipeSerializer;
 import cool.muyucloud.croparia.api.element.ElementsEnum;
 import cool.muyucloud.croparia.api.element.item.ElementalPotion;
 import cool.muyucloud.croparia.registry.RecipeSerializers;
 import cool.muyucloud.croparia.registry.RecipeTypes;
-import cool.muyucloud.croparia.api.core.recipe.predicate.GenericIngredient;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;

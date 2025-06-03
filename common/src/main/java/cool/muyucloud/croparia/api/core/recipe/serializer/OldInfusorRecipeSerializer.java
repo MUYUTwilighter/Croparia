@@ -1,8 +1,8 @@
 package cool.muyucloud.croparia.api.core.recipe.serializer;
 
 import com.google.gson.JsonObject;
-import cool.muyucloud.croparia.api.element.ElementsEnum;
 import cool.muyucloud.croparia.api.core.recipe.OldInfusorRecipe;
+import cool.muyucloud.croparia.api.element.ElementsEnum;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;

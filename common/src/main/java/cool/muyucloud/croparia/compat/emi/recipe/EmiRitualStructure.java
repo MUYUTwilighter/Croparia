@@ -1,11 +1,11 @@
 package cool.muyucloud.croparia.compat.emi.recipe;
 
+import cool.muyucloud.croparia.api.core.recipe.RitualStructure;
+import cool.muyucloud.croparia.api.core.recipe.predicate.BlockStatePredicate;
 import cool.muyucloud.croparia.compat.emi.widget.Button;
 import cool.muyucloud.croparia.compat.emi.widget.DynamicSlot;
-import cool.muyucloud.croparia.api.core.recipe.RitualStructure;
 import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.util.Constants;
-import cool.muyucloud.croparia.api.core.recipe.predicate.BlockStatePredicate;
 import dev.emi.emi.api.recipe.EmiRecipe;
 import dev.emi.emi.api.recipe.EmiRecipeCategory;
 import dev.emi.emi.api.stack.EmiIngredient;

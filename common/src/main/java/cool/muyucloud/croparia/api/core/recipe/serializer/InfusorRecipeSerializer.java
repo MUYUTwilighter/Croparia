@@ -2,9 +2,9 @@ package cool.muyucloud.croparia.api.core.recipe.serializer;
 
 import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
-import cool.muyucloud.croparia.api.element.ElementsEnum;
 import cool.muyucloud.croparia.api.core.recipe.InfusorRecipe;
 import cool.muyucloud.croparia.api.core.recipe.predicate.GenericIngredient;
+import cool.muyucloud.croparia.api.element.ElementsEnum;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;

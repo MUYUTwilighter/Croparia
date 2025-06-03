@@ -1,8 +1,8 @@
 package cool.muyucloud.croparia.compat.rei.display.category;
 
-import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.compat.rei.display.RitualStructureDisplay;
 import cool.muyucloud.croparia.compat.rei.display.widget.Item2DWidget;
+import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.util.Constants;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
