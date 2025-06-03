@@ -1,5 +1,5 @@
 @enabled=true
-@path=botanypots/recipe/croparia/seed/{name}.json
+@path=botanypots/recipes/croparia/seed/{name}.json
 @dependency=botanypots
 {
   "type": "botanypots:crop",
@@ -7,7 +7,7 @@
     "item": "{seed}"
   },
   "categories": [
-    "crop", "farmland"
+    "dirt", "farmland"
   ],
   "growthTicks": 1200,
   "display": {

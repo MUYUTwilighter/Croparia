@@ -73,6 +73,10 @@ public class CompatCrops {
         "gtceu", "material.gtceu.darmstadtium"
     ));
     @Nullable
+    public static final Crop DRACONIUM = Crops.compat("draconium", "#forge:ingots/draconium", 0x9E9E9E, 3, CropType.CROP, Map.of(
+        "draconicevolution", "item.draconicevolution.draconium_ingot"
+    ));
+    @Nullable
     public static final Crop DESH = Crops.compat("desh", "#forge:ingots/desh", 0x8B0000, 3, CropType.CROP, Map.of(
         "ad_astra", "item.ad_astra.desh_ingot"
     ));

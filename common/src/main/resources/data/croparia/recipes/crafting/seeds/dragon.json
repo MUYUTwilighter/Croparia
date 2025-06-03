@@ -1,0 +1,17 @@
+{
+  "type": "croparia:ritual",
+  "tier": 1,
+  "ingredient": {
+    "id": "minecraft:dragon_egg"
+  },
+  "block": {
+    "block": "croparia:block_crop_star",
+    "properties": {
+      "age": "7"
+    }
+  },
+  "result": {
+    "id": "croparia:seed_crop_dragon",
+    "Count": 1
+  }
+}

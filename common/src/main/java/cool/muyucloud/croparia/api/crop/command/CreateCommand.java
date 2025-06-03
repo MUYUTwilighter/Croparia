@@ -1,7 +1,6 @@
 package cool.muyucloud.croparia.api.crop.command;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonWriter;
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -10,8 +9,9 @@ import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.api.crop.CropFileHandler;
 import cool.muyucloud.croparia.api.crop.CropType;
-import cool.muyucloud.croparia.registry.Crops;
+import cool.muyucloud.croparia.api.crop.RawCrop;
 import cool.muyucloud.croparia.api.crop.item.Croparia;
+import cool.muyucloud.croparia.registry.Crops;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
@@ -24,6 +24,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.FileWriter;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Objects;
 
 public class CreateCommand {
@@ -159,19 +160,8 @@ public class CreateCommand {
         String materialId = Objects.requireNonNull(material.arch$registryName()).toString();
         String translationKey = material.getDescriptionId();
         String dependency = Objects.requireNonNull(material.arch$registryName()).getNamespace();
-        JsonObject root = new JsonObject();
-        root.addProperty("name", name);
-        root.addProperty("material", materialId);
-        root.addProperty("color", color);
-        root.addProperty("tier", tier);
-        root.addProperty("type", type.getModelName());
-        root.addProperty("translationKey", translationKey);
-        JsonArray inner = new JsonArray();
-        inner.add(dependency);
-        JsonArray outer = new JsonArray();
-        outer.add(inner);
-        root.add("dependency", outer);
-        return root;
+        RawCrop crop = new RawCrop(name, materialId, null, type.getModelName(), translationKey, color, tier, null, List.of(List.of(dependency)));
+        return new Gson().toJsonTree(crop).getAsJsonObject();
     }
 
     public static Path dump(JsonObject built) {

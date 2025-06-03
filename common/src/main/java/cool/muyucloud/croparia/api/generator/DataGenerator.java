@@ -92,7 +92,7 @@ public record DataGenerator(
         List<String> crops = Arrays.stream(meta.getOrDefault("crops", "").split(",")).filter(crop -> !crop.isEmpty()).map(String::trim).toList();
         // template
         for (int i = meta.size(); i < lines.length; i++) {
-            String line = lines[i].trim().replace("\r", "");
+            String line = lines[i].replace("\r", "");
             builder.append(line).append("\n");
         }
         if (builder.isEmpty()) throw new RuntimeException("Template is empty");
