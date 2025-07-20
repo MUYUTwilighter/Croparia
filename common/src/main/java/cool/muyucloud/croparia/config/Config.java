@@ -1,16 +1,10 @@
 package cool.muyucloud.croparia.config;
 
-import com.google.gson.Gson;
-import com.google.gson.stream.JsonWriter;
-import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.api.crop.Crop;
-import cool.muyucloud.croparia.api.generator.pack.PackHandler;
 import dev.architectury.platform.Platform;
-import net.minecraft.FileUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.FileWriter;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -97,15 +91,7 @@ public class Config {
     }
 
     public void setPackPath(@NotNull Path packPath) {
-        try {
-            FileUtil.createDirectoriesSafe(packPath);
-            JsonWriter writer = new JsonWriter(new FileWriter(packPath.resolve("pack.mcmeta").toFile()));
-            new Gson().toJson(PackHandler.META, writer);
-            writer.close();
-            this.packPath = packPath;
-        } catch (Throwable t) {
-            CropariaIf.LOGGER.error("Failed to set pack path", t);
-        }
+        this.packPath = packPath;
     }
 
     public @NotNull Path getDumpPath() {

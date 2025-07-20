@@ -35,8 +35,8 @@ public class AlwaysEnabledFileResourcePackProvider extends FolderRepositorySourc
                 Pack.Position.BOTTOM, this.source
             );
             profileAdder.accept(datapackProfile);
-        } catch (Exception e) {
-            LOGGER.warn("Failed to list packs in {}", this.packsDir, e);
+        } catch (Throwable t) {
+            LOGGER.warn("Failed to list packs in {}", this.packsDir, t);
         }
     }
 
