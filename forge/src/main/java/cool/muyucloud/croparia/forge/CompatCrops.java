@@ -77,6 +77,10 @@ public class CompatCrops {
         "ad_astra", "item.ad_astra.desh_ingot"
     ));
     @Nullable
+    public static final Crop DRACONIUM = Crops.compat("draconium", "#forge:ingots/draconium", 0x9E9E9E, 3, CropType.CROP, Map.of(
+        "draconicevolution", "item.draconicevolution.draconium_ingot"
+    ));
+    @Nullable
     public static final Crop ELECANIUM = Crops.compat("elecanium", "#forge:ingots/elecanium", 0x34ACDE, 3, CropType.CROP, Map.of(
         "aoa3", "item.aoa3.elecanium_ingot"
     ));

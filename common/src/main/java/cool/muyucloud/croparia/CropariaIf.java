@@ -14,7 +14,6 @@ import cool.muyucloud.croparia.config.ConfigFileHandler;
 import cool.muyucloud.croparia.registry.*;
 import dev.architectury.event.events.common.LifecycleEvent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.MinecraftServer;
 import org.slf4j.Logger;
 
 public class CropariaIf {
@@ -41,25 +40,21 @@ public class CropariaIf {
         ResourcePackHandler.INSTANCE.registerGenerator(LangGenerator::init);
         LifecycleEvent.SETUP.register(PlacedFeatures::init);
         CommonCommandRoot.register();
+        CropariaIf.LOGGER.debug("Registering common lifecycle events");
+        LifecycleEvent.SERVER_STARTING.register(server -> {
+            ConfigFileHandler.reload(CONFIG);
+            if (CONFIG.getOverride()) {
+                DataPackHandler.INSTANCE.clear();
+            }
+        });
+        LifecycleEvent.SERVER_STARTED.register(server -> {
+            if (CONFIG.getAutoReload()) {
+                LOGGER.info("Croparia IF is performing a datapack reload to apply data generators");
+                server.getCommands().performCommand(server.createCommandSourceStack(), "reload");
+            }
+        });
+        LifecycleEvent.SERVER_STOPPING.register(server -> ConfigFileHandler.save(CONFIG));
         CropariaIf.LOGGER.info("=== Croparia common setup done ===");
-    }
-
-    public static void onServerStarting() {
-        ConfigFileHandler.reload(CONFIG);
-        if (CONFIG.getOverride()) {
-            DataPackHandler.INSTANCE.clear();
-        }
-    }
-
-    public static void onServerStarted(MinecraftServer server) {
-        if (CONFIG.getAutoReload()) {
-            LOGGER.info("Croparia IF is performing a datapack reload to apply data generators");
-            server.getCommands().performCommand(server.createCommandSourceStack(), "reload");
-        }
-    }
-
-    public static void onServerStopping() {
-        ConfigFileHandler.save(CONFIG);
     }
 
     public static ResourceLocation of(String path) {

@@ -1,31 +1,24 @@
 package cool.muyucloud.croparia.api.generator.pack;
 
 import com.google.gson.JsonObject;
-import com.mojang.bridge.game.PackType;
 import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.util.Util;
-import net.minecraft.SharedConstants;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.FolderPackResources;
 import net.minecraft.server.packs.PackResources;
 
 import java.io.File;
-import java.nio.file.Path;
 
 public class ResourcePackHandler extends PackHandler {
-    public static final ResourcePackHandler INSTANCE = new ResourcePackHandler(CropariaIf.CONFIG.getPackPath());
+    public static final ResourcePackHandler INSTANCE = new ResourcePackHandler();
 
-    private final FolderPackResources resourcePack = new FolderPackResources(this.root.toFile());
+    private final FolderPackResources resourcePack = new FolderPackResources(CropariaIf.CONFIG.getPackPath().toFile());
 
     @Override
     public void beforeReload() {
         super.beforeReload();
         CropariaIf.LOGGER.info("Generating resource pack data to file system");
         this.dump();
-    }
-
-    public ResourcePackHandler(Path path) {
-        super(path);
     }
 
     public PackResources getResourcePack() {
@@ -49,7 +42,7 @@ public class ResourcePackHandler extends PackHandler {
 
     @Override
     public void clear() {
-        File file = this.root.resolve("assets").toFile();
+        File file = CropariaIf.CONFIG.getPackPath().resolve("assets").toFile();
         if (file.isDirectory()) {
             CropariaIf.LOGGER.info("Clearing resource pack directory");
             try {
@@ -58,10 +51,5 @@ public class ResourcePackHandler extends PackHandler {
                 CropariaIf.LOGGER.error("Failed to clear resource pack directory", e);
             }
         }
-    }
-
-    @Override
-    protected int getPackVersion() {
-        return SharedConstants.getCurrentVersion().getPackVersion(PackType.RESOURCE);
     }
 }

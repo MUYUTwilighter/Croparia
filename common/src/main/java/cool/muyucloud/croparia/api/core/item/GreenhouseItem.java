@@ -5,6 +5,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AttachedStemBlock;
@@ -23,14 +24,15 @@ public class GreenhouseItem extends BlockItem {
         Player player = context.getPlayer();
         BlockPos pos = context.getClickedPos();
         if (!world.isClientSide && player != null) {
+            ItemStack stack = player.getItemInHand(context.getHand());
             if (world.isEmptyBlock(pos.above()) && (world.getBlockState(pos).getBlock() instanceof CropBlock || world.getBlockState(pos).getBlock() instanceof StemBlock || world.getBlockState(pos).getBlock() instanceof AttachedStemBlock)) {
                 world.setBlockAndUpdate(pos.above(), this.getBlock().defaultBlockState());
-                player.getMainHandItem().shrink(1);
+                stack.shrink(1);
                 return InteractionResult.SUCCESS;
             }
             if (world.isEmptyBlock(pos.above(2)) && world.isEmptyBlock(pos.above())) {
                 world.setBlockAndUpdate(pos.above(2), this.getBlock().defaultBlockState());
-                player.getMainHandItem().shrink(1);
+                stack.shrink(1);
                 return InteractionResult.SUCCESS;
             }
         }
