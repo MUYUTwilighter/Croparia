@@ -1,10 +1,16 @@
 package cool.muyucloud.croparia.config;
 
+import com.google.gson.Gson;
+import com.google.gson.stream.JsonWriter;
+import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.api.crop.Crop;
+import cool.muyucloud.croparia.api.generator.pack.PackHandler;
 import dev.architectury.platform.Platform;
+import net.minecraft.FileUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.FileWriter;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,53 +40,44 @@ public class Config {
         }
     }
 
-    @NotNull
     private Path cropPath;
-    @NotNull
     private Path packPath;
-    @NotNull
     private Path dumpPath;
-    @NotNull
     private Boolean autoReload;
-    @NotNull
     private Boolean override;
-    @NotNull
     private Boolean fruitUse;
-    @NotNull
     private Boolean infusor;
-    @NotNull
     private Boolean ritual;
-    @NotNull
     private List<String> blacklist;
 
     /**
      * Default config
      */
     public Config() {
-        this.cropPath = Platform.getGameFolder().resolve("crops");
-        this.packPath = Platform.getGameFolder().resolve("config/croparia");
-        this.dumpPath = Platform.getGameFolder().resolve("croparia");
-        this.autoReload = true;
-        this.override = true;
-        this.fruitUse = true;
-        this.infusor = true;
-        this.ritual = true;
-        this.blacklist = new ArrayList<>();
+        setCropPath(Platform.getGameFolder().resolve("crops"));
+        setPackPath(Platform.getGameFolder().resolve("config/croparia"));
+        setDumpPath(Platform.getGameFolder().resolve("croparia"));
+        setAutoReload(true);
+        setOverride(true);
+        setFruitUse(true);
+        setInfusor(true);
+        setRitual(true);
+        setBlacklist(new ArrayList<>());
     }
 
     /**
      * Deserialize config
      */
     public Config(RawConfig raw) {
-        this.cropPath = parsePath(raw.cropPath()).orElse(Platform.getGameFolder().resolve("crops"));
-        this.packPath = parsePath(raw.packPath()).orElse(Platform.getGameFolder().resolve("config/croparia"));
-        this.dumpPath = Platform.getGameFolder().resolve("croparia");
-        this.autoReload = raw.autoReload() != null ? raw.autoReload() : true;
-        this.override = raw.override() != null ? raw.override() : true;
-        this.fruitUse = raw.fruitUse() != null ? raw.fruitUse() : true;
-        this.infusor = raw.infusor() != null ? raw.infusor() : true;
-        this.ritual = raw.ritual() != null ? raw.ritual() : true;
-        this.blacklist = raw.blacklist() != null ? raw.blacklist() : new ArrayList<>();
+        this.setCropPath(parsePath(raw.cropPath()).orElse(Platform.getGameFolder().resolve("crops")));
+        this.setPackPath(parsePath(raw.packPath()).orElse(Platform.getGameFolder().resolve("config/croparia")));
+        this.setDumpPath(Platform.getGameFolder().resolve("croparia"));
+        this.setAutoReload(raw.autoReload() != null ? raw.autoReload() : true);
+        this.setOverride(raw.override() != null ? raw.override() : true);
+        this.setFruitUse(raw.fruitUse() != null ? raw.fruitUse() : true);
+        this.setInfusor(raw.infusor() != null ? raw.infusor() : true);
+        this.setRitual(raw.ritual() != null ? raw.ritual() : true);
+        this.setBlacklist(raw.blacklist() != null ? raw.blacklist() : new ArrayList<>());
     }
 
     public RawConfig toRaw() {
@@ -100,7 +97,15 @@ public class Config {
     }
 
     public void setPackPath(@NotNull Path packPath) {
-        this.packPath = packPath;
+        try {
+            FileUtil.createDirectoriesSafe(packPath);
+            JsonWriter writer = new JsonWriter(new FileWriter(packPath.resolve("pack.mcmeta").toFile()));
+            new Gson().toJson(PackHandler.META, writer);
+            writer.close();
+            this.packPath = packPath;
+        } catch (Throwable t) {
+            CropariaIf.LOGGER.error("Failed to set pack path", t);
+        }
     }
 
     public @NotNull Path getDumpPath() {

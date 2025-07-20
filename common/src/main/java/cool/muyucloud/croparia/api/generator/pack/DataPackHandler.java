@@ -6,7 +6,6 @@ import cool.muyucloud.croparia.api.generator.DataGenerator;
 import cool.muyucloud.croparia.kubejs.DataGeneratorCreator;
 import cool.muyucloud.croparia.util.Util;
 import dev.architectury.platform.Platform;
-import net.minecraft.SharedConstants;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.PackSource;
@@ -27,10 +26,10 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 public class DataPackHandler extends PackHandler {
-    public static final DataPackHandler INSTANCE = new DataPackHandler(CropariaIf.CONFIG.getPackPath());
+    public static final DataPackHandler INSTANCE = new DataPackHandler();
 
     private final AlwaysEnabledFileResourcePackProvider datapack = new AlwaysEnabledFileResourcePackProvider(
-        root, PackType.SERVER_DATA, PackSource.BUILT_IN
+        CropariaIf.CONFIG.getPackPath(), PackType.SERVER_DATA, PackSource.BUILT_IN
     );
     private final List<DataGenerator> generators = new LinkedList<>();
 
@@ -46,12 +45,8 @@ public class DataPackHandler extends PackHandler {
     protected void generate() {
         super.generate();
         for (DataGenerator generator : this.generators) {
-            generator.generate(this.root.resolve("data"));
+            generator.generate(CropariaIf.CONFIG.getPackPath().resolve("data"));
         }
-    }
-
-    public DataPackHandler(Path path) {
-        super(path);
     }
 
     public AlwaysEnabledFileResourcePackProvider getDatapack() {
@@ -70,7 +65,7 @@ public class DataPackHandler extends PackHandler {
 
     @Override
     public void clear() {
-        Path path = this.root.resolve("data");
+        Path path = CropariaIf.CONFIG.getPackPath().resolve("data");
         File file = path.toFile();
         if (file.isDirectory()) {
             CropariaIf.LOGGER.info("Clearing data pack directory");
@@ -82,14 +77,9 @@ public class DataPackHandler extends PackHandler {
         }
     }
 
-    @Override
-    protected int getPackVersion() {
-        return SharedConstants.getCurrentVersion().getPackVersion(PackType.SERVER_DATA);
-    }
-
     public void moveBuiltInGenerators() {
         try {
-            Path targetDir = this.root.resolve("generators");
+            Path targetDir = CropariaIf.CONFIG.getPackPath().resolve("generators");
             File targetDirFile = targetDir.toFile();
             if (!targetDirFile.isDirectory() && !targetDirFile.mkdirs()) {
                 throw new IllegalStateException("Failed to establish directory \"%s\"".formatted(targetDir));
@@ -139,7 +129,7 @@ public class DataPackHandler extends PackHandler {
     public void readGenerators() {
         try {
             this.generators.clear();
-            File root = this.root.resolve("generators").toFile();
+            File root = CropariaIf.CONFIG.getPackPath().resolve("generators").toFile();
             if (!root.isDirectory() && !root.mkdirs()) {
                 throw new IllegalStateException("Failed to establish directory \"%s\"".formatted(root));
             }
