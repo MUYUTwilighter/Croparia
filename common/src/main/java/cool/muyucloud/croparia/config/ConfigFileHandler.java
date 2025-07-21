@@ -1,4 +1,4 @@
-package cool.muyucloud.croparia.util.config;
+package cool.muyucloud.croparia.config;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonWriter;

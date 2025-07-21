@@ -3,21 +3,18 @@ package cool.muyucloud.croparia.api.generator.pack;
 import com.google.gson.JsonObject;
 import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.util.Util;
-import net.minecraft.SharedConstants;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackResources;
-import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.PathPackResources;
 import net.minecraft.server.packs.repository.PackSource;
 
 import java.io.File;
-import java.nio.file.Path;
 import java.util.Optional;
 
 public class ResourcePackHandler extends PackHandler {
-    public static final ResourcePackHandler INSTANCE = new ResourcePackHandler(CropariaIf.CONFIG.getPackPath());
+    public static final ResourcePackHandler INSTANCE = new ResourcePackHandler();
 
     private final PathPackResources resourcePack = new PathPackResources(
         new PackLocationInfo(
@@ -25,7 +22,7 @@ public class ResourcePackHandler extends PackHandler {
             Component.literal("croparia"),
             PackSource.BUILT_IN,
             Optional.empty()
-        ), root
+        ), CropariaIf.CONFIG.getPackPath()
     );
 
     @Override
@@ -33,15 +30,6 @@ public class ResourcePackHandler extends PackHandler {
         super.beforeReload();
         CropariaIf.LOGGER.info("Generating resource pack data to file system");
         this.dump();
-    }
-
-    @Override
-    protected int getVersion() {
-        return SharedConstants.getCurrentVersion().getPackVersion(PackType.CLIENT_RESOURCES);
-    }
-
-    public ResourcePackHandler(Path path) {
-        super(path);
     }
 
     public PackResources getResourcePack() {
@@ -65,7 +53,7 @@ public class ResourcePackHandler extends PackHandler {
 
     @Override
     public void clear() {
-        File file = this.root.resolve("assets").toFile();
+        File file =  CropariaIf.CONFIG.getPackPath().resolve("assets").toFile();
         if (file.isDirectory()) {
             CropariaIf.LOGGER.info("Clearing resource pack directory");
             try {

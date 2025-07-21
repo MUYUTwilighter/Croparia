@@ -9,9 +9,9 @@
     "BlockMixin",
     "CropBlockMixin",
     "DropperBlockMixin",
+    "MinecraftServerMixin",
     "PackRepositoryMixin",
     "ReloadableResourceManagerImplMixin",
-    "ReloadCommandMixin",
     "StateHolderMixin"
   ],
   "injectors": {

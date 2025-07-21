@@ -1,7 +1,6 @@
 package cool.muyucloud.croparia;
 
 import com.mojang.logging.LogUtils;
-import cool.muyucloud.croparia.registry.Crops;
 import cool.muyucloud.croparia.api.crop.command.CommonCommandRoot;
 import cool.muyucloud.croparia.api.generator.BlockTagGenerator;
 import cool.muyucloud.croparia.api.generator.ItemTagGenerator;
@@ -10,11 +9,11 @@ import cool.muyucloud.croparia.api.generator.pack.ResourcePackHandler;
 import cool.muyucloud.croparia.client.generator.BlockStateModelGenerator;
 import cool.muyucloud.croparia.client.generator.ItemModelGenerator;
 import cool.muyucloud.croparia.client.generator.LangGenerator;
+import cool.muyucloud.croparia.config.Config;
+import cool.muyucloud.croparia.config.ConfigFileHandler;
 import cool.muyucloud.croparia.registry.*;
-import cool.muyucloud.croparia.util.config.Config;
-import cool.muyucloud.croparia.util.config.ConfigFileHandler;
+import dev.architectury.event.events.common.LifecycleEvent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.MinecraftServer;
 import org.slf4j.Logger;
 
 public class CropariaIf {
@@ -42,24 +41,19 @@ public class CropariaIf {
         ResourcePackHandler.INSTANCE.registerGenerator(LangGenerator::init);
         PlacedFeatures.register();
         CropariaIf.LOGGER.info("=== Croparia common setup done ===");
-    }
-
-    public static void onServerStarting() {
-        ConfigFileHandler.reload(CONFIG);
-        if (CONFIG.getOverride()) {
-            DataPackHandler.INSTANCE.clear();
-        }
-    }
-
-    public static void onServerStarted(MinecraftServer server) {
-        if (CONFIG.getAutoReload()) {
-            LOGGER.info("Croparia IF is performing a datapack reload to apply data generators");
-            server.getCommands().performPrefixedCommand(server.createCommandSourceStack(), "reload");
-        }
-    }
-
-    public static void onServerStopping() {
-        ConfigFileHandler.save(CONFIG);
+        LifecycleEvent.SERVER_STARTING.register(server -> {
+            ConfigFileHandler.reload(CONFIG);
+            if (CONFIG.getOverride()) {
+                DataPackHandler.INSTANCE.clear();
+            }
+        });
+        LifecycleEvent.SERVER_STARTED.register(server -> {
+            if (CONFIG.getAutoReload()) {
+                LOGGER.info("Croparia IF is performing a datapack reload to apply data generators");
+                server.getCommands().performPrefixedCommand(server.createCommandSourceStack(), "reload");
+            }
+        });
+        LifecycleEvent.SERVER_STOPPING.register(server -> ConfigFileHandler.save(CONFIG));
     }
 
     public static ResourceLocation of(String path) {

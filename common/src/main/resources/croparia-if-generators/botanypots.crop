@@ -7,7 +7,7 @@
     "item": "{seed}"
   },
   "categories": [
-    "crop", "farmland"
+    "dirt", "farmland"
   ],
   "growthTicks": 1200,
   "display": {

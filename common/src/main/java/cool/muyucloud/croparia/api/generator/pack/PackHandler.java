@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import cool.muyucloud.croparia.CropariaIf;
+import net.minecraft.SharedConstants;
+import net.minecraft.server.packs.PackType;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -16,40 +18,25 @@ import java.util.Set;
 
 public abstract class PackHandler {
     public static final Gson GSON = new Gson();
+    public static final JsonObject META = new JsonObject();
 
-    protected final Path root;
+    static {
+        JsonObject pack = new JsonObject();
+        pack.addProperty("pack_format", SharedConstants.getCurrentVersion().getPackVersion(PackType.SERVER_DATA));
+        pack.addProperty("description", "Croparia mandatory pack in %s.\nPlease do not modify data / assets folders!".formatted(CropariaIf.CONFIG.getPackPath()));
+        META.add("pack", pack);
+    }
+
     protected final Map<Path, JsonElement> cache = new HashMap<>();
     protected final Set<Runnable> GENERATORS = new HashSet<>();
 
     public void beforeReload() {
-        try {
-            File file = this.root.resolve("pack.mcmeta").toFile();
-            this.writeJson(this.generateMetaFile(), file);
-        } catch (Exception e) {
-            throw new AssertionError("Failed to generate pack.mcmeta", e);
-        }
         if (CropariaIf.CONFIG.getOverride()) {
             this.clear();
         }
     }
 
     public abstract void clear();
-
-    public PackHandler(Path path) {
-        this.root = path;
-    }
-
-    protected abstract int getVersion();
-
-    protected JsonObject generateMetaFile() {
-        JsonObject root = new JsonObject();
-        JsonObject pack = new JsonObject();
-        pack.addProperty("pack_format", this.getVersion());
-        pack.addProperty("description",
-            "Croparia mandatory pack in %s.\nPlease do not modify data / assets folders!".formatted(this.root));
-        root.add("pack", pack);
-        return root;
-    }
 
     protected void writeJson(JsonElement element, File file) throws IOException {
         if (!file.getParentFile().exists() && !file.getParentFile().mkdirs()) {
@@ -75,7 +62,7 @@ public abstract class PackHandler {
     }
 
     public void addFile(String relative, JsonElement element) {
-        Path path = this.root.resolve(relative);
+        Path path = CropariaIf.CONFIG.getPackPath().resolve(relative);
         this.cache.put(path, element);
     }
 

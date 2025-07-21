@@ -1,7 +1,6 @@
 package cool.muyucloud.croparia.api.generator.pack;
 
 import com.mojang.logging.LogUtils;
-import net.minecraft.FileUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackSelectionConfig;
@@ -12,7 +11,6 @@ import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import org.slf4j.Logger;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -33,7 +31,6 @@ public class AlwaysEnabledFileResourcePackProvider extends FolderRepositorySourc
     @Override
     public void loadPacks(Consumer<Pack> profileAdder) {
         try {
-            FileUtil.createDirectoriesSafe(this.packsDir);
             String fileName = nameFromPath(this.packsDir);
             Pack.ResourcesSupplier packFactory = new PathPackResources.PathResourcesSupplier(this.packsDir);
             PackLocationInfo info = new PackLocationInfo("file/" + fileName, Component.literal(fileName), this.source, Optional.empty());
@@ -42,8 +39,8 @@ public class AlwaysEnabledFileResourcePackProvider extends FolderRepositorySourc
             if (datapackProfile != null) {
                 profileAdder.accept(datapackProfile);
             }
-        } catch (IOException e) {
-            LOGGER.warn("Failed to list packs in {}", this.packsDir, e);
+        } catch (Throwable t) {
+            LOGGER.warn("Failed to list packs in {}", this.packsDir, t);
         }
     }
 

@@ -30,6 +30,24 @@
           ]
         }
       ]
+    },
+    {
+      "rolls": 0.00,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "{seed}",
+          "conditions": [
+            {
+              "condition": "minecraft:block_state_property",
+              "block": "{crop_block}",
+              "properties": {
+                "age": "7"
+              }
+            }
+          ]
+        }
+      ]
     }
   ]
 }
