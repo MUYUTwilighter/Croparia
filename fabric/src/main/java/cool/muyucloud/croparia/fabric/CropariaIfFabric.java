@@ -4,7 +4,6 @@ import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.registry.PlacedFeatures;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.levelgen.GenerationStep;
 
@@ -13,9 +12,6 @@ public class CropariaIfFabric implements ModInitializer {
     public void onInitialize() {
         CompatCrops.init();
         CropariaIf.init();
-        ServerLifecycleEvents.SERVER_STARTING.register(server -> CropariaIf.onServerStarting());
-        ServerLifecycleEvents.SERVER_STARTED.register(CropariaIf::onServerStarted);
-        ServerLifecycleEvents.SERVER_STOPPING.register(server -> CropariaIf.onServerStopping());
         BiomeModifications.addFeature(context -> context.canGenerateIn(LevelStem.OVERWORLD), GenerationStep.Decoration.UNDERGROUND_ORES, PlacedFeatures.ELEMATILIUS_ORE.unwrapKey().orElseThrow());
     }
 }
