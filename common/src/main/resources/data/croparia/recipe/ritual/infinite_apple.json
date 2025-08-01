@@ -5,7 +5,7 @@
     "id": "minecraft:enchanted_golden_apple"
   },
   "block": {
-    "block": "minecraft:nether_wart_block"
+    "id": "minecraft:nether_wart_block"
   },
   "result": {
     "id": "croparia:infinite_apple",

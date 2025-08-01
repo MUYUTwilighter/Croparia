@@ -1,38 +1,37 @@
 package cool.muyucloud.croparia.compat.rei.display;
 
-import cool.muyucloud.croparia.api.core.recipe.DisplayableRecipe;
+import cool.muyucloud.croparia.api.recipe.DisplayableRecipe;
 import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.display.Display;
 import me.shedaniel.rei.api.common.display.DisplaySerializer;
 import me.shedaniel.rei.api.common.entry.EntryIngredient;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 public class SimpleDisplay<R extends DisplayableRecipe<?>> implements Display {
     private final R recipe;
     private final ResourceLocation id;
-    private final SimpleSerializer<R> serializer;
+    private final SimpleCategory<R> serializer;
     private final transient Map<String, EntryIngredient> inputEntries;
     private final transient Map<String, EntryIngredient> outputEntries;
 
-//    @SuppressWarnings("unchecked")
-//    public SimpleDisplay(RecipeHolder<? extends DisplayableRecipe<?>> recipe, ResourceLocation id, SimpleSerializer<? extends DisplayableRecipe<?>> serializer) throws ClassCastException {
-//        this((R) recipe.value(), id, (SimpleSerializer<R>) serializer);
-//    }
-
-    public SimpleDisplay(RecipeHolder<R> holder, SimpleSerializer<R> serializer) {
-        this(holder.value(), holder.id().location(), serializer);
+    public SimpleDisplay(RecipeHolder<R> holder, SimpleCategory<R> serializer) {
+        this.recipe = holder.value();
+        this.id = holder.id().location();
+        this.serializer = serializer;
+        this.inputEntries = serializer.inputEntries(holder);
+        this.outputEntries = serializer.outputEntries(holder);
     }
 
-    public SimpleDisplay(R recipe, ResourceLocation id, SimpleSerializer<R> serializer) {
-        this.recipe = recipe;
-        this.id = id;
-        this.serializer = serializer;
-        this.inputEntries = serializer.parseInput(recipe);
-        this.outputEntries = serializer.parseOutput(recipe);
+    public SimpleDisplay(R recipe, ResourceLocation id, SimpleCategory<R> serializer) {
+        this(new RecipeHolder<>(ResourceKey.create(Registries.RECIPE, id), recipe), serializer);
     }
 
     public R getRecipe() {
@@ -63,7 +62,7 @@ public class SimpleDisplay<R extends DisplayableRecipe<?>> implements Display {
 
     @Override
     public CategoryIdentifier<?> getCategoryIdentifier() {
-        return serializer.getId();
+        return serializer.getCategoryIdentifier();
     }
 
     @Override

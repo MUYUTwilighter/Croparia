@@ -1,31 +1,25 @@
 package cool.muyucloud.croparia.api.core.recipe;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import cool.muyucloud.croparia.api.core.recipe.container.RitualContainer;
-import cool.muyucloud.croparia.api.core.recipe.entry.BlockInput;
-import cool.muyucloud.croparia.api.core.recipe.entry.ItemInput;
-import cool.muyucloud.croparia.api.core.recipe.entry.ItemOutput;
-import cool.muyucloud.croparia.api.core.recipe.predicate.BlockStatePredicate;
-import cool.muyucloud.croparia.api.core.recipe.predicate.GenericIngredient;
+import cool.muyucloud.croparia.api.recipe.DisplayableRecipe;
+import cool.muyucloud.croparia.api.recipe.TypedSerializer;
+import cool.muyucloud.croparia.api.recipe.container.RitualContainer;
+import cool.muyucloud.croparia.api.recipe.entry.BlockInput;
+import cool.muyucloud.croparia.api.recipe.entry.ItemInput;
+import cool.muyucloud.croparia.api.recipe.entry.ItemOutput;
 import cool.muyucloud.croparia.registry.CropariaItems;
-import cool.muyucloud.croparia.util.CodecUtil;
+import cool.muyucloud.croparia.util.supplier.LazySupplier;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.*;
-import net.minecraft.world.item.crafting.display.RecipeDisplay;
+import net.minecraft.world.item.crafting.PlacementInfo;
 import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -59,11 +53,11 @@ public class RitualRecipe implements DisplayableRecipe<RitualContainer> {
             return new RitualRecipe(tier, BlockInput.create(Objects.requireNonNull(block)), new ItemInput(stack), new ItemOutput(stack));
         })
     );
-    public static final List<SlotDisplay.ItemSlotDisplay> STATIONS = List.of(
+    public static final LazySupplier<List<SlotDisplay.ItemSlotDisplay>> STATIONS = LazySupplier.of(() -> List.of(
         new SlotDisplay.ItemSlotDisplay(CropariaItems.RITUAL_STAND.get()),
         new SlotDisplay.ItemSlotDisplay(CropariaItems.RITUAL_STAND_2.get()),
         new SlotDisplay.ItemSlotDisplay(CropariaItems.RITUAL_STAND_3.get())
-    );
+    ));
 
     private final int tier;
     @NotNull
@@ -147,7 +141,7 @@ public class RitualRecipe implements DisplayableRecipe<RitualContainer> {
     @Override
     @NotNull
     public SlotDisplay.ItemSlotDisplay craftingStation() {
-        return STATIONS.get(this.getTier() - 1);
+        return STATIONS.get().get(this.getTier() - 1);
     }
 
     @Override

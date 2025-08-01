@@ -29,7 +29,7 @@ public class CropFruit extends Item implements CropAccess {
             return InteractionResult.PASS;
         }
         if (!context.getLevel().isClientSide) {
-            Item material = crop.getMaterialItem();
+            Item material = getCrop().getResult();
             context.getLevel().addFreshEntity(new ItemEntity(
                 context.getLevel(),
                 context.getClickedPos().getX() + 0.5,
@@ -45,7 +45,7 @@ public class CropFruit extends Item implements CropAccess {
 
     @Override
     public @NotNull Component getName(ItemStack itemStack) {
-        MutableComponent cropName = Component.translatable(this.crop.getTranslationKey());
+        MutableComponent cropName = Component.translatable(this.getCrop().getTranslationKey());
         return Component.translatable("item." + CropariaIf.MOD_ID + ".crop.fruit", cropName);
     }
 

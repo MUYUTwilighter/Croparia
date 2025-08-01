@@ -1,138 +1,150 @@
 package cool.muyucloud.croparia.api.generator;
 
+import com.google.common.collect.ImmutableList;
+import com.google.gson.JsonObject;
+import com.mojang.realmsclient.util.JsonUtils;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import cool.muyucloud.croparia.CropariaIf;
-import cool.muyucloud.croparia.api.crop.Crop;
-import cool.muyucloud.croparia.registry.Crops;
-import dev.architectury.platform.Platform;
-import org.jetbrains.annotations.NotNull;
+import cool.muyucloud.croparia.api.generator.pack.PackHandler;
+import cool.muyucloud.croparia.api.generator.util.*;
+import cool.muyucloud.croparia.util.CodecUtil;
+import cool.muyucloud.croparia.util.supplier.LazySupplier;
+import net.minecraft.resources.ResourceLocation;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
-public record DataGenerator(boolean enabled, @NotNull String path, @NotNull String dependency,
-                            @NotNull Collection<String> crops, @NotNull String template) {
-    public void generate(@NotNull Path root) {
-        if (!this.enabled() || !Platform.isModLoaded(dependency)) {
-            return;
-        }
-        if (this.crops.isEmpty()) {
-            Crops.forEachCrop(crop -> this.generate(crop, root));
+public class DataGenerator<E extends DgElement> {
+    private static final Map<ResourceLocation, MapCodec<? extends DataGenerator<?>>> REGISTRY = new HashMap<>();
+
+    public static <G extends DataGenerator<? extends DgElement>, C extends MapCodec<G>> C register(ResourceLocation id, C codec) {
+        REGISTRY.put(id, codec);
+        return codec;
+    }
+
+    public static DataGenerator<?> read(File file) throws IOException {
+        if (file.getName().endsWith(".cdg")) {
+            JsonObject json = DgCompiler.compile(file);
+            String rawType = JsonUtils.getStringOr("type", json, "croparia:generator");
+            rawType = rawType == null ? "croparia:generator" : rawType;
+            ResourceLocation id = ResourceLocation.tryParse(rawType);
+            id = id == null ? CropariaIf.of("generator") : id;
+            return CodecUtil.decodeJson(json, REGISTRY.get(id));
         } else {
-            crops.forEach(name -> {
-                Crop crop = Crops.forName(name);
-                if (crop != null) {
-                    this.generate(crop, root);
-                } else {
-                    CropariaIf.LOGGER.error("Crop \"{}\" not found for generator with path \"{}\"", name, this.path());
-                }
-            });
+            return null;
         }
     }
 
-    private void generate(@NotNull Crop crop, @NotNull Path root) {
-        Path path = root.resolve(replace(this.path(), crop));
-        File parent = path.getParent().toFile();
-        if (!parent.isDirectory() && !parent.mkdirs()) {
-            CropariaIf.LOGGER.error("Failed to establish data pack directory, path: \"%s\"".formatted(parent.getAbsolutePath()));
-        }
-        String replaced = replace(this.template(), crop);
-        try (FileWriter writer = new FileWriter(path.toFile())) {
-            writer.write(replaced);
-        } catch (Throwable e) {
-            CropariaIf.LOGGER.error("Failed to generate data for crop \"%s\", template path: \"%s\"".formatted(crop.getName(), this.path()), e);
-        }
+    public static final MapCodec<DataGenerator<?>> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+        Codec.BOOL.optionalFieldOf("enabled").forGetter(DataGenerator::optionalEnabled),
+        Dependencies.CODEC.optionalFieldOf("dependencies").forGetter(DataGenerator::optionalDependencies),
+        ResourceLocation.CODEC.listOf().optionalFieldOf("whitelist").forGetter(DataGenerator::optionalWhitelist),
+        Codec.STRING.fieldOf("path").forGetter(DataGenerator::getPath),
+        DgIterable.CODEC.fieldOf("iterable").forGetter(DataGenerator::getIterable),
+        Codec.STRING.fieldOf("template").forGetter(DataGenerator::getTemplate)
+    ).apply(instance, (enabled, dependencies, whitelist, path, iterable, template) -> new DataGenerator<DgElement>(
+        enabled.orElse(true), dependencies.orElse(Dependencies.EMPTY), whitelist.orElse(List.of()), path, iterable, template
+    )));
+
+    private final boolean enabled;
+    private final Dependencies dependencies;
+    private final List<ResourceLocation> whitelist;
+    private final String path;
+    private final DgIterable<? extends E> iterable;
+    private final String template;
+    private final transient LazySupplier<Boolean> load = LazySupplier.of(() -> this.getDependencies().available());
+
+    public DataGenerator(
+        boolean enabled, Dependencies dependencies, List<ResourceLocation> whitelist, String path, DgIterable<? extends E> iterable, String template
+    ) {
+        this.enabled = enabled;
+        this.dependencies = dependencies;
+        this.whitelist = whitelist instanceof ImmutableList<ResourceLocation> immutable ? immutable : ImmutableList.copyOf(whitelist);
+        this.path = path;
+        this.iterable = iterable;
+        this.template = template;
     }
 
-    public static @NotNull Optional<DataGenerator> read(@NotNull Path file) {
-        try {
-            return Optional.of(read(Files.readString(file)));
-        } catch (Throwable e) {
-            CropariaIf.LOGGER.error("Invalid data generator file \"%s\"".formatted(file), e);
-        }
-        return Optional.empty();
+    public boolean isEnabled() {
+        return enabled;
     }
 
-    /**
-     * Read data generator definition from string.<br/>
-     * <p>
-     * Format:<br/>
-     * <pre>
-     * {@code
-     * @enabled=true
-     * @path=data/croparia/recipes/crafting/material/{name}.json
-     * {
-     *     "type": "minecraft:crafting_shapeless",
-     *     "ingredients": [
-     *         {
-     *             "item": "{fruit}"
-     *         }
-     *     ],
-     *     "result": {
-     *         "id": "{result}",
-     *         "count": 2
-     *     }
-     * }
-     * }
-     * </pre>
-     */
-    public static @NotNull DataGenerator read(@NotNull String content) throws RuntimeException {
-        String[] lines = content.split("\n");
-        StringBuilder builder = new StringBuilder();
-        Map<String, String> meta = readMeta(content);
-        boolean enabled = Boolean.parseBoolean(meta.getOrDefault("enabled", "true"));
-        String path = meta.getOrDefault("path", "");
-        String dependency = meta.getOrDefault("dependency", "minecraft");
-        List<String> crops = Arrays.stream(meta.getOrDefault("crops", "").split(",")).filter(crop -> !crop.isEmpty()).map(String::trim).toList();
-        // template
-        for (int i = meta.size(); i < lines.length; i++) {
-            String line = lines[i].trim().replace("\r", "");
-            builder.append(line).append("\n");
-        }
-        if (builder.isEmpty()) throw new RuntimeException("Template is empty");
-        String template = builder.toString();
-        return new DataGenerator(enabled, path, dependency, crops, template);
+    public Optional<Boolean> optionalEnabled() {
+        return this.isEnabled() ? Optional.empty() : Optional.of(false);
     }
 
-    public static Map<String, String> readMeta(String content) {
-        Map<String, String> map = new HashMap<>();
-        for (String line : content.split("\n")) {
-            line = line.trim();
-            if (line.startsWith("@")) {
-                String[] split = line.split("=");
-                if (split.length == 2) {
-                    map.put(split[0].substring(1), split[1].replace("\r", "").replace("\n", ""));
-                }
-            } else {
-                break;
-            }
-        }
-        return map;
+    public Dependencies getDependencies() {
+        return dependencies;
     }
 
-    @Override
-    public @NotNull String toString() {
-        return "@enabled=" + this.enabled() + "\n" + "@path=" + this.path() + "\n" + this.template();
+    public Optional<Dependencies> optionalDependencies() {
+        return this.getDependencies().isEmpty() ? Optional.empty() : Optional.of(this.getDependencies());
     }
 
-    public @NotNull String replace(@NotNull String template, @NotNull Crop crop) {
-        for (Map.Entry<Pattern, PlaceHolder> entry : crop.placeholders().entrySet()) {
-            Pattern pattern = entry.getKey();
-            Matcher matcher = pattern.matcher(template);
-            while (matcher.find()) {
-                String matched = matcher.group();
-                template = template.replace(matched, entry.getValue().process(matched));
-            }
-        }
+    public List<ResourceLocation> getWhitelist() {
+        return whitelist;
+    }
+
+    public Optional<List<ResourceLocation>> optionalWhitelist() {
+        return this.getWhitelist().isEmpty() ? Optional.empty() : Optional.of(this.getWhitelist());
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public String getPath(E element) {
+        return replace(this.getPath(), element);
+    }
+
+    public DgIterable<? extends E> getIterable() {
+        return iterable;
+    }
+
+    public String getTemplate() {
         return template;
     }
 
-    @Override
-    public int hashCode() {
-        return this.path().hashCode();
+    public String getTemplate(E element) {
+        return replace(this.getTemplate(), element);
+    }
+
+    public boolean shouldLoad() {
+        return load.get();
+    }
+
+    public void generate(PackHandler pack) {
+        if (isEnabled() && shouldLoad()) {
+            if (this.getWhitelist().isEmpty()) {
+                for (E element : this.getIterable()) {
+                    if (element.shouldLoad()) {
+                        this.generate(element, pack);
+                    }
+                }
+            } else {
+                for (ResourceLocation id : this.getWhitelist()) {
+                    this.getIterable().forName(id).ifPresent(e -> this.generate(e, pack));
+                }
+            }
+        }
+    }
+
+    protected void generate(E element, PackHandler pack) {
+        String relative = replace(this.getPath(), element);
+        String replaced = replace(this.getTemplate(), element);
+        pack.addFile(relative, replaced);
+    }
+
+    protected String replace(String template, E element) {
+        for (Placeholder<? extends DgElement> placeholder : element.placeholders()) {
+            template = placeholder.mapAll(template, element);
+        }
+        return template;
     }
 }

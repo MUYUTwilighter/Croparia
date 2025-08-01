@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:bucket",
+    "croparia:elemental_fire"
+  ],
+  "result": {
+    "id": "minecraft:lava_bucket"
+  }
+}

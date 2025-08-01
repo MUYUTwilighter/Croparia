@@ -1,12 +1,13 @@
 package cool.muyucloud.croparia.client.command;
 
-import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import cool.muyucloud.croparia.registry.Crops;
+import cool.muyucloud.croparia.util.ResourceLocationArgument;
 import dev.architectury.event.events.client.ClientCommandRegistrationEvent;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 
 import static cool.muyucloud.croparia.api.crop.command.CropCommand.reportForPlayer;
 import static cool.muyucloud.croparia.api.crop.command.CropCommand.reportSingular;
@@ -14,14 +15,14 @@ import static cool.muyucloud.croparia.api.crop.command.CropCommand.reportSingula
 public class CropCommand {
     private static final LiteralArgumentBuilder<ClientCommandRegistrationEvent.ClientCommandSourceStack> CROP =
         LiteralArgumentBuilder.literal("crop");
-    private static final RequiredArgumentBuilder<ClientCommandRegistrationEvent.ClientCommandSourceStack, String> NAME =
-        RequiredArgumentBuilder.argument("name", StringArgumentType.greedyString());
+    private static final RequiredArgumentBuilder<ClientCommandRegistrationEvent.ClientCommandSourceStack, ResourceLocation> NAME =
+        RequiredArgumentBuilder.argument("id", ResourceLocationArgument.id());
 
     public static LiteralArgumentBuilder<ClientCommandRegistrationEvent.ClientCommandSourceStack> build() {
         NAME.suggests((context, builder) -> Crops.cropSuggestions(builder));
         NAME.executes(context -> {
             ClientCommandRegistrationEvent.ClientCommandSourceStack source = context.getSource();
-            return reportSingular(StringArgumentType.getString(context, "name"), source::arch$sendSuccess, source::arch$sendFailure);
+            return reportSingular(ResourceLocationArgument.getId(context, "name"), source::arch$sendSuccess, source::arch$sendFailure);
         });
         CROP.executes(context -> {
             ClientCommandRegistrationEvent.ClientCommandSourceStack source = context.getSource();

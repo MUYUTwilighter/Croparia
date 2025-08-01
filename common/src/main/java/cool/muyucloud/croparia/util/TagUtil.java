@@ -6,6 +6,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
 import org.jetbrains.annotations.NotNull;
@@ -45,6 +46,10 @@ public class TagUtil {
 
     public static <T> Iterable<Holder<T>> forEntries(TagKey<T> tag) {
         return getRegistry(tag.registry()).map(registry -> registry.getTagOrEmpty(tag)).orElse(List.of());
+    }
+
+    public static <T> Iterable<Holder<T>> forEntries(ResourceKey<? extends Registry<T>> registry, ResourceLocation id) {
+        return forEntries(TagKey.create(registry, id));
     }
 
     public static <T> boolean isIn(@NotNull TagKey<T> tagKey, @NotNull T entry) {

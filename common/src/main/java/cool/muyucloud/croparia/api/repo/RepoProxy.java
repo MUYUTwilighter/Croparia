@@ -1,6 +1,7 @@
 package cool.muyucloud.croparia.api.repo;
 
 import cool.muyucloud.croparia.api.resource.TypeToken;
+import cool.muyucloud.croparia.api.resource.TypedResource;
 import cool.muyucloud.croparia.api.resource.type.FluidSpec;
 import cool.muyucloud.croparia.api.resource.type.ItemSpec;
 import dev.architectury.injectables.annotations.ExpectPlatform;
@@ -14,7 +15,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
  * <b>DO NOT INSTANTIATE THIS CLASS UNLESS YOU KNOW WHAT YOU ARE DOING</b>
  * </p>
  */
-public abstract class RepoProxy<T extends TypedResource> implements Repo<T> {
+public abstract class RepoProxy<T extends TypedResource<?>> implements Repo<T> {
     /**
      * Create a fluid interface from your customized {@link Repo}. <br>
      * You should only create {@link RepoProxy} from this method,

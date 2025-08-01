@@ -5,7 +5,7 @@
     "id": "croparia:elematilius"
   },
   "block": {
-    "block": "minecraft:amethyst_block"
+    "id": "minecraft:amethyst_block"
   },
   "result": {
     "id": "croparia:elemental_earth",

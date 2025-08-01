@@ -3,10 +3,10 @@
   "element": "elemental",
   "ingredient": {
     "id": "minecraft:stone",
-    "count": 1
+    "amount": 1
   },
   "result": {
     "id": "croparia:elemental_stone",
-    "Count": 1
+    "amount": 1
   }
 }

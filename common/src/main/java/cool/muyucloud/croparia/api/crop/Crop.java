@@ -1,198 +1,97 @@
 package cool.muyucloud.croparia.api.crop;
 
-import com.google.gson.JsonObject;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import cool.muyucloud.croparia.CropariaIf;
-import cool.muyucloud.croparia.annotation.PostGen;
 import cool.muyucloud.croparia.api.crop.block.CropariaCropBlock;
-import cool.muyucloud.croparia.api.generator.PlaceHolder;
+import cool.muyucloud.croparia.api.crop.item.CropFruit;
+import cool.muyucloud.croparia.api.crop.item.CropSeed;
+import cool.muyucloud.croparia.api.crop.util.Color;
+import cool.muyucloud.croparia.api.crop.util.CropDependencies;
+import cool.muyucloud.croparia.api.crop.util.Material;
+import cool.muyucloud.croparia.api.crop.util.TierAccess;
+import cool.muyucloud.croparia.api.generator.util.Placeholder;
 import cool.muyucloud.croparia.registry.CropariaItems;
-import cool.muyucloud.croparia.util.BiOptional;
+import cool.muyucloud.croparia.util.AnyCodec;
 import cool.muyucloud.croparia.util.Util;
-import net.minecraft.core.Holder;
-import net.minecraft.core.registries.BuiltInRegistries;
+import cool.muyucloud.croparia.util.supplier.HolderSupplier;
+import cool.muyucloud.croparia.util.supplier.LazySupplier;
+import cool.muyucloud.croparia.util.supplier.OnLoadSupplier;
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @SuppressWarnings("unused")
-public class Crop {
-    @NotNull
-    private final String name;
-    @NotNull
-    private final ResourceLocation material;
-    @NotNull
-    private final CropType type;
-    @NotNull
-    private final String translationKey;
-    @NotNull
-    private final Map<String, String> translations;
-    private final int color;
-    private final int tier;
-    private final boolean tag;
-    @NotNull
-    private transient final ResourceLocation blockId;
-    @NotNull
-    private transient final ResourceLocation seedId;
-    @NotNull
-    private transient final ResourceLocation fruitId;
+public class Crop extends AbstractCrop implements TierAccess {
+    public static final Set<String> PRESET_TYPES = new HashSet<>();
+    public static final String ANIMAL = addType("animal");
+    public static final String CROP = addType("crop");
+    public static final String FOOD = addType("food");
+    public static final String MONSTER = addType("monster");
+    public static final String NATURE = addType("nature");
+    public static final String DEFAULT_TYPE = CROP;
 
-    private Crop(@NotNull RawCrop raw) throws RuntimeException {
-        if (raw.name() == null || Util.allNull(raw.material(), raw.tag())) {
-            throw new IllegalArgumentException("Crop name and material must be specified");
-        }
-        this.name = parseName(raw.name());
-        this.material = parseMaterialId(raw.material(), raw.tag());
-        this.type = parseType(raw.type());
-        this.translationKey = raw.translationKey() == null ? "crop.croparia." + this.name : raw.translationKey();
-        if (raw.translationKey() == null || raw.isTranslationSpecified()) {
-            this.translations = parseTranslation(raw.translations(), parseDefaultTranslation(this.name));
-        } else {
-            this.translations = Collections.emptyMap();
-        }
-        this.color = raw.color().startsWith("0x") ? Integer.parseInt(raw.color().substring(2), 16) : Integer.parseInt(raw.color());
-        this.tier = parseTier(raw.tier());
-        this.tag = raw.material().trim().startsWith("#");
-        this.blockId = CropariaIf.of("block_crop_" + this.name);
-        this.seedId = CropariaIf.of("seed_crop_" + this.name);
-        this.fruitId = CropariaIf.of("fruit_" + this.name);
+    public static String addType(String type) {
+        PRESET_TYPES.add(type);
+        return type;
     }
 
-    private Crop(@NotNull String name, @NotNull String material, int color, int tier, @Nullable CropType type, @Nullable Map<String, String> translations, @Nullable String translationKey) throws RuntimeException {
-        this.name = parseName(name);
-        this.material = parseMaterialId(material, null);
-        this.color = color;
-        this.tier = parseTier(tier);
-        this.type = type == null ? CropType.CROP : type;
-        this.translationKey = translationKey == null ? "crop.croparia." + this.name : translationKey;
-        if (translationKey == null || (translations != null && !translations.isEmpty())) {
-            this.translations = parseTranslation(translations, parseDefaultTranslation(this.name));
-        } else {
-            this.translations = Collections.emptyMap();
-        }
-        this.tag = material.trim().startsWith("#");
-        this.blockId = CropariaIf.of("block_crop_" + this.name);
-        this.seedId = CropariaIf.of("seed_crop_" + this.name);
-        this.fruitId = CropariaIf.of("fruit_" + this.name);
-    }
+    public static final MapCodec<Crop> CODEC_NEW = RecordCodecBuilder.mapCodec(instance -> instance.group(
+        ResourceLocation.CODEC.fieldOf("id").forGetter(Crop::getKey),
+        Material.CODEC.fieldOf("material").forGetter(Crop::getMaterial),
+        Color.CODEC.fieldOf("color").forGetter(Crop::getColor),
+        Codec.INT.fieldOf("tier").forGetter(Crop::getTier),
+        Codec.STRING.optionalFieldOf("type").forGetter(Crop::getTypeOptional),
+        Codec.unboundedMap(Codec.STRING, Codec.STRING).optionalFieldOf("translations").forGetter(Crop::getTranslationsOptional),
+        CropDependencies.CODEC_ANY.optionalFieldOf("dependencies").forGetter(Crop::getDependenciesOptional)
+    ).apply(instance, (name, material, color, tier, type, translations, dependencies) -> new Crop(name, material, color, tier,
+        type.orElse(null), translations.orElse(null), dependencies.orElse(null))
+    ));
+    public static final MapCodec<Crop> CODEC_OLD = RecordCodecBuilder.mapCodec(instance -> instance.group(
+        ResourceLocation.CODEC.fieldOf("name").forGetter(Crop::getKey),
+        Codec.STRING.fieldOf("tag").forGetter(Crop::getMaterialName),
+        Color.CODEC.fieldOf("color").forGetter(Crop::getColor),
+        Codec.INT.fieldOf("tier").forGetter(Crop::getTier),
+        Codec.STRING.optionalFieldOf("type").forGetter(Crop::getTypeOptional),
+        Codec.unboundedMap(Codec.STRING, Codec.STRING).optionalFieldOf("translations").forGetter(Crop::getTranslationsOptional),
+        CropDependencies.CODEC_ANY.optionalFieldOf("dependencies").forGetter(Crop::getDependenciesOptional)
+    ).apply(instance,
+        (name, material, color, tier, type, translations, dependencies)
+            -> new Crop(name, new Material("#" + material), color, tier, type.orElse(DEFAULT_TYPE),
+            translations.orElse(null), dependencies.orElse(null))
+    ));
+    public static final AnyCodec<Crop> CODEC = new AnyCodec<>(CODEC_NEW.codec(), CODEC_OLD.codec());
 
-    public static Optional<Crop> of(@NotNull RawCrop raw) {
-        try {
-            return Optional.of(new Crop(raw));
-        } catch (Throwable e) {
-            CropariaIf.LOGGER.error("Failed to create crop %s".formatted(raw.name()), e);
-            return Optional.empty();
-        }
-    }
+    public static final Placeholder<Crop> COLOR = Placeholder.of("\\{color}", Crop::getColorDec);
+    public static final Placeholder<Crop> COLOR_HEX = Placeholder.of("\\{color_hex}", Crop::getColorHex);
+    public static final Placeholder<Crop> TYPE = Placeholder.of("\\{type}", Crop::getType);
+    public static final Placeholder<Crop> TIER = Placeholder.of("\\{tier}", crop -> String.valueOf(crop.getTier()));
+    public static final Placeholder<Crop> SEED = Placeholder.of("\\{seed}", crop -> crop.getSeedId().toString());
+    public static final Placeholder<Crop> SEED_PATH = Placeholder.of("\\{seed_path}", crop -> crop.getSeedId().getPath());
+    public static final Placeholder<Crop> FRUIT = Placeholder.of("\\{fruit}", crop -> crop.getFruitId().toString());
+    public static final Placeholder<Crop> FRUIT_PATH = Placeholder.of("\\{fruit_path}", crop -> crop.getFruitId().getPath());
+    public static final Placeholder<Crop> CROP_BLOCK = Placeholder.of("\\{crop_block}", crop -> crop.getBlockId().toString());
+    public static final Placeholder<Crop> CROP_BLOCK_PATH = Placeholder.of("\\{crop_block_path}", crop -> crop.getBlockId().getPath());
+    public static final Placeholder<Crop> RESULT = Placeholder.of("\\{result}", crop -> Objects.requireNonNull(crop.getResult().arch$registryName()).toString());
+    public static final Placeholder<Crop> RESULT_PATH = Placeholder.of("\\{result_path}", crop -> Objects.requireNonNull(crop.getResult().arch$registryName()).getPath());
+    public static final Placeholder<Crop> RESULT_COUNT = Placeholder.of("\\{result_count\\.(\\d+)}", ((matcher, crop) -> {
+        int count = Integer.parseInt(matcher.group(1));
+        return String.valueOf(Math.min(crop.getResult().getDefaultMaxStackSize(), count));
+    }));
+    public static final Placeholder<Crop> CROPARIA = Placeholder.of("\\{croparia}", crop -> CropariaItems.getCroparia(crop.getTier()).getId().toString());
+    public static final Placeholder<Crop> CROPARIA_PATH = Placeholder.of("\\{croparia_path}", crop -> CropariaItems.getCroparia(crop.getTier()).getId().getPath());
 
-    public static Optional<Crop> create(@NotNull String name, @NotNull String material, int color, int tier, @Nullable CropType type, @Nullable String translationKey, @Nullable Map<String, String> translations) {
-        try {
-            return Optional.of(new Crop(name, material, color, tier, type, translations, translationKey));
-        } catch (Throwable e) {
-            CropariaIf.LOGGER.error("Failed to create crop %s".formatted(name), e);
-            return Optional.empty();
-        }
-    }
-
-    public static Optional<Crop> create(@NotNull String name, @NotNull String material, int color, int tier, @Nullable CropType type) {
-        try {
-            return Optional.of(new Crop(name, material, color, tier, type, null, null));
-        } catch (Throwable e) {
-            CropariaIf.LOGGER.error("Failed to create crop %s".formatted(name), e);
-            return Optional.empty();
-        }
-    }
-
-    public Optional<Crop> forModified(@Nullable String material, @Nullable Integer color, @Nullable Integer tier, @Nullable CropType type, @Nullable Map<String, String> translations, @Nullable String translationKey) {
-        material = material == null ? this.taggableMaterial() : material;
-        color = color == null ? this.getColor() : color;
-        tier = tier == null ? this.getTier() : tier;
-        type = type == null ? this.getType() : type;
-        HashMap<String, String> mergedTranslations = new HashMap<>(this.getTranslations());
-        if (translations != null) {
-            mergedTranslations.putAll(translations);
-        }
-        translationKey = translationKey == null ? this.getTranslationKey() : translationKey;
-        return Crop.create(this.getName(), material, color, tier, type, translationKey, mergedTranslations);
-    }
-
-    @NotNull
-    public JsonObject toJson() {
-        JsonObject root = new JsonObject();
-        root.addProperty("name", this.name);
-        root.addProperty("material", (this.tag ? "#" : "") + this.material);
-        root.addProperty("color", this.serializeColor());
-        root.addProperty("tier", this.tier);
-        root.addProperty("type", this.type.getModelName());
-        root.addProperty("translationKey", this.translationKey);
-        JsonObject translations = new JsonObject();
-        this.translations.forEach(translations::addProperty);
-        root.add("translations", translations);
-        return root;
-    }
-
-    protected static int parseTier(int tier) {
-        if (tier < CropariaItems.leastTier() || tier > CropariaItems.mostTier()) {
-            CropariaIf.LOGGER.warn("Crop tier {} is out of range, defaulting to 1", tier);
-            return 1;
-        }
-        return tier;
-    }
-
-    @NotNull
-    protected static String parseName(@NotNull String name) {
-        name = name.trim().toLowerCase();
-        ResourceLocation test = ResourceLocation.tryParse(name);
-        if (test == null) {
-            throw new IllegalArgumentException("Invalid crop name: " + name);
-        } else {
-            return name;
-        }
-    }
-
-    @NotNull
-    protected static ResourceLocation parseMaterialId(@Nullable String material, @Nullable String tag) {
-        AtomicReference<ResourceLocation> id = new AtomicReference<>();
-        BiOptional.of(material, tag).ifEither(l -> {
-            if (l.startsWith("#")) {
-                l = l.substring(1);
-            }
-            id.set(ResourceLocation.parse(l));
-        }, r -> id.set(ResourceLocation.parse(r)), () -> {
-            throw new IllegalArgumentException("Ambiguous material, should declare either material or tag");
-        });
-        return id.get();
-    }
-
-    @NotNull
-    protected static CropType parseType(@Nullable String type) {
-        return type == null ? CropType.CROP : CropType.valueOf(type.trim().toUpperCase());
-    }
-
-    @NotNull
-    protected static Map<String, String> parseTranslation(@Nullable Map<String, String> translation, @NotNull String defaultTranslation) {
-        Map<String, String> map = new HashMap<>();
-        if (translation != null) {
-            for (Map.Entry<String, String> entry : translation.entrySet()) {
-                String key = entry.getKey().trim().toLowerCase();
-                String value = entry.getValue();
-                map.put(key, value);
-            }
-        }
-        map.putIfAbsent("en_us", defaultTranslation);
-        return map;
-    }
-
-    @NotNull
-    protected static String parseDefaultTranslation(@NotNull String name) {
+    public static String defaultTranslation(ResourceLocation id) {
+        String name = id.getPath();
         name = name.replaceAll("_", " ").trim();
         StringBuilder builder = new StringBuilder();
         for (String token : name.split(" ")) {
@@ -201,179 +100,225 @@ public class Crop {
         return builder.toString().trim();
     }
 
-    @NotNull
-    public CropType getType() {
-        return type;
+    public static String defaultTranslationKey(ResourceLocation id) {
+        return "crop.%s.%s".formatted(id.getNamespace(), id.getPath());
     }
 
     @NotNull
-    public Item getMaterialItem() {
-        if (this.tag) {
-            TagKey<Item> tag = TagKey.create(Registries.ITEM, this.material);
-            Iterable<Holder<Item>> set = BuiltInRegistries.ITEM.getTagOrEmpty(tag);
-            if (set.iterator().hasNext()) {
-                return set.iterator().next().value();
+    private final ResourceLocation id;
+    @NotNull
+    private final Material material;
+    @NotNull
+    private final Color color;
+    private final int tier;
+    @NotNull
+    private final String type;
+    @NotNull
+    private final ImmutableMap<String, String> translations;
+    @NotNull
+    private final CropDependencies dependencies;
+    @NotNull
+    private final transient HolderSupplier<CropariaCropBlock> block;
+    @NotNull
+    private final transient HolderSupplier<CropSeed> seed;
+    @NotNull
+    private final transient HolderSupplier<CropFruit> fruit;
+    private transient final String defaultTranslation;
+    private transient final String defaultTranslationKey;
+    private transient final LazySupplier<Boolean> load = LazySupplier.of(
+        () -> this.getDependencies().shouldLoad() && CropariaIf.CONFIG.isCropValid(this.getKey())
+    );
+    private transient final OnLoadSupplier<List<Item>> items = OnLoadSupplier.of(() -> {
+        List<Item> items = new ArrayList<>();
+        for (Item item : this.getMaterial().getItems()) {
+            if (CropariaIf.CONFIG.isModValid(Objects.requireNonNull(item.arch$registryName()).getNamespace())) {
+                items.add(item);
             }
-        } else {
-            return BuiltInRegistries.ITEM.getValue(this.material);
         }
-        return Items.AIR;
+        if (items.isEmpty()) items.add(Items.AIR);
+        return ImmutableList.copyOf(items);
+    });
+
+    public Crop(
+        @NotNull ResourceLocation id, @NotNull Material material, @NotNull Color color, int tier, @Nullable String type,
+        @Nullable Map<String, String> translations, @Nullable CropDependencies dependencies
+    ) {
+        this.id = id;
+        this.material = material;
+        this.color = color;
+        this.tier = tier;
+        this.defaultTranslationKey = defaultTranslationKey(id);
+        this.dependencies = dependencies == null || dependencies.isEmpty() ? new CropDependencies(CropariaIf.MOD_ID, this.getDefaultTranslationKey()) : dependencies;
+        this.defaultTranslation = defaultTranslation(id);
+        ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
+        this.translations = builder.put("en_us", this.getDefaultTranslation()).putAll(translations == null ? Collections.emptyMap() : translations).build();
+        this.type = type == null ? DEFAULT_TYPE : type;
+        this.block = HolderSupplier.of(() -> new CropariaCropBlock(this), Util.formatId("crop_block_%s", this.getKey()), Registries.BLOCK);
+        this.seed = HolderSupplier.of(() -> new CropSeed(this), Util.formatId("crop_seed_%s", this.getKey()), Registries.ITEM);
+        this.fruit = HolderSupplier.of(() -> new CropFruit(this), Util.formatId("fruit_%s", this.getKey()), Registries.ITEM);
     }
 
-    @NotNull
-    public String getTranslationKey() {
-        return translationKey;
+    @Override
+    public @NotNull ResourceLocation getKey() {
+        return this.id;
     }
 
-    public String serializeColor() {
-        String hex = Integer.toHexString(this.color).toUpperCase();
-        hex = "0".repeat(6 - hex.length()) + hex;
-        return "0x" + hex;
+    @Override
+    public @NotNull Material getMaterial() {
+        return material;
     }
 
-    public int getColor() {
+    public DataComponentPatch getPatch() {
+        return this.getMaterial().getComponents();
+    }
+
+    public @NotNull Color getColor() {
         return color;
     }
 
+    public int getColorInt() {
+        return this.getColor().getValue();
+    }
+
+    public String getColorDec() {
+        return this.getColor().toDecString();
+    }
+
+    public String getColorHex() {
+        return this.getColor().toHexString();
+    }
+
+    public String getColorForm() {
+        return this.getColor().toString();
+    }
+
+    @Override
     public int getTier() {
         return tier;
     }
 
-    @NotNull
-    public String getName() {
-        return name;
+    @Override
+    public Collection<String> getLangs() {
+        return this.getTranslations().keySet();
     }
 
-    @NotNull
-    public ResourceLocation getBlockId() {
-        return blockId;
+    public @NotNull String getTranslationKey() {
+        return dependencies.getKey();
     }
 
-    @NotNull
-    public CropariaCropBlock getCropBlock() {
-        return (CropariaCropBlock) BuiltInRegistries.BLOCK.getValue(blockId);
+    public Optional<String> getTranslationKeyOptional() {
+        if (this.getTranslationKey().equals(defaultTranslationKey)) {
+            return Optional.empty();
+        } else {
+            return Optional.of(this.getTranslationKey());
+        }
     }
 
-    @NotNull
-    public ResourceLocation getSeedId() {
-        return seedId;
-    }
-
-    @NotNull
-    public Item getSeedItem() {
-        return BuiltInRegistries.ITEM.getValue(seedId);
-    }
-
-    @NotNull
-    public ResourceLocation getFruitId() {
-        return fruitId;
-    }
-
-    @NotNull
-    public Item getFruitItem() {
-        return BuiltInRegistries.ITEM.getValue(fruitId);
-    }
-
-    @NotNull
-    public Set<String> availableLangs() {
-        return Set.copyOf(translations.keySet());
-    }
-
-    @NotNull
-    public String translate(@Nullable String lang) {
-        return translations.getOrDefault(lang, translations.get("en_us"));
-    }
-
-    public String taggableMaterial() {
-        return this.tag ? "#" + this.material : this.material.toString();
-    }
-
-    @NotNull
-    public ResourceLocation getMaterial() {
-        return material;
-    }
-
-    public boolean isTag() {
-        return tag;
-    }
-
-    protected Map<String, String> getTranslations() {
-        return Map.copyOf(translations);
+    public @NotNull ImmutableMap<String, String> getTranslations() {
+        return translations;
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(this.name);
+    @Nullable
+    public String translate(String lang) {
+        return this.getTranslations().get(lang);
+    }
+
+    public Optional<Map<String, String>> getTranslationsOptional() {
+        Map<String, String> translations = this.getTranslations();
+        if (translations.size() == 1 && translations.containsValue(this.getDefaultTranslationKey())) {
+            return Optional.empty();
+        } else {
+            return Optional.of(translations);
+        }
+    }
+
+    public @NotNull String getType() {
+        return type;
+    }
+
+    public Optional<String> getTypeOptional() {
+        return this.getType().equals(DEFAULT_TYPE) ? Optional.empty() : Optional.of(this.getType());
+    }
+
+    public @NotNull CropDependencies getDependencies() {
+        return this.dependencies;
+    }
+
+    public Optional<CropDependencies> getDependenciesOptional() {
+        return this.getDependencies().size() <= 1 && this.getDependencies().getKey(CropariaIf.MOD_ID) != null ? Optional.empty() :
+            Optional.of(this.getDependencies());
+    }
+
+    public @NotNull ResourceLocation getBlockId() {
+        return block.getId();
+    }
+
+    public Optional<CropariaCropBlock> getCropBlock() {
+        return block.toOptional();
+    }
+
+    public @NotNull ResourceLocation getSeedId() {
+        return seed.getId();
+    }
+
+    public Optional<CropSeed> getCropSeed() {
+        return seed.toOptional();
+    }
+
+    public @NotNull ResourceLocation getFruitId() {
+        return fruit.getId();
+    }
+
+    public Optional<CropFruit> getCropFruit() {
+        return fruit.toOptional();
+    }
+
+    public String getDefaultTranslation() {
+        return defaultTranslation;
+    }
+
+    public String getDefaultTranslationKey() {
+        return defaultTranslationKey;
     }
 
     @Override
-    public String toString() {
-        return "Crop{" + "name='" + name + '\'' + ", material=" + material + ", type=" + type + ", translationKey='" + translationKey + '\'' + ", translations=" + translations + ", color=" + color + ", tier=" + tier + ", tag=" + tag + '}';
+    public void buildPlaceholders(Collection<Placeholder<?>> set) {
+        super.buildPlaceholders(set);
+        set.add(COLOR);
+        set.add(COLOR_HEX);
+        set.add(CROPARIA);
+        set.add(CROPARIA_PATH);
+        set.add(CROP_BLOCK);
+        set.add(CROP_BLOCK_PATH);
+        set.add(FRUIT);
+        set.add(FRUIT_PATH);
+        set.add(RESULT);
+        set.add(RESULT_COUNT);
+        set.add(RESULT_PATH);
+        set.add(SEED);
+        set.add(SEED_PATH);
+        set.add(TYPE);
+        set.add(TIER);
     }
 
-    private static final Pattern NAME = Pattern.compile("\\{name}");
-    private static final Pattern MATERIAL = Pattern.compile("\\{material}");
-    private static final Pattern MATERIAL_PATH = Pattern.compile("\\{material_path}");
-    private static final Pattern MATERIAL_TYPE = Pattern.compile("\\{material_type}");
-    private static final Pattern MATERIAL_TAGGABLE = Pattern.compile("\\{material_taggable}");
-    private static final Pattern COLOR = Pattern.compile("\\{color}");
-    private static final Pattern COLOR_HEX = Pattern.compile("\\{color_hex}");
-    private static final Pattern TYPE = Pattern.compile("\\{type}");
-    private static final Pattern TIER = Pattern.compile("\\{tier}");
-    private static final Pattern SEED = Pattern.compile("\\{seed}");
-    private static final Pattern SEED_PATH = Pattern.compile("\\{seed_path}");
-    private static final Pattern FRUIT = Pattern.compile("\\{fruit}");
-    private static final Pattern FRUIT_PATH = Pattern.compile("\\{fruit_path}");
-    private static final Pattern CROP_BLOCK = Pattern.compile("\\{crop_block}");
-    private static final Pattern CROP_BLOCK_PATH = Pattern.compile("\\{crop_block_path}");
-    private static final Pattern RESULT = Pattern.compile("\\{result}");
-    private static final Pattern RESULT_PATH = Pattern.compile("\\{result_path}");
-    private static final Pattern TRANSLATION_KEY = Pattern.compile("\\{translation_key}");
-    private static final Pattern RESULT_COUNT = Pattern.compile("\\{result_count\\.(\\d+)}");
-    private static final Pattern CROPARIA = Pattern.compile("\\{croparia}");
-    private static final Pattern CROPARIA_PATH = Pattern.compile("\\{croparia_path}");
-    private static final Pattern TRANSLATIONS = Pattern.compile("\\{translations\\.([^}]+)}");
+    @Override
+    public boolean shouldLoad() {
+        return load.get();
+    }
 
-    @PostGen
-    public Map<Pattern, PlaceHolder> placeholders() {
-        Map<Pattern, PlaceHolder> map = new HashMap<>();
-        map.put(COLOR, placeholder -> Integer.toString(this.color));
-        map.put(COLOR_HEX, placeholder -> Integer.toHexString(this.color));
-        map.put(CROPARIA, placeholder -> CropariaItems.getCroparia(this.getTier()).getId().toString());
-        map.put(CROPARIA_PATH, placeholder -> CropariaItems.getCroparia(this.getTier()).getId().getPath());
-        map.put(CROP_BLOCK, placeholder -> this.getBlockId().toString());
-        map.put(CROP_BLOCK_PATH, placeholder -> this.getBlockId().getPath());
-        map.put(FRUIT, placeholder -> this.getFruitId().toString());
-        map.put(FRUIT_PATH, placeholder -> this.getFruitId().getPath());
-        map.put(MATERIAL, placeholder -> this.getMaterial().toString());
-        map.put(MATERIAL_PATH, placeholder -> this.getMaterial().getPath());
-        map.put(MATERIAL_TYPE, placeholder -> this.isTag() ? "tag" : "item");
-        map.put(MATERIAL_TAGGABLE, placeholder -> this.taggableMaterial());
-        map.put(NAME, placeholder -> this.name);
-        map.put(SEED, placeholder -> this.getSeedId().toString());
-        map.put(SEED_PATH, placeholder -> this.getSeedId().getPath());
-        map.put(RESULT, placeholder -> Objects.requireNonNull(this.getMaterialItem().arch$registryName()).toString());
-        map.put(RESULT_COUNT, placeholder -> {
-            Matcher matcher = RESULT_COUNT.matcher(placeholder);
-            if (matcher.find()) {
-                int count = Integer.parseInt(matcher.group(1));
-                return String.valueOf(Math.min(this.getMaterialItem().getDefaultMaxStackSize(), count));
-            } else {
-                throw new RuntimeException("Invalid result count placeholder: " + placeholder);
-            }
-        });
-        map.put(RESULT_PATH, placeholder -> Objects.requireNonNull(this.getMaterialItem().arch$registryName()).getPath());
-        map.put(TIER, placeholder -> Integer.toString(this.tier));
-        map.put(TYPE, placeholder -> this.type.getModelName());
-        map.put(TRANSLATION_KEY, placeholder -> this.translationKey);
-        map.put(TRANSLATIONS, placeholder -> {
-            Matcher matcher = TRANSLATIONS.matcher(placeholder);
-            if (matcher.find()) {
-                return this.translate(matcher.group(1));
-            } else {
-                throw new RuntimeException("Invalid translation placeholder: " + placeholder);
-            }
-        });
-        return map;
+    public Item getResult() {
+        return this.getResults().getFirst();
+    }
+
+    public List<Item> getResults() {
+        return items.get();
+    }
+
+    @Override
+    public void onRegister() {
+        this.block.tryRegister();
+        this.seed.tryRegister();
+        this.fruit.tryRegister();
     }
 }

@@ -24,7 +24,7 @@ public record ContainerRepo(@NotNull Container container) implements Repo<ItemSp
 
     @Override
     public ItemSpec resourceFor(int i) {
-        return ItemSpec.from(this.container().getItem(i));
+        return ItemSpec.of(this.container().getItem(i));
     }
 
     @Override
@@ -33,7 +33,7 @@ public record ContainerRepo(@NotNull Container container) implements Repo<ItemSp
             return 0;
         }
         ItemStack stored = this.container().getItem(i);
-        if (resource.isSameAs(stored)) {
+        if (resource.is(stored)) {
             return Math.min(amount, stored.getCount());
         } else {
             return 0;
@@ -54,7 +54,7 @@ public record ContainerRepo(@NotNull Container container) implements Repo<ItemSp
             return 0;
         }
         ItemStack stored = this.container().getItem(i);
-        if (resource.isSameAs(stored) || stored.isEmpty()) {
+        if (resource.is(stored) || stored.isEmpty()) {
             int accepted = (int) Math.min(this.capacityFor(i, resource) - stored.getCount(), amount);
             return Math.max(accepted, 0);
         } else {
@@ -68,7 +68,7 @@ public record ContainerRepo(@NotNull Container container) implements Repo<ItemSp
             return 0;
         }
         ItemStack stored = this.container().getItem(i);
-        if (resource.isSameAs(stored) || stored.isEmpty()) {
+        if (resource.is(stored) || stored.isEmpty()) {
             int accepted = (int) Math.min(this.capacityFor(i, resource) - stored.getCount(), amount);
             this.container().setItem(i, resource.createStack(Math.max(accepted, 0) + stored.getCount()));
             return accepted;
@@ -85,7 +85,7 @@ public record ContainerRepo(@NotNull Container container) implements Repo<ItemSp
     @Override
     public long amountFor(int i, ItemSpec resource) {
         ItemStack stored = this.container().getItem(i);
-        if (resource.isSameAs(stored)) {
+        if (resource.is(stored)) {
             return stored.getCount();
         } else {
             return 0;

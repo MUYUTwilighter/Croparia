@@ -79,7 +79,7 @@ modrinth {
     projectId = "croparia-if"
     versionName = archives_name + "-fabric-" + mod_version
     versionNumber = mod_version
-    versionType = mod_version.contains("pre") ? "beta" : "release"
+    versionType = mod_version.endsWith("a") || mod_version.endsWith("alpha") ? "alpha" : mod_version.endsWith("pre") ? "beta" : "release"
     uploadFile = remapJar
     gameVersions = [minecraft_version]
     loaders = ["fabric"]
@@ -94,7 +94,7 @@ tasks.register('curseforge', TaskPublishCurseForge) {
     apiToken = System.getenv("CURSEFORGE_MOD_PUBLISH")
     def mainFile = upload('971004', remapJar)
     mainFile.displayName = archives_name + "-fabric-" + mod_version
-    mainFile.releaseType = mod_version.contains("pre") ? "beta" : "release"
+    mainFile.releaseType = mod_version.endsWith("a") || mod_version.endsWith("alpha") ? "alpha" : mod_version.endsWith("pre") ? "beta" : "release"
     mainFile.changelog = rootProject.file("changelog.md").text
     mainFile.changelogType = 'markdown'
     mainFile.gameVersions = [minecraft_version]

@@ -3,24 +3,25 @@ package cool.muyucloud.croparia.client.command;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
-import cool.muyucloud.croparia.api.crop.CropType;
+import cool.muyucloud.croparia.api.crop.Crop;
+import cool.muyucloud.croparia.util.ResourceLocationArgument;
 import dev.architectury.event.events.client.ClientCommandRegistrationEvent;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 
 import static cool.muyucloud.croparia.api.crop.command.CreateCommand.create;
 
 public class CreateCommand {
-    private static final LiteralArgumentBuilder<ClientCommandRegistrationEvent.ClientCommandSourceStack> CREATE = LiteralArgumentBuilder.literal("create");
-    private static final RequiredArgumentBuilder<ClientCommandRegistrationEvent.ClientCommandSourceStack, String> TYPE = RequiredArgumentBuilder.argument(
-        "type", StringArgumentType.word()
-    );
-    private static final RequiredArgumentBuilder<ClientCommandRegistrationEvent.ClientCommandSourceStack, String> COLOR = RequiredArgumentBuilder.argument(
-        "color", StringArgumentType.word()
-    );
-    private static final RequiredArgumentBuilder<ClientCommandRegistrationEvent.ClientCommandSourceStack, String> NAME = RequiredArgumentBuilder.argument(
-        "name", StringArgumentType.greedyString()
-    );
-    private static final LiteralArgumentBuilder<ClientCommandRegistrationEvent.ClientCommandSourceStack> REPLACE = LiteralArgumentBuilder.literal("replace");
+    private static final LiteralArgumentBuilder<ClientCommandRegistrationEvent.ClientCommandSourceStack> CREATE =
+        LiteralArgumentBuilder.literal("create");
+    private static final RequiredArgumentBuilder<ClientCommandRegistrationEvent.ClientCommandSourceStack, String> TYPE =
+        RequiredArgumentBuilder.argument("type", StringArgumentType.word());
+    private static final RequiredArgumentBuilder<ClientCommandRegistrationEvent.ClientCommandSourceStack, String> COLOR =
+        RequiredArgumentBuilder.argument("color", StringArgumentType.word());
+    private static final RequiredArgumentBuilder<ClientCommandRegistrationEvent.ClientCommandSourceStack, ResourceLocation> NAME =
+        RequiredArgumentBuilder.argument("id", ResourceLocationArgument.id());
+    private static final LiteralArgumentBuilder<ClientCommandRegistrationEvent.ClientCommandSourceStack> REPLACE =
+        LiteralArgumentBuilder.literal("replace");
 
     static {
         CREATE.requires(s -> s.hasPermission(2));
@@ -29,7 +30,7 @@ public class CreateCommand {
                 return create(
                     context.getSource().arch$getPlayer(),
                     null,
-                    CropType.CROP.getModelName(),
+                    Crop.DEFAULT_TYPE,
                     StringArgumentType.getString(context, "color"),
                     (msg, broadcast) -> context.getSource().arch$sendSuccess(msg, broadcast),
                     context.getSource()::arch$sendFailure,
@@ -41,8 +42,8 @@ public class CreateCommand {
             }
         });
         TYPE.suggests((context, builder) -> {
-            for (CropType type : CropType.values()) {
-                builder.suggest(type.getModelName());
+            for (String type : Crop.PRESET_TYPES) {
+                builder.suggest(type);
             }
             return builder.buildFuture();
         }).executes(context -> create(
@@ -56,7 +57,7 @@ public class CreateCommand {
         ));
         NAME.executes(context -> create(
             context.getSource().arch$getPlayer(),
-            StringArgumentType.getString(context, "name"),
+            ResourceLocationArgument.getId(context, "id"),
             StringArgumentType.getString(context, "type"),
             StringArgumentType.getString(context, "color"),
             (msg, broadcast) -> context.getSource().arch$sendSuccess(msg, broadcast),
@@ -65,7 +66,7 @@ public class CreateCommand {
         ));
         REPLACE.executes(context -> create(
             context.getSource().arch$getPlayer(),
-            StringArgumentType.getString(context, "name"),
+            ResourceLocationArgument.getId(context, "id"),
             StringArgumentType.getString(context, "type"),
             StringArgumentType.getString(context, "color"),
             (msg, broadcast) -> context.getSource().arch$sendSuccess(msg, broadcast),

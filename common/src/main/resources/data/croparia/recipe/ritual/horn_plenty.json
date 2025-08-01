@@ -5,7 +5,7 @@
     "id": "minecraft:goat_horn"
   },
   "block": {
-    "block": "minecraft:cake",
+    "id": "minecraft:cake",
     "properties": {
       "bites": "0"
     }

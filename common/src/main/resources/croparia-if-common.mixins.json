@@ -9,9 +9,9 @@
     "BlockMixin",
     "CropBlockMixin",
     "DropperBlockMixin",
+    "ItemStackMixin",
     "PackRepositoryMixin",
     "ReloadableResourceManagerImplMixin",
-    "ReloadCommandMixin",
     "StateHolderMixin"
   ],
   "injectors": {

@@ -3,6 +3,7 @@ package cool.muyucloud.croparia.api.repo;
 import com.mojang.logging.LogUtils;
 import cool.muyucloud.croparia.api.resource.TypeToken;
 import cool.muyucloud.croparia.api.resource.TypeTokenAccess;
+import cool.muyucloud.croparia.api.resource.TypedResource;
 import org.slf4j.Logger;
 
 /**

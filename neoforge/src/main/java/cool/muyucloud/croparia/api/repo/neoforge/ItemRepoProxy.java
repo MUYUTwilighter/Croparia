@@ -26,9 +26,9 @@ public class ItemRepoProxy extends RepoProxy<ItemSpec> implements IItemHandler {
     public @NotNull ItemStack insertItem(int i, @NotNull ItemStack input, boolean simulate) {
         long accepted;
         if (simulate) {
-            accepted = this.simAccept(i, ItemSpec.from(input), input.getCount());
+            accepted = this.simAccept(i, ItemSpec.of(input), input.getCount());
         } else {
-            accepted = this.accept(i, ItemSpec.from(input), input.getCount());
+            accepted = this.accept(i, ItemSpec.of(input), input.getCount());
         }
         input = input.copy();
         input.shrink((int) accepted);
@@ -57,6 +57,6 @@ public class ItemRepoProxy extends RepoProxy<ItemSpec> implements IItemHandler {
 
     @Override
     public boolean isItemValid(int i, @NotNull ItemStack input) {
-        return this.simAccept(i, ItemSpec.from(input), input.getCount()) >= input.getCount();
+        return this.simAccept(i, ItemSpec.of(input), input.getCount()) >= input.getCount();
     }
 }

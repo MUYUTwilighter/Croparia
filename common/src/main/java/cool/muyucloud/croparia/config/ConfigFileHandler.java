@@ -49,6 +49,6 @@ public class ConfigFileHandler {
         config.setFruitUse(newConfig.getFruitUse());
         config.setInfusor(newConfig.getInfusor());
         config.setRitual(newConfig.getRitual());
-        config.setBlacklist(newConfig.getBlacklist());
+        config.setBlackList(newConfig.getBlacklist());
     }
 }

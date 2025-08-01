@@ -1,8 +1,10 @@
 package cool.muyucloud.croparia.compat.rei.category;
 
 import cool.muyucloud.croparia.api.core.recipe.InfusorRecipe;
+import cool.muyucloud.croparia.api.recipe.TypedSerializer;
+import cool.muyucloud.croparia.compat.rei.Util;
+import cool.muyucloud.croparia.compat.rei.display.SimpleCategory;
 import cool.muyucloud.croparia.compat.rei.display.SimpleDisplay;
-import cool.muyucloud.croparia.compat.rei.display.SimpleSerializer;
 import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.util.Constants;
 import me.shedaniel.math.Point;
@@ -10,33 +12,37 @@ import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.gui.Renderer;
 import me.shedaniel.rei.api.client.gui.widgets.Widget;
 import me.shedaniel.rei.api.client.gui.widgets.Widgets;
-import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
-import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.entry.EntryIngredient;
 import me.shedaniel.rei.api.common.entry.EntryStack;
 import me.shedaniel.rei.api.common.entry.type.VanillaEntryTypes;
+import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 
 import java.util.List;
+import java.util.Map;
 
-public class InfusorRecipeDisplayCategory implements DisplayCategory<SimpleDisplay<InfusorRecipe>> {
-    public static final EntryStack<ItemStack> INFUSOR = EntryStack.of(VanillaEntryTypes.ITEM, CropariaItems.INFUSOR.get().getDefaultInstance());
-    public static final SimpleSerializer<InfusorRecipe> SERIALIZER = new SimpleSerializer<>(
-        InfusorRecipe.class,
-        InfusorRecipe.TYPED_SERIALIZER,
-        (recipe, map) -> {
-            map.put("element", EntryIngredient.of(EntryStack.of(VanillaEntryTypes.ITEM, recipe.getPotion().getDefaultInstance()).tooltip(Constants.ELEM_INFUSE_TOOLTIP)));
-            map.put("ingredient", EntryIngredient.of(recipe.getIngredient().getDisplayStacks().stream().map(stack -> EntryStack.of(VanillaEntryTypes.ITEM, stack).tooltip(Constants.ITEM_DROP_TOOLTIP)).toList()));
-        },
-        (recipe, map) -> {
-            map.put("result", EntryIngredient.of(EntryStack.of(VanillaEntryTypes.ITEM, recipe.getResult().getDisplayStack())));
-        }
+public class InfusorRecipeDisplayCategory extends SimpleCategory<InfusorRecipe> {
+    public static final InfusorRecipeDisplayCategory INSTANCE = new InfusorRecipeDisplayCategory(
+        InfusorRecipe.class, InfusorRecipe.TYPED_SERIALIZER
     );
 
+    public InfusorRecipeDisplayCategory(Class<InfusorRecipe> recipeClass, TypedSerializer<InfusorRecipe> recipeSerializer) {
+        super(recipeClass, recipeSerializer);
+    }
+
     @Override
-    public CategoryIdentifier<SimpleDisplay<InfusorRecipe>> getCategoryIdentifier() {
-        return SERIALIZER.getId();
+    public Map<String, EntryIngredient> inputEntries(RecipeHolder<InfusorRecipe> holder) {
+        InfusorRecipe recipe = holder.value();
+        return Map.of(
+            "element", Util.toIngredient(recipe.getPotion(), stack -> stack.tooltip(Constants.ELEM_INFUSE_TOOLTIP)),
+            "ingredient", Util.toIngredient(recipe.getIngredient(), stack -> stack.tooltip(Constants.ITEM_DROP_TOOLTIP))
+        );
+    }
+
+    @Override
+    public Map<String, EntryIngredient> outputEntries(RecipeHolder<InfusorRecipe> holder) {
+        return Map.of("result", Util.toIngredient(holder.value().getResult()));
     }
 
     @Override
@@ -54,7 +60,7 @@ public class InfusorRecipeDisplayCategory implements DisplayCategory<SimpleDispl
         Widget background = Widgets.createRecipeBase(bounds);
         Widget infusor = Widgets.createSlot(
             new Point(bounds.getCenterX() - 8, bounds.getCenterY() + 8)
-        ).entry(INFUSOR).disableBackground().markInput().disableHighlight();
+        ).entry(EntryStacks.of(CropariaItems.INFUSOR.get())).disableBackground().markInput().disableHighlight();
         Widget ingredient = Widgets.createSlot(
             new Point(bounds.getCenterX() - 8, bounds.getCenterY() - 24)
         ).entries(display.getInput("ingredient")).markInput().disableBackground();

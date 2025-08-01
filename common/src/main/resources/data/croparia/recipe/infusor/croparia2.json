@@ -3,10 +3,10 @@
   "element": "earth",
   "ingredient": {
     "id": "croparia:croparia",
-    "count": 2
+    "amount": 2
   },
   "result": {
     "id": "croparia:croparia2",
-    "Count": 1
+    "amount": 1
   }
 }

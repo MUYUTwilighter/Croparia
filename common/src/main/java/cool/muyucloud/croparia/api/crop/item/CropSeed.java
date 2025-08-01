@@ -22,13 +22,13 @@ public class CropSeed extends BlockItem implements CropAccess {
     public Crop crop;
 
     public CropSeed(Crop crop) {
-        super(crop.getCropBlock(), new Properties().arch$tab(Tabs.CROPS).setId(ResourceKey.create(Registries.ITEM, crop.getSeedId())));
+        super(crop.getCropBlock().orElseThrow(), new Properties().arch$tab(Tabs.CROPS).setId(ResourceKey.create(Registries.ITEM, crop.getSeedId())));
         this.crop = crop;
     }
 
     @Override
     public @NotNull Component getName(ItemStack itemStack) {
-        MutableComponent cropName = Component.translatable(this.crop.getTranslationKey());
+        MutableComponent cropName = Component.translatable(this.getCrop().getTranslationKey());
         return Component.translatable("item." + CropariaIf.MOD_ID + ".crop.seed", cropName);
     }
 

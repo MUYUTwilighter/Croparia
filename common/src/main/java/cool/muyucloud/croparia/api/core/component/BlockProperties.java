@@ -9,6 +9,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.component.TooltipProvider;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -29,6 +30,10 @@ public class BlockProperties implements TooltipProvider {
         DataComponentType.Builder<BlockProperties> builder = DataComponentType.builder();
         builder.persistent(CODEC).networkSynchronized(STREAM_CODEC);
         TYPE = builder.build();
+    }
+
+    public static BlockProperties create(@NotNull BlockState state) {
+        return create(((StateHolderAccess) state).croparia_if$getProperties());
     }
 
     @NotNull
@@ -72,5 +77,17 @@ public class BlockProperties implements TooltipProvider {
             }
         }
         return true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof BlockProperties that)) return false;
+        return Objects.equals(properties, that.properties);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(properties);
     }
 }

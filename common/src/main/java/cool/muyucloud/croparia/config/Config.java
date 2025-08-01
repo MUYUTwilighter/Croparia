@@ -1,6 +1,7 @@
 package cool.muyucloud.croparia.config;
 
 import dev.architectury.platform.Platform;
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -51,21 +52,23 @@ public class Config {
     @NotNull
     private Boolean ritual;
     @NotNull
-    private final List<String> blacklist;
+    private final List<ResourceLocation> cropBlackList;
+    private final List<String> modBlackList;
 
     /**
      * Default config
      */
     public Config() {
-        this.cropPath = Platform.getGameFolder().resolve("crops");
-        this.packPath = Platform.getGameFolder().resolve("config/croparia");
-        this.dumpPath = Platform.getGameFolder().resolve("croparia");
+        this.cropPath = Platform.getGameFolder().resolve("croparia/crops");
+        this.packPath = Platform.getGameFolder().resolve("croparia");
+        this.dumpPath = Platform.getGameFolder().resolve("croparia/dump");
         this.autoReload = true;
         this.override = true;
         this.fruitUse = true;
         this.infusor = true;
         this.ritual = true;
-        this.blacklist = new ArrayList<>();
+        this.cropBlackList = new ArrayList<>();
+        this.modBlackList = new ArrayList<>();
     }
 
     /**
@@ -80,11 +83,13 @@ public class Config {
         this.fruitUse = raw.fruitUse() != null ? raw.fruitUse() : true;
         this.infusor = raw.infusor() != null ? raw.infusor() : true;
         this.ritual = raw.ritual() != null ? raw.ritual() : true;
-        this.blacklist = raw.blacklist() != null ? raw.blacklist() : new ArrayList<>();
+        this.cropBlackList = new ArrayList<>();
+        this.modBlackList = new ArrayList<>();
+        this.setBlackList(raw.blacklist());
     }
 
     public RawConfig toRaw() {
-        return new RawConfig(resolvePath(cropPath), resolvePath(packPath), resolvePath(dumpPath), autoReload, override, fruitUse, infusor, ritual, this.blacklist);
+        return new RawConfig(resolvePath(cropPath), resolvePath(packPath), resolvePath(dumpPath), autoReload, override, fruitUse, infusor, ritual, this.getBlacklist());
     }
 
     public @NotNull Path getCropPath() {
@@ -151,29 +156,53 @@ public class Config {
         this.ritual = ritual;
     }
 
-    public @NotNull List<String> getBlacklist() {
+    public @NotNull List<ResourceLocation> getCropBlackList() {
+        return cropBlackList;
+    }
+
+    public @NotNull List<String> getModBlackList() {
+        return modBlackList;
+    }
+
+    public List<String> getBlacklist() {
+        List<String> blacklist = new ArrayList<>(this.getCropBlackList().size() + this.getModBlackList().size());
+        for (ResourceLocation id : this.getCropBlackList()) {
+            blacklist.add(id.toString());
+        }
+        for (String token : this.getModBlackList()) {
+            blacklist.add("@"+token);
+        }
         return blacklist;
     }
 
-    public void setBlacklist(@NotNull List<String> blacklist) {
-        this.blacklist.clear();
-        this.blacklist.addAll(blacklist);
-    }
-
-    public boolean inBlacklist(@NotNull String cropName, @NotNull String mod) {
-        for (String pattern : blacklist) {
-            if (pattern.startsWith("@")) {
-                pattern = pattern.substring(1);
-                Pattern modPattern = Pattern.compile(pattern);
-                if (modPattern.matcher(mod).matches()) {
-                    return true;
-                }
-                continue;
-            }
-            if (Pattern.compile(pattern).matcher(cropName).matches()) {
-                return true;
+    public void setBlackList(@NotNull List<String> blacklist) {
+        this.getCropBlackList().clear();
+        this.getModBlackList().clear();
+        for (String token : blacklist) {
+            if (token.startsWith("@")) {
+                this.getModBlackList().add(token.substring(1));
+            } else {
+                ResourceLocation id = ResourceLocation.tryParse(token);
+                if (id != null) this.getCropBlackList().add(id);
             }
         }
-        return false;
+    }
+
+    public boolean isCropValid(ResourceLocation id) {
+        for (ResourceLocation e : this.getCropBlackList()) {
+            if (e.equals(id)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean isModValid(String mod) {
+        for (String token : this.getModBlackList()) {
+            if (Pattern.compile(token).matcher(mod).matches()) {
+                return false;
+            }
+        }
+        return true;
     }
 }

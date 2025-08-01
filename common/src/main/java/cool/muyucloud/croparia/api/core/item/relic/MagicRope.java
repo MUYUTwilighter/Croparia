@@ -1,17 +1,15 @@
 package cool.muyucloud.croparia.api.core.item.relic;
 
+import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.api.core.component.TargetPos;
 import cool.muyucloud.croparia.registry.CropariaComponents;
 import cool.muyucloud.croparia.registry.CropariaItems;
-import cool.muyucloud.croparia.util.Util;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.Relative;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
@@ -43,7 +41,13 @@ public class MagicRope extends Item {
                 player.displayClientMessage(Component.translatable("overlay.croparia.magic_rope.no_target"), true);
                 return InteractionResult.FAIL;
             } else {
+                level.playSound(null, player.getOnPos(), SoundEvent.createVariableRangeEvent(CropariaIf.of("ambient.magic_rope.teleport")), SoundSource.AMBIENT, 1.0F, 1.0F);
                 targetPos.teleport(player, server);
+                targetPos.getLevel(server).ifPresent(targetLevel -> targetLevel.playSound(
+                    null, targetPos.getPos(),
+                    SoundEvent.createVariableRangeEvent(CropariaIf.of("ambient.magic_rope.teleport")),
+                    SoundSource.AMBIENT, 1.0F, 1.0F
+                ));
             }
             return InteractionResult.SUCCESS;
         }

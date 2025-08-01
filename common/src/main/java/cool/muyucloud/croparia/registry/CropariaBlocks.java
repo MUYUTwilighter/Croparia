@@ -1,19 +1,15 @@
 package cool.muyucloud.croparia.registry;
 
 import cool.muyucloud.croparia.CropariaIf;
-import cool.muyucloud.croparia.annotation.PostReg;
 import cool.muyucloud.croparia.api.core.block.*;
 import cool.muyucloud.croparia.api.crop.Crop;
 import cool.muyucloud.croparia.api.crop.block.CropariaCropBlock;
-import cool.muyucloud.croparia.api.element.ElementsEnum;
-import cool.muyucloud.croparia.api.element.block.ElementalLiquidBlock;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -94,45 +90,11 @@ public class CropariaBlocks {
                 .sound(SoundType.DEEPSLATE)
         )
     );
-    @PostReg
-    public static final RegistrySupplier<ElementalLiquidBlock> FLUID_ELEMATILIUS = registerBlock(
-        "fluid_elematilius",
-        () -> new ElementalLiquidBlock(ElementsEnum.ELEMENTAL, Fluids.ELEMATILIUS, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER)
-            .setId(ResourceKey.create(Registries.BLOCK, CropariaIf.of("fluid_elematilius"))))
-    );
-    @PostReg
-    public static final RegistrySupplier<ElementalLiquidBlock> FLUID_EARTH = registerBlock(
-        "fluid_earth",
-        () -> new ElementalLiquidBlock(ElementsEnum.EARTH, Fluids.EARTH, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER)
-            .setId(ResourceKey.create(Registries.BLOCK, CropariaIf.of("fluid_earth"))))
-    );
-    @PostReg
-    public static final RegistrySupplier<ElementalLiquidBlock> FLUID_WATER = registerBlock(
-        "fluid_water",
-        () -> new ElementalLiquidBlock(ElementsEnum.WATER, Fluids.WATER, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER)
-            .setId(ResourceKey.create(Registries.BLOCK, CropariaIf.of("fluid_water"))))
-    );
-    @PostReg
-    public static final RegistrySupplier<ElementalLiquidBlock> FLUID_FIRE = registerBlock(
-        "fluid_fire",
-        () -> new ElementalLiquidBlock(ElementsEnum.FIRE, Fluids.FIRE, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER)
-            .setId(ResourceKey.create(Registries.BLOCK, CropariaIf.of("fluid_fire"))))
-    );
-    @PostReg
-    public static final RegistrySupplier<ElementalLiquidBlock> FLUID_AIR = registerBlock(
-        "fluid_air",
-        () -> new ElementalLiquidBlock(ElementsEnum.AIR, Fluids.AIR, BlockBehaviour.Properties.ofFullCopy(Blocks.WATER)
-            .setId(ResourceKey.create(Registries.BLOCK, CropariaIf.of("fluid_air"))))
-    );
 
 
     @NotNull
     public static <T extends Block> RegistrySupplier<T> registerBlock(@NotNull String name, @NotNull Supplier<T> supplier) {
         return BLOCKS.register(name, supplier);
-    }
-
-    public static void registerCrop(@NotNull Crop crop) {
-        BLOCKS.register(crop.getBlockId(), () -> new CropariaCropBlock(crop));
     }
 
     public static void register() {

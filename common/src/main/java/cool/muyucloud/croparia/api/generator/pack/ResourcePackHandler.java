@@ -3,78 +3,53 @@ package cool.muyucloud.croparia.api.generator.pack;
 import com.google.gson.JsonObject;
 import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.util.Util;
-import net.minecraft.SharedConstants;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackResources;
-import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.PathPackResources;
 import net.minecraft.server.packs.repository.PackSource;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 @SuppressWarnings("unused")
 public class ResourcePackHandler extends PackHandler {
-    public static final ResourcePackHandler INSTANCE = new ResourcePackHandler(CropariaIf.CONFIG.getPackPath());
+    public static final Map<ResourceLocation, ResourcePackHandler> REGISTRY = new HashMap<>();
+
+    public static <P extends ResourcePackHandler> P register(P pack) {
+        REGISTRY.put(pack.getId(), pack);
+        return pack;
+    }
+
+    public static ResourcePackHandler register(ResourceLocation id, Path path, JsonObject meta, Supplier<Boolean> override) {
+        return register(new ResourcePackHandler(id, path, meta, override));
+    }
 
     private final PathPackResources resourcePack = new PathPackResources(
         new PackLocationInfo(
-            "file/croparia",
-            Component.literal("croparia"),
+            this.getId().toString(),
+            Component.literal(this.getId().toString()),
             PackSource.BUILT_IN,
             Optional.empty()
-        ), root
+        ), getRoot()
     );
 
-    @Override
-    public void beforeReload() {
-        super.beforeReload();
-        if (CropariaIf.CONFIG.getOverride()) {
-            this.clear();
-        }
-        CropariaIf.LOGGER.info("Generating resource pack data to file system");
-        this.dump();
-    }
-
-    @Override
-    protected int getVersion() {
-        return SharedConstants.getCurrentVersion().getPackVersion(PackType.CLIENT_RESOURCES);
-    }
-
-    public ResourcePackHandler(Path path) {
-        super(path);
+    public ResourcePackHandler(ResourceLocation id, Path path, JsonObject meta, Supplier<Boolean> override) {
+        super(id, path, meta, override);
     }
 
     public PackResources getResourcePack() {
         return this.resourcePack;
     }
 
-    public void addBlockStateModel(ResourceLocation location, JsonObject model) {
-        String path = "assets/%s/blockstates/%s.json".formatted(location.getNamespace(), location.getPath());
-        this.addFile(path, model);
-    }
-
-    public void addItemDef(ResourceLocation location, JsonObject itemDef) {
-        String path = "assets/%s/items/%s.json".formatted(location.getNamespace(), location.getPath());
-        this.addFile(path, itemDef);
-    }
-
-    public void addItemModel(ResourceLocation location, JsonObject model) {
-        String path = "assets/%s/models/item/%s.json".formatted(location.getNamespace(), location.getPath());
-        this.addFile(path, model);
-    }
-
-    public void addLang(ResourceLocation location, JsonObject lang) {
-        String path = "assets/%s/lang/%s.json".formatted(location.getNamespace(), location.getPath());
-        this.addFile(path, lang);
-    }
-
     @Override
     public void clear() {
-        File file = this.root.resolve("assets").toFile();
+        File file = this.getRoot().resolve("assets").toFile();
         if (file.isDirectory()) {
             CropariaIf.LOGGER.info("Clearing resource pack directory");
             try {

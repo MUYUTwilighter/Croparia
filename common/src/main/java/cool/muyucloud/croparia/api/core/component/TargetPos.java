@@ -19,6 +19,7 @@ import net.minecraft.world.item.component.TooltipProvider;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 
@@ -49,14 +50,14 @@ public class TargetPos implements TooltipProvider {
         this.pos = pos;
         this.dimKey = dim;
         this.dimName = Component.translatable("dimension.%s.%s".formatted(dim.location().getNamespace(), dim.location().getPath()));
-        this.tooltip = Component.translatable("tooltip.croparia.bounded_position", this.dimName, this.pos.getX(), this.pos.getY(), this.pos.getZ());
+        this.tooltip = Component.translatable("tooltip.croparia.bounded_position", this.getDimName(), this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
     }
 
     public TargetPos(@NotNull ResourceLocation dim, @NotNull BlockPos pos) {
         this.pos = pos;
         this.dimKey = ResourceKey.create(Registries.DIMENSION, dim);
         this.dimName = Component.translatable("dimension.%s.%s".formatted(dim.getNamespace(), dim.getPath()));
-        this.tooltip = Component.translatable("tooltip.croparia.bounded_position", this.dimName, this.pos.getX(), this.pos.getY(), this.pos.getZ());
+        this.tooltip = Component.translatable("tooltip.croparia.bounded_position", this.getDimName(), this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
     }
 
     @NotNull
@@ -92,7 +93,19 @@ public class TargetPos implements TooltipProvider {
         consumer.accept(getTooltip());
     }
 
-    public boolean teleport(@NotNull Entity entity, @NotNull MinecraftServer server) {
-        return this.getLevel(server).map(level -> entity.teleportTo(level, getPos().getX(), getPos().getY(), getPos().getZ(), Relative.ALL, 0, 0, true)).isPresent();
+    public void teleport(@NotNull Entity entity, @NotNull MinecraftServer server) {
+        this.getLevel(server).ifPresent(level -> entity.teleportTo(level, getPos().getX(), getPos().getY(), getPos().getZ(), Relative.ROTATION, 0, 0, true));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TargetPos targetPos)) return false;
+        return Objects.equals(dimKey, targetPos.dimKey) && Objects.equals(pos, targetPos.pos);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(dimKey, pos);
     }
 }

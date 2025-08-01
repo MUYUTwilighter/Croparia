@@ -11,7 +11,6 @@ public class ClientCommandRoot {
     public static void register() {
         CropariaIf.LOGGER.debug("Registering commands");
         ROOT.then(DumpCommand.build());
-        ROOT.then(DumpBuiltinCommand.build());
         ROOT.then(CropCommand.build());
         ROOT.then(CreateCommand.build());
         ClientCommandRegistrationEvent.EVENT.register((dispatcher, context) -> dispatcher.register(ROOT));

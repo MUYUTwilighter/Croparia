@@ -2,16 +2,14 @@ package cool.muyucloud.croparia.client.generator;
 
 import com.google.gson.JsonObject;
 import cool.muyucloud.croparia.api.crop.Crop;
-import cool.muyucloud.croparia.api.generator.pack.ResourcePackHandler;
-import cool.muyucloud.croparia.registry.Crops;
 
 public class BlockStateModelGenerator {
-    public static void init() {
-        Crops.forEachCrop(BlockStateModelGenerator::addCrop);
-    }
+//    public static void init() {
+//        Crops.forEachCrop(BlockStateModelGenerator::addCrop);
+//    }
 
     public static void addCrop(Crop crop) {
-        String type = crop.getType().getModelName();
+        String type = crop.getType();
         JsonObject root = new JsonObject();
         JsonObject variants = new JsonObject();
         for (int i = 0; i <= 4; i++) {
@@ -27,6 +25,6 @@ public class BlockStateModelGenerator {
             variants.add("age=" + i, age);
         }
         root.add("variants", variants);
-        ResourcePackHandler.INSTANCE.addBlockStateModel(crop.getBlockId(), root);
+//        ResourcePackHandler.INSTANCE.addBlockStateModel(crop.getBlockId(), root);
     }
 }

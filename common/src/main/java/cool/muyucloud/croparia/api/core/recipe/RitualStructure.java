@@ -1,14 +1,22 @@
 package cool.muyucloud.croparia.api.core.recipe;
 
-import cool.muyucloud.croparia.api.core.recipe.container.RitualStructureContainer;
-import cool.muyucloud.croparia.api.core.recipe.predicate.BlockStatePredicate;
-import cool.muyucloud.croparia.api.math.Char3D;
-import cool.muyucloud.croparia.api.math.MarkedChar3D;
+import com.google.common.collect.ImmutableMap;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import cool.muyucloud.croparia.api.recipe.DisplayableRecipe;
+import cool.muyucloud.croparia.api.recipe.TypedSerializer;
+import cool.muyucloud.croparia.api.recipe.entry.BlockInput;
+import cool.muyucloud.croparia.api.recipe.structure.Char3D;
+import cool.muyucloud.croparia.api.recipe.structure.MarkedChar3D;
+import cool.muyucloud.croparia.api.recipe.structure.MarkedTransformableChar3D;
+import cool.muyucloud.croparia.util.CodecUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.PlacementInfo;
+import net.minecraft.world.item.crafting.RecipeInput;
+import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
@@ -17,76 +25,35 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 @SuppressWarnings("unused")
-public class RitualStructure implements Recipe<RitualStructureContainer> {
+public class RitualStructure implements DisplayableRecipe<RecipeInput> {
+    public static final TypedSerializer<RitualStructure> TYPED_SERIALIZER = new TypedSerializer<>(RecordCodecBuilder.mapCodec(
+        instance -> instance.group(
+            Codec.unboundedMap(CodecUtil.CHAR, BlockInput.CODEC.codec()).fieldOf("keys").forGetter(RitualStructure::getKeys),
+            Char3D.CODEC.fieldOf("pattern").forGetter(RitualStructure::getPattern)
+        ).apply(instance, RitualStructure::new)
+    ));
+
     @NotNull
-    private final Map<Character, BlockStatePredicate> keys;
+    private final ImmutableMap<Character, BlockInput> keys;
     @NotNull
-    protected final List<MarkedChar3D> patterns;
+    private final MarkedTransformableChar3D patterns;
 
-    public RitualStructure(@NotNull Map<String, BlockStatePredicate.Builder> keys, Char3D rawPattern) {
-        this.patterns = new ArrayList<>(8);
-        Vec3i ritualOffset = rawPattern.find('*').orElseThrow(() -> new IllegalArgumentException("Invalid pattern, missing ritual marker"));
-        MarkedChar3D pattern = new MarkedChar3D(rawPattern, ritualOffset);
-        int i = 0;
-        do {
-            patterns.add(pattern);
-            pattern = pattern.rotate();
-            i++;
-        } while (i < 4);
-        pattern = pattern.mirror();
-        i = 0;
-        do {
-            patterns.add(pattern);
-            pattern = pattern.rotate();
-            i++;
-        } while (i < 4);
-        HashMap<Character, BlockStatePredicate> raw = new HashMap<>();
-        keys.forEach((string, builder) -> {
-            char c = string.charAt(0);
-            if (!Character.isUpperCase(c) || !Character.isAlphabetic(c) || c == '*' || c == '$' || c == ' ' || c == '.') {
-                throw new IllegalArgumentException("Invalid key '%s' in %s, must be uppercase letter".formatted(c, this));
-            }
-            raw.put(string.charAt(0), builder.build());
-        });
-        this.keys = Map.copyOf(raw);
-    }
-
-    public Map<String, BlockStatePredicate.Builder> getKeys() {
-        Map<String, BlockStatePredicate.Builder> map = new HashMap<>();
-        this.keys.forEach((character, predicate) -> map.put(character.toString(), predicate.getBuilder()));
-        return map;
-    }
-
-    public MarkedChar3D getPattern() {
-        return this.patterns.getFirst();
-    }
-
-    public Collection<BlockStatePredicate> getPredicates() {
-        return this.keys.values();
-    }
-
-    public Optional<BlockStatePredicate> getPredicate(char key) {
-        return Optional.ofNullable(this.keys.get(key));
-    }
-
-    public Optional<BlockStatePredicate> getPredicate(int x, int y, int z) {
-        return this.getPredicate(this.getChar(x, y, z));
-    }
-
-    public char getChar(int x, int y, int z) {
-        return this.patterns.getFirst().get(x, y, z);
-    }
-
-    public int maxX() {
-        return this.patterns.getFirst().maxX();
-    }
-
-    public int maxY() {
-        return this.patterns.getFirst().maxY();
-    }
-
-    public int maxZ() {
-        return this.patterns.getFirst().maxZ();
+    public RitualStructure(@NotNull Map<Character, BlockInput> keyDeclarations, Char3D rawPattern) {
+        // Validate key declarations
+        Map<Character, BlockInput> keys = new HashMap<>();
+        for (Character c : keyDeclarations.keySet()) {
+            if (c == '*' || c == '$' || c == '.' || c == ' ') throw new IllegalArgumentException("Preserved key: " + c);
+            keys.put(c, keyDeclarations.get(c));
+        }
+        this.keys = ImmutableMap.copyOf(keys);
+        // Validate pattern keys
+        for (char c : rawPattern.chars()) {
+            if (!this.keys.containsKey(c) && c != '$' && c != '*' && c != '.' && c != ' ') throw new IllegalArgumentException("Unknown key: " + c);
+        }
+        if (!rawPattern.contains('$')) throw new IllegalArgumentException("Ritual structure must contains a block input ($).");
+        // Validate pattern structure
+        Vec3i mark = rawPattern.find('*').orElseThrow(() -> new IllegalArgumentException("Ritual structure must contains a ritual mark (*)."));
+        this.patterns = new MarkedTransformableChar3D(rawPattern, mark);
     }
 
     public @Nullable BlockState matchTransformed(BlockPos origin, Level level, Char3D pattern, BlockState ritualBlock, boolean destroy) {
@@ -113,10 +80,10 @@ public class RitualStructure implements Recipe<RitualStructureContainer> {
                             return null;
                         }
                     } else if (key == ' ') {
-                        BlockStatePredicate.ANY.test(state);
+                        BlockInput.ANY.matches(state);
                     } else {
-                        BlockStatePredicate predicate = this.keys.get(key);
-                        if (predicate == null || !predicate.test(state)) {
+                        BlockInput input = this.keys.get(key);
+                        if (input == null || !input.matches(state)) {
                             return null;
                         }
                     }
@@ -153,28 +120,32 @@ public class RitualStructure implements Recipe<RitualStructureContainer> {
         return Optional.empty();
     }
 
+    public @NotNull Map<Character, BlockInput> getKeys() {
+        return this.keys;
+    }
+
+    public MarkedChar3D getPattern() {
+        return this.patterns.getOriginal();
+    }
+
+    public Vec3i size() {
+        return this.getPattern().size();
+    }
+
     @Override
-    @Deprecated
-    public boolean matches(RitualStructureContainer recipeInput, Level level) {
-        return true;
+    public TypedSerializer<? extends DisplayableRecipe<RecipeInput>> getTypedSerializer() {
+        return TYPED_SERIALIZER;
     }
 
     @Override
     @Deprecated
-    public @NotNull ItemStack assemble(RitualStructureContainer recipeInput, HolderLookup.Provider provider) {
-        throw new UnsupportedOperationException();
+    public boolean matches(RecipeInput recipeInput, Level level) {
+        return false;
     }
 
     @Override
-    @Deprecated
-    public @NotNull RecipeSerializer<? extends Recipe<RitualStructureContainer>> getSerializer() {
-        return RecipeSerializers.RITUAL_STRUCTURE.get();
-    }
-
-    @Override
-    @Deprecated
-    public @NotNull RecipeType<? extends Recipe<RitualStructureContainer>> getType() {
-        return RecipeTypes.RITUAL_STRUCTURE.get();
+    public @NotNull ItemStack assemble(RecipeInput recipeInput, HolderLookup.Provider provider) {
+        return ItemStack.EMPTY;
     }
 
     @Override
@@ -183,12 +154,12 @@ public class RitualStructure implements Recipe<RitualStructureContainer> {
     }
 
     @Override
-    public @NotNull RecipeBookCategory recipeBookCategory() {
-        return new RecipeBookCategory();
+    public @NotNull SlotDisplay result() {
+        return SlotDisplay.Empty.INSTANCE;
     }
 
     @Override
-    public boolean isSpecial() {
-        return true;
+    public @NotNull SlotDisplay craftingStation() {
+        return SlotDisplay.Empty.INSTANCE;
     }
 }

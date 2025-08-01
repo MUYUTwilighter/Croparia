@@ -29,6 +29,11 @@ import java.util.Arrays;
 import java.util.Objects;
 
 public class Util {
+    public static ResourceLocation formatId(String pattern, ResourceLocation id) {
+        return ResourceLocation.tryBuild(id.getNamespace(), pattern.formatted(id.getPath()));
+    }
+
+    @SuppressWarnings("unused")
     public static boolean allNull(Object... objects) {
         return Arrays.stream(objects).allMatch(Objects::isNull);
     }
@@ -54,6 +59,7 @@ public class Util {
         return null;
     }
 
+    @SuppressWarnings("unused")
     public static ServerLevel getLevel(ResourceLocation id, MinecraftServer server) {
         return server.getLevel(ResourceKey.create(Registries.DIMENSION, id));
     }

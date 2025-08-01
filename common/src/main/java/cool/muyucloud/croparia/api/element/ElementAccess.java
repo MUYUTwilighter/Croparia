@@ -4,10 +4,10 @@ import org.jetbrains.annotations.NotNull;
 
 public interface ElementAccess {
     @NotNull
-    ElementsEnum getElement();
+    Element getElement();
 
-    default ElementsEnum assertEmpty(@NotNull ElementsEnum element) {
-        if (element != ElementsEnum.EMPTY) return element;
+    default Element assertEmpty(@NotNull Element element) {
+        if (element != Element.EMPTY) return element;
         throw new IllegalArgumentException("Element cannot be empty");
     }
 }

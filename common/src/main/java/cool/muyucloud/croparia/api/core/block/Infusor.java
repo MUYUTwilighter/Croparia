@@ -3,15 +3,19 @@ package cool.muyucloud.croparia.api.core.block;
 import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.api.core.item.RecipeWizard;
 import cool.muyucloud.croparia.api.core.recipe.InfusorRecipe;
-import cool.muyucloud.croparia.api.core.recipe.container.InfusorContainer;
-import cool.muyucloud.croparia.api.element.ElementsEnum;
+import cool.muyucloud.croparia.api.element.Element;
 import cool.muyucloud.croparia.api.element.item.ElementalPotion;
+import cool.muyucloud.croparia.api.recipe.container.InfusorContainer;
 import cool.muyucloud.croparia.registry.CropariaBlocks;
 import cool.muyucloud.croparia.registry.CropariaItems;
+import cool.muyucloud.croparia.registry.Recipes;
+import cool.muyucloud.croparia.util.DynamicProperty;
 import cool.muyucloud.croparia.util.ItemPlaceable;
 import cool.muyucloud.croparia.util.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -25,7 +29,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.phys.AABB;
@@ -37,11 +40,11 @@ import org.jetbrains.annotations.Nullable;
 
 public class Infusor extends Block implements ItemPlaceable {
     protected final VoxelShape SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 8.0, 16.0);
-    public static final EnumProperty<ElementsEnum> TYPE = EnumProperty.create("infusor_type", ElementsEnum.class);
+    public static final DynamicProperty<Element> TYPE = new DynamicProperty<>("element", Element.class, Element.STRING_REGISTRY);
 
     public Infusor(Properties properties) {
         super(properties);
-        this.registerDefaultState(this.defaultBlockState().setValue(TYPE, ElementsEnum.EMPTY));
+        this.registerDefaultState(this.defaultBlockState().setValue(TYPE, Element.EMPTY));
     }
 
     @Override
@@ -71,8 +74,9 @@ public class Infusor extends Block implements ItemPlaceable {
 
     public boolean tryInfuse(Level world, BlockPos pos, ElementalPotion potion, @NotNull ItemStack stack, @Nullable Player player) {
         BlockState state = world.getBlockState(pos);
-        if (state.getValue(TYPE) == ElementsEnum.EMPTY) {
+        if (state.getValue(TYPE) == Element.EMPTY) {
             world.setBlockAndUpdate(pos, CropariaBlocks.INFUSOR.get().defaultBlockState().setValue(TYPE, potion.getElement()));
+            world.playSound(null, pos, SoundEvent.createVariableRangeEvent(CropariaIf.of("block.infusor.infuse")), SoundSource.BLOCKS, 1.0F, 1.0F);
         } else {
             return false;
         }
@@ -86,7 +90,7 @@ public class Infusor extends Block implements ItemPlaceable {
     }
 
     public void forceCraft(ServerLevel world, BlockPos pos, @Nullable Player player) {
-        ElementsEnum element = world.getBlockState(pos).getValue(TYPE);
+        Element element = world.getBlockState(pos).getValue(TYPE);
         world.getEntities(EntityTypeTest.forClass(ItemEntity.class),
             AABB.of(new BoundingBox(pos)), entity -> !entity.getItem().isEmpty()
         ).forEach(entity -> {
@@ -98,9 +102,9 @@ public class Infusor extends Block implements ItemPlaceable {
     public boolean tryDefuse(Level world, BlockPos pos, ItemStack stack, @Nullable Player player) {
         Item item = stack.getItem();
         BlockState state = world.getBlockState(pos);
-        ElementsEnum element = state.getValue(TYPE);
-        if (element != ElementsEnum.EMPTY && ElementalPotion.fromElement(element).orElseThrow().getCraftingRemainder().getItem() == item) {
-            world.setBlockAndUpdate(pos, CropariaBlocks.INFUSOR.get().defaultBlockState().setValue(TYPE, ElementsEnum.EMPTY));
+        Element element = state.getValue(TYPE);
+        if (element != Element.EMPTY && ElementalPotion.fromElement(element).orElseThrow().getCraftingRemainder().getItem() == item) {
+            world.setBlockAndUpdate(pos, CropariaBlocks.INFUSOR.get().defaultBlockState().setValue(TYPE, Element.EMPTY));
         } else {
             return false;
         }
@@ -112,23 +116,24 @@ public class Infusor extends Block implements ItemPlaceable {
         return false;
     }
 
-    public static ElementsEnum getElement(BlockState state) {
-        return state.getBlock() != CropariaBlocks.INFUSOR.get() ? ElementsEnum.EMPTY : state.getValue(TYPE);
+    public static Element getElement(BlockState state) {
+        return state.getBlock() != CropariaBlocks.INFUSOR.get() ? Element.EMPTY : state.getValue(TYPE);
     }
 
     public void onCrafting(InfusorRecipe recipe, InfusorContainer container, Level world, BlockPos pos, @Nullable Player player) {
         ItemStack stack = recipe.assemble(container);
         Util.exportItem(world, pos, stack, player);
         world.setBlockAndUpdate(pos, this.defaultBlockState());
+        world.playSound(null, pos, SoundEvent.createVariableRangeEvent(CropariaIf.of("block.infusor.craft")), SoundSource.BLOCKS, 1.0F, 1.0F);
     }
 
-    public void tryCraft(ServerLevel world, BlockPos pos, ItemStack input, ElementsEnum element, Player player) {
+    public void tryCraft(ServerLevel world, BlockPos pos, ItemStack input, Element element, Player player) {
         if (!CropariaIf.CONFIG.getInfusor()) {
             return;
         }
         RecipeManager manager = world.getServer().getRecipeManager();
         InfusorContainer container = InfusorContainer.of(element, input);
-        manager.getRecipeFor(RecipeTypes.INFUSOR.get(), container, world).ifPresent(
+        manager.getRecipeFor(Recipes.INFUSOR.get(), container, world).ifPresent(
             recipe -> onCrafting(recipe.value(), container, world, pos, player)
         );
     }
@@ -137,7 +142,7 @@ public class Infusor extends Block implements ItemPlaceable {
     public void stepOn(Level world, BlockPos pos, BlockState state, Entity entity) {
         if (entity instanceof ItemEntity itemEntity && world instanceof ServerLevel serverWorld && CropariaIf.CONFIG.getInfusor()) {
             ItemStack input = itemEntity.getItem();
-            ElementsEnum element = state.getValue(TYPE);
+            Element element = state.getValue(TYPE);
             this.tryCraft(serverWorld, pos, input, element, itemEntity.getOwner() instanceof Player player ? player : null);
         }
     }

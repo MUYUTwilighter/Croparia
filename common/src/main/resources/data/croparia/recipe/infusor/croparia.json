@@ -3,10 +3,10 @@
   "element": "elemental",
   "ingredient": {
     "id": "minecraft:wheat_seeds",
-    "count": 4
+    "amount": 4
   },
   "result": {
     "id": "croparia:croparia",
-    "Count": 1
+    "amount": 1
   }
 }

@@ -1,0 +1,9 @@
+@path=croparia/tag/item/crop_seeds.json;
+@content='''    {seed}''';
+{
+  "replace": false,
+  "values": [
+{content}
+  ]
+}
+

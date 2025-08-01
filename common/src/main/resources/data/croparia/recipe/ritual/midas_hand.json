@@ -5,7 +5,7 @@
     "id": "minecraft:brewing_stand"
   },
   "block": {
-    "block": "minecraft:gold_block"
+    "id": "minecraft:gold_block"
   },
   "result": {
     "id": "croparia:midas_hand",

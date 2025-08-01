@@ -8,8 +8,8 @@ import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
 
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 @SuppressWarnings("unused")
@@ -20,7 +20,7 @@ public class CropariaComponents {
         "target_pos",
         () -> {
             DataComponentType.Builder<TargetPos> builder = DataComponentType.builder();
-            builder.persistent(TargetPos.CODEC.codec()).networkSynchronized(TargetPos.STREAM_CODEC);
+            builder.persistent(TargetPos.CODEC.codec()).networkSynchronized(TargetPos.TYPE.streamCodec());
             return builder.build();
         }
     );
@@ -35,7 +35,7 @@ public class CropariaComponents {
             builder.persistent(BlockPos.CODEC).networkSynchronized(BlockPos.STREAM_CODEC);
             return builder.build();
         }
-    )
+    );
 
     public static <T> RegistrySupplier<DataComponentType<T>> register(String id, Supplier<DataComponentType<T>> supplier) {
         return DATA_COMPONENTS.register(id, supplier);
@@ -44,5 +44,9 @@ public class CropariaComponents {
     public static void register() {
         CropariaIf.LOGGER.debug("Registering data components");
         DATA_COMPONENTS.register();
+    }
+
+    public static void forEach(Consumer<DataComponentType<?>> consumer) {
+        DATA_COMPONENTS.forEach(supplier -> consumer.accept(supplier.get()));
     }
 }

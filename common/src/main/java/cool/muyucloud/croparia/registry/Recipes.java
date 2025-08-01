@@ -1,10 +1,11 @@
 package cool.muyucloud.croparia.registry;
 
 import cool.muyucloud.croparia.CropariaIf;
-import cool.muyucloud.croparia.api.core.recipe.DisplayableRecipe;
 import cool.muyucloud.croparia.api.core.recipe.InfusorRecipe;
 import cool.muyucloud.croparia.api.core.recipe.RitualRecipe;
-import cool.muyucloud.croparia.api.core.recipe.TypedSerializer;
+import cool.muyucloud.croparia.api.core.recipe.RitualStructure;
+import cool.muyucloud.croparia.api.recipe.DisplayableRecipe;
+import cool.muyucloud.croparia.api.recipe.TypedSerializer;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -26,9 +27,12 @@ public class Recipes {
     private static final DeferredRegister<RecipeBookCategory> RECIPE_BOOK_CATEGORIES = DeferredRegister.create(CropariaIf.MOD_ID, Registries.RECIPE_BOOK_CATEGORY);
 
     public static final RegistrySupplier<TypedSerializer<InfusorRecipe>> INFUSOR = register("infusor", () -> InfusorRecipe.TYPED_SERIALIZER);
+    @SuppressWarnings("unused")
     public static final RegistrySupplier<TypedSerializer<InfusorRecipe>> INFUSOR_OLD = register("infusor_type", () -> InfusorRecipe.OLD_TYPED_SERIALIZER);
     public static final RegistrySupplier<TypedSerializer<RitualRecipe>> RITUAL = register("ritual", () -> RitualRecipe.TYPED_SERIALIZER);
+    @SuppressWarnings("unused")
     public static final RegistrySupplier<TypedSerializer<RitualRecipe>> RITUAL_OLD = register("ritual_type", () -> RitualRecipe.OLD_TYPED_SERIALIZER);
+    public static final RegistrySupplier<TypedSerializer<RitualStructure>> RITUAL_STRUCTURE = register("ritual_structure", () -> RitualStructure.TYPED_SERIALIZER);
 
     public static <R extends DisplayableRecipe<?>> RegistrySupplier<TypedSerializer<R>> register(String path, Supplier<TypedSerializer<R>> supplier) {
         RegistrySupplier<TypedSerializer<R>> type = RECIPE_TYPES.register(path, supplier);
@@ -46,5 +50,12 @@ public class Recipes {
                 )
             )
         ));
+    }
+
+    public static void register() {
+        RECIPE_TYPES.register();
+        RECIPE_SERIALIZERS.register();
+        RECIPE_DISPLAYS.register();
+        RECIPE_BOOK_CATEGORIES.register();
     }
 }

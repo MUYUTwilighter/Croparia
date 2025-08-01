@@ -1,6 +1,7 @@
 package cool.muyucloud.croparia.mixin;
 
 import cool.muyucloud.croparia.api.generator.pack.DataPackHandler;
+import cool.muyucloud.croparia.util.supplier.OnLoadSupplier;
 import net.minecraft.server.packs.repository.PackRepository;
 import net.minecraft.server.packs.repository.RepositorySource;
 import org.spongepowered.asm.mixin.Mixin;
@@ -15,10 +16,18 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 public abstract class PackRepositoryMixin {
     @ModifyVariable(method = "<init>", at = @At("HEAD"), argsOnly = true)
     private static RepositorySource[] insertProviders(RepositorySource... providers) {
-        RepositorySource[] newProviders = new RepositorySource[providers.length + 1];
-        RepositorySource provider = DataPackHandler.INSTANCE.getDatapack();
-        newProviders[0] = provider;
-        System.arraycopy(providers, 0, newProviders, 1, providers.length);
+        OnLoadSupplier.LAST_DATA_LOAD = System.currentTimeMillis();
+        RepositorySource[] newProviders = new RepositorySource[providers.length + DataPackHandler.REGISTRY.size()];
+        int i = 0;
+        for (DataPackHandler pack : DataPackHandler.REGISTRY.values()) {
+            pack.onTriggered();
+            newProviders[i] = pack.getDatapack();
+            i++;
+        }
+        for (RepositorySource source : providers) {
+            newProviders[i] = source;
+            i++;
+        }
         return newProviders;
     }
 }

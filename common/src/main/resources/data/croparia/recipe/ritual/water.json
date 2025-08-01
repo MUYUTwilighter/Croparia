@@ -5,7 +5,7 @@
     "id": "croparia:elematilius"
   },
   "block": {
-    "block": "minecraft:prismarine"
+    "id": "minecraft:prismarine"
   },
   "result": {
     "id": "croparia:elemental_water",

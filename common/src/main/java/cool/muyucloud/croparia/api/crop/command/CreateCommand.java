@@ -1,19 +1,17 @@
 package cool.muyucloud.croparia.api.crop.command;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.stream.JsonWriter;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
-import cool.muyucloud.croparia.CropariaIf;
-import cool.muyucloud.croparia.api.crop.CropFileHandler;
-import cool.muyucloud.croparia.api.crop.CropType;
+import cool.muyucloud.croparia.api.crop.Crop;
 import cool.muyucloud.croparia.api.crop.item.Croparia;
-import cool.muyucloud.croparia.registry.Crops;
+import cool.muyucloud.croparia.api.crop.util.Color;
+import cool.muyucloud.croparia.api.crop.util.CropDependencies;
+import cool.muyucloud.croparia.api.crop.util.Material;
+import cool.muyucloud.croparia.registry.DgIterables;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.commands.arguments.ResourceLocationArgument;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -22,7 +20,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.FileWriter;
 import java.nio.file.Path;
 import java.util.Objects;
 
@@ -44,15 +41,15 @@ public class CreateCommand {
         COLOR.executes(context -> create(
             context.getSource().getPlayerOrException(),
             null,
-            CropType.CROP.getModelName(),
+            Crop.DEFAULT_TYPE,
             StringArgumentType.getString(context, "color"),
             context.getSource()::sendSuccess,
             context.getSource()::sendFailure,
             false, false
         ));
         TYPE.suggests((context, builder) -> {
-            for (CropType type : CropType.values()) {
-                builder.suggest(type.getModelName());
+            for (String type : Crop.PRESET_TYPES) {
+                builder.suggest(type);
             }
             return builder.buildFuture();
         }).executes(context -> create(
@@ -66,7 +63,7 @@ public class CreateCommand {
         ));
         NAME.executes(context -> create(
             context.getSource().getPlayerOrException(),
-            StringArgumentType.getString(context, "name"),
+            ResourceLocationArgument.getId(context, "id"),
             StringArgumentType.getString(context, "type"),
             StringArgumentType.getString(context, "color"),
             context.getSource()::sendSuccess,
@@ -75,7 +72,7 @@ public class CreateCommand {
         ));
         REPLACE.executes(context -> create(
             context.getSource().getPlayerOrException(),
-            StringArgumentType.getString(context, "name"),
+            ResourceLocationArgument.getId(context, "id"),
             StringArgumentType.getString(context, "type"),
             StringArgumentType.getString(context, "color"),
             context.getSource()::sendSuccess,
@@ -92,57 +89,38 @@ public class CreateCommand {
         return CREATE;
     }
 
-    public static int create(Player player, @Nullable String name, String rawType, String color, SuccessMessage success, FailureMessage failure, boolean client, boolean forced) {
-        CropType type;
-        try {
-            type = CropType.valueOf(rawType.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            failure.send(Component.translatable("commands.croparia.create.invalid_type", rawType));
-            return -1;
-        }
-        ItemStack main = player.getMainHandItem();
-        if (main.isEmpty()) {
+    public static int create(Player player, @Nullable ResourceLocation id, String type, String rawColor, SuccessMessage success, FailureMessage failure, boolean client, boolean forced) {
+        ItemStack material = player.getMainHandItem();
+        if (material.isEmpty()) {
             failure.send(Component.translatable("commands.croparia.create.no_material"));
             return -1;
         }
-        Item material = main.getItem();
         Item rawCroparia = player.getOffhandItem().getItem();
-        name = name == null ? Objects.requireNonNull(material.arch$registryName()).getPath() : name;
-        if (ResourceLocation.tryParse(name) == null) {
-            failure.send(Component.translatable("commands.croparia.create.invalid_name", name));
-            return -1;
-        }
+        id = id == null ? Objects.requireNonNull(material.getItem().arch$registryName()) : id;
+        Color color;
         try {
-            if (color.startsWith("#")) {
-                Integer.parseInt(color.substring(1), 16);
-            } else if (color.startsWith("0x")) {
-                Integer.parseInt(color.substring(2), 16);
-            } else {
-                Integer.parseInt(color, 10);
-            }
+            color = new Color(rawColor);
         } catch (NumberFormatException e) {
-            failure.send(Component.translatable("commands.croparia.create.invalid_color", color));
+            failure.send(Component.translatable("commands.croparia.create.invalid_color", rawColor));
             return -1;
         }
-        if (!forced && (Crops.containsCrop(name) || CropFileHandler.containsFile(name))) {
-            MutableComponent crop = Component.literal(name);
-            if (Crops.containsCrop(name)) {
-                crop.withStyle(CommonCommandRoot.runCommand(CommonCommandRoot.commandRoot(client), "crop", name))
-                    .withStyle(CommonCommandRoot.inlineMouseBehavior());
-            }
+        if (!forced && DgIterables.CROPS.exists(id)) {
+            MutableComponent crop = Component.literal(id.toString());
+            crop.withStyle(CommonCommandRoot.runCommand(CommonCommandRoot.commandRoot(client), "crop", id.toString()))
+                .withStyle(CommonCommandRoot.inlineMouseBehavior());
             MutableComponent rename = Component.translatable("commands.croparia.create.duplicated.rename")
-                .withStyle(CommonCommandRoot.suggestCommand(CommonCommandRoot.commandRoot(client), "create", color, rawType, name + "_"))
+                .withStyle(CommonCommandRoot.suggestCommand(CommonCommandRoot.commandRoot(client), "create", rawColor, type, id + "_"))
                 .withStyle(CommonCommandRoot.inlineMouseBehavior());
             MutableComponent replace = Component.translatable("commands.croparia.create.duplicated.replace")
-                .withStyle(CommonCommandRoot.suggestCommand(CommonCommandRoot.commandRoot(client), "create", color, rawType, name, "replace"))
+                .withStyle(CommonCommandRoot.suggestCommand(CommonCommandRoot.commandRoot(client), "create", rawColor, type, id.toString(), "replace"))
                 .withStyle(CommonCommandRoot.inlineMouseBehavior());
             MutableComponent duplication = Component.translatable("commands.croparia.create.duplicated", crop, rename, replace);
             failure.send(duplication);
             return -1;
         }
         if (rawCroparia instanceof Croparia croparia) {
-            JsonObject built = buildCrop(name, material, color, croparia.getTier(), type);
-            Path result = dump(built);
+            Crop crop = buildCrop(id, material, color, croparia.getTier(), type);
+            Path result = DgIterables.CROPS.dumpCrop(crop);
             MutableComponent resultComponent = Component.literal(result.toString());
             if (client) {
                 resultComponent.withStyle(CommonCommandRoot.openFile(result.toString())).withStyle(CommonCommandRoot.inlineMouseBehavior());
@@ -155,37 +133,7 @@ public class CreateCommand {
         }
     }
 
-    public static JsonObject buildCrop(String name, Item material, String color, int tier, CropType type) {
-        String materialId = Objects.requireNonNull(material.arch$registryName()).toString();
-        String translationKey = material.getDescriptionId();
-        String dependency = Objects.requireNonNull(material.arch$registryName()).getNamespace();
-        JsonObject root = new JsonObject();
-        root.addProperty("name", name);
-        root.addProperty("material", materialId);
-        root.addProperty("color", color);
-        root.addProperty("tier", tier);
-        root.addProperty("type", type.getModelName());
-        root.addProperty("translationKey", translationKey);
-        JsonArray inner = new JsonArray();
-        inner.add(dependency);
-        JsonArray outer = new JsonArray();
-        outer.add(inner);
-        root.add("dependency", outer);
-        return root;
-    }
-
-    public static Path dump(JsonObject built) {
-        Path parent = CropariaIf.CONFIG.getCropPath();
-        if (!parent.toFile().isDirectory() && !parent.toFile().mkdirs()) {
-            throw new IllegalStateException("Failed to establish directory \"%s\"".formatted(parent));
-        }
-        Path location = parent.resolve(built.get("name").getAsString() + ".json");
-        try (JsonWriter writer = new JsonWriter(new FileWriter(location.toFile()))) {
-            writer.setIndent("  ");
-            new Gson().toJson(built, writer);
-            return location;
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+    public static Crop buildCrop(ResourceLocation id, ItemStack material, Color color, int tier, String type) {
+        return new Crop(id, new Material(material), color, tier, type, null, new CropDependencies(id.getNamespace(), material.getItem().getDescriptionId()));
     }
 }

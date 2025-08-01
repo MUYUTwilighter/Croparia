@@ -2,17 +2,20 @@ package cool.muyucloud.croparia.api.core.recipe;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import cool.muyucloud.croparia.api.core.recipe.container.InfusorContainer;
-import cool.muyucloud.croparia.api.core.recipe.entry.ItemInput;
-import cool.muyucloud.croparia.api.core.recipe.entry.ItemOutput;
-import cool.muyucloud.croparia.api.element.ElementsEnum;
+import cool.muyucloud.croparia.api.element.Element;
 import cool.muyucloud.croparia.api.element.item.ElementalPotion;
+import cool.muyucloud.croparia.api.recipe.DisplayableRecipe;
+import cool.muyucloud.croparia.api.recipe.TypedSerializer;
+import cool.muyucloud.croparia.api.recipe.container.InfusorContainer;
+import cool.muyucloud.croparia.api.recipe.entry.ItemInput;
+import cool.muyucloud.croparia.api.recipe.entry.ItemOutput;
 import cool.muyucloud.croparia.registry.CropariaItems;
+import cool.muyucloud.croparia.util.supplier.LazySupplier;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.PlacementInfo;
 import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
@@ -20,23 +23,23 @@ import org.jetbrains.annotations.Nullable;
 
 public class InfusorRecipe implements DisplayableRecipe<InfusorContainer> {
     public static final TypedSerializer<InfusorRecipe> TYPED_SERIALIZER = new TypedSerializer<>(RecordCodecBuilder.mapCodec(instance -> instance.group(
-        ElementsEnum.CODEC.fieldOf("element").forGetter(InfusorRecipe::getElement),
+        Element.CODEC.fieldOf("element").forGetter(InfusorRecipe::getElement),
         ItemInput.CODEC.fieldOf("ingredient").forGetter(InfusorRecipe::getIngredient),
         ItemOutput.CODEC.fieldOf("result").forGetter(InfusorRecipe::getResult)
     ).apply(instance, InfusorRecipe::new)));
-    public static final SlotDisplay.ItemStackSlotDisplay STATION = new SlotDisplay.ItemStackSlotDisplay(CropariaItems.INFUSOR.get().getDefaultInstance());
+    public static final LazySupplier<SlotDisplay.ItemStackSlotDisplay> STATION = LazySupplier.of(() -> new SlotDisplay.ItemStackSlotDisplay(CropariaItems.INFUSOR.get().getDefaultInstance()));
     public static final TypedSerializer<InfusorRecipe> OLD_TYPED_SERIALIZER = new TypedSerializer<>(RecordCodecBuilder.mapCodec(instance -> instance.group(
-        ElementsEnum.CODEC.fieldOf("element").forGetter(InfusorRecipe::getElement),
+        Element.CODEC.fieldOf("element").forGetter(InfusorRecipe::getElement),
         ResourceLocation.CODEC.fieldOf("input").forGetter(recipe -> recipe.getResult().getId()),
         ResourceLocation.CODEC.fieldOf("output").forGetter(recipe -> recipe.getResult().getId()),
         Codec.INT.fieldOf("count").forGetter(recipe -> Math.toIntExact(recipe.getResult().getAmount()))
     ).apply(instance, (element, input, output, count) -> new InfusorRecipe(element, new ItemInput(input, 1), new ItemOutput(output, count)))));
 
-    protected final ElementsEnum element;
+    protected final Element element;
     protected final ItemInput ingredient;
     protected final ItemOutput result;
 
-    public InfusorRecipe(@NotNull ElementsEnum element, @NotNull ItemInput ingredient, @NotNull ItemOutput result) {
+    public InfusorRecipe(@NotNull Element element, @NotNull ItemInput ingredient, @NotNull ItemOutput result) {
         this.element = element;
         this.ingredient = ingredient;
         this.result = result;
@@ -50,7 +53,7 @@ public class InfusorRecipe implements DisplayableRecipe<InfusorContainer> {
         return result;
     }
 
-    public ElementsEnum getElement() {
+    public Element getElement() {
         return element;
     }
 
@@ -102,7 +105,7 @@ public class InfusorRecipe implements DisplayableRecipe<InfusorContainer> {
     @Override
     @NotNull
     public SlotDisplay craftingStation() {
-        return STATION;
+        return STATION.get();
     }
 
     @Override

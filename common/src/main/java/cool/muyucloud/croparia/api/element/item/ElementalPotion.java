@@ -1,8 +1,8 @@
 package cool.muyucloud.croparia.api.element.item;
 
 import cool.muyucloud.croparia.api.core.block.Infusor;
+import cool.muyucloud.croparia.api.element.Element;
 import cool.muyucloud.croparia.api.element.ElementAccess;
-import cool.muyucloud.croparia.api.element.ElementsEnum;
 import cool.muyucloud.croparia.util.ItemPlaceable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -19,12 +19,12 @@ import java.util.Map;
 import java.util.Optional;
 
 public class ElementalPotion extends Item implements ElementAccess {
-    private static final Map<ElementsEnum, ElementalPotion> POTIONS = new HashMap<>();
-    private final ElementsEnum element;
+    private static final Map<Element, ElementalPotion> POTIONS = new HashMap<>();
+    private final Element element;
 
-    public ElementalPotion(@NotNull ElementsEnum element, @NotNull Properties properties) {
+    public ElementalPotion(@NotNull Element element, @NotNull Properties properties) {
         super(properties);
-        if (element == ElementsEnum.EMPTY) {
+        if (element == Element.EMPTY) {
             throw new IllegalArgumentException("ElementalPotion cannot be empty element");
         }
         this.element = element;
@@ -51,11 +51,11 @@ public class ElementalPotion extends Item implements ElementAccess {
     }
 
     @Override
-    public @NotNull ElementsEnum getElement() {
+    public @NotNull Element getElement() {
         return this.element;
     }
 
-    public static Optional<ElementalPotion> fromElement(ElementsEnum element) {
+    public static Optional<ElementalPotion> fromElement(Element element) {
         return Optional.ofNullable(POTIONS.get(element));
     }
 }

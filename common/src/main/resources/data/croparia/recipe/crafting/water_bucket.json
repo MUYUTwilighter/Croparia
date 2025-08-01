@@ -3,12 +3,9 @@
   "category": "misc",
   "ingredients": [
     "minecraft:bucket",
-    "croparia:elemental_water",
-    "croparia:elemental_water",
-    "croparia:elemental_water",
     "croparia:elemental_water"
   ],
   "result": {
-    "id": "croparia:water_bucket"
+    "id": "minecraft:water_bucket"
   }
 }

@@ -8,12 +8,13 @@ import com.mojang.serialization.JsonOps;
 import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.api.core.block.Infusor;
 import cool.muyucloud.croparia.api.core.block.RitualStand;
-import cool.muyucloud.croparia.api.core.recipe.container.RitualStructureContainer;
-import cool.muyucloud.croparia.api.core.recipe.predicate.BlockStatePredicate;
-import cool.muyucloud.croparia.api.core.recipe.predicate.GenericIngredient;
 import cool.muyucloud.croparia.api.crop.command.CommonCommandRoot;
-import cool.muyucloud.croparia.api.element.ElementsEnum;
+import cool.muyucloud.croparia.api.element.Element;
+import cool.muyucloud.croparia.api.recipe.container.RitualStructureContainer;
+import cool.muyucloud.croparia.api.recipe.entry.BlockInput;
+import cool.muyucloud.croparia.api.recipe.predicate.GenericIngredient;
 import cool.muyucloud.croparia.registry.Recipes;
+import cool.muyucloud.croparia.util.CodecUtil;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
@@ -88,8 +89,8 @@ public class RecipeWizard extends Item {
                 player.displayClientMessage(Component.translatable("overlay.croparia.recipe_wizard.infusor.missing.ingredient"), true);
                 return InteractionResult.FAIL;
             }
-            ElementsEnum element = Infusor.getElement(state);
-            if (element == ElementsEnum.EMPTY) {
+            Element element = Infusor.getElement(state);
+            if (element == Element.EMPTY) {
                 player.displayClientMessage(Component.translatable("overlay.croparia.recipe_wizard.infusor.missing.element"), true);
                 return InteractionResult.FAIL;
             }
@@ -140,9 +141,7 @@ public class RecipeWizard extends Item {
         JsonObject root = new JsonObject();
         root.addProperty("type", "croparia:ritual");
         root.addProperty("tier", ritualStand.getTier());
-        JsonElement encodeBlock = BlockStatePredicate.Builder.CODEC.encodeStart(
-            JsonOps.INSTANCE, BlockStatePredicate.ofState(block)
-        ).getOrThrow();
+        JsonElement encodeBlock = CodecUtil.encodeJson(BlockInput.of(block), BlockInput.CODEC);
         root.add("block", encodeBlock);
         JsonElement encodeIngredient = GenericIngredient.CODEC.encodeStart(
             JsonOps.INSTANCE, new GenericIngredient(ingredient)
@@ -153,7 +152,7 @@ public class RecipeWizard extends Item {
         return root;
     }
 
-    public @NotNull JsonObject assembleInfusor(ElementsEnum element, ItemStack ingredient, ItemStack result) {
+    public @NotNull JsonObject assembleInfusor(Element element, ItemStack ingredient, ItemStack result) {
         JsonObject root = new JsonObject();
         root.addProperty("type", "croparia:infusor");
         root.addProperty("element", element.getSerializedName());

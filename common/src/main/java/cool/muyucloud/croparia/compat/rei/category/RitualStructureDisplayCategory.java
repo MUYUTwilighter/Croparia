@@ -1,6 +1,12 @@
 package cool.muyucloud.croparia.compat.rei.category;
 
-import cool.muyucloud.croparia.compat.rei.display.RitualStructureDisplay;
+import com.google.common.collect.ImmutableMap;
+import cool.muyucloud.croparia.api.core.recipe.RitualStructure;
+import cool.muyucloud.croparia.api.recipe.TypedSerializer;
+import cool.muyucloud.croparia.api.recipe.entry.BlockInput;
+import cool.muyucloud.croparia.compat.rei.Util;
+import cool.muyucloud.croparia.compat.rei.display.SimpleCategory;
+import cool.muyucloud.croparia.compat.rei.display.SimpleDisplay;
 import cool.muyucloud.croparia.compat.rei.widget.Item2DWidget;
 import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.util.Constants;
@@ -9,25 +15,40 @@ import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.gui.Renderer;
 import me.shedaniel.rei.api.client.gui.widgets.Widget;
 import me.shedaniel.rei.api.client.gui.widgets.Widgets;
-import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
-import me.shedaniel.rei.api.common.category.CategoryIdentifier;
+import me.shedaniel.rei.api.common.entry.EntryIngredient;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.core.Vec3i;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @SuppressWarnings("UnstableApiUsage")
-public class RitualStructureDisplayCategory implements DisplayCategory<RitualStructureDisplay> {
-    public static final CategoryIdentifier<RitualStructureDisplay> ID = CategoryIdentifier.of("croparia:ritual_structure");
+public class RitualStructureDisplayCategory extends SimpleCategory<RitualStructure> {
+    private static final ItemStack INPUT = CropariaItems.PLACEHOLDER.get().getDefaultInstance();
+
+    static {
+        INPUT.set(DataComponents.CUSTOM_NAME, Component.translatable("tooltip.croparia.input"));
+    }
+
+    public static final SimpleCategory<RitualStructure> INSTANCE = new RitualStructureDisplayCategory(
+        RitualStructure.class, RitualStructure.TYPED_SERIALIZER
+    );
     public static final int SLOT_SIZE = 18;
     public static final int LABEL_MARGIN = 6;
     public static final int FRAME_PADDING = 9;
     public static final int BUTTON_SIZE = 10;
 
-    @Override
-    public CategoryIdentifier<? extends RitualStructureDisplay> getCategoryIdentifier() {
-        return ID;
+    public RitualStructureDisplayCategory(Class<RitualStructure> recipeClass, TypedSerializer<RitualStructure> recipeType) {
+        super(recipeClass, recipeType);
     }
 
     @Override
@@ -41,7 +62,10 @@ public class RitualStructureDisplayCategory implements DisplayCategory<RitualStr
     }
 
     @Override
-    public List<Widget> setupDisplay(RitualStructureDisplay display, Rectangle bounds) {
+    public List<Widget> setupDisplay(SimpleDisplay<RitualStructure> display, Rectangle bounds) {
+        RitualStructure recipe = display.getRecipe();
+        AtomicInteger y = new AtomicInteger();
+        Vec3i slotSize = display.getRecipe().size();
         Rectangle layerBound = new Rectangle(
             bounds.x + FRAME_PADDING, bounds.y + FRAME_PADDING, bounds.width - 2 * FRAME_PADDING, bounds.height - 2 * FRAME_PADDING - SLOT_SIZE
         );
@@ -55,7 +79,9 @@ public class RitualStructureDisplayCategory implements DisplayCategory<RitualStr
                 BUTTON_SIZE, BUTTON_SIZE
             ),
             Component.literal("<")
-        ).onClick(button -> display.lower()).tooltipLine(Constants.RITUAL_STRUCTURE_LOWER);
+        ).onClick(button -> {
+            if (y.get() > 0) y.getAndDecrement();
+        }).tooltipLine(Constants.RITUAL_STRUCTURE_LOWER);
         Widget upper = Widgets.createButton(
             new Rectangle(
                 bounds.x + bounds.width - FRAME_PADDING - BUTTON_SIZE,
@@ -63,15 +89,16 @@ public class RitualStructureDisplayCategory implements DisplayCategory<RitualStr
                 BUTTON_SIZE, BUTTON_SIZE
             ),
             Component.literal(">")
-        ).onClick(button -> display.upper()).tooltipLine(Constants.RITUAL_STRUCTURE_UPPER);
-        Vec3i slotSize = display.size();
+        ).onClick(button -> {
+            if (y.get() < display.getRecipe().size().getY() - 1) y.getAndIncrement();
+        }).tooltipLine(Constants.RITUAL_STRUCTURE_UPPER);
         Widget label = Widgets.createDrawableWidget(
             (graphics, mouseX, mouseY, delta) -> Widgets.createLabel(
                 new Point(
                     bounds.x + bounds.width / 2,
                     bounds.y + bounds.height - FRAME_PADDING - SLOT_SIZE + LABEL_MARGIN
                 ),
-                Component.translatable("gui.croparia.ritual_structure.label", display.lastRead() + 1)
+                Component.translatable("gui.croparia.ritual_structure.label", y.get() + 1)
             ).render(graphics, mouseX, mouseY, delta)
         );
         Widget layer = Widgets.overflowed(
@@ -79,13 +106,46 @@ public class RitualStructureDisplayCategory implements DisplayCategory<RitualStr
                 bounds.x + FRAME_PADDING, bounds.y + FRAME_PADDING, bounds.width - 2 * FRAME_PADDING,
                 bounds.height - 2 * FRAME_PADDING - SLOT_SIZE
             ),
-            Item2DWidget.create().itemProvider(display::get).cols(slotSize.getX()).rows(slotSize.getZ())
+            Item2DWidget.create().itemProvider((posX, posZ) -> {
+                    char c = recipe.getPattern().get(posX, y.get(), posZ);
+                    if (c == '.') {
+                        return Collections.singleton(EntryStacks.of(BlockInput.STACK_AIR));
+                    } else if (c == '$') {
+                        return Collections.singleton(EntryStacks.of(INPUT));
+                    } else if (c == '*') {
+                        return display.getInput("*").castAsList();
+                    } else if (c == ' ') {
+                        return Collections.singleton(EntryStacks.of(BlockInput.STACK_ANY));
+                    } else {
+                        return Util.toIngredient(recipe.getKeys().get(c)).castAsList();
+                    }
+                })
+                .cols(slotSize.getX())
+                .rows(slotSize.getZ())
         );
         return List.of(background, lower, upper, label, layer);
     }
 
     @Override
     public int getDisplayHeight() {
-        return DisplayCategory.super.getDisplayHeight() * 2 + FRAME_PADDING * 2;
+        return super.getDisplayHeight() * 2 + FRAME_PADDING * 2;
+    }
+
+    @Override
+    public Map<String, EntryIngredient> inputEntries(RecipeHolder<RitualStructure> holder) {
+        RitualStructure recipe = holder.value();
+        Map<String, EntryIngredient> map = new HashMap<>();
+        for (Map.Entry<Character, BlockInput> entry : recipe.getKeys().entrySet()) {
+            char c = entry.getKey();
+            map.put(String.valueOf(c), Util.toIngredient(entry.getValue(), recipe.getPattern().count(c)));
+        }
+        ResourceLocation id = holder.id().location();
+        map.put("*", Util.toIngredient(BuiltInRegistries.ITEM.getValue(id)));
+        return ImmutableMap.copyOf(map);
+    }
+
+    @Override
+    public Map<String, EntryIngredient> outputEntries(RecipeHolder<RitualStructure> holder) {
+        return Map.of("*", Util.toIngredient(BuiltInRegistries.ITEM.getValue(holder.id().location())));
     }
 }

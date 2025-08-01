@@ -1,8 +1,10 @@
 package cool.muyucloud.croparia.compat.rei.category;
 
 import cool.muyucloud.croparia.api.core.recipe.RitualRecipe;
+import cool.muyucloud.croparia.api.recipe.TypedSerializer;
+import cool.muyucloud.croparia.compat.rei.Util;
+import cool.muyucloud.croparia.compat.rei.display.SimpleCategory;
 import cool.muyucloud.croparia.compat.rei.display.SimpleDisplay;
-import cool.muyucloud.croparia.compat.rei.display.SimpleSerializer;
 import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.util.Constants;
 import me.shedaniel.math.Point;
@@ -10,31 +12,37 @@ import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.gui.Renderer;
 import me.shedaniel.rei.api.client.gui.widgets.Widget;
 import me.shedaniel.rei.api.client.gui.widgets.Widgets;
-import me.shedaniel.rei.api.client.registry.display.DisplayCategory;
-import me.shedaniel.rei.api.common.category.CategoryIdentifier;
 import me.shedaniel.rei.api.common.entry.EntryIngredient;
 import me.shedaniel.rei.api.common.entry.EntryStack;
 import me.shedaniel.rei.api.common.entry.type.VanillaEntryTypes;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.crafting.RecipeHolder;
 
 import java.util.List;
+import java.util.Map;
 
-public class RitualRecipeDisplayCategory implements DisplayCategory<SimpleDisplay<RitualRecipe>> {
-    public static final SimpleSerializer<RitualRecipe> SERIALIZER = new SimpleSerializer<>(
-        RitualRecipe.class, RitualRecipe.TYPED_SERIALIZER,
-        (recipe, map) -> {
-            map.put("block", EntryIngredient.of(recipe.getBlock().getDisplayStacks().stream().map(stack -> EntryStack.of(VanillaEntryTypes.ITEM, stack).tooltip(Constants.BLOCK_PLACE_TOOLTIP)).toList()));
-            map.put("ingredient", EntryIngredient.of(recipe.getIngredient().getDisplayStacks().stream().map(stack -> EntryStack.of(VanillaEntryTypes.ITEM, stack).tooltip(Constants.ITEM_DROP_TOOLTIP)).toList()));
-        },
-        (recipe, map) -> {
-            map.put("result", EntryIngredient.of(EntryStack.of(VanillaEntryTypes.ITEM, recipe.getResult().getDisplayStack())));
-        }
+public class RitualRecipeDisplayCategory extends SimpleCategory<RitualRecipe> {
+    public static final RitualRecipeDisplayCategory INSTANCE = new RitualRecipeDisplayCategory(
+        RitualRecipe.class, RitualRecipe.TYPED_SERIALIZER
     );
 
+    public RitualRecipeDisplayCategory(Class<RitualRecipe> recipeClass, TypedSerializer<RitualRecipe> recipeType) {
+        super(recipeClass, recipeType);
+    }
+
     @Override
-    public CategoryIdentifier<SimpleDisplay<RitualRecipe>> getCategoryIdentifier() {
-        return SERIALIZER.getId();
+    public Map<String, EntryIngredient> inputEntries(RecipeHolder<RitualRecipe> holder) {
+        RitualRecipe recipe = holder.value();
+        return Map.of(
+            "block", Util.toIngredient(recipe.getBlock(), stack -> stack.tooltip(Constants.BLOCK_PLACE_TOOLTIP)),
+            "ingredient", Util.toIngredient(recipe.getIngredient(), stack -> stack.tooltip(Constants.ITEM_DROP_TOOLTIP))
+        );
+    }
+
+    @Override
+    public Map<String, EntryIngredient> outputEntries(RecipeHolder<RitualRecipe> holder) {
+        return Map.of("result", Util.toIngredient(holder.value().getResult()));
     }
 
     @Override

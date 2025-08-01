@@ -3,9 +3,10 @@ package cool.muyucloud.croparia.api.core.block;
 import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.api.core.entity.FakePlayer;
 import cool.muyucloud.croparia.api.core.recipe.RitualStructure;
-import cool.muyucloud.croparia.api.core.recipe.container.RitualContainer;
-import cool.muyucloud.croparia.api.core.recipe.container.RitualStructureContainer;
+import cool.muyucloud.croparia.api.recipe.container.RitualContainer;
+import cool.muyucloud.croparia.api.recipe.container.RitualStructureContainer;
 import cool.muyucloud.croparia.registry.CropariaItems;
+import cool.muyucloud.croparia.registry.Recipes;
 import cool.muyucloud.croparia.util.ItemPlaceable;
 import cool.muyucloud.croparia.util.Util;
 import net.minecraft.core.BlockPos;
@@ -87,7 +88,7 @@ public class RitualStand extends Block implements ItemPlaceable {
     protected Optional<RitualStructure> getRitualStructure(@NotNull RecipeManager recipeManager) {
         AtomicReference<RitualStructure> recipe = new AtomicReference<>();
         recipeManager.getRecipeFor(
-            RecipeTypes.RITUAL_STRUCTURE.get(), RitualStructureContainer.INSTANCE, null, ResourceKey.create(Registries.RECIPE, RecipeTypes.RITUAL_STRUCTURE.getId())
+            Recipes.RITUAL_STRUCTURE.get(), RitualStructureContainer.INSTANCE, null, ResourceKey.create(Registries.RECIPE, Recipes.RITUAL_STRUCTURE.getId())
         ).ifPresent(result -> recipe.set(result.value()));
         return Optional.ofNullable(recipe.get());
     }
@@ -96,7 +97,7 @@ public class RitualStand extends Block implements ItemPlaceable {
         if (!CropariaIf.CONFIG.getInfusor()) {
             return;
         }
-        world.getServer().getRecipeManager().getRecipeFor(RecipeTypes.RITUAL.get(), container, world).ifPresentOrElse(recipe -> {
+        world.getServer().getRecipeManager().getRecipeFor(Recipes.RITUAL.get(), container, world).ifPresentOrElse(recipe -> {
             ItemStack result = recipe.value().assemble(container);
             if (result.getItem() instanceof SpawnEggItem) {
                 FakePlayer.useAllItemsOn(world, pos, result);

@@ -2,79 +2,79 @@
   "type": "croparia:ritual_structure",
   "keys": {
     "A": {
-      "block": "#minecraft:beacon_base_blocks"
+      "id": "#minecraft:beacon_base_blocks"
     },
     "B": {
-      "block": "minecraft:beacon"
+      "id": "minecraft:beacon"
     },
     "C": {
-      "block": "croparia:activated_shrieker"
+      "id": "croparia:activated_shrieker"
     },
     "D": {
-      "block": "minecraft:sculk_sensor"
+      "id": "minecraft:sculk_sensor"
     },
     "E": {
-      "block": "minecraft:purpur_block"
+      "id": "minecraft:purpur_block"
     },
     "F": {
-      "block": "minecraft:nether_bricks"
+      "id": "minecraft:nether_bricks"
     },
     "G": {
-      "block": "minecraft:prismarine_bricks"
+      "id": "minecraft:prismarine_bricks"
     },
     "H": {
-      "block": "minecraft:tuff"
+      "id": "minecraft:tuff"
     },
     "I": {
-      "block": "croparia:elemental_stone"
+      "id": "croparia:elemental_stone"
     },
     "J": {
-      "block": "croparia:infusor",
+      "id": "croparia:infusor",
       "properties": {
         "infusor_type": "air"
       }
     },
     "K": {
-      "block": "croparia:infusor",
+      "id": "croparia:infusor",
       "properties": {
         "infusor_type": "earth"
       }
     },
     "L": {
-      "block": "croparia:infusor",
+      "id": "croparia:infusor",
       "properties": {
         "infusor_type": "fire"
       }
     },
     "M": {
-      "block": "croparia:infusor",
+      "id": "croparia:infusor",
       "properties": {
         "infusor_type": "water"
       }
     },
     "N": {
-      "block": "minecraft:white_stained_glass"
+      "id": "minecraft:white_stained_glass"
     },
     "O": {
-      "block": "minecraft:brown_stained_glass"
+      "id": "minecraft:brown_stained_glass"
     },
     "P": {
-      "block": "minecraft:light_blue_stained_glass"
+      "id": "minecraft:light_blue_stained_glass"
     },
     "Q": {
-      "block": "minecraft:red_stained_glass"
+      "id": "minecraft:red_stained_glass"
     },
     "R": {
-      "block": "minecraft:jack_o_lantern"
+      "id": "minecraft:jack_o_lantern"
     },
     "S": {
-      "block": "minecraft:glowstone"
+      "id": "minecraft:glowstone"
     },
     "T": {
-      "block": "minecraft:sea_lantern"
+      "id": "minecraft:sea_lantern"
     },
     "U": {
-      "block": "minecraft:shroomlight"
+      "id": "minecraft:shroomlight"
     }
   },
   "pattern": [

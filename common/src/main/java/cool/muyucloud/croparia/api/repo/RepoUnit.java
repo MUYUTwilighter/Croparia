@@ -3,6 +3,7 @@ package cool.muyucloud.croparia.api.repo;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
 import cool.muyucloud.croparia.api.resource.TypeToken;
+import cool.muyucloud.croparia.api.resource.TypedResource;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.util.GsonHelper;
@@ -11,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.function.Predicate;
 
 @SuppressWarnings({"unused", "BooleanMethodIsAlwaysInverted"})
-public class RepoUnit<T extends TypedResource> implements Repo<T> {
+public class RepoUnit<T extends TypedResource<?>> implements Repo<T> {
     private final transient Predicate<T> filter;
     private final transient TypeToken<T> type;
     private T resource;

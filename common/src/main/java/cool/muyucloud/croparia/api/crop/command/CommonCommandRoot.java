@@ -15,7 +15,7 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.ItemStack;
 
 import static net.minecraft.commands.CommandSourceStack.ERROR_NOT_PLAYER;
 
@@ -24,7 +24,6 @@ public class CommonCommandRoot {
     private static final LiteralArgumentBuilder<CommandSourceStack> ROOT = Commands.literal("cropariaServer")
         .requires(s -> s.hasPermission(2))
         .then(DumpCommand.build())
-        .then(DumpBuiltinCommand.build())
         .then(CropCommand.build())
         .then(ConfigCommand.buildInfusor())
         .then(ConfigCommand.buildRitual())
@@ -67,9 +66,13 @@ public class CommonCommandRoot {
     }
 
     public static Style hoverItem(Item item) {
-        return item == Items.AIR ? Style.EMPTY : Style.EMPTY.withHoverEvent(new HoverEvent(
+        return hoverItem(item.getDefaultInstance());
+    }
+
+    public static Style hoverItem(ItemStack stack) {
+        return stack.isEmpty() ? Style.EMPTY : Style.EMPTY.withHoverEvent(new HoverEvent(
             HoverEvent.Action.SHOW_ITEM,
-            new HoverEvent.ItemStackInfo(item.getDefaultInstance())
+            new HoverEvent.ItemStackInfo(stack)
         ));
     }
 

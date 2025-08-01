@@ -3,10 +3,10 @@
   "element": "air",
   "ingredient": {
     "id": "croparia:croparia5",
-    "count": 2
+    "amount": 2
   },
   "result": {
     "id": "croparia:croparia6",
-    "Count": 1
+    "amount": 1
   }
 }

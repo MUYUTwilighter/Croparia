@@ -9,14 +9,7 @@ import cool.muyucloud.croparia.api.core.item.relic.HornPlenty;
 import cool.muyucloud.croparia.api.core.item.relic.InfiniteApple;
 import cool.muyucloud.croparia.api.core.item.relic.MagicRope;
 import cool.muyucloud.croparia.api.core.item.relic.MidasHand;
-import cool.muyucloud.croparia.api.crop.Crop;
-import cool.muyucloud.croparia.api.crop.item.CropFruit;
-import cool.muyucloud.croparia.api.crop.item.CropSeed;
 import cool.muyucloud.croparia.api.crop.item.Croparia;
-import cool.muyucloud.croparia.api.element.ElementsEnum;
-import cool.muyucloud.croparia.api.element.item.Elematilius;
-import cool.muyucloud.croparia.api.element.item.ElementalBucket;
-import cool.muyucloud.croparia.api.element.item.ElementalPotion;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;
@@ -26,14 +19,12 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.component.Consumable;
 import net.minecraft.world.item.consume_effects.ApplyStatusEffectsConsumeEffect;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Map;
 import java.util.function.Supplier;
 
 @SuppressWarnings({"UnstableApiUsage", "unused"})
@@ -82,42 +73,6 @@ public class CropariaItems {
     public static final RegistrySupplier<BlockItem> DEEPSLATE_ELEMATILIUS_ORE = registerItem("deepslate_elematilius_ore", () -> new BlockItem(
         CropariaBlocks.DEEPSLATE_ELEMATILIUS_ORE.get(), new Item.Properties().setId(ResourceKey.create(Registries.ITEM, CropariaIf.of("deepslate_elematilius_ore"))).arch$tab(Tabs.MAIN)
     ));
-    public static final RegistrySupplier<ElementalPotion> POTION_ELEMATILIUS = registerItem("potion_elematilius", () -> new ElementalPotion(
-        ElementsEnum.ELEMENTAL, new Item.Properties().setId(ResourceKey.create(Registries.ITEM, CropariaIf.of("potion_elematilius"))).arch$tab(Tabs.MAIN).craftRemainder(Items.GLASS_BOTTLE)
-    ));
-    public static final RegistrySupplier<ElementalPotion> POTION_WATER = registerItem("potion_water", () -> new ElementalPotion(
-        ElementsEnum.WATER, new Item.Properties().setId(ResourceKey.create(Registries.ITEM, CropariaIf.of("potion_water"))).arch$tab(Tabs.MAIN).craftRemainder(Items.GLASS_BOTTLE)
-    ));
-    public static final RegistrySupplier<ElementalPotion> POTION_FIRE = registerItem("potion_fire", () -> new ElementalPotion(
-        ElementsEnum.FIRE, new Item.Properties().setId(ResourceKey.create(Registries.ITEM, CropariaIf.of("potion_fire"))).arch$tab(Tabs.MAIN).craftRemainder(Items.GLASS_BOTTLE)
-    ));
-    public static final RegistrySupplier<ElementalPotion> POTION_EARTH = registerItem("potion_earth", () -> new ElementalPotion(
-        ElementsEnum.EARTH, new Item.Properties().setId(ResourceKey.create(Registries.ITEM, CropariaIf.of("potion_earth"))).arch$tab(Tabs.MAIN).craftRemainder(Items.GLASS_BOTTLE)
-    ));
-    public static final RegistrySupplier<ElementalPotion> POTION_AIR = registerItem(
-        "potion_air",
-        () -> new ElementalPotion(ElementsEnum.AIR, new Item.Properties().setId(ResourceKey.create(Registries.ITEM, CropariaIf.of("potion_air"))).arch$tab(Tabs.MAIN).craftRemainder(Items.GLASS_BOTTLE))
-    );
-    public static final RegistrySupplier<Elematilius> ELEMATILIUS = registerItem(
-        "elematilius",
-        () -> new Elematilius(ElementsEnum.ELEMENTAL, new Item.Properties().setId(ResourceKey.create(Registries.ITEM, CropariaIf.of("elematilius"))).arch$tab(Tabs.MAIN))
-    );
-    public static final RegistrySupplier<Elematilius> ELEMENTAL_FIRE = registerItem(
-        "elemental_fire",
-        () -> new Elematilius(ElementsEnum.FIRE, new Item.Properties().setId(ResourceKey.create(Registries.ITEM, CropariaIf.of("elemental_fire"))).arch$tab(Tabs.MAIN))
-    );
-    public static final RegistrySupplier<Elematilius> ELEMENTAL_WATER = registerItem(
-        "elemental_water",
-        () -> new Elematilius(ElementsEnum.WATER, new Item.Properties().setId(ResourceKey.create(Registries.ITEM, CropariaIf.of("elemental_water"))).arch$tab(Tabs.MAIN))
-    );
-    public static final RegistrySupplier<Elematilius> ELEMENTAL_EARTH = registerItem(
-        "elemental_earth",
-        () -> new Elematilius(ElementsEnum.EARTH, new Item.Properties().setId(ResourceKey.create(Registries.ITEM, CropariaIf.of("elemental_earth"))).arch$tab(Tabs.MAIN))
-    );
-    public static final RegistrySupplier<Elematilius> ELEMENTAL_AIR = registerItem(
-        "elemental_air",
-        () -> new Elematilius(ElementsEnum.AIR, new Item.Properties().setId(ResourceKey.create(Registries.ITEM, CropariaIf.of("elemental_air"))).arch$tab(Tabs.MAIN))
-    );
     @PostReg
     public static final RegistrySupplier<Item> CROPARIA = registerItem(
         "croparia", () -> new Croparia(1, new Item.Properties().arch$tab(Tabs.MAIN).setId(ResourceKey.create(Registries.ITEM, CropariaIf.of("croparia"))))
@@ -164,42 +119,12 @@ public class CropariaItems {
     public static final RegistrySupplier<MidasHand> MIDAS_HAND = registerItem("midas_hand", () -> new MidasHand(
         new Item.Properties().stacksTo(1).arch$tab(Tabs.MAIN).rarity(Rarity.EPIC).setId(ResourceKey.create(Registries.ITEM, CropariaIf.of("midas_hand")))
     ));
-    @PostReg
-    public static final RegistrySupplier<Item> ELEMATILIUS_BUCKET = registerItem(
-        "elematilius_bucket",
-        () -> new ElementalBucket(ElementsEnum.ELEMENTAL, Fluids.ELEMATILIUS, new Item.Properties().setId(ResourceKey.create(Registries.ITEM, CropariaIf.of("elematilius_bucket"))).arch$tab(Tabs.MAIN).stacksTo(1).craftRemainder(Items.BUCKET))
-    );
-    @PostReg
-    public static final RegistrySupplier<Item> EARTH_BUCKET = registerItem(
-        "earth_bucket",
-        () -> new ElementalBucket(ElementsEnum.EARTH, Fluids.EARTH, new Item.Properties().setId(ResourceKey.create(Registries.ITEM, CropariaIf.of("earth_bucket"))).arch$tab(Tabs.MAIN).stacksTo(1).craftRemainder(Items.BUCKET))
-    );
-    @PostReg
-    public static final RegistrySupplier<Item> WATER_BUCKET = registerItem(
-        "water_bucket",
-        () -> new ElementalBucket(ElementsEnum.WATER, Fluids.WATER, new Item.Properties().setId(ResourceKey.create(Registries.ITEM, CropariaIf.of("water_bucket"))).arch$tab(Tabs.MAIN).stacksTo(1).craftRemainder(Items.BUCKET))
-    );
-    @PostReg
-    public static final RegistrySupplier<Item> FIRE_BUCKET = registerItem(
-        "fire_bucket",
-        () -> new ElementalBucket(ElementsEnum.FIRE, Fluids.FIRE, new Item.Properties().setId(ResourceKey.create(Registries.ITEM, CropariaIf.of("fire_bucket"))).arch$tab(Tabs.MAIN).stacksTo(1).craftRemainder(Items.BUCKET))
-    );
-    @PostReg
-    public static final RegistrySupplier<Item> AIR_BUCKET = registerItem(
-        "air_bucket",
-        () -> new ElementalBucket(ElementsEnum.AIR, Fluids.AIR, new Item.Properties().setId(ResourceKey.create(Registries.ITEM, CropariaIf.of("air_bucket"))).arch$tab(Tabs.MAIN).stacksTo(1).craftRemainder(Items.BUCKET))
-    );
     protected static final List<RegistrySupplier<Item>> CROPARIAS = List.of(
         CROPARIA, CROPARIA2, CROPARIA3, CROPARIA4, CROPARIA5, CROPARIA6, CROPARIA7
     );
     protected static final List<RegistrySupplier<BlockItem>> RITUAL_STANDS = List.of(
         RITUAL_STAND, RITUAL_STAND_2, RITUAL_STAND_3
     );
-
-    public static void registerCrop(@NotNull Crop crop) {
-        ITEMS.register(crop.getSeedId(), () -> new CropSeed(crop));
-        ITEMS.register(crop.getFruitId(), () -> new CropFruit(crop));
-    }
 
     @NotNull
     public static <T extends Item> RegistrySupplier<T> registerItem(@NotNull String name, @NotNull Supplier<T> supplier) {

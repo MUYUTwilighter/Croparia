@@ -1,0 +1,54 @@
+{
+  "block.infusor.craft": {
+    "sounds": [
+      {
+        "name": "croparia:block/infusor/craft/a"
+      },
+      {
+        "name": "croparia:block/infusor/craft/b"
+      },
+      {
+        "name": "croparia:block/infusor/craft/c"
+      },
+      {
+        "name": "croparia:block/infusor/craft/d"
+      },
+      {
+        "name": "croparia:block/infusor/craft/e"
+      },
+      {
+        "name": "croparia:block/infusor/craft/f"
+      }
+    ],
+    "subtitle": "subtitles.block.croparia.infusor.craft"
+  },
+  "block.infusor.infuse": {
+    "sounds": [
+      {
+        "name": "minecraft:block.brewing_stand.brew",
+        "type": "event"
+      }
+    ],
+    "subtitle": "subtitles.block.croparia.infusor.infuse"
+  },
+  "block.ritual.craft": {
+    "sounds": [
+      {
+        "name": "croparia:block/ritual/craft/a"
+      },
+      {
+        "name": "croparia:block/ritual/craft/b"
+      }
+    ],
+    "subtitle": "subtitles.block.croparia.ritual.craft"
+  },
+  "ambient.magic_rope.teleport": {
+    "sounds": [
+      {
+        "name": "minecraft:entity.enderman.teleport",
+        "type": "event"
+      }
+    ],
+    "subtitle": "subtitles.ambient.croparia.magic_rope.teleport"
+  }
+}

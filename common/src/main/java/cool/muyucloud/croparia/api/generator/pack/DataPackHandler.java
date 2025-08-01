@@ -2,11 +2,9 @@ package cool.muyucloud.croparia.api.generator.pack;
 
 import com.google.gson.JsonObject;
 import cool.muyucloud.croparia.CropariaIf;
-import cool.muyucloud.croparia.api.generator.DataGenerator;
-import cool.muyucloud.croparia.kubejs.DataGeneratorCreator;
+import cool.muyucloud.croparia.api.generator.util.AlwaysEnabledFileResourcePackProvider;
 import cool.muyucloud.croparia.util.Util;
 import dev.architectury.platform.Platform;
-import net.minecraft.SharedConstants;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.PackSource;
@@ -20,57 +18,34 @@ import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.util.Enumeration;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 public class DataPackHandler extends PackHandler {
-    public static final DataPackHandler INSTANCE = new DataPackHandler(CropariaIf.CONFIG.getPackPath());
+    public static final Map<ResourceLocation, DataPackHandler> REGISTRY = new HashMap<>();
+
+    public static <P extends DataPackHandler> P register(P pack) {
+        REGISTRY.put(pack.getId(), pack);
+        return pack;
+    }
+
+    public static DataPackHandler register(ResourceLocation id, Path path, JsonObject meta, Supplier<Boolean> override) {
+        return register(new DataPackHandler(id, path, meta, override));
+    }
 
     private final AlwaysEnabledFileResourcePackProvider datapack = new AlwaysEnabledFileResourcePackProvider(
-        root, PackType.SERVER_DATA, PackSource.BUILT_IN
+        this.getId().toString(), getRoot(), PackType.SERVER_DATA, PackSource.BUILT_IN
     );
-    private final List<DataGenerator> generators = new LinkedList<>();
 
-    @Override
-    public void beforeReload() {
-        super.beforeReload();
-        this.moveBuiltInGenerators();
-        this.readGenerators();
-        this.dump();
-    }
-
-    @Override
-    protected int getVersion() {
-        return SharedConstants.getCurrentVersion().getPackVersion(PackType.SERVER_DATA);
-    }
-
-    public DataPackHandler(Path path) {
-        super(path);
+    public DataPackHandler(ResourceLocation id, Path path, JsonObject meta, Supplier<Boolean> override) {
+        super(id, path, meta, override);
     }
 
     public AlwaysEnabledFileResourcePackProvider getDatapack() {
         return datapack;
-    }
-
-    public void addItemTag(ResourceLocation location, JsonObject tag) {
-        String path = "data/%s/tags/item/%s.json".formatted(location.getNamespace(), location.getPath());
-        this.addFile(path, tag);
-    }
-
-    public void addBlockTag(ResourceLocation location, JsonObject tag) {
-        String path = "data/%s/tags/block/%s.json".formatted(location.getNamespace(), location.getPath());
-        this.addFile(path, tag);
-    }
-
-    @Override
-    protected void generate() {
-        super.generate();
-        for (DataGenerator generator : this.generators) {
-            generator.generate(this.root.resolve("data"));
-        }
     }
 
     @Override
@@ -78,7 +53,6 @@ public class DataPackHandler extends PackHandler {
         Path path = this.root.resolve("data");
         File file = path.toFile();
         if (file.isDirectory()) {
-            CropariaIf.LOGGER.info("Clearing data pack directory");
             try {
                 Util.deleteDir(file);
             } catch (Throwable e) {
@@ -94,7 +68,7 @@ public class DataPackHandler extends PackHandler {
             if (!targetDirFile.isDirectory() && !targetDirFile.mkdirs()) {
                 throw new IllegalStateException("Failed to establish directory \"%s\"".formatted(targetDir));
             }
-            Enumeration<URL> urls = CropariaIf.class.getClassLoader().getResources("croparia-if-generators");
+            Enumeration<URL> urls = CropariaIf.class.getClassLoader().getResources("data_generators");
             while (urls.hasMoreElements()) {
                 URL url = urls.nextElement();
                 String jarPath = unifyUrl(url);
@@ -115,7 +89,7 @@ public class DataPackHandler extends PackHandler {
                 }
             }
         } catch (Throwable e) {
-            CropariaIf.LOGGER.error("Failed to move built-in generators", e);
+            LOGGER.error("Failed to move built-in generators", e);
         }
     }
 
@@ -134,27 +108,5 @@ public class DataPackHandler extends PackHandler {
             jarPath = "/" + jarPath;
         }
         return jarPath;
-    }
-
-    public void readGenerators() {
-        try {
-            this.generators.clear();
-            File root = this.root.resolve("generators").toFile();
-            if (!root.isDirectory() && !root.mkdirs()) {
-                throw new IllegalStateException("Failed to establish directory \"%s\"".formatted(root));
-            }
-            for (File file : Objects.requireNonNull(root.listFiles())) {
-                if (file.isFile()) {
-                    DataGenerator.read(file.toPath()).ifPresent(this::addGenerator);
-                }
-            }
-            DataGeneratorCreator.flushInto(this::addGenerator);
-        } catch (Throwable e) {
-            CropariaIf.LOGGER.error("Failed to read generators", e);
-        }
-    }
-
-    public void addGenerator(DataGenerator generator) {
-        this.generators.add(generator);
     }
 }

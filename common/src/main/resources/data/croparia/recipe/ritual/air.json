@@ -5,7 +5,7 @@
     "id": "croparia:elematilius"
   },
   "block": {
-    "block": "minecraft:purpur_block"
+    "id": "minecraft:purpur_block"
   },
   "result": {
     "id": "croparia:elemental_air",

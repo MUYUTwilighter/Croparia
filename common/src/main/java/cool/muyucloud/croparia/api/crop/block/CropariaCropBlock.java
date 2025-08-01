@@ -8,6 +8,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.SoundType;
@@ -23,22 +24,23 @@ public class CropariaCropBlock extends CropBlock implements CropAccess {
 
     @Override
     protected @NotNull ItemLike getBaseSeedId() {
-        return this.crop.getSeedItem();
+        return this.asItem();
     }
 
     @Override
     public @NotNull MutableComponent getName() {
-        MutableComponent cropName = Component.translatable(this.crop.getTranslationKey());
+        MutableComponent cropName = Component.translatable(this.getCrop().getTranslationKey());
         return Component.translatable("block." + CropariaIf.MOD_ID + ".crop.block", cropName);
     }
 
     public int getTier() {
-        return this.crop.getTier();
+        return this.getCrop().getTier();
     }
 
     @Override
     public @NotNull Item asItem() {
-        return crop.getSeedItem();
+        if (this.getCrop().getCropSeed().isEmpty()) return Items.AIR;
+        return this.getCrop().getCropSeed().get();
     }
 
     @Override
