@@ -3,10 +3,12 @@ package cool.muyucloud.croparia.api.crop.block;
 import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.api.crop.Crop;
 import cool.muyucloud.croparia.api.crop.CropAccess;
+import cool.muyucloud.croparia.registry.DgIterables;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
@@ -14,12 +16,12 @@ import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.SoundType;
 import org.jetbrains.annotations.NotNull;
 
-public class CropariaCropBlock extends CropBlock implements CropAccess {
-    private final Crop crop;
+public class CropariaCropBlock extends CropBlock implements CropAccess<Crop> {
+    private final ResourceLocation cropId;
 
     public CropariaCropBlock(Crop crop) {
         super(Properties.of().noCollission().sound(SoundType.CROP).setId(ResourceKey.create(Registries.BLOCK, crop.getBlockId())));
-        this.crop = crop;
+        this.cropId = crop.getKey();
     }
 
     @Override
@@ -45,6 +47,6 @@ public class CropariaCropBlock extends CropBlock implements CropAccess {
 
     @Override
     public Crop getCrop() {
-        return this.crop;
+        return DgIterables.CROPS.forName(this.cropId).orElseThrow();
     }
 }
