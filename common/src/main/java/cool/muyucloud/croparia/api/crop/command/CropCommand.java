@@ -50,18 +50,19 @@ public class CropCommand {
     }
 
     public static int reportForPlayer(Player player, Level world, SuccessMessage success, FailureMessage failure) {
-        @NotNull CropAccess cropAccess;
-        if (player.getWeaponItem().getItem() instanceof CropAccess tmpCropAccess) {
-            cropAccess = tmpCropAccess;
-        } else if (world.getBlockState(Util.lookingAt(player)).getBlock() instanceof CropAccess tmpCropAccess) {
-            cropAccess = tmpCropAccess;
-        } else {
+        Crop crop = null;
+        if (player.getWeaponItem().getItem() instanceof CropAccess<?> access) {
+            crop = CropAccess.tryGet(access);
+        } else if (world.getBlockState(Util.lookingAt(player)).getBlock() instanceof CropAccess<?> access) {
+            crop = CropAccess.tryGet(access);
+        }
+        if (crop == null) {
             failure.send(Component.translatable("commands.croparia.crop.no_crop"));
             return 0;
         }
-        Component report = buildReport(cropAccess.getCrop());
+        Component report = buildReport(crop);
         success.send(() -> report, false);
-        return cropAccess.getCrop().getTier();
+        return crop.getTier();
     }
 
     public static MutableComponent buildReport(@NotNull Crop crop) {

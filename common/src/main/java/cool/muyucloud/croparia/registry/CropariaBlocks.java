@@ -2,8 +2,6 @@ package cool.muyucloud.croparia.registry;
 
 import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.api.core.block.*;
-import cool.muyucloud.croparia.api.crop.Crop;
-import cool.muyucloud.croparia.api.crop.block.CropariaCropBlock;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.Registries;

@@ -50,14 +50,20 @@ public class CropRegistry<C extends AbstractCrop> implements DgIterable<C> {
     }
 
     public void register(C crop) {
-        all.put(crop.getKey(), crop);
+        this.all.put(crop.getKey(), crop);
         if (crop.shouldLoad()) {
             crop.onRegister();
             loaded.put(crop.getKey(), crop);
+        } else {
+            loaded.remove(crop.getKey());
         }
     }
 
     public void readCrops() {
+        File file = this.getPath().toFile();
+        if (!file.isDirectory() && !file.mkdirs()) {
+            throw new IllegalStateException("Failed to establish directory \"%s\"".formatted(file));
+        }
         this.readCrops(this.getPath());
     }
 

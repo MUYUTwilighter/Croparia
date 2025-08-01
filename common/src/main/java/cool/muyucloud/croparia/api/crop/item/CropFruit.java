@@ -16,7 +16,7 @@ import net.minecraft.world.item.context.UseOnContext;
 import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("UnstableApiUsage")
-public class CropFruit extends Item implements CropAccess {
+public class CropFruit extends Item implements CropAccess<Crop> {
     public Crop crop;
 
     public CropFruit(Crop crop) {
