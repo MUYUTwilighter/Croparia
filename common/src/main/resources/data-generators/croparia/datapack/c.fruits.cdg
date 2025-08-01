@@ -1,0 +1,10 @@
+@type=croparia:composite;
+@iterable=croparia:crops;
+@path=c/tag/item/fruits.json;
+@content="    {fruit}";
+{
+  "replace": false,
+  "values": [
+{content}
+  ]
+}

@@ -1,6 +1,5 @@
-@enabled=true
-@path=croparia/recipe/crafting/seeds/{name}.json
-@dependency=minecraft
+@iterable=croparia:crops;
+@path=croparia/recipe/crafting/seeds/{id_namespace}/{id_path}.json;
 {
   "type": "minecraft:crafting_shaped",
   "key": {

@@ -1,0 +1,8 @@
+@iterable=croparia:elements;
+@path={id_namespace}/items/{gem_path}.json
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "{id_namespace}:item/{gem_path}"
+  }
+}

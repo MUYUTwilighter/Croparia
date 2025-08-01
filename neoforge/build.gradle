@@ -43,7 +43,7 @@ dependencies {
     neoForge "net.neoforged:neoforge:$rootProject.neoforge_version"
 
     // Architectury API. This is optional, and you can comment it out if you don't need it.
-    modImplementation "dev.architectury:architectury-neoforge:$rootProject.architectury_api_version"
+    modImplementation "dev.architectury:architectury-neoforge:$architectury_api_version"
 
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowBundle project(path: ':common', configuration: 'transformProductionNeoForge')
@@ -52,7 +52,7 @@ dependencies {
     modRuntimeOnly "me.shedaniel:RoughlyEnoughItems-neoforge:$rei_version"
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-api-neoforge:$rei_version"
     modCompileOnly "me.shedaniel:RoughlyEnoughItems-default-plugin-neoforge:$rei_version"
-    // EMI: waiting for update to 1.21.3
+    // EMI: waiting for update to 1.21.4
 //    modCompileOnly "dev.emi:emi-neoforge:${emi_version}:api"
 //    modRuntimeOnly "dev.emi:emi-neoforge:${emi_version}"
     // KubeJs

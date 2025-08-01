@@ -1,3 +1,4 @@
+@iterable=croparia:crops;
 @path=croparia/tag/item/crop_seeds.json;
 @content='''    {seed}''';
 {

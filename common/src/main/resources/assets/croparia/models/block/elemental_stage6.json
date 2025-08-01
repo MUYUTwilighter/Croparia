@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:block/crop",
-  "textures": {
-    "crop": "croparia:block/elemental_stage_6"
-  }
-}

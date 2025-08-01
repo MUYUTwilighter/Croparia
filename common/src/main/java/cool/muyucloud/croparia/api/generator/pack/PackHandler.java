@@ -93,6 +93,9 @@ public abstract class PackHandler {
                 }
             }
         }
+        if (Platform.isDevelopmentEnvironment()) {
+            Path.of("").toAbsolutePath().getParent().resolve("build/resources/main/data-generators");
+        }
     }
 
     protected void refreshGenerators() {

@@ -1,0 +1,7 @@
+@iterable=croparia:elements;
+@path={id_namespace}/models/block/{liquid_block_path}.json
+{
+  "textures": {
+    "particle": "croparia:block/air_still"
+  }
+}

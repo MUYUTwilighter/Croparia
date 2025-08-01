@@ -1,6 +1,6 @@
-@enabled=true
-@path=croparia/recipe/modern_industrialization/packer/{name}.json
-@dependency=modern_industrialization
+@iterable=croparia:crops;
+@path=croparia/recipe/mi/packer/{id_namespace}/{id_path}.json
+@dependencies=modern_industrialization;
 {
   "type": "modern_industrialization:packer",
   "duration": 100,

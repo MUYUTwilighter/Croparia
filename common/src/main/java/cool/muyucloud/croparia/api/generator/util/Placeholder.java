@@ -40,7 +40,7 @@ public class Placeholder<E extends DgElement> {
         Matcher matcher = pattern.matcher(source);
         while (matcher.find()) {
             String matched = matcher.group();
-            source = source.replace(matched, mapper.apply(matcher, (E) element));
+            source = source.replaceAll(matched, mapper.apply(matcher, (E) element));
         }
         return source;
     }

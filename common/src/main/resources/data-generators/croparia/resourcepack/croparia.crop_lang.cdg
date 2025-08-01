@@ -1,0 +1,7 @@
+@type=croparia:lang;
+@iterable=croparia:crops;
+@path={id_namespace}/lang/{lang}.json;
+@content="  "{translation_key}": "{translation.{lang}}"";
+{
+{content}
+}

@@ -1,5 +1,6 @@
-@path=botanypots/recipe/croparia/seed/{name}.json
-@dependency=["botanypots"]
+@iterable=croparia:crops;
+@path=botanypots/recipe/{id_namespace}/seed/{id_path}.json;
+@dependencies=botanypots;
 {
   "type": "botanypots:crop",
   "seed": {

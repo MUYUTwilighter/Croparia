@@ -1,0 +1,10 @@
+@type=croparia:composite;
+@iterable=croparia:crops;
+@path=minecraft/tag/block/bee_growables.json;
+@content="    {crop_block}";
+{
+  "replace": false,
+  "values": [
+{content}
+  ]
+}

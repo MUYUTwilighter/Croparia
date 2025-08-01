@@ -1,6 +1,6 @@
-@enabled=true
-@path=croparia/recipe/thermal/insolator/{name}.json
-@dependency=thermal_cultivation
+@iterable=croparia:crops;
+@path=croparia/recipe/thermal/insolator/{id_namespace}/{id_path}.json;
+@dependencies=thermal_cultivation;
 {
   "type": "thermal:insolator",
   "ingredient": {
