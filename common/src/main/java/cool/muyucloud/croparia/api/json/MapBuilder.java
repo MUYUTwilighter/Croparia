@@ -11,6 +11,12 @@ import java.util.Map;
 public class MapBuilder implements JsonBuilder {
     private final JsonObject json = new JsonObject();
 
+    public MapBuilder(Object... entries) {
+        for (int i = 0; i < entries.length; i += 2) {
+            json.add((String) entries[i], JsonBuilder.parse(entries[i + 1]));
+        }
+    }
+
     public MapBuilder(Map<String, Object> map) {
         this.with(map);
     }

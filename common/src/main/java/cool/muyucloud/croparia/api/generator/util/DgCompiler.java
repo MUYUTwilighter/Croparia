@@ -44,7 +44,7 @@ public class DgCompiler {
         Map<String, JsonElement> meta = extractMeta(cdg);
         String template = extractTemplate(cdg);
         for (Map.Entry<String, JsonElement> entry : meta.entrySet()) result.add(entry.getKey(), entry.getValue());
-        result.add("template", parseValue(template));
+        result.add("template", new JsonPrimitive(template));
         return result;
     }
 
@@ -53,10 +53,22 @@ public class DgCompiler {
         else if (valueStr.equals("false")) return new JsonPrimitive(false);
         else if (valueStr.equals("null")) return JsonNull.INSTANCE;
         else if (valueStr.matches("-?\\d+")) return new JsonPrimitive(Integer.parseInt(valueStr));
-        else if (valueStr.startsWith("{") && valueStr.endsWith("}")) return GSON.fromJson(valueStr, JsonObject.class);
-        else if (valueStr.startsWith("[") && valueStr.endsWith("]")) return GSON.fromJson(valueStr, JsonArray.class);
-        else if (valueStr.startsWith("\"") && valueStr.endsWith("\""))
+        else if (valueStr.startsWith("{") && valueStr.endsWith("}")) {
+            try {
+                return GSON.fromJson(valueStr, JsonObject.class);
+            } catch (Throwable t) {
+                return new JsonPrimitive(valueStr);
+            }
+        } else if (valueStr.startsWith("[") && valueStr.endsWith("]")) {
+            try {
+                return GSON.fromJson(valueStr, JsonArray.class);
+            } catch (Throwable t) {
+                return new JsonPrimitive(valueStr);
+            }
+        } else if (valueStr.startsWith("\"") && valueStr.endsWith("\"") || valueStr.startsWith("'") && valueStr.endsWith("'"))
             return new JsonPrimitive(valueStr.substring(1, valueStr.length() - 1));
+        else if (valueStr.startsWith("'''") && valueStr.endsWith("'''"))
+            return new JsonPrimitive(valueStr.substring(3, valueStr.length() - 3));
         else return new JsonPrimitive(valueStr);
     }
 }

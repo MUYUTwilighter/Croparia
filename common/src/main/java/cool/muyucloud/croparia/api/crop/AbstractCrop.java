@@ -11,8 +11,8 @@ import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
 public abstract class AbstractCrop implements TranslatableElement {
@@ -33,9 +33,9 @@ public abstract class AbstractCrop implements TranslatableElement {
     );
 
     private final LazySupplier<Set<Placeholder<?>>> placeholders = LazySupplier.of(() -> {
-        Set<Placeholder<?>> set = new HashSet<>();
-        this.buildPlaceholders(set);
-        return ImmutableSet.copyOf(set);
+        ArrayList<Placeholder<?>> list = new ArrayList<>();
+        this.buildPlaceholders(list);
+        return ImmutableSet.copyOf(list);
     });
 
     public abstract @NotNull Material getMaterial();

@@ -1,5 +1,5 @@
 @iterable=croparia:elements;
-@path={id_namespace}/blockstates/{liquid_block_path}.json
+@path={id_namespace}/blockstates/{liquid_block_path}.json;
 {
   "variants": {
     "": {

@@ -1,17 +1,18 @@
 package cool.muyucloud.croparia.api.generator;
 
 import com.google.common.collect.ImmutableList;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.mojang.realmsclient.util.JsonUtils;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.api.generator.pack.PackHandler;
 import cool.muyucloud.croparia.api.generator.util.*;
 import cool.muyucloud.croparia.util.CodecUtil;
 import cool.muyucloud.croparia.util.supplier.LazySupplier;
 import net.minecraft.resources.ResourceLocation;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,6 +22,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public class DataGenerator<E extends DgElement> {
+    public static final Logger LOGGER = LogManager.getLogger();
     private static final Map<ResourceLocation, MapCodec<? extends DataGenerator<?>>> REGISTRY = new HashMap<>();
 
     public static <G extends DataGenerator<? extends DgElement>, C extends MapCodec<G>> C register(ResourceLocation id, C codec) {
@@ -31,13 +33,11 @@ public class DataGenerator<E extends DgElement> {
     public static DataGenerator<?> read(File file) throws IOException {
         if (file.getName().endsWith(".cdg")) {
             JsonObject json = DgCompiler.compile(file);
-            String rawType = JsonUtils.getStringOr("type", json, "croparia:generator");
-            rawType = rawType == null ? "croparia:generator" : rawType;
-            ResourceLocation id = ResourceLocation.tryParse(rawType);
-            id = id == null ? CropariaIf.of("generator") : id;
+            JsonElement type = json.get("type");
+            ResourceLocation id = ResourceLocation.parse(type == null ? "croparia:generator" : type.getAsString());
             return CodecUtil.decodeJson(json, REGISTRY.get(id));
         } else {
-            return null;
+            throw new IllegalArgumentException("Invalid file suffix: " + file.getName());
         }
     }
 

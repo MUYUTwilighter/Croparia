@@ -1,5 +1,5 @@
 @iterable=croparia:elements;
-@path={id_namespace}/models/item/{gem_path}.json
+@path={id_namespace}/models/item/{gem_path}.json;
 {
     "parent": "item/generated",
     "textures": {

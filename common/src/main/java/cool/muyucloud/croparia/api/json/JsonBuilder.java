@@ -10,6 +10,10 @@ import cool.muyucloud.croparia.util.CodecUtil;
 import java.util.Map;
 
 public interface JsonBuilder {
+    static JsonObject map(Object... entries) {
+        return new MapBuilder(entries).build();
+    }
+
     static JsonObject map(Map<String, Object> compound) {
         return new MapBuilder(compound).build();
     }

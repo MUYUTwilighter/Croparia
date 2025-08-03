@@ -59,4 +59,9 @@ public class ResourcePackHandler extends PackHandler {
             }
         }
     }
+
+    @Override
+    public void addFile(String relative, String content) {
+        super.addFile("assets/" + relative, content);
+    }
 }

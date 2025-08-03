@@ -4,21 +4,24 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import cool.muyucloud.croparia.api.generator.DataGenerator;
+import cool.muyucloud.croparia.api.generator.util.JarJarEntry;
+import dev.architectury.injectables.annotations.ExpectPlatform;
 import dev.architectury.platform.Platform;
 import net.minecraft.resources.ResourceLocation;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.apache.commons.lang3.NotImplementedException;
 
 import java.io.*;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Supplier;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 
 public abstract class PackHandler {
     public static final Gson GSON = new Gson();
-    public static final Logger LOGGER = LogManager.getLogger();
+
+    @ExpectPlatform
+    public static Map<ResourceLocation, Collection<JarJarEntry>> getBuiltinGenerators() {
+        throw new NotImplementedException("Not implemented");
+    }
 
     protected final ResourceLocation id;
     protected final Path root;
@@ -57,45 +60,35 @@ public abstract class PackHandler {
     }
 
     protected void moveBuiltInGenerators() {
-        File[] files = Platform.getModsFolder().toFile().listFiles();
-        if (files == null) {
-            LOGGER.error("Failed to list mods folder");
-            return;
-        }
-        Path targetDir = this.root.resolve("generators");
-        File targetDirFile = targetDir.toFile();
-        if (!targetDirFile.isDirectory() && !targetDirFile.mkdirs()) {
-            LOGGER.error("Failed to establish directory \"%s\"".formatted(targetDir));
+        Path targetRoot = this.root.resolve("generators");
+        File targetRootFile = targetRoot.toFile();
+        if (!targetRootFile.isDirectory() && !targetRootFile.mkdirs()) {
+            DataGenerator.LOGGER.error("Failed to establish directory \"%s\"".formatted(targetRoot));
         }
         String prefix = "data-generators/%s/%s/".formatted(this.getId().getNamespace(), this.getId().getPath());
-        for (File file : files) {
-            if (file.isFile() && file.getName().endsWith(".jar")) {
-                try (JarFile jar = new JarFile(file)) {
-                    Enumeration<JarEntry> entries = jar.entries();
-                    while (entries.hasMoreElements()) {
-                        JarEntry entry = entries.nextElement();
-                        String name = entry.getName();
-                        if (!entry.isDirectory() && name.startsWith(prefix) && name.endsWith(".cdg")) {
-                            File target = targetDir.resolve(entry.getName().substring(prefix.length())).toFile();
-                            File parent = targetDir.getParent().toFile();
-                            if (!parent.isDirectory() && parent.mkdirs()) {
-                                throw new IllegalStateException("Failed to establish directory \"%s\"".formatted(parent));
-                            }
-                            if (!target.isFile() || Platform.isDevelopmentEnvironment()) {
-                                try (OutputStream stream = new FileOutputStream(target)) {
-                                    jar.getInputStream(entry).transferTo(stream);
-                                }
-                            }
+        getBuiltinGenerators().get(this.getId()).forEach(entry -> {
+            String name = entry.getEntry().getName();
+            Path targetPath = targetRoot.resolve(name.substring(prefix.length()));
+            File target = targetPath.toFile();
+            File parent = targetPath.getParent().toFile();
+            if (!parent.isDirectory() && !parent.mkdirs()) {
+                DataGenerator.LOGGER.error("Failed to establish directory \"%s\"".formatted(parent));
+                return;
+            }
+            if (!target.isFile() || Platform.isDevelopmentEnvironment()) {
+                try (OutputStream stream = new FileOutputStream(target)) {
+                    entry.forInputStream(input -> {
+                        try {
+                            input.transferTo(stream);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
                         }
-                    }
-                } catch (Throwable e) {
-                    LOGGER.error("Failed to move built-in generators", e);
+                    });
+                } catch (IOException e) {
+                    DataGenerator.LOGGER.error("Failed to move built-in generator \"%s\" from %s".formatted(name, entry.getFile().getName()), e);
                 }
             }
-        }
-        if (Platform.isDevelopmentEnvironment()) {
-            Path.of("").toAbsolutePath().getParent().resolve("build/resources/main/data-generators");
-        }
+        });
     }
 
     protected void refreshGenerators() {
@@ -111,7 +104,7 @@ public abstract class PackHandler {
                 DataGenerator<?> generator = DataGenerator.read(file);
                 this.generators.add(generator);
             } catch (Throwable t) {
-                LOGGER.error("Failed to read generator \"%s\"".formatted(file), t);
+                DataGenerator.LOGGER.error("Failed to read generator \"%s\"".formatted(file), t);
             }
         }
 
@@ -129,7 +122,7 @@ public abstract class PackHandler {
                 this.writeFile(entry.getValue(), entry.getKey().toFile());
             }
         } catch (Exception e) {
-            LOGGER.error("Failed to write pack data to file system", e);
+            DataGenerator.LOGGER.error("Failed to write pack data to file system", e);
         }
         this.cache.clear();
     }
@@ -138,7 +131,7 @@ public abstract class PackHandler {
         try {
             this.writeFile(GSON.toJson(this.meta), this.root.resolve("pack.mcmeta").toFile());
         } catch (IOException e) {
-            LOGGER.error("Failed to write pack metadata to file system", e);
+            DataGenerator.LOGGER.error("Failed to write pack metadata to file system", e);
         }
     }
 

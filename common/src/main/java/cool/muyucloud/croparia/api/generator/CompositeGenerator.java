@@ -59,7 +59,7 @@ public class CompositeGenerator<E extends DgElement> extends DataGenerator<E> {
                 builder.append(s).append(",\n");
             }
             String content = builder.isEmpty() ? "" : builder.substring(0, builder.length() - 2);
-            pack.addFile(relative, content);
+            pack.addFile(relative, this.getTemplate().replaceAll("\\{content}", content));
         }
         this.cache.clear();
     }

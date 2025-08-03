@@ -7,25 +7,23 @@ import cool.muyucloud.croparia.api.json.JsonBuilder;
 import net.minecraft.SharedConstants;
 import net.minecraft.server.packs.PackType;
 
-import java.util.Map;
-
 @SuppressWarnings("unused")
 public class PackHandlers {
     public static final DataPackHandler DATAPACK = DataPackHandler.register(
-        CropariaIf.of("datapack"), CropariaIf.CONFIG.getPackPath().resolve("datapack"), JsonBuilder.map(Map.of(
-            "pack", JsonBuilder.map(Map.of(
+        CropariaIf.of("datapack"), CropariaIf.CONFIG.getPackPath().resolve("datapack"), JsonBuilder.map(
+            "pack", JsonBuilder.map(
                 "pack_format", SharedConstants.getCurrentVersion().getPackVersion(PackType.SERVER_DATA),
                 "description", "Croparia mandatory datapack, please do not modify"
-            ))
-        )), CropariaIf.CONFIG::getOverride
+            )
+        ), CropariaIf.CONFIG::getOverride
     );
     public static final ResourcePackHandler RESOURCEPACK = ResourcePackHandler.register(
-        CropariaIf.of("datapack"), CropariaIf.CONFIG.getPackPath().resolve("resourcepack"), JsonBuilder.map(Map.of(
-            "pack", JsonBuilder.map(Map.of(
+        CropariaIf.of("resourcepack"), CropariaIf.CONFIG.getPackPath().resolve("resourcepack"), JsonBuilder.map(
+            "pack", JsonBuilder.map(
                 "pack_format", SharedConstants.getCurrentVersion().getPackVersion(PackType.CLIENT_RESOURCES),
                 "description", "Croparia mandatory resourcepack, please do not modify"
-            ))
-        )), CropariaIf.CONFIG::getOverride
+            )
+        ), CropariaIf.CONFIG::getOverride
     );
 
     public static void register() {

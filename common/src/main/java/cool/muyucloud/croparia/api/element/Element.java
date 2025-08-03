@@ -2,9 +2,11 @@ package cool.muyucloud.croparia.api.element;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import com.mojang.serialization.Codec;
 import cool.muyucloud.croparia.CropariaIf;
+import cool.muyucloud.croparia.api.crop.util.Color;
 import cool.muyucloud.croparia.api.element.block.ElementalLiquidBlock;
 import cool.muyucloud.croparia.api.element.fluid.ElementalFlowing;
 import cool.muyucloud.croparia.api.element.fluid.ElementalSource;
@@ -65,6 +67,8 @@ public class Element implements StringRepresentable, Comparable<Element>, DgElem
         REGISTRY.forEach(consumer);
     }
 
+    public static final Placeholder<Element> NAME = Placeholder.of("\\{name}", Element::getSerializedName);
+    public static final Placeholder<Element> COLOR = Placeholder.of("\\{color}", element -> element.getColor().toDecString());
     public static final Placeholder<Element> FLUID_SOURCE = Placeholder.of(
         "\\{fluid_source}", element -> element.getFluidSource().getId().toString()
     );
@@ -103,6 +107,7 @@ public class Element implements StringRepresentable, Comparable<Element>, DgElem
     );
 
     private final ResourceLocation id;
+    private final Color color;
     private final HolderSupplier<ElementalSource> fluidSource;
     private final HolderSupplier<ElementalFlowing> fluidFlowing;
     private final HolderSupplier<ElementalLiquidBlock> fluidBlock;
@@ -110,13 +115,14 @@ public class Element implements StringRepresentable, Comparable<Element>, DgElem
     private final HolderSupplier<ElementalPotion> potion;
     private final HolderSupplier<ElementalGem> gem;
     private final transient LazySupplier<Collection<Placeholder<? extends DgElement>>> placeholders = LazySupplier.of(() -> {
-        Collection<Placeholder<? extends DgElement>> set = new HashSet<>();
+        Collection<Placeholder<? extends DgElement>> set = new ArrayList<>();
         this.buildPlaceholders(set);
-        return set;
+        return ImmutableList.copyOf(set);
     });
 
     private Element() {
         this.id = CropariaIf.of("empty");
+        this.color = new Color(-1);
         this.fluidSource = HolderSupplier.of(() -> null, CropariaIf.of("empty"), Registries.FLUID);
         this.fluidFlowing = HolderSupplier.of(() -> null, CropariaIf.of("empty_flow"), Registries.FLUID);
         this.fluidBlock = HolderSupplier.of(() -> null, CropariaIf.of("empty"), Registries.BLOCK);
@@ -128,8 +134,9 @@ public class Element implements StringRepresentable, Comparable<Element>, DgElem
     }
 
     @SuppressWarnings("UnstableApiUsage")
-    public Element(ResourceLocation id, Consumer<SimpleArchitecturyFluidAttributes> appendix) {
+    public Element(ResourceLocation id, Color color, Consumer<SimpleArchitecturyFluidAttributes> appendix) {
         this.id = id;
+        this.color = color;
         SimpleArchitecturyFluidAttributes attr = SimpleArchitecturyFluidAttributes
             .of(() -> Element.this.getFluidFlowing().get(), () -> Element.this.getFluidSource().get())
             .block(() -> Optional.ofNullable(Element.this.getFluidBlock().get()))
@@ -164,6 +171,10 @@ public class Element implements StringRepresentable, Comparable<Element>, DgElem
 
     public ResourceLocation parseId(String pattern) {
         return Util.formatId(pattern, this.getKey());
+    }
+
+    public Color getColor() {
+        return color;
     }
 
     public HolderSupplier<ElementalFlowing> getFluidFlowing() {
@@ -208,6 +219,8 @@ public class Element implements StringRepresentable, Comparable<Element>, DgElem
     @Override
     public void buildPlaceholders(Collection<Placeholder<?>> set) {
         DgElement.super.buildPlaceholders(set);
+        set.add(NAME);
+        set.add(COLOR);
         set.add(FLUID_SOURCE);
         set.add(FLUID_SOURCE_PATH);
         set.add(FLUID_FLOWING);

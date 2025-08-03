@@ -1,7 +1,9 @@
+@iterable=croparia:elements;
+@path={id_namespace}/items/{bucket_path}.json;
 {
   "model": {
     "type": "minecraft:model",
-    "model": "croparia:item/fire_bucket",
+    "model": "croparia:item/bucket_template",
     "tints": [
       {
         "type": "minecraft:constant",
@@ -9,7 +11,7 @@
       },
       {
         "type": "minecraft:constant",
-        "value": 11010055
+        "value": {color}
       }
     ]
   }

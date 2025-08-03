@@ -11,16 +11,24 @@ public class Color {
     public static final Codec<Color> CODEC_STR = Codec.STRING.xmap(Color::new, Color::toString);
     public static final Codec<Color> CODEC = new AnyCodec<>(CODEC_STR, CODEC_INT);
 
+    public static Color of(int value) {
+        return new Color(value);
+    }
+
+    public static Color of(String format) {
+        return new Color(format);
+    }
+
     private final int value;
 
     public Color(int value) {
-        this.value = value;
+        this.value = value | 0xFF000000;
     }
 
     public Color(String format) {
-        if (format.startsWith("#")) this.value = Integer.parseInt(format.substring(1), 16);
-        else if (format.startsWith("0x")) this.value = Integer.parseInt(format.substring(2), 16);
-        else this.value = Integer.parseInt(format);
+        if (format.startsWith("#")) this.value = Integer.parseInt(format.substring(1), 16) | 0xFF000000;
+        else if (format.startsWith("0x")) this.value = Integer.parseInt(format.substring(2), 16) | 0xFF000000;
+        else this.value = Integer.parseInt(format) | 0xFF000000;
     }
 
     public int getValue() {
