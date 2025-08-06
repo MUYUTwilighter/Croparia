@@ -1,0 +1,16 @@
+@registry=croparia:elements;
+@path=croparia/recipe/crafting/bucket/{name}.json;
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:bucket",
+    "{gem}",
+    "{gem}",
+    "{gem}",
+    "{gem}"
+  ],
+  "result": {
+    "id": "croparia:air_bucket"
+  }
+}

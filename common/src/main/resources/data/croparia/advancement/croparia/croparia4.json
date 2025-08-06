@@ -1,5 +1,5 @@
 {
-  "parent": "croparia:croparia/elemental_fire",
+  "parent": "croparia:croparia/gem_fire",
   "criteria": {
     "croparia4": {
       "conditions": {

@@ -1,8 +1,9 @@
-@iterable=croparia:elements;
+@startup=true;
+@registry=croparia:elements;
 @path={id_namespace}/items/{potion_path}.json;
 {
   "model": {
     "type": "minecraft:model",
-    "model": "{id_namespace}:item/{potion_path}",
+    "model": "{id_namespace}:item/{potion_path}"
   }
 }

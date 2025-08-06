@@ -1,9 +1,11 @@
 package cool.muyucloud.croparia.api.recipe;
 
+import com.mojang.logging.LogUtils;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.display.RecipeDisplay;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
 
 import java.util.List;
 
@@ -11,6 +13,8 @@ import java.util.List;
  * A generic interface for recipes that can be displayed in the recipe book, can be polymorphic to many types required
  * */
 public interface DisplayableRecipe<C extends RecipeInput> extends Recipe<C>, RecipeDisplay {
+    Logger LOGGER = LogUtils.getLogger();
+
     TypedSerializer<? extends DisplayableRecipe<C>> getTypedSerializer();
 
     @Override

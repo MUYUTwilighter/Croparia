@@ -3,6 +3,7 @@ package cool.muyucloud.croparia.api.core.recipe;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import cool.muyucloud.croparia.api.core.recipe.container.RitualStructureContainer;
 import cool.muyucloud.croparia.api.recipe.DisplayableRecipe;
 import cool.muyucloud.croparia.api.recipe.TypedSerializer;
 import cool.muyucloud.croparia.api.recipe.entry.BlockInput;
@@ -15,7 +16,6 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.PlacementInfo;
-import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -25,10 +25,10 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 @SuppressWarnings("unused")
-public class RitualStructure implements DisplayableRecipe<RecipeInput> {
+public class RitualStructure implements DisplayableRecipe<RitualStructureContainer> {
     public static final TypedSerializer<RitualStructure> TYPED_SERIALIZER = new TypedSerializer<>(RecordCodecBuilder.mapCodec(
         instance -> instance.group(
-            Codec.unboundedMap(CodecUtil.CHAR, BlockInput.CODEC.codec()).fieldOf("keys").forGetter(RitualStructure::getKeys),
+            Codec.unboundedMap(CodecUtil.CHAR, BlockInput.CODEC).fieldOf("keys").forGetter(RitualStructure::getKeys),
             Char3D.CODEC.fieldOf("pattern").forGetter(RitualStructure::getPattern)
         ).apply(instance, RitualStructure::new)
     ));
@@ -133,18 +133,18 @@ public class RitualStructure implements DisplayableRecipe<RecipeInput> {
     }
 
     @Override
-    public TypedSerializer<? extends DisplayableRecipe<RecipeInput>> getTypedSerializer() {
+    public TypedSerializer<? extends RitualStructure> getTypedSerializer() {
         return TYPED_SERIALIZER;
     }
 
     @Override
     @Deprecated
-    public boolean matches(RecipeInput recipeInput, Level level) {
-        return false;
+    public boolean matches(RitualStructureContainer recipeInput, Level level) {
+        return true;
     }
 
     @Override
-    public @NotNull ItemStack assemble(RecipeInput recipeInput, HolderLookup.Provider provider) {
+    public @NotNull ItemStack assemble(RitualStructureContainer recipeInput, HolderLookup.Provider provider) {
         return ItemStack.EMPTY;
     }
 
@@ -161,5 +161,10 @@ public class RitualStructure implements DisplayableRecipe<RecipeInput> {
     @Override
     public @NotNull SlotDisplay craftingStation() {
         return SlotDisplay.Empty.INSTANCE;
+    }
+
+    @Override
+    public boolean isSpecial() {
+        return true;
     }
 }

@@ -2,6 +2,9 @@ package cool.muyucloud.croparia.util.supplier;
 
 import java.util.function.Supplier;
 
+/**
+ * A lazy supplier that the flag can be manually refreshed.
+ */
 public class SemiSupplier<T> extends LazySupplier<T> {
     public static <T> SemiSupplier<T> empty() {
         return SemiSupplier.of(() -> null);

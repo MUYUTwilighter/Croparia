@@ -1,0 +1,19 @@
+@registry=croparia:crops;
+@path=croparia/recipe/crafting/seeds/{id_namespace}/{id_path}.json;
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": "{croparia}",
+    "M": "{material_taggable}",
+    "S": "#croparia:seed_ingredient"
+  },
+  "pattern": [
+    "MSM",
+    "SCS",
+    "MSM"
+  ],
+  "result": {
+    "id": "{seed}",
+    "count": 1
+  }
+}

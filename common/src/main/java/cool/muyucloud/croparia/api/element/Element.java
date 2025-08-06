@@ -115,20 +115,20 @@ public class Element implements StringRepresentable, Comparable<Element>, DgElem
     private final HolderSupplier<ElementalPotion> potion;
     private final HolderSupplier<ElementalGem> gem;
     private final transient LazySupplier<Collection<Placeholder<? extends DgElement>>> placeholders = LazySupplier.of(() -> {
-        Collection<Placeholder<? extends DgElement>> set = new ArrayList<>();
-        this.buildPlaceholders(set);
-        return ImmutableList.copyOf(set);
+        ArrayList<Placeholder<? extends DgElement>> list = new ArrayList<>();
+        this.buildPlaceholders(list);
+        return ImmutableList.copyOf(list);
     });
 
     private Element() {
         this.id = CropariaIf.of("empty");
         this.color = new Color(-1);
-        this.fluidSource = HolderSupplier.of(() -> null, CropariaIf.of("empty"), Registries.FLUID);
-        this.fluidFlowing = HolderSupplier.of(() -> null, CropariaIf.of("empty_flow"), Registries.FLUID);
-        this.fluidBlock = HolderSupplier.of(() -> null, CropariaIf.of("empty"), Registries.BLOCK);
-        this.bucket = HolderSupplier.of(() -> null, CropariaIf.of("empty_bucket"), Registries.ITEM);
-        this.potion = HolderSupplier.of(() -> null, CropariaIf.of("empty_potion"), Registries.ITEM);
-        this.gem = HolderSupplier.of(() -> null, CropariaIf.of("empty_gem"), Registries.ITEM);
+        this.fluidSource = HolderSupplier.of(() -> null, CropariaIf.of("fluid_empty"), Registries.FLUID);
+        this.fluidFlowing = HolderSupplier.of(() -> null, CropariaIf.of("fluid_empty_flow"), Registries.FLUID);
+        this.fluidBlock = HolderSupplier.of(() -> null, CropariaIf.of("fluid_empty"), Registries.BLOCK);
+        this.bucket = HolderSupplier.of(() -> null, CropariaIf.of("bucket_empty"), Registries.ITEM);
+        this.potion = HolderSupplier.of(() -> null, CropariaIf.of("potion_empty"), Registries.ITEM);
+        this.gem = HolderSupplier.of(() -> null, CropariaIf.of("gem_empty"), Registries.ITEM);
         REGISTRY.put(this.getKey(), this);
         STRING_REGISTRY.refresh();
     }
@@ -151,8 +151,8 @@ public class Element implements StringRepresentable, Comparable<Element>, DgElem
             .setId(ResourceKey.create(Registries.BLOCK, parseId("fluid_%s")))
         ), parseId("fluid_%s"), Registries.BLOCK);
         this.bucket = HolderSupplier.of(() -> new ElementalBucket(this, this.getFluidSource(), new Item.Properties()
-            .setId(ResourceKey.create(Registries.ITEM, parseId("%s_bucket")))
-            .arch$tab(Tabs.MAIN).craftRemainder(Items.GLASS_BOTTLE)), parseId("%s_bucket"), Registries.ITEM);
+            .setId(ResourceKey.create(Registries.ITEM, parseId("bucket_%s")))
+            .arch$tab(Tabs.MAIN).craftRemainder(Items.GLASS_BOTTLE)), parseId("bucket_%s"), Registries.ITEM);
         this.potion = HolderSupplier.of(() -> new ElementalPotion(this, new Item.Properties()
             .setId(ResourceKey.create(Registries.ITEM, parseId("potion_%s")))
             .arch$tab(Tabs.MAIN).craftRemainder(Items.GLASS_BOTTLE)), parseId("potion_%s"), Registries.ITEM);
@@ -217,22 +217,22 @@ public class Element implements StringRepresentable, Comparable<Element>, DgElem
     }
 
     @Override
-    public void buildPlaceholders(Collection<Placeholder<?>> set) {
-        DgElement.super.buildPlaceholders(set);
-        set.add(NAME);
-        set.add(COLOR);
-        set.add(FLUID_SOURCE);
-        set.add(FLUID_SOURCE_PATH);
-        set.add(FLUID_FLOWING);
-        set.add(FLUID_FLOWING_PATH);
-        set.add(LIQUID_BLOCK);
-        set.add(LIQUID_BLOCK_PATH);
-        set.add(BUCKET);
-        set.add(BUCKET_PATH);
-        set.add(POTION);
-        set.add(POTION_PATH);
-        set.add(GEM);
-        set.add(GEM_PATH);
+    public void buildPlaceholders(Collection<Placeholder<? extends DgElement>> list) {
+        DgElement.super.buildPlaceholders(list);
+        list.add(NAME);
+        list.add(COLOR);
+        list.add(FLUID_SOURCE);
+        list.add(FLUID_SOURCE_PATH);
+        list.add(FLUID_FLOWING);
+        list.add(FLUID_FLOWING_PATH);
+        list.add(LIQUID_BLOCK);
+        list.add(LIQUID_BLOCK_PATH);
+        list.add(BUCKET);
+        list.add(BUCKET_PATH);
+        list.add(POTION);
+        list.add(POTION_PATH);
+        list.add(GEM);
+        list.add(GEM_PATH);
     }
 
     @Override

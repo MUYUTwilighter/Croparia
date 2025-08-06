@@ -1,5 +1,6 @@
+@startup=true;
 @type=croparia:lang;
-@iterable=croparia:crops;
+@registry=croparia:crops;
 @path={id_namespace}/lang/{lang}.json;
 @content="  "{translation_key}": "{translation.{lang}}"";
 {

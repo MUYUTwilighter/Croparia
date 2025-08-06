@@ -13,27 +13,16 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Set;
 
 public abstract class AbstractCrop implements TranslatableElement {
-    public static final Placeholder<AbstractCrop> MATERIAL = Placeholder.of(
-        "\\{material}", crop -> crop.getMaterial().getId().toString()
-    );
-    public static final Placeholder<AbstractCrop> MATERIAL_PATH = Placeholder.of(
-        "\\{material_path}", crop -> crop.getMaterial().getId().getPath()
-    );
-    public static final Placeholder<AbstractCrop> MATERIAL_TYPE = Placeholder.of(
-        "\\{material_type}", crop -> crop.getMaterial().isTag() ? "tag" : "item"
-    );
-    public static final Placeholder<AbstractCrop> MATERIAL_TAGGABLE = Placeholder.of(
-        "\\{material_taggable}", crop -> crop.getMaterial().getName()
-    );
-    public static final Placeholder<AbstractCrop> MATERIAL_COMPONENTS = Placeholder.of(
-        "\\{material_components}", crop -> CodecUtil.encodeJson(crop.getMaterial().getComponents(), DataComponentPatch.CODEC).toString()
-    );
+    public static final Placeholder<AbstractCrop> MATERIAL = Placeholder.of("\\{material}", crop -> crop.getMaterial().getId().toString());
+    public static final Placeholder<AbstractCrop> MATERIAL_PATH = Placeholder.of("\\{material_path}", crop -> crop.getMaterial().getId().getPath());
+    public static final Placeholder<AbstractCrop> MATERIAL_TYPE = Placeholder.of("\\{material_type}", crop -> crop.getMaterial().isTag() ? "tag" : "item");
+    public static final Placeholder<AbstractCrop> MATERIAL_TAGGABLE = Placeholder.of("\\{material_taggable}", crop -> crop.getMaterial().getName());
+    public static final Placeholder<AbstractCrop> MATERIAL_COMPONENTS = Placeholder.of("\\{material_components}", crop -> CodecUtil.encodeJson(crop.getMaterial().getComponents(), DataComponentPatch.CODEC).toString());
 
-    private final LazySupplier<Set<Placeholder<?>>> placeholders = LazySupplier.of(() -> {
-        ArrayList<Placeholder<?>> list = new ArrayList<>();
+    private final LazySupplier<Collection<Placeholder<? extends DgElement>>> placeholders = LazySupplier.of(() -> {
+        ArrayList<Placeholder<? extends DgElement>> list = new ArrayList<>();
         this.buildPlaceholders(list);
         return ImmutableSet.copyOf(list);
     });
@@ -56,12 +45,12 @@ public abstract class AbstractCrop implements TranslatableElement {
     }
 
     @Override
-    public void buildPlaceholders(Collection<Placeholder<?>> set) {
-        TranslatableElement.super.buildPlaceholders(set);
-        set.add(MATERIAL);
-        set.add(MATERIAL_PATH);
-        set.add(MATERIAL_TYPE);
-        set.add(MATERIAL_TAGGABLE);
-        set.add(MATERIAL_COMPONENTS);
+    public void buildPlaceholders(Collection<Placeholder<? extends DgElement>> list) {
+        TranslatableElement.super.buildPlaceholders(list);
+        list.add(MATERIAL);
+        list.add(MATERIAL_PATH);
+        list.add(MATERIAL_TYPE);
+        list.add(MATERIAL_TAGGABLE);
+        list.add(MATERIAL_COMPONENTS);
     }
 }

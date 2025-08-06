@@ -1,16 +1,21 @@
 package cool.muyucloud.croparia.api.recipe.entry;
 
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import cool.muyucloud.croparia.access.StateHolderAccess;
 import cool.muyucloud.croparia.api.core.component.BlockProperties;
+import cool.muyucloud.croparia.api.recipe.DisplayableRecipe;
+import cool.muyucloud.croparia.util.AnyCodec;
 import cool.muyucloud.croparia.util.CodecUtil;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.context.ContextMap;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -26,17 +31,20 @@ import java.util.stream.Stream;
 
 @SuppressWarnings("unused")
 public class BlockOutput implements SlotDisplay {
-    public static final MapCodec<BlockOutput> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+    public static final Codec<BlockOutput> CODEC_SINGLE = Codec.STRING.xmap(
+        s -> BlockOutput.create(ResourceLocation.parse(s)), block -> block.getId().toString()
+    );
+    public static final MapCodec<BlockOutput> CODEC_COMP = RecordCodecBuilder.mapCodec(instance -> instance.group(
         ResourceLocation.CODEC.fieldOf("id").forGetter(BlockOutput::getId),
         BlockProperties.CODEC.optionalFieldOf("properties").forGetter(blockOutput -> Optional.of(blockOutput.getProperties()))
     ).apply(instance, (id, properties) -> create(id, properties.orElse(BlockProperties.EMPTY))));
+    public static final AnyCodec<BlockOutput> CODEC = AnyCodec.of(CODEC_COMP.codec(), CODEC_SINGLE);
     public static final StreamCodec<RegistryFriendlyByteBuf, BlockOutput> STREAM_CODEC = CodecUtil.toStream(CODEC);
-    public static final SlotDisplay.Type<BlockOutput> TYPE = new SlotDisplay.Type<>(CODEC, STREAM_CODEC);
+    public static final SlotDisplay.Type<BlockOutput> TYPE = new SlotDisplay.Type<>(CODEC_COMP, STREAM_CODEC);
     public static final ItemStack STACK_UNKNOWN = Items.BEDROCK.getDefaultInstance();
     public static final ItemStack STACK_AIR = Items.BARRIER.getDefaultInstance();
 
     static {
-        STACK_UNKNOWN.set(DataComponents.CUSTOM_NAME, Component.translatable("tooltip.croparia.unknown"));
         STACK_AIR.set(DataComponents.CUSTOM_NAME, Component.translatable("tooltip.croparia.air"));
     }
 
@@ -61,11 +69,15 @@ public class BlockOutput implements SlotDisplay {
             ItemStack stack = block.asItem().getDefaultInstance();
             stack.set(BlockProperties.TYPE, this.getProperties());
             return stack;
-        }).orElse(STACK_UNKNOWN);
+        }).orElseThrow(() -> new IllegalArgumentException("Unknown block: " + id));
     }
 
     public @NotNull ResourceLocation getId() {
         return id;
+    }
+
+    public Block getBlock() {
+        return BuiltInRegistries.BLOCK.getOptional(this.getId()).orElse(null);
     }
 
     @NotNull
@@ -84,6 +96,19 @@ public class BlockOutput implements SlotDisplay {
 
     public boolean matches(@NotNull BlockState state) {
         return this.matches(state.getBlock()) && this.getProperties().isSubsetOf((StateHolderAccess) state);
+    }
+
+    public void setBlock(ServerLevel level, BlockPos pos) {
+        try {
+            BlockState state = this.getBlock().defaultBlockState();
+            StateHolderAccess access = (StateHolderAccess) state;
+            this.getProperties().forEach(entry -> {
+                access.croparia_if$setValue(entry.getKey(), entry.getValue());
+            });
+            level.setBlock(pos, state, 3);
+        } catch (Throwable t) {
+            DisplayableRecipe.LOGGER.error("Failed to set block", t);
+        }
     }
 
     @Override

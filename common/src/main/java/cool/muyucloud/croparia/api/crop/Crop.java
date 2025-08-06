@@ -13,6 +13,7 @@ import cool.muyucloud.croparia.api.crop.util.Color;
 import cool.muyucloud.croparia.api.crop.util.CropDependencies;
 import cool.muyucloud.croparia.api.crop.util.Material;
 import cool.muyucloud.croparia.api.crop.util.TierAccess;
+import cool.muyucloud.croparia.api.generator.util.DgElement;
 import cool.muyucloud.croparia.api.generator.util.Placeholder;
 import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.util.AnyCodec;
@@ -153,7 +154,7 @@ public class Crop extends AbstractCrop implements TierAccess {
         ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
         this.translations = builder.put("en_us", this.getDefaultTranslation()).putAll(translations == null ? Collections.emptyMap() : translations).build();
         this.type = type == null ? DEFAULT_TYPE : type;
-        this.block = HolderSupplier.of(() -> new CropariaCropBlock(this), Util.formatId("crop_block_%s", this.getKey()), Registries.BLOCK);
+        this.block = HolderSupplier.of(() -> new CropariaCropBlock(this), Util.formatId("block_crop_%s", this.getKey()), Registries.BLOCK);
         this.seed = HolderSupplier.of(() -> new CropSeed(this), Util.formatId("crop_seed_%s", this.getKey()), Registries.ITEM);
         this.fruit = HolderSupplier.of(() -> new CropFruit(this), Util.formatId("fruit_%s", this.getKey()), Registries.ITEM);
     }
@@ -283,23 +284,23 @@ public class Crop extends AbstractCrop implements TierAccess {
     }
 
     @Override
-    public void buildPlaceholders(Collection<Placeholder<?>> set) {
-        super.buildPlaceholders(set);
-        set.add(COLOR);
-        set.add(COLOR_HEX);
-        set.add(CROPARIA);
-        set.add(CROPARIA_PATH);
-        set.add(CROP_BLOCK);
-        set.add(CROP_BLOCK_PATH);
-        set.add(FRUIT);
-        set.add(FRUIT_PATH);
-        set.add(RESULT);
-        set.add(RESULT_COUNT);
-        set.add(RESULT_PATH);
-        set.add(SEED);
-        set.add(SEED_PATH);
-        set.add(TYPE);
-        set.add(TIER);
+    public void buildPlaceholders(Collection<Placeholder<? extends DgElement>> list) {
+        super.buildPlaceholders(list);
+        list.add(COLOR);
+        list.add(COLOR_HEX);
+        list.add(CROPARIA);
+        list.add(CROPARIA_PATH);
+        list.add(CROP_BLOCK);
+        list.add(CROP_BLOCK_PATH);
+        list.add(FRUIT);
+        list.add(FRUIT_PATH);
+        list.add(RESULT);
+        list.add(RESULT_COUNT);
+        list.add(RESULT_PATH);
+        list.add(SEED);
+        list.add(SEED_PATH);
+        list.add(TYPE);
+        list.add(TIER);
     }
 
     @Override

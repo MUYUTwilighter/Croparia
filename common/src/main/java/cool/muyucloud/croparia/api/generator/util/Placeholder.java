@@ -6,20 +6,20 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Placeholder<E extends DgElement> {
-    public static <E extends DgElement> Placeholder<E> of(String pattern, Function<E, String> mapper) {
-        return new Placeholder<>(Pattern.compile(pattern), (matcher, element) -> mapper.apply(element));
+public class Placeholder<E> {
+    public static <E> Placeholder<E> of(String regex, Function<E, String> mapper) {
+        return new Placeholder<>(Pattern.compile(regex), (matcher, element) -> mapper.apply(element));
     }
 
-    public static <E extends DgElement> Placeholder<E> of(String pattern, BiFunction<Matcher, E, String> mapper) {
-        return new Placeholder<>(Pattern.compile(pattern), mapper);
+    public static <E> Placeholder<E> of(String regex, BiFunction<Matcher, E, String> mapper) {
+        return new Placeholder<>(Pattern.compile(regex), mapper);
     }
 
-    public static <E extends DgElement> Placeholder<E> of(Pattern pattern, Function<E, String> mapper) {
+    public static <E> Placeholder<E> of(Pattern pattern, Function<E, String> mapper) {
         return new Placeholder<>(pattern, (matcher, element) -> mapper.apply(element));
     }
 
-    public static <E extends DgElement> Placeholder<E> of(Pattern pattern, BiFunction<Matcher, E, String> mapper) {
+    public static <E> Placeholder<E> of(Pattern pattern, BiFunction<Matcher, E, String> mapper) {
         return new Placeholder<>(pattern, mapper);
     }
 
@@ -36,11 +36,13 @@ public class Placeholder<E extends DgElement> {
     }
 
     @SuppressWarnings("unchecked")
-    public String mapAll(String source, DgElement element) {
+    public String mapAll(String source, Object element) {
         Matcher matcher = pattern.matcher(source);
         while (matcher.find()) {
             String matched = matcher.group();
-            source = source.replace(matched, mapper.apply(matcher, (E) element));
+            String mapped = mapper.apply(matcher, (E) element);
+            if (mapped == null) continue;
+            source = source.replace(matched, mapped);
         }
         return source;
     }

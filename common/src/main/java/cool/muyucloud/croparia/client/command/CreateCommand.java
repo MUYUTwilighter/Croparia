@@ -9,7 +9,7 @@ import dev.architectury.event.events.client.ClientCommandRegistrationEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
-import static cool.muyucloud.croparia.api.crop.command.CreateCommand.create;
+import static cool.muyucloud.croparia.api.core.command.CreateCommand.create;
 
 public class CreateCommand {
     private static final LiteralArgumentBuilder<ClientCommandRegistrationEvent.ClientCommandSourceStack> CREATE =

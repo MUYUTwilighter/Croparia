@@ -19,9 +19,9 @@ public interface DgElement {
 
     boolean shouldLoad();
 
-    default void buildPlaceholders(Collection<Placeholder<?>> set) {
-        set.add(ID);
-        set.add(ID_NAMESPACE);
-        set.add(ID_PATH);
+    default void buildPlaceholders(Collection<Placeholder<? extends DgElement>> list) {
+        list.add(ID);
+        list.add(ID_NAMESPACE);
+        list.add(ID_PATH);
     }
 }

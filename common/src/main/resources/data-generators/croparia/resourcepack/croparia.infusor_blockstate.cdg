@@ -1,10 +1,11 @@
+@startup=true;
 @type=croparia:composite;
-@iterable=croparia:elements;
+@registry=croparia:elements;
 @path=croparia/blockstates/infusor.json;
 @content='        "element={name}": { "model": "croparia:block/infusor_{name}" }';
 {
   "variants": {
-    "infusor_type=empty": { "model": "croparia:block/infusor" },
+    "element=croparia_empty": { "model": "croparia:block/infusor" },
 {content}
   }
 }

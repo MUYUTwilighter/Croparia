@@ -1,0 +1,38 @@
+{
+  "parent": "croparia:croparia/ritual_stand",
+  "criteria": {
+    "gem_water": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "croparia:gem_water"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.croparia.gem_water.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "id": "croparia:gem_water"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.croparia.gem_water.title"
+    }
+  },
+  "requirements": [
+    [
+      "gem_water"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

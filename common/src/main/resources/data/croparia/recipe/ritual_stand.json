@@ -1,12 +1,8 @@
 {
   "type": "croparia:ritual_structure",
   "keys": {
-    "A": {
-      "id": "minecraft:andesite"
-    },
-    "D": {
-      "id": "minecraft:diorite"
-    },
+    "A": "minecraft:andesite",
+    "D": "minecraft:diorite",
     "I": {
       "id": "croparia:block_crop_coal",
       "properties": {
@@ -18,9 +14,6 @@
       "properties": {
         "age": "7"
       }
-    },
-    "E": {
-      "id": "croparia:elemental_stone"
     }
   },
   "pattern": [

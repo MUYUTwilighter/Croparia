@@ -1,5 +1,5 @@
 {
-  "parent": "croparia:croparia/elemental_air",
+  "parent": "croparia:croparia/gem_air",
   "criteria": {
     "croparia6": {
       "conditions": {

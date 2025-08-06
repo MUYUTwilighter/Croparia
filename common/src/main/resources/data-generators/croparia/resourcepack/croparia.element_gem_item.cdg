@@ -1,4 +1,5 @@
-@iterable=croparia:elements;
+@startup=true;
+@registry=croparia:elements;
 @path={id_namespace}/items/{gem_path}.json;
 {
   "model": {

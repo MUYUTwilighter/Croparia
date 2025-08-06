@@ -1,0 +1,30 @@
+@registry=croparia:elements;
+@path=modern_industrialization/recipe/croparia/blast_furnace/fluid/{name}.json;
+@dependencies=modern_industrialization;
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "modern_industrialization"
+    }
+  ],
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "modern_industrialization"
+      ]
+    }
+  ],
+  "type": "modern_industrialization:blast_furnace",
+  "eu": 4,
+  "duration": 60,
+  "item_inputs": {
+    "item": "{gem}",
+    "amount": 1
+  },
+  "fluid_outputs": {
+    "fluid": "{fluid_source}",
+    "amount": 250
+  }
+}

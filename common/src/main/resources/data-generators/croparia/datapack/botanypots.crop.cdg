@@ -1,4 +1,4 @@
-@iterable=croparia:crops;
+@registry=croparia:crops;
 @path=botanypots/recipe/{id_namespace}/seed/{id_path}.json;
 @dependencies=botanypots;
 {

@@ -1,4 +1,4 @@
-@iterable=croparia:crops;
+@registry=croparia:crops;
 @path={id_namespace}/loot_table/blocks/{crop_block_path}.json;
 {
   "type": "minecraft:block",

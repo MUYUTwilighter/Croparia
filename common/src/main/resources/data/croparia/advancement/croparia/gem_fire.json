@@ -1,0 +1,38 @@
+{
+  "parent": "croparia:croparia/ritual_stand",
+  "criteria": {
+    "gem_fire": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "croparia:gem_fire"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.croparia.gem_fire.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "id": "croparia:gem_fire"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.croparia.gem_fire.title"
+    }
+  },
+  "requirements": [
+    [
+      "gem_fire"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

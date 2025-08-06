@@ -1,0 +1,12 @@
+@registry=croparia:crops;
+@path=croparia/recipe/crafting/material/{id_namespace}/{id_path}.json;
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    "{fruit}"
+  ],
+  "result": {
+    "id": "{result}",
+    "count": {result_count.2}
+  }
+}

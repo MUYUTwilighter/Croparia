@@ -5,7 +5,7 @@
         "items": [
           {
             "items": [
-              "croparia:elematilius"
+              "croparia:gem_elemental"
             ]
           }
         ]
@@ -25,7 +25,7 @@
     "frame": "task",
     "hidden": false,
     "icon": {
-      "id": "croparia:elematilius"
+      "id": "croparia:gem_elemental"
     },
     "show_toast": true
   },

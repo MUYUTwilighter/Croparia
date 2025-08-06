@@ -1,14 +1,17 @@
 package cool.muyucloud.croparia.api.recipe.entry;
 
 import com.google.common.collect.ImmutableList;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.access.StateHolderAccess;
 import cool.muyucloud.croparia.api.core.component.BlockProperties;
 import cool.muyucloud.croparia.registry.CropariaItems;
+import cool.muyucloud.croparia.util.AnyCodec;
 import cool.muyucloud.croparia.util.CodecUtil;
 import cool.muyucloud.croparia.util.TagUtil;
+import cool.muyucloud.croparia.util.supplier.OnLoadSupplier;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -36,13 +39,15 @@ import java.util.stream.Stream;
 
 @SuppressWarnings("unused")
 public class BlockInput implements SlotDisplay {
-    public static final MapCodec<BlockInput> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+    public static final Codec<BlockInput> CODEC_SINGLE = Codec.STRING.xmap(BlockInput::create, BlockInput::getTaggable);
+    public static final MapCodec<BlockInput> CODEC_COMP = RecordCodecBuilder.mapCodec(instance -> instance.group(
         ResourceLocation.CODEC.optionalFieldOf("id").forGetter(BlockInput::getId),
         TagKey.codec(Registries.BLOCK).optionalFieldOf("tag").forGetter(BlockInput::getTag),
         BlockProperties.CODEC.optionalFieldOf("properties").forGetter(blockInput -> Optional.of(blockInput.getProperties()))
     ).apply(instance, (id, tag, properties) -> create(id.orElse(null), tag.orElse(null), properties.orElse(BlockProperties.EMPTY))));
+    public static final AnyCodec<BlockInput> CODEC = AnyCodec.of(CODEC_COMP.codec(), CODEC_SINGLE);
     public static final StreamCodec<RegistryFriendlyByteBuf, BlockInput> STREAM_CODEC = CodecUtil.toStream(CODEC);
-    public static final Type<BlockInput> TYPE = new Type<>(CODEC, STREAM_CODEC);
+    public static final Type<BlockInput> TYPE = new Type<>(CODEC_COMP, STREAM_CODEC);
     public static final ItemStack STACK_UNKNOWN = Items.BEDROCK.getDefaultInstance();
     public static final ItemStack STACK_AIR = Items.BARRIER.getDefaultInstance();
     public static final ItemStack STACK_ANY = Items.LIGHT_GRAY_STAINED_GLASS_PANE.getDefaultInstance();
@@ -62,7 +67,7 @@ public class BlockInput implements SlotDisplay {
     private final TagKey<Block> tag;
     @NotNull
     private final BlockProperties properties;
-    private final transient ImmutableList<ItemStack> displayStacks;
+    private final transient OnLoadSupplier<ImmutableList<ItemStack>> displayStacks;
 
     public static BlockInput of(@NotNull Block block) {
         return create(Objects.requireNonNull(block.arch$registryName()));
@@ -70,6 +75,16 @@ public class BlockInput implements SlotDisplay {
 
     public static BlockInput of(@NotNull BlockState state) {
         return create(Objects.requireNonNull(state.getBlock().arch$registryName()), null, BlockProperties.create(state));
+    }
+
+    public static BlockInput create(String s) {
+        if (s.startsWith("#")) {
+            s = s.substring(1);
+            TagKey<Block> tag = TagKey.create(Registries.BLOCK, ResourceLocation.parse(s));
+            return create(null, tag, BlockProperties.EMPTY);
+        } else {
+            return create(ResourceLocation.parse(s), null, BlockProperties.EMPTY);
+        }
     }
 
     public static BlockInput create(@NotNull ResourceLocation id) {
@@ -89,29 +104,31 @@ public class BlockInput implements SlotDisplay {
         if (this.id != null && this.tag != null)
             throw new IllegalArgumentException("id and tag cannot be set at the same time");
         this.properties = properties;
-        if (this.getId().isPresent()) {
-            ItemStack displayStack = BuiltInRegistries.BLOCK.getOptional(this.getId().get()).map(block -> {
-                ItemStack stack = block.asItem().getDefaultInstance();
+        this.displayStacks = OnLoadSupplier.of(() -> {
+            if (this.getId().isPresent()) {
+                ItemStack displayStack = BuiltInRegistries.BLOCK.getOptional(this.getId().get()).map(block -> {
+                    ItemStack stack = block.asItem().getDefaultInstance();
+                    stack.set(BlockProperties.TYPE, this.getProperties());
+                    return stack;
+                }).orElseThrow(() -> new IllegalArgumentException("Unknown block: %s".formatted(this.getId())));
+                return ImmutableList.of(displayStack);
+            } else if (this.getTag().isPresent()) {
+                LinkedList<ItemStack> stacks = new LinkedList<>();
+                for (Holder<Block> holder : TagUtil.forEntries(this.getTag().get())) {
+                    ItemStack stack = holder.value().asItem().getDefaultInstance();
+                    stack.set(BlockProperties.TYPE, this.getProperties());
+                    stacks.add(stack);
+                }
+                if (stacks.isEmpty()) stacks.add(STACK_UNKNOWN);
+                return ImmutableList.copyOf(stacks);
+            } else if (this.getProperties().isEmpty()) {
+                return ImmutableList.of(STACK_ANY);
+            } else {
+                ItemStack stack = STACK_PLACEHOLDER.get();
                 stack.set(BlockProperties.TYPE, this.getProperties());
-                return stack;
-            }).orElse(STACK_UNKNOWN);
-            this.displayStacks = ImmutableList.of(displayStack);
-        } else if (this.getTag().isPresent()) {
-            LinkedList<ItemStack> stacks = new LinkedList<>();
-            for (Holder<Block> holder : TagUtil.forEntries(this.getTag().get())) {
-                ItemStack stack = holder.value().asItem().getDefaultInstance();
-                stack.set(BlockProperties.TYPE, this.getProperties());
-                stacks.add(stack);
+                return ImmutableList.of(stack);
             }
-            if (stacks.isEmpty()) stacks.add(STACK_UNKNOWN);
-            this.displayStacks = ImmutableList.copyOf(stacks);
-        } else if (this.getProperties().isEmpty()) {
-            this.displayStacks = ImmutableList.of(STACK_ANY);
-        } else {
-            ItemStack stack = STACK_PLACEHOLDER.get();
-            stack.set(BlockProperties.TYPE, this.getProperties());
-            this.displayStacks = ImmutableList.of(stack);
-        }
+        });
     }
 
     public Optional<ResourceLocation> getId() {
@@ -133,7 +150,13 @@ public class BlockInput implements SlotDisplay {
 
     @NotNull
     public ImmutableList<ItemStack> getDisplayStacks() {
-        return displayStacks;
+        return displayStacks.get();
+    }
+
+    public String getTaggable() {
+        Optional<String> id = this.getId().map(ResourceLocation::toString);
+        Optional<String> tag = this.getTag().map(TagKey::location).map(ResourceLocation::toString);
+        return id.orElse(tag.orElse(null));
     }
 
     public boolean isAny() {

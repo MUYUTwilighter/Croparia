@@ -1,0 +1,28 @@
+@registry=croparia:elements;
+@path=indrev/recipe/croparia/smelter/fluid/{name}.json;
+@dependencies=indrev;
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "indrev"
+    }
+  ],
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "indrev"
+      ]
+    }
+  ],
+  "type": "indrev:smelter",
+  "ingredients": {
+    "item": "{gem}"
+  },
+  "fluidOutput": {
+    "fluid": "{fluid_source}",
+    "amount": 20250
+  },
+  "processTime": 600
+}

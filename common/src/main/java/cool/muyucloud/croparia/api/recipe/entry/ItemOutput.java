@@ -54,7 +54,7 @@ public class ItemOutput implements SlotDisplay {
         this.amount = amount;
         if (this.amount <= 0) throw new IllegalArgumentException("amount must be greater than 0");
         this.itemSpec = new ItemSpec(BuiltInRegistries.ITEM.getValue(id), components);
-        if (this.itemSpec.isEmpty()) throw new IllegalArgumentException("item cannot be empty");
+        if (this.itemSpec.isEmpty()) throw new IllegalArgumentException("Unknown or invalid item: " + id);
         this.displayStack = this.toSpec().createStack(this.getAmount());
     }
 

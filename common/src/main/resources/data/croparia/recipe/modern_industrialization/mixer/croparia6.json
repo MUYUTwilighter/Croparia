@@ -21,7 +21,7 @@
     "amount": 2
   },
   "fluid_inputs": {
-    "fluid": "croparia:air",
+    "fluid": "croparia:fluid_air",
     "amount": 250
   },
   "item_outputs": {

@@ -13,11 +13,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
 
-public class BlockProperties implements TooltipProvider {
+public class BlockProperties implements TooltipProvider, Iterable<Map.Entry<String, String>> {
     public static final Codec<BlockProperties> CODEC = Codec.unboundedMap(Codec.STRING, Codec.STRING).xmap(BlockProperties::new, BlockProperties::getProperties);
     public static final StreamCodec<FriendlyByteBuf, BlockProperties> STREAM_CODEC = StreamCodec.of(
         (buf, component) -> buf.writeJsonWithCodec(Codec.unboundedMap(Codec.STRING, Codec.STRING), component.getProperties()),
@@ -89,5 +90,11 @@ public class BlockProperties implements TooltipProvider {
     @Override
     public int hashCode() {
         return Objects.hashCode(properties);
+    }
+
+    @NotNull
+    @Override
+    public Iterator<Map.Entry<String, String>> iterator() {
+        return this.getProperties().entrySet().iterator();
     }
 }

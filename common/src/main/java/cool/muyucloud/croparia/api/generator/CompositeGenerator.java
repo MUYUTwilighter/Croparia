@@ -6,7 +6,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import cool.muyucloud.croparia.api.generator.pack.PackHandler;
 import cool.muyucloud.croparia.api.generator.util.Dependencies;
 import cool.muyucloud.croparia.api.generator.util.DgElement;
-import cool.muyucloud.croparia.api.generator.util.DgIterable;
+import cool.muyucloud.croparia.api.generator.util.DgRegistry;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.HashMap;
@@ -14,24 +14,26 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class CompositeGenerator<E extends DgElement> extends DataGenerator<E> {
-    public static final MapCodec<CompositeGenerator<?>> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+public class CompositeGenerator extends DataGenerator {
+    public static final MapCodec<CompositeGenerator> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
         Codec.BOOL.optionalFieldOf("enabled").forGetter(CompositeGenerator::optionalEnabled),
+        Codec.BOOL.optionalFieldOf("startup").forGetter(CompositeGenerator::optionalStartup),
         Dependencies.CODEC.optionalFieldOf("dependencies").forGetter(CompositeGenerator::optionalDependencies),
         ResourceLocation.CODEC.listOf().optionalFieldOf("whitelist").forGetter(CompositeGenerator::optionalWhitelist),
         Codec.STRING.fieldOf("path").forGetter(CompositeGenerator::getPath),
-        DgIterable.CODEC.fieldOf("iterable").forGetter(CompositeGenerator::getIterable),
+        DgRegistry.CODEC.fieldOf("registry").forGetter(CompositeGenerator::getRegistry),
         Codec.STRING.fieldOf("content").forGetter(CompositeGenerator::getContent),
         Codec.STRING.fieldOf("template").forGetter(CompositeGenerator::getTemplate)
-    ).apply(instance, (enabled, dependencies, whitelist, path, iterable, content, template) -> new CompositeGenerator<DgElement>(
-        enabled.orElse(true), dependencies.orElse(Dependencies.EMPTY), whitelist.orElse(List.of()), path, iterable, content, template
+    ).apply(instance, (enabled, startup, dependencies, whitelist, path, iterable, content, template) -> new CompositeGenerator(
+        enabled.orElse(true), startup.orElse(false), dependencies.orElse(Dependencies.EMPTY),
+        whitelist.orElse(List.of()), path, iterable, content, template
     )));
 
     private final String content;
     protected final transient Map<String, List<String>> cache = new HashMap<>();
 
-    public CompositeGenerator(boolean enabled, Dependencies dependencies, List<ResourceLocation> whitelist, String path, DgIterable<? extends E> iterable, String content, String template) {
-        super(enabled, dependencies, whitelist, path, iterable, template);
+    public CompositeGenerator(boolean enabled, boolean startup, Dependencies dependencies, List<ResourceLocation> whitelist, String path, DgRegistry<? extends DgElement> iterable, String content, String template) {
+        super(enabled, startup, dependencies, whitelist, path, iterable, template);
         this.content = content;
     }
 
@@ -39,14 +41,13 @@ public class CompositeGenerator<E extends DgElement> extends DataGenerator<E> {
         return content;
     }
 
-    public String getContent(E element) {
+    public String getContent(DgElement element) {
         return replace(this.getContent(), element);
     }
 
     @Override
-    @Deprecated
-    public String getTemplate(E element) {
-        return super.getTemplate(element);
+    public String getTemplate(DgElement element) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -65,10 +66,8 @@ public class CompositeGenerator<E extends DgElement> extends DataGenerator<E> {
     }
 
     @Override
-    protected void generate(E element, PackHandler pack) {
+    protected void generate(DgElement element, PackHandler pack) {
         List<String> list = this.cache.computeIfAbsent(this.getPath(element), k -> new LinkedList<>());
         list.add(this.getContent(element));
     }
-
-
 }

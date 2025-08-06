@@ -9,8 +9,8 @@ import cool.muyucloud.croparia.util.TagUtil;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.*;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -116,7 +116,7 @@ public class ItemSpec implements DataComponentHolder, TypedResource<Item> {
     }
 
     public boolean is(@NotNull ResourceLocation tag) {
-        return TagUtil.isIn(TagKey.create(BuiltInRegistries.ITEM.key(), tag), this.getResource());
+        return TagUtil.isIn(Registries.ITEM, tag, this.getResource());
     }
 
     @Override

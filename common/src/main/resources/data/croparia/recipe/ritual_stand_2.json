@@ -1,21 +1,11 @@
 {
   "type": "croparia:ritual_structure",
   "keys": {
-    "E": {
-      "id": "croparia:elemental_stone"
-    },
-    "S": {
-      "id": "croparia:activated_shrieker"
-    },
-    "T": {
-      "id": "minecraft:tuff"
-    },
-    "P": {
-      "id": "minecraft:prismarine_bricks"
-    },
-    "L": {
-      "id": "minecraft:sea_lantern"
-    },
+    "E": "croparia:elemental_stone",
+    "S": "croparia:activated_shrieker",
+    "T": "minecraft:tuff",
+    "P": "minecraft:prismarine_bricks",
+    "L": "minecraft:sea_lantern",
     "X": {
       "id": "croparia:block_crop_elemental",
       "properties": {

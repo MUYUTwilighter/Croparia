@@ -24,6 +24,9 @@ public abstract class StateHolderMixin<O, S> implements StateHolderAccess {
     @Shadow
     @Final
     private Reference2ObjectArrayMap<Property<?>, Comparable<?>> values;
+
+    @Shadow public abstract <T extends Comparable<T>, V extends T> S setValue(Property<T> property, V comparable);
+
     @Unique
     private Map<String, Property<?>> croparia_if$properties;
 
@@ -41,8 +44,13 @@ public abstract class StateHolderMixin<O, S> implements StateHolderAccess {
     }
 
     @Override
+    public Property<?> croparia_if$getProperty(String key) {
+        return this.croparia_if$properties.get(key);
+    }
+
+    @Override
     public String croparia_if$getValue(String key) {
-        Property<?> property = this.croparia_if$properties.get(key);
+        Property<?> property = this.croparia_if$getProperty(key);
         Comparable<?> value = this.values.get(property);
         if (value == null) {
             return null;
@@ -50,6 +58,34 @@ public abstract class StateHolderMixin<O, S> implements StateHolderAccess {
             return enumVal.getSerializedName();
         } else {
             return value.toString();
+        }
+    }
+
+    @Override
+    public void croparia_if$setValue(String key, String value) {
+        Property<? extends Comparable<?>> property = this.croparia_if$getProperty(key);
+        Class<? extends Comparable<?>> cls = property.getValueClass();
+        if (Integer.class.isAssignableFrom(cls)) {
+            @SuppressWarnings("unchecked")
+            Property<Integer> intProp = (Property<Integer>) property;
+            setValue(intProp, Integer.parseInt(value));
+        } else if (Boolean.class.isAssignableFrom(cls)) {
+            @SuppressWarnings("unchecked")
+            Property<Boolean> boolProp = (Property<Boolean>) property;
+            setValue(boolProp, Boolean.parseBoolean(value));
+        } else if (Enum.class.isAssignableFrom(cls)) {
+            for (Comparable<?> o : cls.getEnumConstants()) {
+                StringRepresentable enumVal = (StringRepresentable) o;
+                if (enumVal.getSerializedName().equals(value)) {
+                    this.values.put(property, o);
+                }
+            }
+        } else if (String.class.isAssignableFrom(cls)) {
+            @SuppressWarnings("unchecked")
+            Property<String> stringProp = (Property<String>) property;
+            setValue(stringProp, value);
+        } else {
+            throw new UnsupportedOperationException();
         }
     }
 

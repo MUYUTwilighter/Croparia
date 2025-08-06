@@ -1,0 +1,35 @@
+@registry=croparia:elements;
+@path=modern_industrialization/recipe/croparia/mixer/gem/{name}.json;
+@dependencies=modern_industrialization;
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "modern_industrialization"
+    }
+  ],
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "modern_industrialization"
+      ]
+    }
+  ],
+  "type": "modern_industrialization:mixer",
+  "eu": 2,
+  "duration": 100,
+  "item_inputs": {
+    "item": "{gem}",
+    "amount": 1,
+    "probability": 0.0
+  },
+  "fluid_inputs": {
+    "fluid": "{fluid_source}",
+    "amount": 250
+  },
+  "item_outputs": {
+    "item": "{gem}",
+    "amount": 1
+  }
+}

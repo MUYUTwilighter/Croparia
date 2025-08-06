@@ -4,6 +4,7 @@ import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.api.core.recipe.InfusorRecipe;
 import cool.muyucloud.croparia.api.core.recipe.RitualRecipe;
 import cool.muyucloud.croparia.api.core.recipe.RitualStructure;
+import cool.muyucloud.croparia.api.core.recipe.SoakRecipe;
 import cool.muyucloud.croparia.api.recipe.DisplayableRecipe;
 import cool.muyucloud.croparia.api.recipe.TypedSerializer;
 import dev.architectury.registry.registries.DeferredRegister;
@@ -33,6 +34,8 @@ public class Recipes {
     @SuppressWarnings("unused")
     public static final RegistrySupplier<TypedSerializer<RitualRecipe>> RITUAL_OLD = register("ritual_type", () -> RitualRecipe.OLD_TYPED_SERIALIZER);
     public static final RegistrySupplier<TypedSerializer<RitualStructure>> RITUAL_STRUCTURE = register("ritual_structure", () -> RitualStructure.TYPED_SERIALIZER);
+    @SuppressWarnings("unused")
+    public static final RegistrySupplier<TypedSerializer<SoakRecipe>> SOAK = register("soak", () -> SoakRecipe.TYPED_SERIALIZER);
 
     public static <R extends DisplayableRecipe<?>> RegistrySupplier<TypedSerializer<R>> register(String path, Supplier<TypedSerializer<R>> supplier) {
         RegistrySupplier<TypedSerializer<R>> type = RECIPE_TYPES.register(path, supplier);

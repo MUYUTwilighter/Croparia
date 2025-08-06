@@ -1,5 +1,5 @@
-@iterable=croparia:crops;
-@path=croparia/recipe/thermal/insolator/{id_namespace}/{id_path}.json;
+@registry=croparia:crops;
+@path=thermal/recipe/croparia/insolator/{id_namespace}/{id_path}.json;
 @dependencies=thermal_cultivation;
 {
   "type": "thermal:insolator",

@@ -1,6 +1,7 @@
 package cool.muyucloud.croparia.util;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponentPredicate;
 import net.minecraft.core.component.DataComponents;
@@ -36,6 +37,14 @@ public class Util {
     @SuppressWarnings("unused")
     public static boolean allNull(Object... objects) {
         return Arrays.stream(objects).allMatch(Objects::isNull);
+    }
+
+    public static void deleteUnder(File dir) throws IOException {
+        if (dir.isDirectory()) {
+            for (File child : Objects.requireNonNull(dir.listFiles())) {
+                deleteDir(child);
+            }
+        }
     }
 
     public static void deleteDir(File dir) throws IOException {
@@ -97,19 +106,21 @@ public class Util {
      * @param stack The item stack to be stored.
      * @return The remaining item stack if it couldn't be fully stored, or an empty stack if it was fully stored.
      */
-    public static ItemStack tryStoreItemBelow(Level world, BlockPos pos, ItemStack stack) {
-        BlockEntity below = world.getBlockEntity(pos.below());
-        if (below instanceof Container container) {
-            for (int i = 0; i < container.getMaxStackSize(); i++) {
-                ItemStack containerItem = container.getItem(i);
-                if (containerItem.isEmpty()) {
-                    container.setItem(i, stack);
-                    return ItemStack.EMPTY;
-                } else if (ItemStack.isSameItemSameComponents(containerItem, stack)) {
-                    int space = containerItem.getMaxStackSize() - containerItem.getCount();
-                    int count = Math.min(stack.getCount(), space);
-                    containerItem.setCount(containerItem.getCount() + count);
-                    stack.shrink(count);
+    public static ItemStack transferItemNear(Level world, BlockPos pos, ItemStack stack) {
+        for (Direction d : Direction.values()) {
+            BlockEntity neighbor = world.getBlockEntity(pos.offset(d.getUnitVec3i()));
+            if (neighbor instanceof Container container) {
+                for (int i = 0; i < container.getContainerSize(); i++) {
+                    ItemStack containerItem = container.getItem(i);
+                    if (containerItem.isEmpty()) {
+                        container.setItem(i, stack);
+                        return ItemStack.EMPTY;
+                    } else if (ItemStack.isSameItemSameComponents(containerItem, stack)) {
+                        int space = containerItem.getMaxStackSize() - containerItem.getCount();
+                        int count = Math.min(stack.getCount(), space);
+                        containerItem.setCount(containerItem.getCount() + count);
+                        stack.shrink(count);
+                    }
                 }
             }
         }
@@ -126,7 +137,7 @@ public class Util {
      * @param player the player to add the item to, or null to drop the item
      */
     public static void exportItem(Level world, BlockPos pos, ItemStack stack, @Nullable Player player) {
-        ItemStack remain = tryStoreItemBelow(world, pos, stack);
+        ItemStack remain = transferItemNear(world, pos, stack);
         if (remain.isEmpty()) {
             return;
         }

@@ -1,0 +1,38 @@
+{
+  "parent": "croparia:croparia/root",
+  "criteria": {
+    "potion_elemental": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "croparia:potion_elemental"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.croparia.potion_elemental.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "id": "croparia:potion_elemental"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.croparia.potion_elemental.title"
+    }
+  },
+  "requirements": [
+    [
+      "potion_elemental"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -22,12 +22,12 @@ public class Color {
     private final int value;
 
     public Color(int value) {
-        this.value = value | 0xFF000000;
+        this.value = value;
     }
 
     public Color(String format) {
-        if (format.startsWith("#")) this.value = Integer.parseInt(format.substring(1), 16) | 0xFF000000;
-        else if (format.startsWith("0x")) this.value = Integer.parseInt(format.substring(2), 16) | 0xFF000000;
+        if (format.startsWith("#")) this.value = Integer.parseInt(format.substring(1), 16);
+        else if (format.startsWith("0x")) this.value = Integer.parseInt(format.substring(2), 16);
         else this.value = Integer.parseInt(format) | 0xFF000000;
     }
 

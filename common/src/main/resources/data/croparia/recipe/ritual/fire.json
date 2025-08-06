@@ -2,13 +2,13 @@
   "type": "croparia:ritual",
   "tier": 1,
   "ingredient": {
-    "id": "croparia:elematilius"
+    "id": "croparia:gem_elemental"
   },
   "block": {
     "id": "minecraft:magma_block"
   },
   "result": {
-    "id": "croparia:elemental_fire",
-    "Count": 1
+    "id": "croparia:gem_fire",
+    "amount": 1
   }
 }

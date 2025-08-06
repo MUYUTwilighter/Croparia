@@ -1,0 +1,13 @@
+@registry=croparia:elements;
+@path=croparia/recipe/crafting/potion/{name}.json;
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:glass_bottle",
+    "{gem}"
+  ],
+  "result": {
+    "id": "{potion}"
+  }
+}

@@ -1,5 +1,5 @@
-@iterable=croparia:crops;
-@path=croparia/recipe/mi/packer/{id_namespace}/{id_path}.json;
+@registry=croparia:crops;
+@path=modern_industrialization/recipe/croparia/packer/{id_namespace}/{id_path}.json;
 @dependencies=modern_industrialization;
 {
   "type": "modern_industrialization:packer",

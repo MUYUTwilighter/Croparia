@@ -3,7 +3,7 @@
   "category": "misc",
   "ingredients": [
     "minecraft:bucket",
-    "croparia:elemental_fire"
+    "croparia:gem_fire"
   ],
   "result": {
     "id": "minecraft:lava_bucket"

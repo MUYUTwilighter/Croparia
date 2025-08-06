@@ -1,0 +1,29 @@
+@registry=croparia:elements;
+@path=indrev/recipe/croparia/condenser/gem/{name}.json;
+@dependencies=indrev;
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "indrev"
+    }
+  ],
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "indrev"
+      ]
+    }
+  ],
+  "type": "indrev:condenser",
+  "fluidInput": {
+    "fluid": "{fluid_source}",
+    "amount": 20250
+  },
+  "output": {
+    "item": "{gem}",
+    "count": 1
+  },
+  "processTime": 500
+}

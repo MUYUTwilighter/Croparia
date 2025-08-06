@@ -9,8 +9,8 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
-import static cool.muyucloud.croparia.api.crop.command.CropCommand.reportForPlayer;
-import static cool.muyucloud.croparia.api.crop.command.CropCommand.reportSingular;
+import static cool.muyucloud.croparia.api.core.command.CropCommand.reportForPlayer;
+import static cool.muyucloud.croparia.api.core.command.CropCommand.reportSingular;
 
 public class CropCommand {
     private static final LiteralArgumentBuilder<ClientCommandRegistrationEvent.ClientCommandSourceStack> CROP =

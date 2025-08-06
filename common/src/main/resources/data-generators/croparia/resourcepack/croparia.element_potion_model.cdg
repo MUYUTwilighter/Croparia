@@ -1,8 +1,9 @@
-@iterable=croparia:elements;
+@startup=true;
+@registry=croparia:elements;
 @path={id_namespace}/models/item/{potion_path}.json;
 {
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "{id_namespace}:item/{potion_path}"
-    }
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "{id_namespace}:item/{potion_path}"
+  }
 }

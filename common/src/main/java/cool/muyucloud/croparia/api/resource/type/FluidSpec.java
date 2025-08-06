@@ -8,8 +8,8 @@ import cool.muyucloud.croparia.api.resource.TypedResource;
 import cool.muyucloud.croparia.util.TagUtil;
 import net.minecraft.core.component.*;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import org.jetbrains.annotations.NotNull;
@@ -99,7 +99,7 @@ public class FluidSpec implements TypedResource<Fluid>, DataComponentHolder {
     }
 
     public boolean is(@NotNull ResourceLocation tag) {
-        return TagUtil.isIn(TagKey.create(BuiltInRegistries.FLUID.key(), tag), this.getResource());
+        return TagUtil.isIn(Registries.FLUID, tag, this.getResource());
     }
 
     @Override

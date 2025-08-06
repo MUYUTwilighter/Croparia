@@ -1,14 +1,11 @@
 package cool.muyucloud.croparia.util;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
-import net.minecraft.util.GsonHelper;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -16,18 +13,6 @@ import java.util.Optional;
 
 @SuppressWarnings("unused")
 public class TagUtil {
-    public static JsonObject create() {
-        JsonObject root = new JsonObject();
-        root.addProperty("replace", false);
-        root.add("values", new JsonArray());
-        return root;
-    }
-
-    public static void addValue(@NotNull JsonObject tag, @NotNull String value) {
-        JsonArray values = GsonHelper.getAsJsonArray(tag, "values");
-        values.add(value);
-    }
-
     public static <T> Optional<Registry<T>> getRegistry(ResourceKey<? extends Registry<T>> key) {
         Optional<? extends Registry<?>> maybeRegistry = BuiltInRegistries.REGISTRY.getOptional(key.location());
         if (maybeRegistry.isEmpty()) return Optional.empty();
@@ -50,6 +35,10 @@ public class TagUtil {
 
     public static <T> Iterable<Holder<T>> forEntries(ResourceKey<? extends Registry<T>> registry, ResourceLocation id) {
         return forEntries(TagKey.create(registry, id));
+    }
+
+    public static <T> boolean isIn(ResourceKey<? extends Registry<T>> registry, ResourceLocation id, @NotNull T entry) {
+        return isIn(TagKey.create(registry, id), entry);
     }
 
     public static <T> boolean isIn(@NotNull TagKey<T> tagKey, @NotNull T entry) {

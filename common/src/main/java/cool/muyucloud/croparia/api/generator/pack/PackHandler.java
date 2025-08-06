@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import cool.muyucloud.croparia.api.generator.DataGenerator;
 import cool.muyucloud.croparia.api.generator.util.JarJarEntry;
+import cool.muyucloud.croparia.util.FileUtil;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import dev.architectury.platform.Platform;
 import net.minecraft.resources.ResourceLocation;
@@ -28,7 +29,7 @@ public abstract class PackHandler {
     protected final JsonObject meta;
     protected final transient Supplier<Boolean> override;
     protected final transient Map<Path, String> cache = new HashMap<>();
-    protected final transient Set<DataGenerator<?>> generators = new HashSet<>();
+    protected final transient Set<DataGenerator> generators = new HashSet<>();
 
     public PackHandler(ResourceLocation id, Path path, JsonObject meta, Supplier<Boolean> override) {
         this.id = id;
@@ -60,7 +61,7 @@ public abstract class PackHandler {
     }
 
     protected void moveBuiltInGenerators() {
-        Path targetRoot = this.root.resolve("generators");
+        Path targetRoot = this.getRoot().resolve("generators");
         File targetRootFile = targetRoot.toFile();
         if (!targetRootFile.isDirectory() && !targetRootFile.mkdirs()) {
             DataGenerator.LOGGER.error("Failed to establish directory \"%s\"".formatted(targetRoot));
@@ -94,24 +95,22 @@ public abstract class PackHandler {
     protected void refreshGenerators() {
         this.generators.clear();
         File parent = this.getRoot().resolve("generators").toFile();
-        if (!parent.isDirectory() && !parent.mkdirs()) {
-            throw new IllegalStateException("Failed to establish directory \"%s\"".formatted(parent));
+        try {
+            FileUtil.forFilesIn(parent, file -> {
+                try {
+                    DataGenerator generator = DataGenerator.read(file);
+                    this.generators.add(generator);
+                } catch (Throwable t) {
+                    DataGenerator.LOGGER.error("Failed in reading generator \"%s\"".formatted(file), t);
+                }
+            });
+        } catch (Throwable t) {
+            DataGenerator.LOGGER.error("Failed in reading generators from \"%s\"".formatted(parent), t);
         }
-        File[] files = parent.listFiles();
-        if (files == null) throw new IllegalStateException("Failed to list directory \"%s\"".formatted(parent));
-        for (File file : files) {
-            try {
-                DataGenerator<?> generator = DataGenerator.read(file);
-                this.generators.add(generator);
-            } catch (Throwable t) {
-                DataGenerator.LOGGER.error("Failed to read generator \"%s\"".formatted(file), t);
-            }
-        }
-
     }
 
     protected void generate() {
-        for (DataGenerator<?> generator : this.generators) {
+        for (DataGenerator generator : this.generators) {
             generator.generate(this);
         }
     }

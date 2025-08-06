@@ -14,6 +14,7 @@ import java.util.jar.JarFile;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@SuppressWarnings("unused")
 public class PackHandlerImpl {
     private static final Pattern PATTERN = Pattern.compile("^data-generators/([^/]+)/([^/]+)/.*\\.cdg$");
     private static final Map<ResourceLocation, Collection<JarJarEntry>> BUILTIN_GENERATORS;

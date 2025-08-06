@@ -21,7 +21,7 @@
     "amount": 2
   },
   "fluid_inputs": {
-    "fluid": "croparia:earth",
+    "fluid": "croparia:fluid_earth",
     "amount": 250
   },
   "item_outputs": {

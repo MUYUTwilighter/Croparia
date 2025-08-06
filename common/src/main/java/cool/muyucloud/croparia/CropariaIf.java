@@ -1,7 +1,7 @@
 package cool.muyucloud.croparia;
 
 import com.mojang.logging.LogUtils;
-import cool.muyucloud.croparia.api.crop.command.CommonCommandRoot;
+import cool.muyucloud.croparia.api.core.command.CommonCommandRoot;
 import cool.muyucloud.croparia.config.Config;
 import cool.muyucloud.croparia.config.ConfigFileHandler;
 import cool.muyucloud.croparia.registry.*;
@@ -13,11 +13,12 @@ public class CropariaIf {
     public static final String MOD_ID = "croparia";
     public static final Logger LOGGER = LogUtils.getLogger();
     public static final Config CONFIG = ConfigFileHandler.load();
+    private static Boolean SERVER_STARTED = false;
 
     public static void init() {
         CropariaIf.LOGGER.info("=== Croparia common setup ===");
         LOGGER.info("Customize registration");
-        DgIterables.register();
+        DgRegistries.register();
         DataGenerators.register();
         PackHandlers.register();
         Crops.register();
@@ -35,12 +36,16 @@ public class CropariaIf {
         LOGGER.info("Event registration");
         LifecycleEvent.SERVER_STARTING.register(server -> ConfigFileHandler.reload(CONFIG));
         LifecycleEvent.SERVER_STARTED.register(server -> {
+            SERVER_STARTED = true;
             if (CONFIG.getAutoReload()) {
                 LOGGER.info("Croparia IF is performing a datapack reload to apply data generators");
                 server.getCommands().performPrefixedCommand(server.createCommandSourceStack(), "reload");
             }
         });
-        LifecycleEvent.SERVER_STOPPING.register(server -> ConfigFileHandler.save(CONFIG));
+        LifecycleEvent.SERVER_STOPPING.register(server -> {
+            SERVER_STARTED = false;
+            ConfigFileHandler.save(CONFIG);
+        });
         CropariaIf.LOGGER.info("=== Croparia common setup done ===");
     }
 
@@ -51,5 +56,9 @@ public class CropariaIf {
         } else {
             return id;
         }
+    }
+
+    public static boolean isServerStarted() {
+        return SERVER_STARTED;
     }
 }

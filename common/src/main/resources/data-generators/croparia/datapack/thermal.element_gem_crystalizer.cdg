@@ -1,0 +1,35 @@
+@registry=croparia:elements;
+@path=thermal/recipe/croparia/crystallizer/{id_namespace}/{id_path}.json;
+@dependencies=thermal_cultivation;
+{
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:mod_loaded",
+      "modid": "thermal_expansion"
+    }
+  ],
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "thermal_expansion"
+      ]
+    }
+  ],
+  "type": "thermal:crystallizer",
+  "ingredients": [
+    {
+      "fluid": "croparia:air",
+      "amount": 250
+    },
+    {
+      "item": "croparia:elemental_air"
+    }
+  ],
+  "result": [
+    {
+      "item": "croparia:elemental_air",
+      "amount": 2
+    }
+  ]
+}

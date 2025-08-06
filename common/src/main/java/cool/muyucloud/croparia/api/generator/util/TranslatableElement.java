@@ -20,9 +20,9 @@ public interface TranslatableElement extends DgElement {
     String translate(String lang);
 
     @Override
-    default void buildPlaceholders(Collection<Placeholder<?>> set) {
-        DgElement.super.buildPlaceholders(set);
-        set.add(TRANSLATION_KEY);
-        set.add(TRANSLATION);
+    default void buildPlaceholders(Collection<Placeholder<? extends DgElement>> list) {
+        DgElement.super.buildPlaceholders(list);
+        list.add(TRANSLATION_KEY);
+        list.add(TRANSLATION);
     }
 }

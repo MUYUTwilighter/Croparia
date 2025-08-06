@@ -1,5 +1,5 @@
 {
-  "parent": "croparia:croparia/elemental_earth",
+  "parent": "croparia:croparia/gem_earth",
   "criteria": {
     "croparia2": {
       "conditions": {

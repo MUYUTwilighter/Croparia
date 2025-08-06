@@ -8,7 +8,7 @@ package cool.muyucloud.croparia.api.crop.item;
 import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.api.crop.Crop;
 import cool.muyucloud.croparia.api.crop.CropAccess;
-import cool.muyucloud.croparia.registry.DgIterables;
+import cool.muyucloud.croparia.registry.DgRegistries;
 import cool.muyucloud.croparia.registry.Tabs;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -37,6 +37,6 @@ public class CropSeed extends BlockItem implements CropAccess<Crop> {
 
     @Override
     public Crop getCrop() {
-        return DgIterables.CROPS.forName(this.cropId).orElseThrow();
+        return DgRegistries.CROPS.forName(this.cropId).orElseThrow();
     }
 }

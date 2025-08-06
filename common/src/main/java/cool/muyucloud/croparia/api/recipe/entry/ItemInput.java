@@ -9,7 +9,7 @@ import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.util.CodecUtil;
 import cool.muyucloud.croparia.util.TagUtil;
 import cool.muyucloud.croparia.util.Util;
-import cool.muyucloud.croparia.util.supplier.LazySupplier;
+import cool.muyucloud.croparia.util.supplier.OnLoadSupplier;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponentPredicate;
@@ -56,7 +56,7 @@ public class ItemInput implements SlotDisplay {
     @NotNull
     private final DataComponentPredicate componentPredicate;
     private final long amount;
-    private final transient LazySupplier<ImmutableList<ItemStack>> displayStacks;
+    private final transient OnLoadSupplier<ImmutableList<ItemStack>> displayStacks;
 
     public ItemInput(@NotNull ResourceLocation id, int amount) {
         this(id, null, DataComponentPredicate.EMPTY, amount);
@@ -74,7 +74,7 @@ public class ItemInput implements SlotDisplay {
         this.componentPredicate = componentPredicate;
         this.amount = amount;
         if (this.amount <= 0) throw new IllegalArgumentException("amount must be greater than 0");
-        this.displayStacks = LazySupplier.of(() -> {
+        this.displayStacks = OnLoadSupplier.of(() -> {
             if (this.getId().isPresent()) {
                 ItemStack stack = new ItemStack(
                     Holder.direct(BuiltInRegistries.ITEM.getValue(this.getId().get())),

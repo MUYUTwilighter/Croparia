@@ -2,6 +2,9 @@ package cool.muyucloud.croparia.util.supplier;
 
 import java.util.function.Supplier;
 
+/**
+ * Supplier that only create the value when it is called via {@link #get()} for the first time.
+ */
 public class LazySupplier<T> implements Supplier<T> {
     public static <T> LazySupplier<T> empty() {
         return LazySupplier.of(() -> null);

@@ -10,6 +10,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
+/**
+ * A supplier that provides a value from a registry with given ID and registration methods.
+ */
 public class HolderSupplier<T> implements DeferredSupplier<T> {
     @SuppressWarnings("unchecked")
     public static <T> HolderSupplier<T> of(Supplier<T> value, ResourceLocation location, Registry<? super T> registry) {

@@ -1,4 +1,4 @@
-@iterable=croparia:crops;
+@registry=croparia:crops;
 @path=croparia/recipes/gtceu/packer/{id_namespace}/{id_path}.json;
 @dependencies=gtceu;
 {

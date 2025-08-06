@@ -1,18 +1,15 @@
-@iterable=croparia:crops;
+@startup=true;
+@registry=croparia:crops;
 @path={id_namespace}/items/{seed_path}.json;
 {
   "model": {
     "type": "minecraft:model",
-    "model": "croparia:item/template_seed"
-  },
-  "tints": [
-    {
-      "type": "minecraft:constant",
-      "value": -1
-    },
-    {
-      "type": "minecraft:constant",
-      "value": {color}
-    }
-  ]
+    "model": "croparia:item/template_seed",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": {color}
+      }
+    ]
+  }
 }

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "I": "minecraft:diamond",
+    "P": "minecraft:lapis_lazuli",
+    "R": "minecraft:emerald"
+  },
+  "pattern": [
+    "PIP",
+    "IRI",
+    "PIP"
+  ],
+  "result": {
+    "id": "croparia:gem_elemental"
+  }
+}

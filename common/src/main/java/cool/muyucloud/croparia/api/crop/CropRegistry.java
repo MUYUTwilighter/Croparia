@@ -5,7 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.stream.JsonWriter;
 import com.mojang.serialization.Codec;
 import cool.muyucloud.croparia.CropariaIf;
-import cool.muyucloud.croparia.api.generator.util.DgIterable;
+import cool.muyucloud.croparia.api.generator.util.DgRegistry;
 import cool.muyucloud.croparia.util.CodecUtil;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
@@ -22,7 +22,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-public class CropRegistry<C extends AbstractCrop> implements DgIterable<C> {
+public class CropRegistry<C extends AbstractCrop> implements DgRegistry<C> {
     public static final CropRegistry<Crop> CROPS = new CropRegistry<>(CropariaIf.CONFIG.getCropPath(), Crop.CODEC);
 
     private static final Gson GSON = new Gson();

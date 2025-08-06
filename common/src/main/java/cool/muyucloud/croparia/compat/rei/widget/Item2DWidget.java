@@ -1,6 +1,5 @@
 package cool.muyucloud.croparia.compat.rei.widget;
 
-import cool.muyucloud.croparia.util.BiFunction;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.gui.widgets.WidgetWithBounds;
@@ -15,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.BiFunction;
 
 @SuppressWarnings("unused")
 public class Item2DWidget extends WidgetWithBounds {

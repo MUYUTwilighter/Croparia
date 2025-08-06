@@ -3,9 +3,9 @@ package cool.muyucloud.croparia.api.core.block;
 import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.api.core.item.RecipeWizard;
 import cool.muyucloud.croparia.api.core.recipe.InfusorRecipe;
+import cool.muyucloud.croparia.api.core.recipe.container.InfusorContainer;
 import cool.muyucloud.croparia.api.element.Element;
 import cool.muyucloud.croparia.api.element.item.ElementalPotion;
-import cool.muyucloud.croparia.api.recipe.container.InfusorContainer;
 import cool.muyucloud.croparia.registry.CropariaBlocks;
 import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.registry.Recipes;
@@ -40,11 +40,11 @@ import org.jetbrains.annotations.Nullable;
 
 public class Infusor extends Block implements ItemPlaceable {
     protected final VoxelShape SHAPE = Block.box(0.0, 0.0, 0.0, 16.0, 8.0, 16.0);
-    public static final DynamicProperty<Element> TYPE = new DynamicProperty<>("element", Element.class, Element.STRING_REGISTRY);
+    public static final DynamicProperty<Element> ELEMENT = new DynamicProperty<>("element", Element.class, Element.STRING_REGISTRY);
 
     public Infusor(Properties properties) {
         super(properties);
-        this.registerDefaultState(this.defaultBlockState().setValue(TYPE, Element.EMPTY));
+        this.registerDefaultState(this.defaultBlockState().setValue(ELEMENT, Element.EMPTY));
     }
 
     @Override
@@ -60,7 +60,7 @@ public class Infusor extends Block implements ItemPlaceable {
                 }
                 return InteractionResult.SUCCESS;
             } else if (
-                ElementalPotion.fromElement(state.getValue(TYPE)).map(potion -> potion.getCraftingRemainder().getItem() == item).orElse(false)
+                ElementalPotion.fromElement(state.getValue(ELEMENT)).map(potion -> potion.getCraftingRemainder().getItem() == item).orElse(false)
                     && this.tryDefuse(world, pos, itemStack, player)
             ) {
                 return InteractionResult.SUCCESS;
@@ -74,8 +74,8 @@ public class Infusor extends Block implements ItemPlaceable {
 
     public boolean tryInfuse(Level world, BlockPos pos, ElementalPotion potion, @NotNull ItemStack stack, @Nullable Player player) {
         BlockState state = world.getBlockState(pos);
-        if (state.getValue(TYPE) == Element.EMPTY) {
-            world.setBlockAndUpdate(pos, CropariaBlocks.INFUSOR.get().defaultBlockState().setValue(TYPE, potion.getElement()));
+        if (state.getValue(ELEMENT) == Element.EMPTY) {
+            world.setBlockAndUpdate(pos, CropariaBlocks.INFUSOR.get().defaultBlockState().setValue(ELEMENT, potion.getElement()));
             world.playSound(null, pos, SoundEvent.createVariableRangeEvent(CropariaIf.of("block.infusor.infuse")), SoundSource.BLOCKS, 1.0F, 1.0F);
         } else {
             return false;
@@ -90,7 +90,7 @@ public class Infusor extends Block implements ItemPlaceable {
     }
 
     public void forceCraft(ServerLevel world, BlockPos pos, @Nullable Player player) {
-        Element element = world.getBlockState(pos).getValue(TYPE);
+        Element element = world.getBlockState(pos).getValue(ELEMENT);
         world.getEntities(EntityTypeTest.forClass(ItemEntity.class),
             AABB.of(new BoundingBox(pos)), entity -> !entity.getItem().isEmpty()
         ).forEach(entity -> {
@@ -102,9 +102,9 @@ public class Infusor extends Block implements ItemPlaceable {
     public boolean tryDefuse(Level world, BlockPos pos, ItemStack stack, @Nullable Player player) {
         Item item = stack.getItem();
         BlockState state = world.getBlockState(pos);
-        Element element = state.getValue(TYPE);
+        Element element = state.getValue(ELEMENT);
         if (element != Element.EMPTY && ElementalPotion.fromElement(element).orElseThrow().getCraftingRemainder().getItem() == item) {
-            world.setBlockAndUpdate(pos, CropariaBlocks.INFUSOR.get().defaultBlockState().setValue(TYPE, Element.EMPTY));
+            world.setBlockAndUpdate(pos, CropariaBlocks.INFUSOR.get().defaultBlockState().setValue(ELEMENT, Element.EMPTY));
         } else {
             return false;
         }
@@ -117,7 +117,7 @@ public class Infusor extends Block implements ItemPlaceable {
     }
 
     public static Element getElement(BlockState state) {
-        return state.getBlock() != CropariaBlocks.INFUSOR.get() ? Element.EMPTY : state.getValue(TYPE);
+        return state.getBlock() != CropariaBlocks.INFUSOR.get() ? Element.EMPTY : state.getValue(ELEMENT);
     }
 
     public void onCrafting(InfusorRecipe recipe, InfusorContainer container, Level world, BlockPos pos, @Nullable Player player) {
@@ -142,7 +142,7 @@ public class Infusor extends Block implements ItemPlaceable {
     public void stepOn(Level world, BlockPos pos, BlockState state, Entity entity) {
         if (entity instanceof ItemEntity itemEntity && world instanceof ServerLevel serverWorld && CropariaIf.CONFIG.getInfusor()) {
             ItemStack input = itemEntity.getItem();
-            Element element = state.getValue(TYPE);
+            Element element = state.getValue(ELEMENT);
             this.tryCraft(serverWorld, pos, input, element, itemEntity.getOwner() instanceof Player player ? player : null);
         }
     }
@@ -156,7 +156,7 @@ public class Infusor extends Block implements ItemPlaceable {
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(TYPE);
+        builder.add(ELEMENT);
     }
 
     @Override

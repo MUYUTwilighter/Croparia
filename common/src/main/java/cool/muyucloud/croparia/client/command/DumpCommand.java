@@ -6,8 +6,8 @@ import cool.muyucloud.croparia.util.ResourceLocationArgument;
 import dev.architectury.event.events.client.ClientCommandRegistrationEvent;
 import net.minecraft.resources.ResourceLocation;
 
-import static cool.muyucloud.croparia.api.crop.command.DumpCommand.dump;
-import static cool.muyucloud.croparia.api.crop.command.DumpCommand.dumpAll;
+import static cool.muyucloud.croparia.api.core.command.DumpCommand.dump;
+import static cool.muyucloud.croparia.api.core.command.DumpCommand.dumpAll;
 
 public class DumpCommand {
     private static final LiteralArgumentBuilder<ClientCommandRegistrationEvent.ClientCommandSourceStack> DUMP =

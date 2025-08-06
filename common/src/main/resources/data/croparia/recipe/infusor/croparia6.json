@@ -1,6 +1,6 @@
 {
   "type": "croparia:infusor",
-  "element": "air",
+  "element": "croparia:air",
   "ingredient": {
     "id": "croparia:croparia5",
     "amount": 2

@@ -20,7 +20,7 @@
       "amount": 2
     },
     {
-      "fluid": "croparia:earth",
+      "fluid": "croparia:fluid_earth",
       "amount": 250
     }
   ],

@@ -16,12 +16,12 @@ import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * @see DgIterables#CROPS
+ * @see DgRegistries#CROPS
  */
 @SuppressWarnings("unused")
 public class Crops {
     public static CompletableFuture<Suggestions> cropSuggestions(SuggestionsBuilder builder) {
-        DgIterables.CROPS.forEach(crop -> builder.suggest(crop.getKey().toString()));
+        DgRegistries.CROPS.forEach(crop -> builder.suggest(crop.getKey().toString()));
         return builder.buildFuture();
     }
 
@@ -40,15 +40,15 @@ public class Crops {
         @NotNull String translationKey
     ) {
         Crop crop = new Crop(CropariaIf.of(name), new Material(material), new Color(color), tier, type, null, new CropDependencies("croparia", translationKey));
-        DgIterables.CROPS.register(crop);
+        DgRegistries.CROPS.register(crop);
         return crop;
     }
 
-    public static final Crop ELEMENTAL = croparia("elemental", "croparia:elematilius", 0x712389, 2, Crop.CROP, "item.croparia.elematilius");
-    public static final Crop EARTH = croparia("earth", "croparia:elemental_earth", 0xE5C8BB, 3, Crop.CROP, "item.croparia.elemental_earth");
-    public static final Crop WATER = croparia("water", "croparia:elemental_water", 0x2A5AB2, 4, Crop.CROP, "item.croparia.elemental_water");
-    public static final Crop FIRE = croparia("fire", "croparia:elemental_fire", 0xC65957, 6, Crop.CROP, "item.croparia.elemental_fire");
-    public static final Crop AIR = croparia("air", "croparia:elemental_air", 0xA2A9B5, 7, Crop.CROP, "item.croparia.elemental_air");
+    public static final Crop ELEMENTAL = croparia("elemental", "croparia:elematilius", 0x712389, 2, Crop.CROP, "item.croparia.gem_elemental");
+    public static final Crop EARTH = croparia("earth", "croparia:elemental_earth", 0xE5C8BB, 3, Crop.CROP, "item.croparia.gem_earth");
+    public static final Crop WATER = croparia("water", "croparia:elemental_water", 0x2A5AB2, 4, Crop.CROP, "item.croparia.gem_water");
+    public static final Crop FIRE = croparia("fire", "croparia:elemental_fire", 0xC65957, 6, Crop.CROP, "item.croparia.gem_fire");
+    public static final Crop AIR = croparia("air", "croparia:elemental_air", 0xA2A9B5, 7, Crop.CROP, "item.croparia.gem_air");
 
     /**
      * Add a crop for vanilla material with specified translation key.
@@ -66,7 +66,7 @@ public class Crops {
             CropariaIf.of(name), new Material(Objects.requireNonNull(material.arch$registryName()).toString()),
             new Color(color), tier, type, null, new CropDependencies("minecraft", material.getDescriptionId())
         );
-        DgIterables.CROPS.register(crop);
+        DgRegistries.CROPS.register(crop);
         return crop;
     }
 
@@ -198,12 +198,12 @@ public class Crops {
         String name, String material, int color, int tier, String type, @NotNull Map<String, String> translationKeys
     ) {
         Crop crop = new Crop(CropariaIf.of(name), new Material(material), new Color(color), tier, type, null, new CropDependencies(translationKeys));
-        DgIterables.CROPS.register(crop);
+        DgRegistries.CROPS.register(crop);
         return crop;
     }
 
     public static void register() {
         CropariaIf.LOGGER.info("Loading custom crops from file definitions");
-        DgIterables.CROPS.readCrops();
+        DgRegistries.CROPS.readCrops();
     }
 }
