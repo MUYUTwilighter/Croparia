@@ -7,6 +7,7 @@ import com.mojang.serialization.*;
 import com.mojang.serialization.codecs.PrimitiveCodec;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.io.File;
 import java.io.FileReader;
@@ -28,6 +29,7 @@ public class CodecUtil {
         }
     };
 
+    @ApiStatus.Experimental
     public static <T> MapCodec<T> toMap(Codec<T> codec) {
         return codec instanceof MapCodec.MapCodecCodec<T> map ? map.codec() : MapCodec.assumeMapUnsafe(codec);
     }
