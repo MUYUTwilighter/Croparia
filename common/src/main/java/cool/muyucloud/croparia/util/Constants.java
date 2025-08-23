@@ -11,6 +11,7 @@ public class Constants {
     public static final ResourceLocation ITEM_DROP = ResourceLocation.tryParse("croparia:textures/gui/item_drop.png");
     public static final ResourceLocation ELEM_INFUSE = ResourceLocation.tryParse("croparia:textures/gui/elem_infuse.png");
     public static final ResourceLocation BLOCK_PLACE = ResourceLocation.tryParse("croparia:textures/gui/block_place.png");
+    public static final ResourceLocation BLOCK_PLACE_UPON = ResourceLocation.tryParse("croparia:textures/gui/block_place_upon.png");
     public static final ResourceLocation LEFT_DARK = ResourceLocation.tryParse("croparia:textures/gui/left_dark.png");
     public static final ResourceLocation LEFT_WHITE = ResourceLocation.tryParse("croparia:textures/gui/left_white.png");
     public static final ResourceLocation RIGHT_DARK = ResourceLocation.tryParse("croparia:textures/gui/right_dark.png");

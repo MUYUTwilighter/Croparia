@@ -62,6 +62,8 @@ public abstract class SimpleCategory<R extends DisplayableRecipe<?>> implements 
 
     public abstract Map<String, EntryIngredient> outputEntries(RecipeHolder<R> holder);
 
+    public abstract EntryIngredient[] stations();
+
     @Override
     public CategoryIdentifier<SimpleDisplay<R>> getCategoryIdentifier() {
         return categoryIdentifier;

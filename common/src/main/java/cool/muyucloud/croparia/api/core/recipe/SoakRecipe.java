@@ -58,7 +58,7 @@ public class SoakRecipe implements DisplayableRecipe<SoakContainer> {
 
     @Override
     public boolean matches(SoakContainer input, Level level) {
-        return this.getInput().matches(input.getState()) && this.getElement() == input.getElement();
+        return this.getInput().matches(input.getState()) && this.getElement() == input.getElement() && input.getRandom() < this.getProbability();
     }
 
     @Override

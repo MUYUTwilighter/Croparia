@@ -1,0 +1,7 @@
+{
+  "type": "croparia:soak",
+  "element": "croparia:water",
+  "input": "minecraft:obsidian",
+  "output": "minecraft:crying_obsidian",
+  "probability": 1.0
+}

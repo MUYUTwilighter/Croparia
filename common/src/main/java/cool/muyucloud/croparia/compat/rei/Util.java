@@ -1,6 +1,7 @@
 package cool.muyucloud.croparia.compat.rei;
 
 import cool.muyucloud.croparia.api.recipe.entry.BlockInput;
+import cool.muyucloud.croparia.api.recipe.entry.BlockOutput;
 import cool.muyucloud.croparia.api.recipe.entry.ItemInput;
 import cool.muyucloud.croparia.api.recipe.entry.ItemOutput;
 import me.shedaniel.rei.api.common.entry.EntryIngredient;
@@ -38,6 +39,16 @@ public class Util {
 
     public static EntryIngredient toIngredient(BlockInput input) {
         return toIngredient(input, stack -> {});
+    }
+
+    public static EntryIngredient toIngredient(BlockOutput output) {
+        return toIngredient(output, stack -> {});
+    }
+
+    public static EntryIngredient toIngredient(BlockOutput output, Consumer<EntryStack<ItemStack>> processor) {
+        EntryStack<ItemStack> stack = EntryStack.of(VanillaEntryTypes.ITEM, output.getDisplayStack());
+        processor.accept(stack);
+        return EntryIngredient.of(stack);
     }
 
     public static EntryIngredient toIngredient(ItemInput input, Consumer<EntryStack<ItemStack>> processor) {

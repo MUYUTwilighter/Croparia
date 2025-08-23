@@ -52,9 +52,7 @@ public class Config {
     @NotNull
     private Boolean ritual;
     @NotNull
-    private Boolean soak;
-    @NotNull
-    private Integer soakCount;
+    private Integer soakAttempts;
     @NotNull
     private final List<ResourceLocation> cropBlackList;
     private final List<String> modBlackList;
@@ -71,8 +69,7 @@ public class Config {
         this.fruitUse = true;
         this.infusor = true;
         this.ritual = true;
-        this.soak = true;
-        this.soakCount = 1;
+        this.soakAttempts = 1;
         this.cropBlackList = new ArrayList<>();
         this.modBlackList = new ArrayList<>();
     }
@@ -89,15 +86,14 @@ public class Config {
         this.fruitUse = raw.fruitUse() != null ? raw.fruitUse() : true;
         this.infusor = raw.infusor() != null ? raw.infusor() : true;
         this.ritual = raw.ritual() != null ? raw.ritual() : true;
-        this.soak = raw.soak() != null ? raw.soak() : true;
-        this.soakCount = raw.soakCount() != null ? raw.soakCount() : 1;
+        this.soakAttempts = raw.soakAttempts() != null ? raw.soakAttempts() : 1;
         this.cropBlackList = new ArrayList<>();
         this.modBlackList = new ArrayList<>();
         this.setBlackList(raw.blacklist());
     }
 
     public RawConfig toRaw() {
-        return new RawConfig(resolvePath(cropPath), resolvePath(packPath), resolvePath(dumpPath), autoReload, override, fruitUse, infusor, ritual, soak, soakCount, this.getBlacklist());
+        return new RawConfig(resolvePath(cropPath), resolvePath(packPath), resolvePath(dumpPath), autoReload, override, fruitUse, infusor, ritual, soakAttempts, this.getBlacklist());
     }
 
     public @NotNull Path getCropPath() {
@@ -156,20 +152,12 @@ public class Config {
         this.infusor = infusor;
     }
 
-    public @NotNull Boolean getSoak() {
-        return soak;
+    public @NotNull Integer getSoakAttempts() {
+        return soakAttempts;
     }
 
-    public void setSoak(@NotNull Boolean soak) {
-        this.soak = soak;
-    }
-
-    public @NotNull Integer getSoakCount() {
-        return soakCount;
-    }
-
-    public void setSoakCount(@NotNull Integer soakCount) {
-        this.soakCount = soakCount;
+    public void setSoakAttempts(@NotNull Integer soakAttempts) {
+        this.soakAttempts = soakAttempts;
     }
 
     public @NotNull Boolean getRitual() {

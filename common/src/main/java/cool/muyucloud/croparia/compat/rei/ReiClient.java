@@ -7,6 +7,9 @@ import me.shedaniel.rei.api.client.registry.category.CategoryRegistry;
 public class ReiClient implements REIClientPlugin {
     public void registerCategories(CategoryRegistry registry) {
         CropariaIf.LOGGER.info("Registering rei recipe categories...");
-        ReiCommon.forEach(registry::add);
+        ReiCommon.forEach(category -> {
+            registry.add(category);
+            registry.addWorkstations(category.getCategoryIdentifier(), category.stations());
+        });
     }
 }

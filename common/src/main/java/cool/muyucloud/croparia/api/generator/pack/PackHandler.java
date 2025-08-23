@@ -67,7 +67,7 @@ public abstract class PackHandler {
             DataGenerator.LOGGER.error("Failed to establish directory \"%s\"".formatted(targetRoot));
         }
         String prefix = "data-generators/%s/%s/".formatted(this.getId().getNamespace(), this.getId().getPath());
-        getBuiltinGenerators().get(this.getId()).forEach(entry -> {
+        getBuiltinGenerators().getOrDefault(this.getId(), List.of()).forEach(entry -> {
             String name = entry.getEntry().getName();
             Path targetPath = targetRoot.resolve(name.substring(prefix.length()));
             File target = targetPath.toFile();

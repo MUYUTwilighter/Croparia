@@ -148,4 +148,9 @@ public class RitualStructureDisplayCategory extends SimpleCategory<RitualStructu
     public Map<String, EntryIngredient> outputEntries(RecipeHolder<RitualStructure> holder) {
         return Map.of("*", Util.toIngredient(BuiltInRegistries.ITEM.getValue(holder.id().location())));
     }
+
+    @Override
+    public EntryIngredient[] stations() {
+        return new EntryIngredient[0];
+    }
 }

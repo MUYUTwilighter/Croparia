@@ -66,7 +66,7 @@ public class CropCommand {
     }
 
     public static MutableComponent buildReport(@NotNull Crop crop) {
-        MutableComponent name = Component.translatable("commands.croparia.crop.id", crop.getKey());
+        MutableComponent name = Component.translatable("commands.croparia.crop.id", crop.getKey().toString());
         MutableComponent translation = Component.translatable(
             "commands.croparia.crop.translationKey",
             Component.translatable(crop.getTranslationKey())

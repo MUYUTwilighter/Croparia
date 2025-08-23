@@ -9,10 +9,12 @@ import org.jetbrains.annotations.NotNull;
 public class SoakContainer implements RecipeInput {
     private final BlockState state;
     private final Element element;
+    private final float random;
 
-    public SoakContainer(BlockState state, Element element) {
+    public SoakContainer(BlockState state, Element element, float random) {
         this.state = state;
         this.element = element;
+        this.random = random;
     }
 
     public BlockState getState() {
@@ -21,6 +23,10 @@ public class SoakContainer implements RecipeInput {
 
     public Element getElement() {
         return element;
+    }
+
+    public float getRandom() {
+        return random;
     }
 
     @Override

@@ -7,6 +7,7 @@ import cool.muyucloud.croparia.compat.rei.display.SimpleCategory;
 import cool.muyucloud.croparia.compat.rei.display.SimpleDisplay;
 import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.util.Constants;
+import cool.muyucloud.croparia.util.supplier.LazySupplier;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.gui.Renderer;
@@ -17,6 +18,7 @@ import me.shedaniel.rei.api.common.entry.EntryStack;
 import me.shedaniel.rei.api.common.entry.type.VanillaEntryTypes;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
 import java.util.List;
@@ -26,6 +28,7 @@ public class InfusorRecipeDisplayCategory extends SimpleCategory<InfusorRecipe> 
     public static final InfusorRecipeDisplayCategory INSTANCE = new InfusorRecipeDisplayCategory(
         InfusorRecipe.class, InfusorRecipe.TYPED_SERIALIZER
     );
+    public static final LazySupplier<EntryStack<ItemStack>> STATION = LazySupplier.of(() -> EntryStacks.of(CropariaItems.INFUSOR.get()));
 
     public InfusorRecipeDisplayCategory(Class<InfusorRecipe> recipeClass, TypedSerializer<InfusorRecipe> recipeSerializer) {
         super(recipeClass, recipeSerializer);
@@ -46,6 +49,11 @@ public class InfusorRecipeDisplayCategory extends SimpleCategory<InfusorRecipe> 
     }
 
     @Override
+    public EntryIngredient[] stations() {
+        return new EntryIngredient[]{EntryIngredient.of(STATION.get())};
+    }
+
+    @Override
     public Component getTitle() {
         return Constants.INFUSOR_TITLE;
     }
@@ -60,7 +68,7 @@ public class InfusorRecipeDisplayCategory extends SimpleCategory<InfusorRecipe> 
         Widget background = Widgets.createRecipeBase(bounds);
         Widget infusor = Widgets.createSlot(
             new Point(bounds.getCenterX() - 8, bounds.getCenterY() + 8)
-        ).entry(EntryStacks.of(CropariaItems.INFUSOR.get())).disableBackground().markInput().disableHighlight();
+        ).entry(STATION.get()).disableBackground().markInput().disableHighlight();
         Widget ingredient = Widgets.createSlot(
             new Point(bounds.getCenterX() - 8, bounds.getCenterY() - 24)
         ).entries(display.getInput("ingredient")).markInput().disableBackground();

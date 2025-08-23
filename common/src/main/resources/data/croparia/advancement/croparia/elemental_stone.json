@@ -1,0 +1,38 @@
+{
+  "parent": "croparia:croparia/infusor",
+  "criteria": {
+    "croparia": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "croparia:elemental_stone"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancements.croparia.elemental_stone.description"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "id": "croparia:croparia"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancements.croparia.elemental_stone.title"
+    }
+  },
+  "requirements": [
+    [
+      "croparia"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -42,6 +42,17 @@
     ],
     "subtitle": "subtitles.block.croparia.ritual.craft"
   },
+  "block.soak.craft": {
+    "sounds": [
+      {
+        "name": "croparia:block/soak/craft/a"
+      },
+      {
+        "name": "croparia:block/soak/craft/b"
+      }
+    ],
+    "subtitle": "subtitles.block.croparia.soak.craft"
+  },
   "ambient.magic_rope.teleport": {
     "sounds": [
       {

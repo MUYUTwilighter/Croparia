@@ -40,11 +40,11 @@ public class DataPackHandler extends PackHandler {
 
     @Override
     public void clear() {
-        Path path = this.root.resolve("data");
+        Path path = this.getRoot().resolve("data");
         File file = path.toFile();
         if (file.isDirectory()) {
             try {
-                Util.deleteDir(file);
+                Util.deleteUnder(file);
             } catch (Throwable e) {
                 CropariaIf.LOGGER.error("Failed to clear data pack directory", e);
             }

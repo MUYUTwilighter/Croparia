@@ -53,7 +53,7 @@ public class ResourcePackHandler extends PackHandler {
         if (file.isDirectory()) {
             CropariaIf.LOGGER.info("Clearing resource pack directory");
             try {
-                Util.deleteDir(file);
+                Util.deleteUnder(file);
             } catch (Throwable e) {
                 CropariaIf.LOGGER.error("Failed to clear resource pack directory", e);
             }

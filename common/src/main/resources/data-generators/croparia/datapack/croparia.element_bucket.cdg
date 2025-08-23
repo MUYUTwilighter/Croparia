@@ -11,6 +11,6 @@
     "{gem}"
   ],
   "result": {
-    "id": "croparia:air_bucket"
+    "id": "{bucket}"
   }
 }

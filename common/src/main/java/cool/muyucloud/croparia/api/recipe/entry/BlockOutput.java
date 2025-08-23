@@ -31,8 +31,8 @@ import java.util.stream.Stream;
 
 @SuppressWarnings("unused")
 public class BlockOutput implements SlotDisplay {
-    public static final Codec<BlockOutput> CODEC_SINGLE = Codec.STRING.xmap(
-        s -> BlockOutput.create(ResourceLocation.parse(s)), block -> block.getId().toString()
+    public static final Codec<BlockOutput> CODEC_SINGLE = ResourceLocation.CODEC.xmap(
+        BlockOutput::create, BlockOutput::getId
     );
     public static final MapCodec<BlockOutput> CODEC_COMP = RecordCodecBuilder.mapCodec(instance -> instance.group(
         ResourceLocation.CODEC.fieldOf("id").forGetter(BlockOutput::getId),
@@ -102,9 +102,7 @@ public class BlockOutput implements SlotDisplay {
         try {
             BlockState state = this.getBlock().defaultBlockState();
             StateHolderAccess access = (StateHolderAccess) state;
-            this.getProperties().forEach(entry -> {
-                access.croparia_if$setValue(entry.getKey(), entry.getValue());
-            });
+            this.getProperties().forEach(entry -> access.croparia_if$setValue(entry.getKey(), entry.getValue()));
             level.setBlock(pos, state, 3);
         } catch (Throwable t) {
             DisplayableRecipe.LOGGER.error("Failed to set block", t);

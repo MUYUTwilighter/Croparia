@@ -1,12 +1,8 @@
 {
   "type": "croparia:ritual",
   "tier": 1,
-  "ingredient": {
-    "id": "croparia:gem_elemental"
-  },
-  "block": {
-    "id": "minecraft:amethyst_block"
-  },
+  "ingredient": "croparia:gem_elemental",
+  "block": "minecraft:podzol",
   "result": {
     "id": "croparia:gem_earth",
     "amount": 1

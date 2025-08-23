@@ -6,6 +6,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import cool.muyucloud.croparia.api.resource.type.ItemSpec;
 import cool.muyucloud.croparia.registry.CropariaItems;
+import cool.muyucloud.croparia.util.AnyCodec;
 import cool.muyucloud.croparia.util.CodecUtil;
 import cool.muyucloud.croparia.util.TagUtil;
 import cool.muyucloud.croparia.util.Util;
@@ -34,14 +35,21 @@ import java.util.stream.Stream;
 
 @SuppressWarnings("unused")
 public class ItemInput implements SlotDisplay {
-    public static final MapCodec<ItemInput> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+    public static final Codec<ItemInput> CODEC_SINGLE = Codec.STRING.xmap(
+        s -> new ItemInput(s, 1),
+        input -> input.getId().map(String::valueOf).orElse("#" + input.getTag().orElseThrow().location())
+    );
+    public static final MapCodec<ItemInput> CODEC_COMP = RecordCodecBuilder.mapCodec(instance -> instance.group(
         ResourceLocation.CODEC.optionalFieldOf("id").forGetter(ItemInput::getId),
         TagKey.codec(Registries.ITEM).optionalFieldOf("tag").forGetter(ItemInput::getTag),
         DataComponentPredicate.CODEC.optionalFieldOf("components").forGetter(itemInput -> Optional.of(itemInput.getComponentsPredicate())),
-        Codec.LONG.optionalFieldOf("amount").forGetter(entry -> Optional.of(entry.getAmount()))
-    ).apply(instance, (id, tag, components, amount) -> new ItemInput(id.orElse(null), tag.orElse(null), components.orElse(DataComponentPredicate.EMPTY), amount.orElse(1L))));
+        Codec.LONG.optionalFieldOf("amount").forGetter(entry -> Optional.of(entry.getAmount()))).apply(
+        instance, (id, tag, components, amount) -> new ItemInput(id.orElse(null), tag.orElse(null),
+            components.orElse(DataComponentPredicate.EMPTY), amount.orElse(1L))
+    ));
+    public static final AnyCodec<ItemInput> CODEC = new AnyCodec<>(CODEC_COMP.codec(), CODEC_SINGLE);
     public static final StreamCodec<RegistryFriendlyByteBuf, ItemInput> STREAM_CODEC = CodecUtil.toStream(CODEC);
-    public static final Type<ItemInput> TYPE = new Type<>(CODEC, STREAM_CODEC);
+    public static final Type<ItemInput> TYPE = new Type<>(CODEC_COMP, STREAM_CODEC);
 
     public static ItemInput of(final ItemStack stack) {
         DataComponentPredicate.Builder builder = DataComponentPredicate.builder();
@@ -57,6 +65,12 @@ public class ItemInput implements SlotDisplay {
     private final DataComponentPredicate componentPredicate;
     private final long amount;
     private final transient OnLoadSupplier<ImmutableList<ItemStack>> displayStacks;
+
+    public ItemInput(String s, int amount) {
+        this(s.startsWith("#") ? null : ResourceLocation.parse(s),
+            s.startsWith("#") ? TagKey.create(Registries.ITEM, ResourceLocation.parse(s.substring(1))) : null,
+            DataComponentPredicate.EMPTY, amount);
+    }
 
     public ItemInput(@NotNull ResourceLocation id, int amount) {
         this(id, null, DataComponentPredicate.EMPTY, amount);
@@ -76,18 +90,11 @@ public class ItemInput implements SlotDisplay {
         if (this.amount <= 0) throw new IllegalArgumentException("amount must be greater than 0");
         this.displayStacks = OnLoadSupplier.of(() -> {
             if (this.getId().isPresent()) {
-                ItemStack stack = new ItemStack(
-                    Holder.direct(BuiltInRegistries.ITEM.getValue(this.getId().get())),
-                    (int) Math.min(this.getAmount(), Integer.MAX_VALUE),
-                    this.getComponentsPredicate().asPatch()
-                );
+                ItemStack stack = new ItemStack(Holder.direct(BuiltInRegistries.ITEM.getValue(this.getId().get())), (int) Math.min(this.getAmount(), Integer.MAX_VALUE), this.getComponentsPredicate().asPatch());
                 return ImmutableList.of(stack);
             } else if (this.getTag().isPresent()) {
                 LinkedList<ItemStack> stacks = new LinkedList<>();
-                TagUtil.forEntries(this.getTag().get()).forEach(entry -> stacks.addLast(
-                    new ItemStack(entry, (int) Math.min(this.getAmount(), Integer.MAX_VALUE),
-                        this.getComponentsPredicate().asPatch())
-                ));
+                TagUtil.forEntries(this.getTag().get()).forEach(entry -> stacks.addLast(new ItemStack(entry, (int) Math.min(this.getAmount(), Integer.MAX_VALUE), this.getComponentsPredicate().asPatch())));
                 return ImmutableList.copyOf(stacks);
             } else {
                 return ImmutableList.of(new ItemStack(Holder.direct(CropariaItems.PLACEHOLDER.get()), (int) Math.min(this.getAmount(), Integer.MAX_VALUE), this.getComponentsPredicate().asPatch()));

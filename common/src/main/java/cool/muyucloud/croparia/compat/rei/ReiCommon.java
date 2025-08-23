@@ -5,12 +5,11 @@ import cool.muyucloud.croparia.api.recipe.DisplayableRecipe;
 import cool.muyucloud.croparia.compat.rei.category.InfusorRecipeDisplayCategory;
 import cool.muyucloud.croparia.compat.rei.category.RitualRecipeDisplayCategory;
 import cool.muyucloud.croparia.compat.rei.category.RitualStructureDisplayCategory;
+import cool.muyucloud.croparia.compat.rei.category.SoakRecipeDisplayCategory;
 import cool.muyucloud.croparia.compat.rei.display.SimpleCategory;
 import cool.muyucloud.croparia.compat.rei.display.SimpleDisplay;
 import me.shedaniel.rei.api.common.display.DisplaySerializerRegistry;
-import me.shedaniel.rei.api.common.plugins.PluginManager;
 import me.shedaniel.rei.api.common.plugins.REICommonPlugin;
-import me.shedaniel.rei.api.common.registry.ReloadStage;
 import me.shedaniel.rei.api.common.registry.display.ServerDisplayRegistry;
 
 import java.util.HashSet;
@@ -22,13 +21,6 @@ public class ReiCommon implements REICommonPlugin {
 
     public static void forEach(Consumer<SimpleCategory<? extends DisplayableRecipe<?>>> consumer) {
         SERIALIZERS.forEach(consumer);
-    }
-
-    @Override
-    public void preStage(PluginManager<REICommonPlugin> manager, ReloadStage stage) {
-//        SERIALIZERS.add(InfusorRecipeDisplayCategory.INSTANCE);
-//        SERIALIZERS.add(RitualRecipeDisplayCategory.INSTANCE);
-//        SERIALIZERS.add(RitualStructureDisplayCategory.INSTANCE);
     }
 
     @Override
@@ -48,6 +40,7 @@ public class ReiCommon implements REICommonPlugin {
         SERIALIZERS.add(InfusorRecipeDisplayCategory.INSTANCE);
         SERIALIZERS.add(RitualRecipeDisplayCategory.INSTANCE);
         SERIALIZERS.add(RitualStructureDisplayCategory.INSTANCE);
+        SERIALIZERS.add(SoakRecipeDisplayCategory.INSTANCE);
         CropariaIf.LOGGER.info("Registering rei recipe display serializers...");
         forEach(serializer -> registry.register(serializer.getId(), serializer.getSerializer()));
     }

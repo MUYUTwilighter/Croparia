@@ -2,6 +2,6 @@
   "type": "croparia:soak",
   "element": "croparia:water",
   "input": "minecraft:dirt",
-  "output": "minecraft:grass_block",
+  "output": "minecraft:mud",
   "probability": 1.0
 }

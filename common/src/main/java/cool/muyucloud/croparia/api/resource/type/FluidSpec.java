@@ -6,6 +6,7 @@ import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.api.resource.TypeToken;
 import cool.muyucloud.croparia.api.resource.TypedResource;
 import cool.muyucloud.croparia.util.TagUtil;
+import dev.architectury.fluid.FluidStack;
 import net.minecraft.core.component.*;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -31,7 +32,7 @@ public class FluidSpec implements TypedResource<Fluid>, DataComponentHolder {
 
     @NotNull
     public static FluidSpec of(@NotNull Fluid fluid, @Nullable DataComponentMap nbt) {
-        return new FluidSpec(fluid, nbt);
+        return new FluidSpec(fluid, nbt == null ? DataComponentMap.EMPTY : nbt);
     }
 
     @NotNull
@@ -100,6 +101,10 @@ public class FluidSpec implements TypedResource<Fluid>, DataComponentHolder {
 
     public boolean is(@NotNull ResourceLocation tag) {
         return TagUtil.isIn(Registries.FLUID, tag, this.getResource());
+    }
+
+    public FluidStack toStack(long amount) {
+        return FluidStack.create(this.getResource(), amount, this.getComponentsPatch());
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import cool.muyucloud.croparia.api.resource.type.ItemSpec;
+import cool.muyucloud.croparia.util.AnyCodec;
 import cool.muyucloud.croparia.util.CodecUtil;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -22,13 +23,17 @@ import java.util.stream.Stream;
 
 @SuppressWarnings("unused")
 public class ItemOutput implements SlotDisplay {
-    public static final MapCodec<ItemOutput> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+    public static final Codec<ItemOutput> CODEC_SINGLE = ResourceLocation.CODEC.xmap(
+        id -> new ItemOutput(id, 1), ItemOutput::getId
+    );
+    public static final MapCodec<ItemOutput> CODEC_COMP = RecordCodecBuilder.mapCodec(instance -> instance.group(
         ResourceLocation.CODEC.fieldOf("id").forGetter(ItemOutput::getId),
         DataComponentPatch.CODEC.optionalFieldOf("components").forGetter(itemOutput -> Optional.of(itemOutput.getComponentsPatch())),
         Codec.LONG.optionalFieldOf("amount").forGetter(result -> Optional.of(result.getAmount()))
     ).apply(instance, (id, components, amount) -> new ItemOutput(id, components.orElse(DataComponentPatch.EMPTY), amount.orElse(1L))));
+    public static final AnyCodec<ItemOutput> CODEC = new AnyCodec<>(CODEC_COMP.codec(), CODEC_SINGLE);
     public static final StreamCodec<RegistryFriendlyByteBuf, ItemOutput> STREAM_CODEC = CodecUtil.toStream(CODEC);
-    public static final Type<ItemOutput> TYPE = new Type<>(CODEC, STREAM_CODEC);
+    public static final Type<ItemOutput> TYPE = new Type<>(CODEC_COMP, STREAM_CODEC);
 
     @NotNull
     private final ResourceLocation id;

@@ -1,6 +1,7 @@
+@type=croparia:composite;
 @registry=croparia:crops;
 @path=croparia/tags/item/crop_seeds.json;
-@content='''    {seed}''';
+@content='    "{seed}"';
 {
   "replace": false,
   "values": [

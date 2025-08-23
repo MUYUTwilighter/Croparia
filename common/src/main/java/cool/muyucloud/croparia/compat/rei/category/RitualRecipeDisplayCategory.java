@@ -7,6 +7,7 @@ import cool.muyucloud.croparia.compat.rei.display.SimpleCategory;
 import cool.muyucloud.croparia.compat.rei.display.SimpleDisplay;
 import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.util.Constants;
+import cool.muyucloud.croparia.util.supplier.LazySupplier;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.gui.Renderer;
@@ -17,6 +18,7 @@ import me.shedaniel.rei.api.common.entry.EntryStack;
 import me.shedaniel.rei.api.common.entry.type.VanillaEntryTypes;
 import me.shedaniel.rei.api.common.util.EntryStacks;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
 import java.util.List;
@@ -25,6 +27,15 @@ import java.util.Map;
 public class RitualRecipeDisplayCategory extends SimpleCategory<RitualRecipe> {
     public static final RitualRecipeDisplayCategory INSTANCE = new RitualRecipeDisplayCategory(
         RitualRecipe.class, RitualRecipe.TYPED_SERIALIZER
+    );
+    public static final LazySupplier<EntryStack<ItemStack>> STATION_1 = LazySupplier.of(
+        () -> EntryStack.of(VanillaEntryTypes.ITEM, CropariaItems.RITUAL_STAND.get().getDefaultInstance())
+    );
+    public static final LazySupplier<EntryStack<ItemStack>> STATION_2 = LazySupplier.of(
+        () -> EntryStack.of(VanillaEntryTypes.ITEM, CropariaItems.RITUAL_STAND_2.get().getDefaultInstance())
+    );
+    public static final LazySupplier<EntryStack<ItemStack>> STATION_3 = LazySupplier.of(
+        () -> EntryStack.of(VanillaEntryTypes.ITEM, CropariaItems.RITUAL_STAND_3.get().getDefaultInstance())
     );
 
     public RitualRecipeDisplayCategory(Class<RitualRecipe> recipeClass, TypedSerializer<RitualRecipe> recipeType) {
@@ -43,6 +54,11 @@ public class RitualRecipeDisplayCategory extends SimpleCategory<RitualRecipe> {
     @Override
     public Map<String, EntryIngredient> outputEntries(RecipeHolder<RitualRecipe> holder) {
         return Map.of("result", Util.toIngredient(holder.value().getResult()));
+    }
+
+    @Override
+    public EntryIngredient[] stations() {
+        return new EntryIngredient[]{EntryIngredient.of(STATION_1.get()), EntryIngredient.of(STATION_2.get()), EntryIngredient.of(STATION_3.get())};
     }
 
     @Override

@@ -44,11 +44,11 @@ public class Crops {
         return crop;
     }
 
-    public static final Crop ELEMENTAL = croparia("elemental", "croparia:elematilius", 0x712389, 2, Crop.CROP, "item.croparia.gem_elemental");
-    public static final Crop EARTH = croparia("earth", "croparia:elemental_earth", 0xE5C8BB, 3, Crop.CROP, "item.croparia.gem_earth");
-    public static final Crop WATER = croparia("water", "croparia:elemental_water", 0x2A5AB2, 4, Crop.CROP, "item.croparia.gem_water");
-    public static final Crop FIRE = croparia("fire", "croparia:elemental_fire", 0xC65957, 6, Crop.CROP, "item.croparia.gem_fire");
-    public static final Crop AIR = croparia("air", "croparia:elemental_air", 0xA2A9B5, 7, Crop.CROP, "item.croparia.gem_air");
+    public static final Crop ELEMENTAL = croparia("elemental", "croparia:gem_elemental", 0x712389, 2, Crop.CROP, "item.croparia.gem_elemental");
+    public static final Crop EARTH = croparia("earth", "croparia:gem_earth", 0xE5C8BB, 3, Crop.CROP, "item.croparia.gem_earth");
+    public static final Crop WATER = croparia("water", "croparia:gem_water", 0x2A5AB2, 4, Crop.CROP, "item.croparia.gem_water");
+    public static final Crop FIRE = croparia("fire", "croparia:gem_fire", 0xC65957, 6, Crop.CROP, "item.croparia.gem_fire");
+    public static final Crop AIR = croparia("air", "croparia:gem_air", 0xA2A9B5, 7, Crop.CROP, "item.croparia.gem_air");
 
     /**
      * Add a crop for vanilla material with specified translation key.
@@ -77,14 +77,14 @@ public class Crops {
     public static final Crop REDSTONE = vanilla("redstone", Items.REDSTONE, 0xff2626, 3, Crop.CROP);
     public static final Crop DIAMOND = vanilla("diamond", Items.DIAMOND, 0x8cf4e2, 4, Crop.CROP);
     public static final Crop EMERALD = vanilla("emerald", Items.EMERALD, 0x17dd62, 4, Crop.CROP);
-    public static final Crop CLAY = vanilla("clay", Items.CLAY, 0x9aa3b3, 1, Crop.CROP);
+    public static final Crop CLAY = vanilla("clay", Items.CLAY_BALL, 0x9aa3b3, 1, Crop.CROP);
     public static final Crop GLOWSTONE = vanilla("glowstone", Items.GLOWSTONE, 0xffff00, 3, Crop.CROP);
     public static final Crop QUARTZ = vanilla("quartz", Items.QUARTZ, 0xdfd8cf, 3, Crop.CROP);
     public static final Crop SHARD = vanilla("shard", Items.PRISMARINE_SHARD, 0x73b5aa, 2, Crop.CROP);
     public static final Crop CRYSTAL = vanilla("crystal", Items.PRISMARINE_CRYSTALS, 0xcbe7e0, 2, Crop.CROP);
     public static final Crop ENDER = vanilla("ender", Items.ENDER_PEARL, 0x8cf4e2, 3, Crop.MONSTER);
     public static final Crop BONE = vanilla("bone", Items.BONE, 0xeceac9, 2, Crop.MONSTER);
-    public static final Crop EYE = vanilla("eye", Items.SPIDER_EYE, 0xeceac9, 2, Crop.MONSTER);
+    public static final Crop SPIDER = vanilla("eye", Items.SPIDER_EYE, 0x9b1e2c, 2, Crop.MONSTER);
     public static final Crop POWDER = vanilla("powder", Items.GUNPOWDER, 0x727272, 2, Crop.MONSTER);
     public static final Crop PAPER = vanilla("paper", Items.PAPER, 0xeaeaea, 1, Crop.CROP);
     public static final Crop SUGAR = vanilla("sugar", Items.SUGAR, 0xf5ffff, 1, Crop.CROP);
@@ -176,10 +176,14 @@ public class Crops {
     public static final Crop WHITE = vanilla("white", Items.WHITE_DYE, 0xffffff, 1, Crop.CROP);
     public static final Crop HONEYCOMB = vanilla("honeycomb", Items.HONEYCOMB, 0xfabf29, 1, Crop.ANIMAL);
     public static final Crop NETHERITE = vanilla("netherite", Items.NETHERITE_INGOT, 0x654740, 5, Crop.CROP);
-    public static final Crop GLOW_INK = vanilla("glowink", Items.GLOW_INK_SAC, 0x4bdeba, 2, Crop.CROP);
+    public static final Crop GLOW_INK = vanilla("glowink", Items.GLOW_INK_SAC, 0x4bdeba, 2, Crop.ANIMAL);
     public static final Crop COPPER = vanilla("copper", Items.COPPER_INGOT, 0xfbc3b6, 2, Crop.CROP);
     public static final Crop AMETHYST = vanilla("amethyst", Items.AMETHYST_SHARD, 0xd9cbf2, 3, Crop.CROP);
-    public static final Crop ECHO_SHARD = vanilla("echo_shard", Items.ECHO_SHARD, 0x3404f, 4, Crop.CROP);
+    public static final Crop ECHO_SHARD = vanilla("echo_shard", Items.ECHO_SHARD, 0x3404f, 4, Crop.MONSTER);
+    public static final Crop ARMADILLO = vanilla("armadillo", Items.ARMADILLO_SCUTE, 0xc48682, 2, Crop.ANIMAL);
+    public static final Crop RESIN = vanilla("resin", Items.RESIN_CLUMP, 0xfcd8af, 1, Crop.NATURE);
+    public static final Crop BREEZE = vanilla("breeze", Items.BREEZE_ROD, 0x7980c2, 3, Crop.NATURE);
+    public static final Crop FROGSPAWN = vanilla("frogspawn", Items.FROGSPAWN, 0x7980c2, 3, Crop.ANIMAL);
 
     /**
      * Add a crop from a modded material.
