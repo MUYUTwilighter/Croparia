@@ -12,6 +12,10 @@ public class CropariaIfFabric implements ModInitializer {
     public void onInitialize() {
         CompatCrops.init();
         CropariaIf.init();
-        BiomeModifications.addFeature(context -> context.canGenerateIn(LevelStem.OVERWORLD), GenerationStep.Decoration.UNDERGROUND_ORES, PlacedFeatures.ELEMATILIUS_ORE.unwrapKey().orElseThrow());
+        BiomeModifications.addFeature(
+            context -> context.canGenerateIn(LevelStem.OVERWORLD),
+            GenerationStep.Decoration.UNDERGROUND_ORES,
+            PlacedFeatures.ELEMATILIUS_ORE.unwrapKey().orElseThrow()
+        );
     }
 }

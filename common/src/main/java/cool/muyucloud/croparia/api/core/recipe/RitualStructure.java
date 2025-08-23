@@ -187,8 +187,8 @@ public class RitualStructure implements Recipe<RitualStructureContainer> {
     }
 
     public void toNetwork(FriendlyByteBuf outputBuf) {
-        outputBuf.writeMap(this.keys,
-            (buf, character) -> buf.writeChar(character),
+        outputBuf.writeMap(
+            this.keys, (buf, character) -> buf.writeChar(character),
             (buf, predicate) -> buf.writeWithCodec(BlockStatePredicate.Builder.CODEC, predicate.getBuilder())
         );
         outputBuf.writeWithCodec(Char3D.CODEC, this.patterns.get(0));
