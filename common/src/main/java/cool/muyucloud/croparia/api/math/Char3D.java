@@ -2,7 +2,9 @@ package cool.muyucloud.croparia.api.math;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.ListCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.Vec3i;
 import org.jetbrains.annotations.NotNull;
 
@@ -13,6 +15,9 @@ import java.util.Optional;
 
 public class Char3D implements Iterable<Character> {
     public static final Codec<Char3D> CODEC = new ListCodec<>(Char2D.CODEC).xmap(Char3D::new, Char3D::structure);
+    public static final MapCodec<Char3D> MAP_CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+        CODEC.fieldOf("value").forGetter(char3d -> char3d)
+    ).apply(instance, value -> value));
 
     private final List<Char2D> pattern;
 

@@ -182,7 +182,7 @@ public class RitualStructure implements Recipe<RitualStructureContainer> {
             FriendlyByteBuf::readChar, buf -> buf.readWithCodec(BlockStatePredicate.Builder.CODEC).build()
         );
         keys = Map.copyOf(keys);
-        Char3D pattern = inputBuf.readWithCodec(Char3D.CODEC);
+        Char3D pattern = inputBuf.readWithCodec(Char3D.MAP_CODEC.codec());
         return new RitualStructure(resourceLocation, keys, pattern);
     }
 
@@ -191,7 +191,7 @@ public class RitualStructure implements Recipe<RitualStructureContainer> {
             this.keys, (buf, character) -> buf.writeChar(character),
             (buf, predicate) -> buf.writeWithCodec(BlockStatePredicate.Builder.CODEC, predicate.getBuilder())
         );
-        outputBuf.writeWithCodec(Char3D.CODEC, this.patterns.get(0));
+        outputBuf.writeWithCodec(Char3D.MAP_CODEC.codec(), this.patterns.get(0));
     }
 
     @Override

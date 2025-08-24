@@ -90,6 +90,7 @@ modrinth {
     changelog = rootProject.file("changelog.md").text
     dependencies {
         required.project "architectury-api"
+        required.project "fabric-api"
         incompatible.project "croparia"
     }
 }
@@ -106,5 +107,6 @@ tasks.register('curseforge', TaskPublishCurseForge) {
     mainFile.addEnvironment("server", "client")
     mainFile.addModLoader("fabric")
     mainFile.addRequirement("architectury-api")
+    mainFile.addRequirement("fabric-api")
     mainFile.addIncompatibility("croparia")
 }
