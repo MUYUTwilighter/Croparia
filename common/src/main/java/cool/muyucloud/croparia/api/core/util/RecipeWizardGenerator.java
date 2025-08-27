@@ -626,7 +626,7 @@ public class RecipeWizardGenerator {
                     template = placeholder.mapAll(template, context);
                     path = placeholder.mapAll(path, context);
                 }
-                Path result = CropariaIf.CONFIG.getDumpPath().resolve("dumped").resolve(path);
+                Path result = CropariaIf.CONFIG.getFilePath().resolve("recipe_wizard/dumped").resolve(path);
                 FileUtil.write(result.toFile(), template, true);
                 Texts.chat(player, (Texts.translatable("chat.croparia.recipe_wizard.success", result)));
             } catch (Throwable t) {

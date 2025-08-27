@@ -36,11 +36,7 @@ public class Config {
     }
 
     @NotNull
-    private Path cropPath;
-    @NotNull
-    private Path packPath;
-    @NotNull
-    private Path dumpPath;
+    private Path filePath;
     @NotNull
     private Boolean override;
     @NotNull
@@ -61,9 +57,7 @@ public class Config {
      * Default config
      */
     public Config() {
-        this.cropPath = Platform.getGameFolder().resolve("croparia/crops");
-        this.packPath = Platform.getGameFolder().resolve("croparia");
-        this.dumpPath = Platform.getGameFolder().resolve("croparia/dump");
+        this.filePath = Platform.getGameFolder().resolve("croparia");
         this.autoReload = 20;
         this.override = true;
         this.fruitUse = 2;
@@ -78,9 +72,7 @@ public class Config {
      * Deserialize config
      */
     public Config(RawConfig raw) {
-        this.cropPath = parsePath(raw.cropPath()).orElse(Platform.getGameFolder().resolve("croparia/crops"));
-        this.packPath = parsePath(raw.packPath()).orElse(Platform.getGameFolder().resolve("croparia"));
-        this.dumpPath = parsePath(raw.dumpPath()).orElse(Platform.getGameFolder().resolve("croparia/dumped"));
+        this.filePath = parsePath(raw.filePath()).orElse(Platform.getGameFolder().resolve("croparia"));
         this.autoReload = raw.autoReload() != null ? raw.autoReload() : 20;
         this.override = raw.override() != null ? raw.override() : true;
         this.fruitUse = raw.fruitUse() != null ? raw.fruitUse() : 2;
@@ -93,31 +85,15 @@ public class Config {
     }
 
     public RawConfig toRaw() {
-        return new RawConfig(resolvePath(cropPath), resolvePath(packPath), resolvePath(dumpPath), override, infusor, ritual, autoReload, soakAttempts, fruitUse, this.getBlacklist());
+        return new RawConfig(resolvePath(filePath), override, infusor, ritual, autoReload, soakAttempts, fruitUse, this.getBlacklist());
     }
 
-    public @NotNull Path getCropPath() {
-        return cropPath;
+    public @NotNull Path getFilePath() {
+        return filePath;
     }
 
-    public void setCropPath(@NotNull Path cropPath) {
-        this.cropPath = cropPath;
-    }
-
-    public @NotNull Path getPackPath() {
-        return packPath;
-    }
-
-    public void setPackPath(@NotNull Path packPath) {
-        this.packPath = packPath;
-    }
-
-    public @NotNull Path getDumpPath() {
-        return dumpPath;
-    }
-
-    public void setDumpPath(@NotNull Path dumpPath) {
-        this.dumpPath = dumpPath;
+    public void setFilePath(@NotNull Path filePath) {
+        this.filePath = filePath;
     }
 
     public @NotNull Integer getAutoReload() {

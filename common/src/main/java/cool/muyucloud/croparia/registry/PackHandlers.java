@@ -10,7 +10,7 @@ import net.minecraft.server.packs.PackType;
 @SuppressWarnings("unused")
 public class PackHandlers {
     public static final DataPackHandler DATAPACK = DataPackHandler.register(
-        CropariaIf.of("datapack"), CropariaIf.CONFIG.getPackPath().resolve("datapack"), JsonBuilder.map(
+        CropariaIf.of("datapack"), CropariaIf.CONFIG.getFilePath().resolve("datapack"), JsonBuilder.map(
             "pack", JsonBuilder.map(
                 "pack_format", SharedConstants.getCurrentVersion().getPackVersion(PackType.SERVER_DATA),
                 "description", "Croparia mandatory datapack, please do not modify"
@@ -18,7 +18,7 @@ public class PackHandlers {
         ), CropariaIf.CONFIG::getOverride
     );
     public static final ResourcePackHandler RESOURCEPACK = ResourcePackHandler.register(
-        CropariaIf.of("resourcepack"), CropariaIf.CONFIG.getPackPath().resolve("resourcepack"), JsonBuilder.map(
+        CropariaIf.of("resourcepack"), CropariaIf.CONFIG.getFilePath().resolve("resourcepack"), JsonBuilder.map(
             "pack", JsonBuilder.map(
                 "pack_format", SharedConstants.getCurrentVersion().getPackVersion(PackType.CLIENT_RESOURCES),
                 "description", "Croparia mandatory resourcepack, please do not modify"

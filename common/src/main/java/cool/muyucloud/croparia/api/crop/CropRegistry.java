@@ -23,7 +23,7 @@ import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 public class CropRegistry<C extends AbstractCrop> implements DgRegistry<C> {
-    public static final CropRegistry<Crop> CROPS = new CropRegistry<>(CropariaIf.CONFIG.getCropPath(), Crop.CODEC);
+    public static final CropRegistry<Crop> CROPS = new CropRegistry<>(CropariaIf.CONFIG.getFilePath().resolve("crops"), Crop.CODEC);
 
     private static final Gson GSON = new Gson();
 
@@ -98,7 +98,7 @@ public class CropRegistry<C extends AbstractCrop> implements DgRegistry<C> {
     }
 
     public void dumpCrops() {
-        Path dir = CropariaIf.CONFIG.getDumpPath().resolve("crops");
+        Path dir = this.getPath();
         File dirFile = dir.toFile();
         if (!dirFile.isDirectory() && !dirFile.mkdirs()) {
             throw new IllegalStateException("Failed to create directory " + dir);
@@ -114,7 +114,7 @@ public class CropRegistry<C extends AbstractCrop> implements DgRegistry<C> {
     }
 
     public Path dumpCrop(@NotNull Crop crop) {
-        Path dir = CropariaIf.CONFIG.getDumpPath().resolve("crops");
+        Path dir = this.getPath();
         File dirFile = dir.toFile();
         if (!dirFile.isDirectory() && !dirFile.mkdirs()) {
             throw new IllegalStateException("Failed to create directory " + dir);

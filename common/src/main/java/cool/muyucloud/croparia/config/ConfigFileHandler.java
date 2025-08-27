@@ -43,8 +43,7 @@ public class ConfigFileHandler {
     public static void reload(Config config) {
         CropariaIf.LOGGER.info("Loading config");
         Config newConfig = load();
-        config.setCropPath(newConfig.getCropPath());
-        config.setPackPath(newConfig.getPackPath());
+        config.setFilePath(newConfig.getFilePath());
         config.setOverride(newConfig.getOverride());
         config.setFruitUse(newConfig.getFruitUse());
         config.setInfusor(newConfig.getInfusor());

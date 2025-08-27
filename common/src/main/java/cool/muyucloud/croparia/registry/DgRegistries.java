@@ -8,7 +8,7 @@ import cool.muyucloud.croparia.api.generator.util.DgRegistry;
 
 public class DgRegistries {
     public static final CropRegistry<Crop> CROPS = DgRegistry.register(
-        CropariaIf.of("crops"), new CropRegistry<>(CropariaIf.CONFIG.getCropPath(), Crop.CODEC)
+        CropariaIf.of("crops"), new CropRegistry<>(CropariaIf.CONFIG.getFilePath().resolve("crops"), Crop.CODEC)
     );
     @SuppressWarnings("unused")
     public static final DgRegistry<Element> ELEMENTS = DgRegistry.register(

@@ -31,7 +31,7 @@ public class RecipeWizard extends Item {
             String prefix = "data-generators/%s/%s/".formatted(PACK_ID.getNamespace(), PACK_ID.getPath());
             String finalName = name.substring(prefix.length());
             entry.forInputStream(inputStream -> {
-                try (FileOutputStream outputStream = new FileOutputStream(CropariaIf.CONFIG.getPackPath().resolve(finalName).toFile())) {
+                try (FileOutputStream outputStream = new FileOutputStream(CropariaIf.CONFIG.getFilePath().resolve(finalName).toFile())) {
                     inputStream.transferTo(outputStream);
                     outputStream.flush();
                 } catch (Throwable t) {
@@ -41,7 +41,7 @@ public class RecipeWizard extends Item {
         }
         Collection<RecipeWizardGenerator> generators = new ArrayList<>();
         FileUtil.forFilesIn(
-            CropariaIf.CONFIG.getDumpPath().resolve("generators").toFile(),
+            CropariaIf.CONFIG.getFilePath().resolve("recipe_wizard/generators").toFile(),
             file -> RecipeWizardGenerator.read(file).ifPresent(generator -> {
                 if (generator.isEnabled() && generator.isDependenciesAvailable()) {
                     generators.add(generator);

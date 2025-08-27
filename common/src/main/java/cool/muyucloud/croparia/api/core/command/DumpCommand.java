@@ -30,7 +30,7 @@ public class DumpCommand {
         int size = DgRegistries.CROPS.size();
         MutableComponent component = Texts.translatable("commands.croparia.dump.perform", size);
         if (openFile) {
-            component.withStyle(Texts.openFile(CropariaIf.CONFIG.getCropPath().toString()));
+            component.withStyle(Texts.openFile(CropariaIf.CONFIG.getFilePath().resolve("crops").toString()));
             component.withStyle(Texts.blockMouseBehavior());
         }
         success.send(component, true);
