@@ -25,7 +25,6 @@ public class DgCompiler {
             result.put(key, parseValue(value));
         }
         return result;
-
     }
 
     private static String extractTemplate(String cdg) {

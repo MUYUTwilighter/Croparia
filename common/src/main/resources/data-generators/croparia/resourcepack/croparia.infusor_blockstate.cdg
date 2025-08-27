@@ -1,5 +1,5 @@
 @startup=true;
-@type=croparia:composite;
+@type=croparia:aggregated;
 @registry=croparia:elements;
 @path=croparia/blockstates/infusor.json;
 @content='        "element={name}": { "model": "croparia:block/infusor_{name}" }';

@@ -14,17 +14,20 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class CompositeGenerator extends DataGenerator {
-    public static final MapCodec<CompositeGenerator> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
-        Codec.BOOL.optionalFieldOf("enabled").forGetter(CompositeGenerator::optionalEnabled),
-        Codec.BOOL.optionalFieldOf("startup").forGetter(CompositeGenerator::optionalStartup),
-        Dependencies.CODEC.optionalFieldOf("dependencies").forGetter(CompositeGenerator::optionalDependencies),
-        ResourceLocation.CODEC.listOf().optionalFieldOf("whitelist").forGetter(CompositeGenerator::optionalWhitelist),
-        Codec.STRING.fieldOf("path").forGetter(CompositeGenerator::getPath),
-        DgRegistry.CODEC.fieldOf("registry").forGetter(CompositeGenerator::getRegistry),
-        Codec.STRING.fieldOf("content").forGetter(CompositeGenerator::getContent),
-        Codec.STRING.fieldOf("template").forGetter(CompositeGenerator::getTemplate)
-    ).apply(instance, (enabled, startup, dependencies, whitelist, path, iterable, content, template) -> new CompositeGenerator(
+/**
+ *
+ **/
+public class AggregatedGenerator extends DataGenerator {
+    public static final MapCodec<AggregatedGenerator> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
+        Codec.BOOL.optionalFieldOf("enabled").forGetter(AggregatedGenerator::optionalEnabled),
+        Codec.BOOL.optionalFieldOf("startup").forGetter(AggregatedGenerator::optionalStartup),
+        Dependencies.CODEC.optionalFieldOf("dependencies").forGetter(AggregatedGenerator::optionalDependencies),
+        ResourceLocation.CODEC.listOf().optionalFieldOf("whitelist").forGetter(AggregatedGenerator::optionalWhitelist),
+        Codec.STRING.fieldOf("path").forGetter(AggregatedGenerator::getPath),
+        DgRegistry.CODEC.fieldOf("registry").forGetter(AggregatedGenerator::getRegistry),
+        Codec.STRING.fieldOf("content").forGetter(AggregatedGenerator::getContent),
+        Codec.STRING.fieldOf("template").forGetter(AggregatedGenerator::getTemplate)
+    ).apply(instance, (enabled, startup, dependencies, whitelist, path, iterable, content, template) -> new AggregatedGenerator(
         enabled.orElse(true), startup.orElse(false), dependencies.orElse(Dependencies.EMPTY),
         whitelist.orElse(List.of()), path, iterable, content, template
     )));
@@ -32,7 +35,7 @@ public class CompositeGenerator extends DataGenerator {
     private final String content;
     protected final transient Map<String, List<String>> cache = new HashMap<>();
 
-    public CompositeGenerator(boolean enabled, boolean startup, Dependencies dependencies, List<ResourceLocation> whitelist, String path, DgRegistry<? extends DgElement> iterable, String content, String template) {
+    public AggregatedGenerator(boolean enabled, boolean startup, Dependencies dependencies, List<ResourceLocation> whitelist, String path, DgRegistry<? extends DgElement> iterable, String content, String template) {
         super(enabled, startup, dependencies, whitelist, path, iterable, template);
         this.content = content;
     }

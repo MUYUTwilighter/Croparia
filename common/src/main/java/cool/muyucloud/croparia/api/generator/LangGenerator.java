@@ -13,7 +13,8 @@ import net.minecraft.resources.ResourceLocation;
 import java.util.LinkedList;
 import java.util.List;
 
-public class LangGenerator extends CompositeGenerator {
+
+public class LangGenerator extends AggregatedGenerator {
     public static final MapCodec<LangGenerator> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
         Codec.BOOL.optionalFieldOf("enabled").forGetter(LangGenerator::optionalEnabled),
         Codec.BOOL.optionalFieldOf("startup").forGetter(LangGenerator::optionalEnabled),

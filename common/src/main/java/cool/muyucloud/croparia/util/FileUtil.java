@@ -31,6 +31,18 @@ public class FileUtil {
         }
     }
 
+
+    /**
+     * Deletes all files and directories under the given directory.
+     *
+     * @param dir the directory to delete under
+     * @throws IOException if any of the following operations fail:
+     *                     <ul>
+     *                     <li>listing the directory's children</li>
+     *                     <li>deleting a directory's children</li>
+     *                     <li>deleting the directory itself</li>
+     *                     </ul>
+     */
     public static void deleteUnder(File dir) throws IOException {
         if (dir.isDirectory()) {
             for (File child : Objects.requireNonNull(dir.listFiles())) {
@@ -39,6 +51,17 @@ public class FileUtil {
         }
     }
 
+    /**
+     * Deletes the given directory and all of its children.
+     *
+     * @param dir the directory to delete
+     * @throws IOException if any of the following operations fail:
+     *                     <ul>
+     *                     <li>listing the directory's children</li>
+     *                     <li>deleting a directory's children</li>
+     *                     <li>deleting the directory itself</li>
+     *                     </ul>
+     */
     public static void deleteDir(File dir) throws IOException {
         if (dir.isDirectory()) {
             for (File child : Objects.requireNonNull(dir.listFiles())) {

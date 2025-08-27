@@ -19,6 +19,9 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Supplier;
 
+/**
+ * A manager class for a data/resource pack represented by a directory.
+ */
 public abstract class PackHandler {
     public static final Gson GSON = new Gson();
 

@@ -1,4 +1,4 @@
-@type=croparia:composite;
+@type=croparia:aggregated;
 @registry=croparia:crops;
 @path=c/tag/item/fruits.json;
 @content='    "{fruit}"';

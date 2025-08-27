@@ -22,15 +22,35 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * <p>Basic data generator, used to generate "per element" files like recipes, loot tables, etc.</p>
+ * <p>To generate aggregated files like lang, tags, etc. use {@link LangGenerator} or {@link AggregatedGenerator}.</p>
+ */
 public class DataGenerator {
     public static final Logger LOGGER = LogUtils.getLogger();
     private static final Map<ResourceLocation, MapCodec<? extends DataGenerator>> REGISTRY = new HashMap<>();
 
+    /**
+     * Registers a data generator codec, used to get Generator API known of custom data generator types.
+     *
+     * @param id the id of the data generator
+     * @param codec the codec of the data generator
+     * @param <G> the type of the data generator
+     * @param <C> the type of the codec
+     * @return the codec
+     */
     public static <G extends DataGenerator, C extends MapCodec<G>> C register(ResourceLocation id, C codec) {
         REGISTRY.put(id, codec);
         return codec;
     }
 
+    /**
+     * Read a data generator from a file, and classifies it based on the {@code @type} (optional, default to {@code croparia:generator}) meta tag.
+     *
+     * @param file the file to read
+     * @return the read data generator
+     * @throws IOException if an I/O error occurs
+     */
     public static DataGenerator read(File file) throws IOException {
         if (file.getName().endsWith(".cdg")) {
             JsonObject json = DgCompiler.compile(file);
