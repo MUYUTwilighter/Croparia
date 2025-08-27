@@ -9,10 +9,12 @@ import cool.muyucloud.croparia.api.crop.util.Color;
 import cool.muyucloud.croparia.api.crop.util.CropDependencies;
 import cool.muyucloud.croparia.api.crop.util.Material;
 import cool.muyucloud.croparia.registry.DgRegistries;
+import cool.muyucloud.croparia.util.text.FailureMessage;
+import cool.muyucloud.croparia.util.text.SuccessMessage;
+import cool.muyucloud.croparia.util.text.Texts;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.ResourceLocationArgument;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -43,8 +45,8 @@ public class CreateCommand {
             null,
             Crop.DEFAULT_TYPE,
             StringArgumentType.getString(context, "color"),
-            context.getSource()::sendSuccess,
-            context.getSource()::sendFailure,
+            Texts.success(context.getSource()),
+            Texts.failure(context.getSource()),
             false, false
         ));
         TYPE.suggests((context, builder) -> {
@@ -57,8 +59,8 @@ public class CreateCommand {
             null,
             StringArgumentType.getString(context, "type"),
             StringArgumentType.getString(context, "color"),
-            context.getSource()::sendSuccess,
-            context.getSource()::sendFailure,
+            Texts.success(context.getSource()),
+            Texts.failure(context.getSource()),
             false, false
         ));
         NAME.executes(context -> create(
@@ -66,8 +68,8 @@ public class CreateCommand {
             ResourceLocationArgument.getId(context, "id"),
             StringArgumentType.getString(context, "type"),
             StringArgumentType.getString(context, "color"),
-            context.getSource()::sendSuccess,
-            context.getSource()::sendFailure,
+            Texts.success(context.getSource()),
+            Texts.failure(context.getSource()),
             false, false
         ));
         REPLACE.executes(context -> create(
@@ -75,8 +77,8 @@ public class CreateCommand {
             ResourceLocationArgument.getId(context, "id"),
             StringArgumentType.getString(context, "type"),
             StringArgumentType.getString(context, "color"),
-            context.getSource()::sendSuccess,
-            context.getSource()::sendFailure,
+            Texts.success(context.getSource()),
+            Texts.failure(context.getSource()),
             false, true
         ));
         NAME.then(REPLACE);
@@ -92,7 +94,7 @@ public class CreateCommand {
     public static int create(Player player, @Nullable ResourceLocation id, String type, String rawColor, SuccessMessage success, FailureMessage failure, boolean client, boolean forced) {
         ItemStack material = player.getMainHandItem();
         if (material.isEmpty()) {
-            failure.send(Component.translatable("commands.croparia.create.no_material"));
+            failure.send(Texts.translatable("commands.croparia.create.no_material"));
             return -1;
         }
         Item rawCroparia = player.getOffhandItem().getItem();
@@ -101,34 +103,34 @@ public class CreateCommand {
         try {
             color = new Color(rawColor);
         } catch (NumberFormatException e) {
-            failure.send(Component.translatable("commands.croparia.create.invalid_color", rawColor));
+            failure.send(Texts.translatable("commands.croparia.create.invalid_color", rawColor));
             return -1;
         }
         if (!forced && DgRegistries.CROPS.exists(id)) {
-            MutableComponent crop = Component.literal(id.toString());
-            crop.withStyle(CommonCommandRoot.runCommand(CommonCommandRoot.commandRoot(client), "crop", id.toString()))
-                .withStyle(CommonCommandRoot.inlineMouseBehavior());
-            MutableComponent rename = Component.translatable("commands.croparia.create.duplicated.rename")
-                .withStyle(CommonCommandRoot.suggestCommand(CommonCommandRoot.commandRoot(client), "create", rawColor, type, id + "_"))
-                .withStyle(CommonCommandRoot.inlineMouseBehavior());
-            MutableComponent replace = Component.translatable("commands.croparia.create.duplicated.replace")
-                .withStyle(CommonCommandRoot.suggestCommand(CommonCommandRoot.commandRoot(client), "create", rawColor, type, id.toString(), "replace"))
-                .withStyle(CommonCommandRoot.inlineMouseBehavior());
-            MutableComponent duplication = Component.translatable("commands.croparia.create.duplicated", crop, rename, replace);
+            MutableComponent crop = Texts.literal(id.toString());
+            crop.withStyle(Texts.runCommand(CommonCommandRoot.commandRoot(client), "crop", id.toString()))
+                .withStyle(Texts.inlineMouseBehavior());
+            MutableComponent rename = Texts.translatable("commands.croparia.create.duplicated.rename")
+                .withStyle(Texts.suggestCommand(CommonCommandRoot.commandRoot(client), "create", rawColor, type, id + "_"))
+                .withStyle(Texts.inlineMouseBehavior());
+            MutableComponent replace = Texts.translatable("commands.croparia.create.duplicated.replace")
+                .withStyle(Texts.suggestCommand(CommonCommandRoot.commandRoot(client), "create", rawColor, type, id.toString(), "replace"))
+                .withStyle(Texts.inlineMouseBehavior());
+            MutableComponent duplication = Texts.translatable("commands.croparia.create.duplicated", crop, rename, replace);
             failure.send(duplication);
             return -1;
         }
         if (rawCroparia instanceof Croparia croparia) {
             Crop crop = buildCrop(id, material, color, croparia.getTier(), type);
             Path result = DgRegistries.CROPS.dumpCrop(crop);
-            MutableComponent resultComponent = Component.literal(result.toString());
+            MutableComponent resultComponent = Texts.literal(result.toString());
             if (client) {
-                resultComponent.withStyle(CommonCommandRoot.openFile(result.toString())).withStyle(CommonCommandRoot.inlineMouseBehavior());
+                resultComponent.withStyle(Texts.openFile(result.toString())).withStyle(Texts.inlineMouseBehavior());
             }
-            success.send(() -> Component.translatable("commands.croparia.create.success", resultComponent), true);
+            success.send(Texts.translatable("commands.croparia.create.success", resultComponent), true);
             return croparia.getTier();
         } else {
-            failure.send(Component.translatable("commands.croparia.create.invalid_croparia"));
+            failure.send(Texts.translatable("commands.croparia.create.invalid_croparia"));
             return -1;
         }
     }

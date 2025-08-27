@@ -17,8 +17,9 @@ import cool.muyucloud.croparia.api.generator.util.DgCompiler;
 import cool.muyucloud.croparia.api.generator.util.Placeholder;
 import cool.muyucloud.croparia.api.recipe.entry.BlockInput;
 import cool.muyucloud.croparia.registry.Recipes;
-import cool.muyucloud.croparia.util.CodecUtil;
 import cool.muyucloud.croparia.util.FileUtil;
+import cool.muyucloud.croparia.util.codec.CodecUtil;
+import cool.muyucloud.croparia.util.codec.GenericListCodec;
 import cool.muyucloud.croparia.util.supplier.LazySupplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentPatch;
@@ -46,6 +47,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 
+@SuppressWarnings("unused")
 public class RecipeWizardGenerator {
     public static Optional<RecipeWizardGenerator> read(File file) {
         try {
@@ -158,8 +160,9 @@ public class RecipeWizardGenerator {
                     Component.translatable("overlay.croparia.recipe_wizard.default.missing.target_item"), true
                 );
                 throw new IllegalStateException();
-            } else
-                return Objects.requireNonNull(entities.getFirst().getItem().getItem().arch$registryName()).getNamespace();
+            } else return Objects.requireNonNull(
+                entities.getFirst().getItem().getItem().arch$registryName()
+            ).getNamespace();
         }
     );
     public static final Placeholder<UseOnContext> TARGET_ITEM_PATH = register(
@@ -302,7 +305,7 @@ public class RecipeWizardGenerator {
         return EXTENSIONS.getOrDefault(id, new ArrayList<>());
     }
 
-    public static final Codec<List<ResourceLocation>> CODEC_EXTENSIONS = CodecUtil.genericList(ResourceLocation.CODEC);
+    public static final GenericListCodec<ResourceLocation> CODEC_EXTENSIONS = GenericListCodec.of(ResourceLocation.CODEC);
     public static final MapCodec<RecipeWizardGenerator> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
         Codec.BOOL.optionalFieldOf("enabled").forGetter(RecipeWizardGenerator::optionalEnabled),
         Dependencies.CODEC.optionalFieldOf("dependencies").forGetter(RecipeWizardGenerator::optionalDependencies),

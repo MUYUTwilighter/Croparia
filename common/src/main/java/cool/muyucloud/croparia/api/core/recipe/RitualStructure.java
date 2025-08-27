@@ -10,7 +10,7 @@ import cool.muyucloud.croparia.api.recipe.entry.BlockInput;
 import cool.muyucloud.croparia.api.recipe.structure.Char3D;
 import cool.muyucloud.croparia.api.recipe.structure.MarkedChar3D;
 import cool.muyucloud.croparia.api.recipe.structure.MarkedTransformableChar3D;
-import cool.muyucloud.croparia.util.CodecUtil;
+import cool.muyucloud.croparia.util.codec.CodecUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Vec3i;

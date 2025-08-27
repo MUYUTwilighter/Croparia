@@ -3,6 +3,7 @@ package cool.muyucloud.croparia.client.command;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import cool.muyucloud.croparia.util.ResourceLocationArgument;
+import cool.muyucloud.croparia.util.text.Texts;
 import dev.architectury.event.events.client.ClientCommandRegistrationEvent;
 import net.minecraft.resources.ResourceLocation;
 
@@ -18,10 +19,10 @@ public class DumpCommand {
     public static LiteralArgumentBuilder<ClientCommandRegistrationEvent.ClientCommandSourceStack> build() {
         CROP.executes(context -> {
             ResourceLocation id = ResourceLocationArgument.getId(context, "crop");
-            return dump(id, context.getSource()::arch$sendSuccess, context.getSource()::arch$sendFailure, true);
+            return dump(id, Texts.success(context.getSource()), Texts.failure(context.getSource()), true);
         });
         DUMP.requires(s -> s.hasPermission(2));
-        DUMP.executes(context -> dumpAll(context.getSource()::arch$sendSuccess, true));
+        DUMP.executes(context -> dumpAll(Texts.success(context.getSource()), true));
         DUMP.then(CROP);
         return DUMP;
     }

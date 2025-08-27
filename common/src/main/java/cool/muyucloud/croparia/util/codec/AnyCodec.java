@@ -1,4 +1,4 @@
-package cool.muyucloud.croparia.util;
+package cool.muyucloud.croparia.util.codec;
 
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
@@ -62,6 +62,10 @@ public class AnyCodec<T> implements Codec<T>, Iterable<Codec<T>> {
         return codecs[0].encode(input, ops, prefix);
     }
 
+    public Codec<T> getCodec(int i) throws IndexOutOfBoundsException {
+        return codecs[i];
+    }
+
     @NotNull
     @Override
     public Iterator<Codec<T>> iterator() {
@@ -74,5 +78,10 @@ public class AnyCodec<T> implements Codec<T>, Iterable<Codec<T>> {
 
     public String error(List<String> logs) {
         return this.onError.apply(logs);
+    }
+
+    @Override
+    public <S> Codec<S> xmap(Function<? super T, ? extends S> to, Function<? super S, ? extends T> from) {
+        return Codec.super.xmap(to, from);
     }
 }

@@ -3,7 +3,7 @@ package cool.muyucloud.croparia.api.crop.util;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.Codec;
 import cool.muyucloud.croparia.CropariaIf;
-import cool.muyucloud.croparia.util.AnyCodec;
+import cool.muyucloud.croparia.util.codec.AnyCodec;
 import cool.muyucloud.croparia.util.supplier.LazySupplier;
 import dev.architectury.platform.Platform;
 import org.jetbrains.annotations.NotNull;

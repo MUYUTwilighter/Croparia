@@ -2,7 +2,7 @@ package cool.muyucloud.croparia.api.json;
 
 import com.google.gson.JsonArray;
 import com.mojang.serialization.Codec;
-import cool.muyucloud.croparia.util.CodecUtil;
+import cool.muyucloud.croparia.util.codec.CodecUtil;
 
 public class ListBuilder implements JsonBuilder {
     private final JsonArray json = new JsonArray();

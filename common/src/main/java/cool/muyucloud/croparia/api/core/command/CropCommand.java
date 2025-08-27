@@ -8,11 +8,13 @@ import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.registry.Crops;
 import cool.muyucloud.croparia.registry.DgRegistries;
 import cool.muyucloud.croparia.util.Util;
+import cool.muyucloud.croparia.util.text.FailureMessage;
+import cool.muyucloud.croparia.util.text.SuccessMessage;
+import cool.muyucloud.croparia.util.text.Texts;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.ResourceLocationArgument;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
@@ -30,7 +32,7 @@ public class CropCommand {
             (context, builder) -> Crops.cropSuggestions(builder)
         ).executes(context -> {
             ResourceLocation id = ResourceLocationArgument.getId(context, "id");
-            return reportSingular(id, context.getSource()::sendSuccess, context.getSource()::sendFailure);
+            return reportSingular(id, Texts.success(context.getSource()), Texts.failure(context.getSource()));
         })
     );
 
@@ -41,11 +43,11 @@ public class CropCommand {
     public static int reportSingular(ResourceLocation id, SuccessMessage success, FailureMessage failure) {
         Optional<Crop> crop = DgRegistries.CROPS.forName(id);
         if (crop.isEmpty()) {
-            failure.send(Component.translatable("commands.croparia.crop.absent", id));
+            failure.send(Texts.translatable("commands.croparia.crop.absent", id));
             return 0;
         }
-        Component report = buildReport(crop.get());
-        success.send(() -> report, false);
+        MutableComponent report = buildReport(crop.get());
+        success.send(report, false);
         return crop.get().getTier();
     }
 
@@ -57,65 +59,61 @@ public class CropCommand {
             crop = CropAccess.tryGet(access);
         }
         if (crop == null) {
-            failure.send(Component.translatable("commands.croparia.crop.no_crop"));
+            failure.send(Texts.translatable("commands.croparia.crop.no_crop"));
             return 0;
         }
-        Component report = buildReport(crop);
-        success.send(() -> report, false);
+        MutableComponent report = buildReport(crop);
+        success.send(report, false);
         return crop.getTier();
     }
 
     public static MutableComponent buildReport(@NotNull Crop crop) {
-        MutableComponent name = Component.translatable("commands.croparia.crop.id", crop.getKey().toString());
-        MutableComponent translation = Component.translatable(
+        MutableComponent name = Texts.translatable("commands.croparia.crop.id", crop.getKey().toString());
+        MutableComponent translation = Texts.translatable(
             "commands.croparia.crop.translationKey",
-            Component.translatable(crop.getTranslationKey())
-                .withStyle(CommonCommandRoot.hoverText(crop.getTranslationKey()))
-                .withStyle(CommonCommandRoot.copyText(crop.getTranslationKey()))
+            Texts.forStyles(Texts.translatable(crop.getTranslationKey()),
+                Texts.hoverText(crop.getTranslationKey()),
+                Texts.copyText(crop.getTranslationKey()))
         );
-        MutableComponent material = Component.translatable(
-            "commands.croparia.crop.material",
-            Component.literal(crop.getMaterialName())
-                .withStyle(CommonCommandRoot.suggestCommand("give @s", Objects.requireNonNull(crop.getResult().arch$registryName()).toString()))
-                .withStyle(CommonCommandRoot.hoverItem(crop.getMaterialStack()))
-                .withStyle(CommonCommandRoot.inlineMouseBehavior())
-        );
-        MutableComponent tier = Component.translatable(
-            "commands.croparia.crop.tier",
-            Component.literal(crop.getTier() + "")
-                .withStyle(CommonCommandRoot.suggestCommand("give @s", CropariaItems.getCroparia(crop.getTier()).getId().toString()))
-                .withStyle(CommonCommandRoot.hoverItem(CropariaItems.getCroparia(crop.getTier()).get()))
-                .withStyle(CommonCommandRoot.inlineMouseBehavior())
-        );
-        MutableComponent color = Component.translatable(
+        MutableComponent material = Texts.translatable("commands.croparia.crop.material", Texts.literal(
+            crop.getMaterialName(),
+            Texts.suggestCommand("give @s", Objects.requireNonNull(crop.getResult().arch$registryName()).toString()),
+            Texts.hoverItem(crop.getMaterialStack()),
+            Texts.inlineMouseBehavior()
+        ));
+        MutableComponent tier = Texts.forStyles(Texts.translatable(
+            "commands.croparia.crop.tier", Texts.literal(crop.getTier() + "",
+                Texts.suggestCommand("give @s", CropariaItems.getCroparia(crop.getTier()).getId().toString()),
+                Texts.hoverItem(CropariaItems.getCroparia(crop.getTier()).get()),
+                Texts.inlineMouseBehavior())
+        ));
+        MutableComponent color = Texts.translatable(
             "commands.croparia.crop.color",
-            Component.literal(crop.getColorForm()).withColor(crop.getColor().getValue())
-                .withStyle(CommonCommandRoot.copyText(crop.getColorForm()))
+            Texts.literal(crop.getColorForm(), Texts.copyText(crop.getColorForm())).withColor(crop.getColor().getValue())
         );
-        MutableComponent type = Component.translatable(
-            "commands.croparia.crop.type", Component.literal(crop.getType())
-                .withStyle(CommonCommandRoot.copyText(crop.getType()))
+        MutableComponent type = Texts.translatable(
+            "commands.croparia.crop.type", Texts.literal(crop.getType(), Texts.copyText(crop.getType()))
         );
-        MutableComponent seed = Component.translatable(
+        MutableComponent seed = Texts.translatable(
             "commands.croparia.crop.seed",
-            Component.literal(crop.getSeedId().toString())
-                .withStyle(CommonCommandRoot.suggestCommand("give @s", crop.getSeedId().toString()))
-                .withStyle(CommonCommandRoot.hoverItem(crop.getSeedId()))
-                .withStyle(CommonCommandRoot.inlineMouseBehavior())
+            Texts.literal(crop.getSeedId().toString(),
+                Texts.suggestCommand("give @s", crop.getSeedId().toString()),
+                Texts.hoverItem(crop.getSeedId()),
+                Texts.inlineMouseBehavior())
         );
-        MutableComponent fruit = Component.translatable(
+        MutableComponent fruit = Texts.translatable(
             "commands.croparia.crop.fruit",
-            Component.literal(crop.getFruitId().toString())
-                .withStyle(CommonCommandRoot.suggestCommand("give @s", crop.getFruitId().toString()))
-                .withStyle(CommonCommandRoot.hoverItem(crop.getFruitId()))
-                .withStyle(CommonCommandRoot.inlineMouseBehavior())
+            Texts.literal(crop.getFruitId().toString(),
+                Texts.suggestCommand("give @s", crop.getFruitId().toString()),
+                Texts.hoverItem(crop.getFruitId()),
+                Texts.inlineMouseBehavior())
         );
-        MutableComponent cropBlock = Component.translatable(
+        MutableComponent cropBlock = Texts.translatable(
             "commands.croparia.crop.cropBlock",
-            Component.literal(crop.getBlockId().toString())
-                .withStyle(CommonCommandRoot.suggestCommand("setblock ~ ~ ~", crop.getBlockId() + "[age=7]"))
-                .withStyle(CommonCommandRoot.hoverText(crop.getCropBlock().map(CropariaCropBlock::getName).orElse(Component.literal("error"))))
-                .withStyle(CommonCommandRoot.inlineMouseBehavior())
+            Texts.literal(crop.getBlockId().toString(),
+                Texts.suggestCommand("setblock ~ ~ ~", crop.getBlockId() + "[age=7]"),
+                Texts.hoverText(crop.getCropBlock().map(CropariaCropBlock::getName).orElse(Texts.literal("error"))),
+                Texts.inlineMouseBehavior())
         );
         MutableComponent status = diagnose(crop);
         return name.append("\n")
@@ -132,11 +130,11 @@ public class CropCommand {
 
     public static MutableComponent diagnose(@NotNull Crop crop) {
         if (crop.getResult() == Items.AIR) {
-            return Component.translatable("commands.croparia.crop.status.material").withStyle(ChatFormatting.RED);
+            return Texts.translatable("commands.croparia.crop.status.material").withStyle(ChatFormatting.RED);
         }
         if (!crop.shouldLoad()) {
-            return Component.translatable("commands.croparia.crop.status.unavailable").withStyle(ChatFormatting.YELLOW);
+            return Texts.translatable("commands.croparia.crop.status.unavailable").withStyle(ChatFormatting.YELLOW);
         }
-        return Component.translatable("commands.croparia.crop.status.good").withStyle(ChatFormatting.GREEN);
+        return Texts.translatable("commands.croparia.crop.status.good").withStyle(ChatFormatting.GREEN);
     }
 }

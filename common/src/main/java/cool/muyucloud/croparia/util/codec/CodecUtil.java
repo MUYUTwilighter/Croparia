@@ -1,10 +1,11 @@
-package cool.muyucloud.croparia.util;
+package cool.muyucloud.croparia.util.codec;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.mojang.serialization.*;
 import com.mojang.serialization.codecs.PrimitiveCodec;
+import cool.muyucloud.croparia.util.FileUtil;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import org.jetbrains.annotations.ApiStatus;
@@ -13,14 +14,17 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.List;
 
+@SuppressWarnings("unused")
 public class CodecUtil {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     public static final PrimitiveCodec<Character> CHAR = new PrimitiveCodec<>() {
         @Override
         public <T> DataResult<Character> read(DynamicOps<T> ops, T input) {
-            return ops.getStringValue(input).map(s -> s.charAt(0));
+            return ops.getStringValue(input).map(s -> {
+                if (s.length() != 1) throw new IllegalArgumentException("Invalid char: " + s);
+                return s.charAt(0);
+            });
         }
 
         @Override
@@ -32,10 +36,6 @@ public class CodecUtil {
     @ApiStatus.Experimental
     public static <T> MapCodec<T> toMap(Codec<T> codec) {
         return codec instanceof MapCodec.MapCodecCodec<T> map ? map.codec() : MapCodec.assumeMapUnsafe(codec);
-    }
-
-    public static <T> AnyCodec<List<T>> genericList(Codec<T> codec) {
-        return new AnyCodec<>(codec.listOf(), codec.xmap(List::of, List::getFirst));
     }
 
     public static <B extends FriendlyByteBuf, T> StreamCodec<B, T> toStream(Codec<T> codec) {

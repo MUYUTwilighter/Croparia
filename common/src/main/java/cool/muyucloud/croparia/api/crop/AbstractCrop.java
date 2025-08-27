@@ -5,7 +5,7 @@ import cool.muyucloud.croparia.api.crop.util.Material;
 import cool.muyucloud.croparia.api.generator.util.DgElement;
 import cool.muyucloud.croparia.api.generator.util.Placeholder;
 import cool.muyucloud.croparia.api.generator.util.TranslatableElement;
-import cool.muyucloud.croparia.util.CodecUtil;
+import cool.muyucloud.croparia.util.codec.CodecUtil;
 import cool.muyucloud.croparia.util.supplier.LazySupplier;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.world.item.ItemStack;

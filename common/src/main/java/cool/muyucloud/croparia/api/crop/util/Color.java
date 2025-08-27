@@ -1,7 +1,7 @@
 package cool.muyucloud.croparia.api.crop.util;
 
 import com.mojang.serialization.Codec;
-import cool.muyucloud.croparia.util.AnyCodec;
+import cool.muyucloud.croparia.util.codec.AnyCodec;
 import net.minecraft.network.chat.Style;
 
 import java.util.Locale;

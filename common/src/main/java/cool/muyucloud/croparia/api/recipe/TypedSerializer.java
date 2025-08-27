@@ -2,7 +2,7 @@ package cool.muyucloud.croparia.api.recipe;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
-import cool.muyucloud.croparia.util.CodecUtil;
+import cool.muyucloud.croparia.util.codec.CodecUtil;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;

@@ -10,7 +10,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.api.generator.pack.PackHandler;
 import cool.muyucloud.croparia.api.generator.util.*;
-import cool.muyucloud.croparia.util.CodecUtil;
+import cool.muyucloud.croparia.util.codec.CodecUtil;
 import cool.muyucloud.croparia.util.supplier.LazySupplier;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
@@ -154,8 +154,8 @@ public class DataGenerator {
     }
 
     protected void generate(DgElement element, PackHandler pack) {
-        String relative = replace(this.getPath(), element);
-        String replaced = replace(this.getTemplate(), element);
+        String relative = this.getPath(element);
+        String replaced = this.getTemplate(element);
         pack.addFile(relative, replaced);
     }
 

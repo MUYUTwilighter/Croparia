@@ -6,7 +6,7 @@ import com.google.gson.stream.JsonWriter;
 import com.mojang.serialization.Codec;
 import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.api.generator.util.DgRegistry;
-import cool.muyucloud.croparia.util.CodecUtil;
+import cool.muyucloud.croparia.util.codec.CodecUtil;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 

@@ -7,6 +7,7 @@ import cool.muyucloud.croparia.api.generator.pack.PackHandler;
 import cool.muyucloud.croparia.api.generator.util.JarJarEntry;
 import cool.muyucloud.croparia.util.FileUtil;
 import cool.muyucloud.croparia.util.supplier.OnLoadSupplier;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -33,7 +34,7 @@ public class RecipeWizard extends Item {
                 try (FileOutputStream outputStream = new FileOutputStream(CropariaIf.CONFIG.getPackPath().resolve(finalName).toFile())) {
                     inputStream.transferTo(outputStream);
                 } catch (Throwable t) {
-                    CropariaIf.LOGGER.error("Failed to move built-in generator %s".formatted(name), t);
+                    CropariaIf.LOGGER.error("Failed to move built-in recipe wizard template %s".formatted(name), t);
                 }
             });
         }
@@ -64,6 +65,7 @@ public class RecipeWizard extends Item {
                 return InteractionResult.SUCCESS;
             }
         }
+        player.displayClientMessage(Component.translatable("overlay.croparia.recipe_wizard.error.no_match"), true);
         return InteractionResult.PASS;
     }
 }

@@ -5,8 +5,8 @@ import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import cool.muyucloud.croparia.api.crop.Crop;
 import cool.muyucloud.croparia.util.ResourceLocationArgument;
+import cool.muyucloud.croparia.util.text.Texts;
 import dev.architectury.event.events.client.ClientCommandRegistrationEvent;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
 import static cool.muyucloud.croparia.api.core.command.CreateCommand.create;
@@ -26,18 +26,19 @@ public class CreateCommand {
     static {
         CREATE.requires(s -> s.hasPermission(2));
         COLOR.executes(context -> {
-            if (context.getSource().arch$getPlayer() != null) {
+            ClientCommandRegistrationEvent.ClientCommandSourceStack source = context.getSource();
+            if (source.arch$getPlayer() != null) {
                 return create(
                     context.getSource().arch$getPlayer(),
                     null,
                     Crop.DEFAULT_TYPE,
                     StringArgumentType.getString(context, "color"),
-                    (msg, broadcast) -> context.getSource().arch$sendSuccess(msg, broadcast),
-                    context.getSource()::arch$sendFailure,
+                    Texts.success(source),
+                    Texts.failure(source),
                     true, false
                 );
             } else {
-                context.getSource().arch$sendFailure(Component.translatable("commands.croparia.crop.not_player"));
+                Texts.failure(source, Texts.translatable("commands.croparia.crop.not_player"));
                 return -1;
             }
         });
@@ -51,8 +52,8 @@ public class CreateCommand {
             null,
             StringArgumentType.getString(context, "type"),
             StringArgumentType.getString(context, "color"),
-            (msg, broadcast) -> context.getSource().arch$sendSuccess(msg, broadcast),
-            context.getSource()::arch$sendFailure,
+            Texts.success(context.getSource()),
+            Texts.failure(context.getSource()),
             true, false
         ));
         NAME.executes(context -> create(
@@ -60,8 +61,8 @@ public class CreateCommand {
             ResourceLocationArgument.getId(context, "id"),
             StringArgumentType.getString(context, "type"),
             StringArgumentType.getString(context, "color"),
-            (msg, broadcast) -> context.getSource().arch$sendSuccess(msg, broadcast),
-            context.getSource()::arch$sendFailure,
+            Texts.success(context.getSource()),
+            Texts.failure(context.getSource()),
             true, false
         ));
         REPLACE.executes(context -> create(
@@ -69,8 +70,8 @@ public class CreateCommand {
             ResourceLocationArgument.getId(context, "id"),
             StringArgumentType.getString(context, "type"),
             StringArgumentType.getString(context, "color"),
-            (msg, broadcast) -> context.getSource().arch$sendSuccess(msg, broadcast),
-            context.getSource()::arch$sendFailure,
+            Texts.success(context.getSource()),
+            Texts.failure(context.getSource()),
             true, true
         ));
         NAME.then(REPLACE);

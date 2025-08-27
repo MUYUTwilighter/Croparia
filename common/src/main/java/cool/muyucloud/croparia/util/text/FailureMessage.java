@@ -1,7 +1,7 @@
-package cool.muyucloud.croparia.api.core.command;
+package cool.muyucloud.croparia.util.text;
 
 import net.minecraft.network.chat.Component;
 
 public interface FailureMessage {
-    void send(Component msgt);
+    void send(Component msg);
 }

@@ -111,6 +111,7 @@
   "tab.croparia.main": "Croparia",
   "overlay.croparia.ritual.bad": "The elematilius does not respond to the ritual",
   "overlay.croparia.ritual.rejected": "The elematilius rejects your offerings",
+  "overlay.croparia.recipe_wizard.error.no_match": "No matching template found for target block",
   "overlay.croparia.recipe_wizard.default.missing.main_hand": "Hold an item on your main hand",
   "overlay.croparia.recipe_wizard.default.missing.off_hand": "Hold an item on your off hand",
   "overlay.croparia.recipe_wizard.default.missing.target_item": "Throw an item onto the target block",

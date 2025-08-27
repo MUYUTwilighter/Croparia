@@ -3,7 +3,7 @@ package cool.muyucloud.croparia.api.json;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
-import cool.muyucloud.croparia.util.CodecUtil;
+import cool.muyucloud.croparia.util.codec.CodecUtil;
 
 import java.util.Map;
 
