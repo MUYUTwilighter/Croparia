@@ -4,8 +4,8 @@ import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.api.crop.Crop;
 import cool.muyucloud.croparia.api.crop.CropAccess;
 import cool.muyucloud.croparia.registry.DgRegistries;
+import cool.muyucloud.croparia.util.text.Texts;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -31,8 +31,8 @@ public class CropariaCropBlock extends CropBlock implements CropAccess<Crop> {
 
     @Override
     public @NotNull MutableComponent getName() {
-        MutableComponent cropName = Component.translatable(this.getCrop().getTranslationKey());
-        return Component.translatable("block." + CropariaIf.MOD_ID + ".crop.block", cropName);
+        MutableComponent cropName = Texts.translatable(this.getCrop().getTranslationKey());
+        return Texts.translatable("block." + CropariaIf.MOD_ID + ".crop.block", cropName);
     }
 
     public int getTier() {

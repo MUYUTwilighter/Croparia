@@ -1,12 +1,12 @@
 package cool.muyucloud.croparia.registry;
 
 import cool.muyucloud.croparia.CropariaIf;
+import cool.muyucloud.croparia.util.text.Texts;
 import dev.architectury.registry.CreativeTabRegistry;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 
@@ -18,14 +18,14 @@ public class Tabs {
     public static final RegistrySupplier<CreativeModeTab> CROPS = registerTab(
         "crops",
         () -> CreativeTabRegistry.create(
-            Component.translatable("tab." + CropariaIf.MOD_ID + ".crops"),
+            Texts.translatable("tab." + CropariaIf.MOD_ID + ".crops"),
             () -> CropariaItems.CROPARIA.get().getDefaultInstance()
         )
     );
     public static final RegistrySupplier<CreativeModeTab> MAIN = registerTab(
         "main",
         () -> CreativeTabRegistry.create(
-            Component.translatable("tab." + CropariaIf.MOD_ID + ".main"),
+            Texts.translatable("tab." + CropariaIf.MOD_ID + ".main"),
             () -> Elements.ELEMENTAL.getGem().get().getDefaultInstance()
         )
     );

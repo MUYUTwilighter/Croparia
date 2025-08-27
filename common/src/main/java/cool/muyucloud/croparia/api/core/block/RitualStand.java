@@ -12,7 +12,6 @@ import cool.muyucloud.croparia.util.Util;
 import cool.muyucloud.croparia.util.text.Texts;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -117,7 +116,7 @@ public class RitualStand extends Block implements ItemPlaceable {
     }
 
     public void bad(@NotNull String translationKey, @NotNull Player player) {
-        Texts.overlay(player, Component.translatable(translationKey));
+        Texts.overlay(player, Texts.translatable(translationKey));
     }
 
     public @NotNull VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {

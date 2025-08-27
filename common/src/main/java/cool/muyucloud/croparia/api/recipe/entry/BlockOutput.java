@@ -8,11 +8,11 @@ import cool.muyucloud.croparia.api.core.component.BlockProperties;
 import cool.muyucloud.croparia.api.recipe.DisplayableRecipe;
 import cool.muyucloud.croparia.util.codec.AnyCodec;
 import cool.muyucloud.croparia.util.codec.CodecUtil;
+import cool.muyucloud.croparia.util.text.Texts;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -45,7 +45,7 @@ public class BlockOutput implements SlotDisplay {
     public static final ItemStack STACK_AIR = Items.BARRIER.getDefaultInstance();
 
     static {
-        STACK_AIR.set(DataComponents.CUSTOM_NAME, Component.translatable("tooltip.croparia.air"));
+        STACK_AIR.set(DataComponents.CUSTOM_NAME, Texts.translatable("tooltip.croparia.air"));
     }
 
     @NotNull

@@ -2,6 +2,7 @@ package cool.muyucloud.croparia.api.core.component;
 
 import com.mojang.serialization.Codec;
 import cool.muyucloud.croparia.access.StateHolderAccess;
+import cool.muyucloud.croparia.util.text.Texts;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
@@ -42,7 +43,7 @@ public class BlockProperties implements TooltipProvider, Iterable<Map.Entry<Stri
         return properties.isEmpty() ? EMPTY : new BlockProperties(properties);
     }
 
-    public static final Component TITLE = Component.translatable("tooltip.croparia.block_properties");
+    public static final Component TITLE = Texts.translatable("tooltip.croparia.block_properties");
     private final Map<String, String> properties;
 
     protected BlockProperties(Map<String, String> properties) {
@@ -62,7 +63,7 @@ public class BlockProperties implements TooltipProvider, Iterable<Map.Entry<Stri
     public void addToTooltip(Item.TooltipContext tooltipContext, Consumer<Component> consumer, TooltipFlag tooltipFlag) {
         if (this.getProperties().isEmpty()) return;
         consumer.accept(TITLE);
-        this.getProperties().forEach((key, value) -> consumer.accept(Component.literal("%s=%s".formatted(key, value))));
+        this.getProperties().forEach((key, value) -> consumer.accept(Texts.literal("%s=%s".formatted(key, value))));
     }
 
     public boolean isSubsetOf(StateHolderAccess access) {

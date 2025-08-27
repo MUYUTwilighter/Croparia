@@ -3,7 +3,7 @@ package cool.muyucloud.croparia.api.generator.pack;
 import com.google.gson.JsonObject;
 import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.util.Util;
-import net.minecraft.network.chat.Component;
+import cool.muyucloud.croparia.util.text.Texts;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackResources;
@@ -33,7 +33,7 @@ public class ResourcePackHandler extends PackHandler {
     private final PathPackResources resourcePack = new PathPackResources(
         new PackLocationInfo(
             this.getId().toString(),
-            Component.literal(this.getId().toString()),
+            Texts.literal(this.getId().toString()),
             PackSource.BUILT_IN,
             Optional.empty()
         ), getRoot()

@@ -5,6 +5,7 @@ import cool.muyucloud.croparia.api.crop.Crop;
 import cool.muyucloud.croparia.api.crop.CropAccess;
 import cool.muyucloud.croparia.registry.DgRegistries;
 import cool.muyucloud.croparia.registry.Tabs;
+import cool.muyucloud.croparia.util.text.Texts;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -47,8 +48,8 @@ public class CropFruit extends Item implements CropAccess<Crop> {
 
     @Override
     public @NotNull Component getName(ItemStack itemStack) {
-        MutableComponent cropName = Component.translatable(this.getCrop().getTranslationKey());
-        return Component.translatable("item." + CropariaIf.MOD_ID + ".crop.fruit", cropName);
+        MutableComponent cropName = Texts.translatable(this.getCrop().getTranslationKey());
+        return Texts.translatable("item." + CropariaIf.MOD_ID + ".crop.fruit", cropName);
     }
 
 

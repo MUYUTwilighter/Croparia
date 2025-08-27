@@ -12,12 +12,12 @@ import cool.muyucloud.croparia.util.TagUtil;
 import cool.muyucloud.croparia.util.codec.AnyCodec;
 import cool.muyucloud.croparia.util.codec.CodecUtil;
 import cool.muyucloud.croparia.util.supplier.OnLoadSupplier;
+import cool.muyucloud.croparia.util.text.Texts;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.RegistryFriendlyByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -56,9 +56,9 @@ public class BlockInput implements SlotDisplay {
     public static final BlockInput ANY = new BlockInput(null, null, BlockProperties.EMPTY);
 
     static {
-        STACK_UNKNOWN.set(DataComponents.CUSTOM_NAME, Component.translatable("tooltip.croparia.unknown"));
-        STACK_AIR.set(DataComponents.CUSTOM_NAME, Component.translatable("tooltip.croparia.air"));
-        STACK_ANY.set(DataComponents.CUSTOM_NAME, Component.translatable("tooltip.croparia.any"));
+        STACK_UNKNOWN.set(DataComponents.CUSTOM_NAME, Texts.translatable("tooltip.croparia.unknown"));
+        STACK_AIR.set(DataComponents.CUSTOM_NAME, Texts.translatable("tooltip.croparia.air"));
+        STACK_ANY.set(DataComponents.CUSTOM_NAME, Texts.translatable("tooltip.croparia.any"));
     }
 
     @Nullable

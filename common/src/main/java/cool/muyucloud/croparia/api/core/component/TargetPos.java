@@ -2,6 +2,7 @@ package cool.muyucloud.croparia.api.core.component;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import cool.muyucloud.croparia.util.text.Texts;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
@@ -49,15 +50,15 @@ public class TargetPos implements TooltipProvider {
     public TargetPos(@NotNull ResourceKey<Level> dim, @NotNull BlockPos pos) {
         this.pos = pos;
         this.dimKey = dim;
-        this.dimName = Component.translatable("dimension.%s.%s".formatted(dim.location().getNamespace(), dim.location().getPath()));
-        this.tooltip = Component.translatable("tooltip.croparia.bounded_position", this.getDimName(), this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
+        this.dimName = Texts.translatable("dimension.%s.%s".formatted(dim.location().getNamespace(), dim.location().getPath()));
+        this.tooltip = Texts.translatable("tooltip.croparia.bounded_position", this.getDimName(), this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
     }
 
     public TargetPos(@NotNull ResourceLocation dim, @NotNull BlockPos pos) {
         this.pos = pos;
         this.dimKey = ResourceKey.create(Registries.DIMENSION, dim);
-        this.dimName = Component.translatable("dimension.%s.%s".formatted(dim.getNamespace(), dim.getPath()));
-        this.tooltip = Component.translatable("tooltip.croparia.bounded_position", this.getDimName(), this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
+        this.dimName = Texts.translatable("dimension.%s.%s".formatted(dim.getNamespace(), dim.getPath()));
+        this.tooltip = Texts.translatable("tooltip.croparia.bounded_position", this.getDimName(), this.getPos().getX(), this.getPos().getY(), this.getPos().getZ());
     }
 
     @NotNull

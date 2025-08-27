@@ -108,7 +108,7 @@ public class Texts {
 
     public static Style copyText(String text) {
         return Style.EMPTY.withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, text)).applyTo(
-            hoverText(Component.translatable("commands.croparia.click2copy", text))
+            hoverText(Texts.translatable("commands.croparia.click2copy", text))
         );
     }
 
@@ -132,7 +132,7 @@ public class Texts {
     }
 
     public static Style hoverText(String text) {
-        return Style.EMPTY.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Component.literal(text)));
+        return Style.EMPTY.withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, Texts.literal(text)));
     }
 
     public static Style hoverText(Component text) {

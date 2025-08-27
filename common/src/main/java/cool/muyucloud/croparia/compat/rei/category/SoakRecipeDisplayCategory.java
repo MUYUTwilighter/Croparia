@@ -8,6 +8,7 @@ import cool.muyucloud.croparia.compat.rei.display.SimpleDisplay;
 import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.util.Constants;
 import cool.muyucloud.croparia.util.supplier.LazySupplier;
+import cool.muyucloud.croparia.util.text.Texts;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.gui.Renderer;
@@ -36,7 +37,7 @@ public class SoakRecipeDisplayCategory extends SimpleCategory<SoakRecipe> {
 
     @Override
     public Component getTitle() {
-        return Component.translatable("gui.croparia.soak.title");
+        return Texts.translatable("gui.croparia.soak.title");
     }
 
     @Override
@@ -54,7 +55,7 @@ public class SoakRecipeDisplayCategory extends SimpleCategory<SoakRecipe> {
         SoakRecipe recipe = holder.value();
         return Map.of(
             "element", Util.toIngredient(recipe.getElement().getPotion().get(), stack -> stack.tooltip(Constants.ELEM_INFUSE_TOOLTIP)),
-            "input", Util.toIngredient(recipe.getInput(), stack -> stack.tooltip(Component.translatable("tooltip.croparia.soak.input")))
+            "input", Util.toIngredient(recipe.getInput(), stack -> stack.tooltip(Texts.translatable("tooltip.croparia.soak.input")))
         );
     }
 
@@ -69,7 +70,7 @@ public class SoakRecipeDisplayCategory extends SimpleCategory<SoakRecipe> {
         Widget infusor = Widgets.createSlot(
             new Point(bounds.getCenterX() - 8, bounds.getCenterY() - 24)
         ).entry(EntryStacks.of(CropariaItems.INFUSOR.get()).tooltip(
-            Component.translatable("tooltip.croparia.soak.infusor"))
+            Texts.translatable("tooltip.croparia.soak.infusor"))
         ).disableBackground().markInput().disableHighlight();
         Widget infusorArr = Widgets.createTexturedWidget(
             Constants.BLOCK_PLACE_UPON, bounds.getCenterX() - 8, bounds.getCenterY() - 8,
@@ -94,7 +95,7 @@ public class SoakRecipeDisplayCategory extends SimpleCategory<SoakRecipe> {
         ).entries(EntryIngredient.of(STATION.get())).markInput().disableBackground();
         Widget probability = Widgets.createLabel(
             new Point(bounds.getCenterX() + 34, bounds.getCenterY() - 8),
-            Component.literal(display.getRecipe().getProbability() * 100 + "%"));
+            Texts.literal(display.getRecipe().getProbability() * 100 + "%"));
         Widget output = Widgets.createSlot(
             new Point(bounds.getCenterX() + 34, bounds.getCenterY() + 8)
         ).entries(display.getOutput("output")).markOutput().disableBackground();

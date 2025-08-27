@@ -10,6 +10,7 @@ import cool.muyucloud.croparia.compat.rei.display.SimpleDisplay;
 import cool.muyucloud.croparia.compat.rei.widget.Item2DWidget;
 import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.util.Constants;
+import cool.muyucloud.croparia.util.text.Texts;
 import me.shedaniel.math.Point;
 import me.shedaniel.math.Rectangle;
 import me.shedaniel.rei.api.client.gui.Renderer;
@@ -36,7 +37,7 @@ public class RitualStructureDisplayCategory extends SimpleCategory<RitualStructu
     private static final ItemStack INPUT = CropariaItems.PLACEHOLDER.get().getDefaultInstance();
 
     static {
-        INPUT.set(DataComponents.CUSTOM_NAME, Component.translatable("tooltip.croparia.input"));
+        INPUT.set(DataComponents.CUSTOM_NAME, Texts.translatable("tooltip.croparia.input"));
     }
 
     public static final SimpleCategory<RitualStructure> INSTANCE = new RitualStructureDisplayCategory(
@@ -78,7 +79,7 @@ public class RitualStructureDisplayCategory extends SimpleCategory<RitualStructu
                 bounds.y + bounds.height - FRAME_PADDING - (SLOT_SIZE + BUTTON_SIZE) / 2,
                 BUTTON_SIZE, BUTTON_SIZE
             ),
-            Component.literal("<")
+            Texts.literal("<")
         ).onClick(button -> {
             if (y.get() > 0) y.getAndDecrement();
         }).tooltipLine(Constants.RITUAL_STRUCTURE_LOWER);
@@ -88,7 +89,7 @@ public class RitualStructureDisplayCategory extends SimpleCategory<RitualStructu
                 bounds.y + bounds.height - FRAME_PADDING - (SLOT_SIZE + BUTTON_SIZE) / 2,
                 BUTTON_SIZE, BUTTON_SIZE
             ),
-            Component.literal(">")
+            Texts.literal(">")
         ).onClick(button -> {
             if (y.get() < display.getRecipe().size().getY() - 1) y.getAndIncrement();
         }).tooltipLine(Constants.RITUAL_STRUCTURE_UPPER);
@@ -98,7 +99,7 @@ public class RitualStructureDisplayCategory extends SimpleCategory<RitualStructu
                     bounds.x + bounds.width / 2,
                     bounds.y + bounds.height - FRAME_PADDING - SLOT_SIZE + LABEL_MARGIN
                 ),
-                Component.translatable("gui.croparia.ritual_structure.label", y.get() + 1)
+                Texts.translatable("gui.croparia.ritual_structure.label", y.get() + 1)
             ).render(graphics, mouseX, mouseY, delta)
         );
         Widget layer = Widgets.overflowed(

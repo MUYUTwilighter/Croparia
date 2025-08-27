@@ -33,7 +33,7 @@ package cool.muyucloud.croparia.compat.emi.recipe;
 //
 //    static {
 //        ItemStack inputStack = CropariaItems.PLACEHOLDER.get().getDefaultInstance();
-//        inputStack.set(DataComponents.CUSTOM_NAME, Component.translatable("tooltip.croparia.input"));
+//        inputStack.set(DataComponents.CUSTOM_NAME, Texts.translatable("tooltip.croparia.input"));
 //        INPUT = EmiStack.of(inputStack);
 //    }
 //
@@ -226,7 +226,7 @@ package cool.muyucloud.croparia.compat.emi.recipe;
 //            SLOT_SIZE + BUTTON_SIZE, this.getDisplayHeight() - SLOT_SIZE,
 //            labelWidth, SLOT_SIZE,
 //            (graphics, mouseX, mouseY, delta) -> new TextWidget(
-//                Component.translatable("gui.croparia.ritual_structure.label", cursor.getY() + 1).getVisualOrderText(),
+//                Texts.translatable("gui.croparia.ritual_structure.label", cursor.getY() + 1).getVisualOrderText(),
 //                labelWidth / 2 - SLOT_SIZE, 0, 0xFF3F3F3F, false
 //            ).render(graphics, mouseX, mouseY, delta)
 //        );

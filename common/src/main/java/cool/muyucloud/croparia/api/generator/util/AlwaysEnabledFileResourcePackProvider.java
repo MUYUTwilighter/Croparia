@@ -1,8 +1,8 @@
 package cool.muyucloud.croparia.api.generator.util;
 
 import com.mojang.logging.LogUtils;
+import cool.muyucloud.croparia.util.text.Texts;
 import net.minecraft.FileUtil;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackLocationInfo;
 import net.minecraft.server.packs.PackSelectionConfig;
 import net.minecraft.server.packs.PackType;
@@ -38,7 +38,7 @@ public class AlwaysEnabledFileResourcePackProvider extends FolderRepositorySourc
         try {
             FileUtil.createDirectoriesSafe(this.packsDir);
             Pack.ResourcesSupplier packFactory = new PathPackResources.PathResourcesSupplier(this.packsDir);
-            PackLocationInfo info = new PackLocationInfo(name, Component.literal(name), this.source, Optional.empty());
+            PackLocationInfo info = new PackLocationInfo(name, Texts.literal(name), this.source, Optional.empty());
             PackSelectionConfig config = new PackSelectionConfig(true, Pack.Position.BOTTOM, false);
             Pack datapackProfile = Pack.readMetaAndCreate(info, packFactory, this.type, config);
             if (datapackProfile != null) {
