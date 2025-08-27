@@ -14,7 +14,6 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.PlacementInfo;
 import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -120,16 +119,6 @@ public class RitualRecipe implements DisplayableRecipe<RitualContainer> {
     @Override
     public @NotNull ItemStack assemble(RitualContainer recipeInput, HolderLookup.Provider provider) {
         return assemble(recipeInput);
-    }
-
-    @Override
-    public @NotNull PlacementInfo placementInfo() {
-        return PlacementInfo.NOT_PLACEABLE;
-    }
-
-    @Override
-    public boolean isSpecial() {
-        return true;
     }
 
     @Override

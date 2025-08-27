@@ -15,7 +15,6 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.PlacementInfo;
 import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
@@ -84,16 +83,6 @@ public class InfusorRecipe implements DisplayableRecipe<InfusorContainer> {
     @Override
     public @NotNull ItemStack assemble(InfusorContainer recipeInput, HolderLookup.Provider provider) {
         return assemble(recipeInput);
-    }
-
-    @Override
-    public boolean isSpecial() {
-        return true;
-    }
-
-    @Override
-    public @NotNull PlacementInfo placementInfo() {
-        return PlacementInfo.NOT_PLACEABLE;
     }
 
     @Override

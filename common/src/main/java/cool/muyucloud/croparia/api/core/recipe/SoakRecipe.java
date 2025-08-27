@@ -12,7 +12,6 @@ import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.util.supplier.LazySupplier;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.PlacementInfo;
 import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
@@ -73,11 +72,6 @@ public class SoakRecipe implements DisplayableRecipe<SoakContainer> {
     }
 
     @Override
-    public @NotNull PlacementInfo placementInfo() {
-        return PlacementInfo.NOT_PLACEABLE;
-    }
-
-    @Override
     public @NotNull SlotDisplay result() {
         return this.getOutput();
     }
@@ -85,10 +79,5 @@ public class SoakRecipe implements DisplayableRecipe<SoakContainer> {
     @Override
     public @NotNull SlotDisplay craftingStation() {
         return STATION.get();
-    }
-
-    @Override
-    public boolean isSpecial() {
-        return true;
     }
 }

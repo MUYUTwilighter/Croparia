@@ -15,8 +15,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.PlacementInfo;
-import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
@@ -146,25 +144,5 @@ public class RitualStructure implements DisplayableRecipe<RitualStructureContain
     @Override
     public @NotNull ItemStack assemble(RitualStructureContainer recipeInput, HolderLookup.Provider provider) {
         return ItemStack.EMPTY;
-    }
-
-    @Override
-    public @NotNull PlacementInfo placementInfo() {
-        return PlacementInfo.NOT_PLACEABLE;
-    }
-
-    @Override
-    public @NotNull SlotDisplay result() {
-        return SlotDisplay.Empty.INSTANCE;
-    }
-
-    @Override
-    public @NotNull SlotDisplay craftingStation() {
-        return SlotDisplay.Empty.INSTANCE;
-    }
-
-    @Override
-    public boolean isSpecial() {
-        return true;
     }
 }
