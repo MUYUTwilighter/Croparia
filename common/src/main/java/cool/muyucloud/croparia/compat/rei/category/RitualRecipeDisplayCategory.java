@@ -23,6 +23,7 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 public class RitualRecipeDisplayCategory extends SimpleCategory<RitualRecipe> {
     public static final RitualRecipeDisplayCategory INSTANCE = new RitualRecipeDisplayCategory(
@@ -43,17 +44,17 @@ public class RitualRecipeDisplayCategory extends SimpleCategory<RitualRecipe> {
     }
 
     @Override
-    public Map<String, EntryIngredient> inputEntries(RecipeHolder<RitualRecipe> holder) {
+    public Map<String, Supplier<EntryIngredient>> inputEntries(RecipeHolder<RitualRecipe> holder) {
         RitualRecipe recipe = holder.value();
         return Map.of(
-            "block", Util.toIngredient(recipe.getBlock(), stack -> stack.tooltip(Constants.BLOCK_PLACE_TOOLTIP)),
-            "ingredient", Util.toIngredient(recipe.getIngredient(), stack -> stack.tooltip(Constants.ITEM_DROP_TOOLTIP))
+            "block", () -> Util.toIngredient(recipe.getBlock(), stack -> stack.tooltip(Constants.BLOCK_PLACE_TOOLTIP)),
+            "ingredient", () -> Util.toIngredient(recipe.getIngredient(), stack -> stack.tooltip(Constants.ITEM_DROP_TOOLTIP))
         );
     }
 
     @Override
-    public Map<String, EntryIngredient> outputEntries(RecipeHolder<RitualRecipe> holder) {
-        return Map.of("result", Util.toIngredient(holder.value().getResult()));
+    public Map<String, Supplier<EntryIngredient>> outputEntries(RecipeHolder<RitualRecipe> holder) {
+        return Map.of("result", () -> Util.toIngredient(holder.value().getResult()));
     }
 
     @Override

@@ -14,13 +14,14 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 public class SimpleDisplay<R extends DisplayableRecipe<?>> implements Display {
     private final R recipe;
     private final ResourceLocation id;
     private final SimpleCategory<R> serializer;
-    private final transient Map<String, EntryIngredient> inputEntries;
-    private final transient Map<String, EntryIngredient> outputEntries;
+    private final transient Map<String, Supplier<EntryIngredient>> inputEntries;
+    private final transient Map<String, Supplier<EntryIngredient>> outputEntries;
 
     public SimpleDisplay(RecipeHolder<R> holder, SimpleCategory<R> serializer) {
         this.recipe = holder.value();
@@ -43,21 +44,21 @@ public class SimpleDisplay<R extends DisplayableRecipe<?>> implements Display {
     }
 
     public EntryIngredient getInput(String key) {
-        return inputEntries.get(key);
+        return inputEntries.get(key).get();
     }
 
     public EntryIngredient getOutput(String key) {
-        return outputEntries.get(key);
+        return outputEntries.get(key).get();
     }
 
     @Override
     public List<EntryIngredient> getInputEntries() {
-        return inputEntries.values().stream().toList();
+        return inputEntries.values().stream().map(Supplier::get).toList();
     }
 
     @Override
     public List<EntryIngredient> getOutputEntries() {
-        return outputEntries.values().stream().toList();
+        return outputEntries.values().stream().map(Supplier::get).toList();
     }
 
     @Override

@@ -93,8 +93,7 @@ public class BlockInput implements SlotDisplay {
 
     protected static BlockInput create(@Nullable ResourceLocation id, @Nullable TagKey<Block> tag, @NotNull BlockProperties properties) {
         BlockInput blockInput = new BlockInput(id, tag, properties);
-        if (blockInput.isUnknown()) return UNKNOWN;
-        else if (blockInput.isAny()) return ANY;
+        if (blockInput.isAny()) return ANY;
         else return blockInput;
     }
 

@@ -23,6 +23,7 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 public class InfusorRecipeDisplayCategory extends SimpleCategory<InfusorRecipe> {
     public static final InfusorRecipeDisplayCategory INSTANCE = new InfusorRecipeDisplayCategory(
@@ -35,17 +36,17 @@ public class InfusorRecipeDisplayCategory extends SimpleCategory<InfusorRecipe> 
     }
 
     @Override
-    public Map<String, EntryIngredient> inputEntries(RecipeHolder<InfusorRecipe> holder) {
+    public Map<String, Supplier<EntryIngredient>> inputEntries(RecipeHolder<InfusorRecipe> holder) {
         InfusorRecipe recipe = holder.value();
         return Map.of(
-            "element", Util.toIngredient(recipe.getPotion(), stack -> stack.tooltip(Constants.ELEM_INFUSE_TOOLTIP)),
-            "ingredient", Util.toIngredient(recipe.getIngredient(), stack -> stack.tooltip(Constants.ITEM_DROP_TOOLTIP))
+            "element", () -> Util.toIngredient(recipe.getPotion(), stack -> stack.tooltip(Constants.ELEM_INFUSE_TOOLTIP)),
+            "ingredient", () -> Util.toIngredient(recipe.getIngredient(), stack -> stack.tooltip(Constants.ITEM_DROP_TOOLTIP))
         );
     }
 
     @Override
-    public Map<String, EntryIngredient> outputEntries(RecipeHolder<InfusorRecipe> holder) {
-        return Map.of("result", Util.toIngredient(holder.value().getResult()));
+    public Map<String, Supplier<EntryIngredient>> outputEntries(RecipeHolder<InfusorRecipe> holder) {
+        return Map.of("result", () -> Util.toIngredient(holder.value().getResult()));
     }
 
     @Override

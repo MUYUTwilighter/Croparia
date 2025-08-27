@@ -12,6 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
 import java.util.Map;
+import java.util.function.Supplier;
 
 public abstract class SimpleCategory<R extends DisplayableRecipe<?>> implements DisplayCategory<SimpleDisplay<R>> {
     private final Class<R> recipeClass;
@@ -58,9 +59,9 @@ public abstract class SimpleCategory<R extends DisplayableRecipe<?>> implements 
         return serializer;
     }
 
-    public abstract Map<String, EntryIngredient> inputEntries(RecipeHolder<R> holder);
+    public abstract Map<String, Supplier<EntryIngredient>> inputEntries(RecipeHolder<R> holder);
 
-    public abstract Map<String, EntryIngredient> outputEntries(RecipeHolder<R> holder);
+    public abstract Map<String, Supplier<EntryIngredient>> outputEntries(RecipeHolder<R> holder);
 
     public abstract EntryIngredient[] stations();
 

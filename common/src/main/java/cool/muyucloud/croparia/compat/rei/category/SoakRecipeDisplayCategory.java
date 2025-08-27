@@ -24,6 +24,7 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 public class SoakRecipeDisplayCategory extends SimpleCategory<SoakRecipe> {
     public static final SoakRecipeDisplayCategory INSTANCE = new SoakRecipeDisplayCategory(SoakRecipe.class, SoakRecipe.TYPED_SERIALIZER);
@@ -51,17 +52,17 @@ public class SoakRecipeDisplayCategory extends SimpleCategory<SoakRecipe> {
     }
 
     @Override
-    public Map<String, EntryIngredient> inputEntries(RecipeHolder<SoakRecipe> holder) {
+    public Map<String, Supplier<EntryIngredient>> inputEntries(RecipeHolder<SoakRecipe> holder) {
         SoakRecipe recipe = holder.value();
         return Map.of(
-            "element", Util.toIngredient(recipe.getElement().getPotion().get(), stack -> stack.tooltip(Constants.ELEM_INFUSE_TOOLTIP)),
-            "input", Util.toIngredient(recipe.getInput(), stack -> stack.tooltip(Texts.translatable("tooltip.croparia.soak.input")))
+            "element", () -> Util.toIngredient(recipe.getElement().getPotion().get(), stack -> stack.tooltip(Constants.ELEM_INFUSE_TOOLTIP)),
+            "input", () -> Util.toIngredient(recipe.getInput(), stack -> stack.tooltip(Texts.translatable("tooltip.croparia.soak.input")))
         );
     }
 
     @Override
-    public Map<String, EntryIngredient> outputEntries(RecipeHolder<SoakRecipe> holder) {
-        return Map.of("output", Util.toIngredient(holder.value().getOutput()));
+    public Map<String, Supplier<EntryIngredient>> outputEntries(RecipeHolder<SoakRecipe> holder) {
+        return Map.of("output", () -> Util.toIngredient(holder.value().getOutput()));
     }
 
     @Override

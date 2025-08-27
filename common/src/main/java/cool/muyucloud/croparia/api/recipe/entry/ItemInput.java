@@ -90,7 +90,8 @@ public class ItemInput implements SlotDisplay {
         if (this.amount <= 0) throw new IllegalArgumentException("amount must be greater than 0");
         this.displayStacks = OnLoadSupplier.of(() -> {
             if (this.getId().isPresent()) {
-                ItemStack stack = new ItemStack(Holder.direct(BuiltInRegistries.ITEM.getValue(this.getId().get())), (int) Math.min(this.getAmount(), Integer.MAX_VALUE), this.getComponentsPredicate().asPatch());
+                ItemStack stack = new ItemStack(Holder.direct(BuiltInRegistries.ITEM.getValue(this.getId().get())),
+                    (int) Math.min(this.getAmount(), Integer.MAX_VALUE), this.getComponentsPredicate().asPatch());
                 return ImmutableList.of(stack);
             } else if (this.getTag().isPresent()) {
                 LinkedList<ItemStack> stacks = new LinkedList<>();

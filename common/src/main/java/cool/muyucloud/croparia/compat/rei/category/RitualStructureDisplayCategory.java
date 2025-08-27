@@ -26,11 +26,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Supplier;
 
 @SuppressWarnings("UnstableApiUsage")
 public class RitualStructureDisplayCategory extends SimpleCategory<RitualStructure> {
@@ -84,45 +82,44 @@ public class RitualStructureDisplayCategory extends SimpleCategory<RitualStructu
             if (y.get() > 0) y.getAndDecrement();
         }).tooltipLine(Constants.RITUAL_STRUCTURE_LOWER);
         Widget upper = Widgets.createButton(
-            new Rectangle(
-                bounds.x + bounds.width - FRAME_PADDING - BUTTON_SIZE,
+            new Rectangle(bounds.x + bounds.width - FRAME_PADDING - BUTTON_SIZE,
                 bounds.y + bounds.height - FRAME_PADDING - (SLOT_SIZE + BUTTON_SIZE) / 2,
-                BUTTON_SIZE, BUTTON_SIZE
-            ),
+                BUTTON_SIZE, BUTTON_SIZE),
             Texts.literal(">")
         ).onClick(button -> {
             if (y.get() < display.getRecipe().size().getY() - 1) y.getAndIncrement();
         }).tooltipLine(Constants.RITUAL_STRUCTURE_UPPER);
         Widget label = Widgets.createDrawableWidget(
             (graphics, mouseX, mouseY, delta) -> Widgets.createLabel(
-                new Point(
-                    bounds.x + bounds.width / 2,
-                    bounds.y + bounds.height - FRAME_PADDING - SLOT_SIZE + LABEL_MARGIN
-                ),
+                new Point(bounds.x + bounds.width / 2,
+                    bounds.y + bounds.height - FRAME_PADDING - SLOT_SIZE + LABEL_MARGIN),
                 Texts.translatable("gui.croparia.ritual_structure.label", y.get() + 1)
             ).render(graphics, mouseX, mouseY, delta)
         );
+        ArrayList<Item2DWidget> layers = new ArrayList<>(slotSize.getY());
+        for (int i = 0; i < slotSize.getY(); i++) {
+            int finalI = i;
+            layers.add(Item2DWidget.create().items((posX, posZ) -> {
+                char c = recipe.getPattern().get(posX, finalI, posZ);
+                if (c == '.') {
+                    return Collections.singleton(EntryStacks.of(BlockInput.STACK_AIR));
+                } else if (c == '$') {
+                    return Collections.singleton(EntryStacks.of(INPUT));
+                } else if (c == '*') {
+                    return display.getInput("*");
+                } else if (c == ' ') {
+                    return Collections.singleton(EntryStacks.of(BlockInput.STACK_ANY));
+                } else {
+                    return Util.toIngredient(recipe.getKeys().get(c));
+                }
+            }).cols(slotSize.getX()).rows(slotSize.getZ()));
+        }
         Widget layer = Widgets.overflowed(
             new Rectangle(
                 bounds.x + FRAME_PADDING, bounds.y + FRAME_PADDING, bounds.width - 2 * FRAME_PADDING,
                 bounds.height - 2 * FRAME_PADDING - SLOT_SIZE
             ),
-            Item2DWidget.create().itemProvider((posX, posZ) -> {
-                    char c = recipe.getPattern().get(posX, y.get(), posZ);
-                    if (c == '.') {
-                        return Collections.singleton(EntryStacks.of(BlockInput.STACK_AIR));
-                    } else if (c == '$') {
-                        return Collections.singleton(EntryStacks.of(INPUT));
-                    } else if (c == '*') {
-                        return display.getInput("*").castAsList();
-                    } else if (c == ' ') {
-                        return Collections.singleton(EntryStacks.of(BlockInput.STACK_ANY));
-                    } else {
-                        return Util.toIngredient(recipe.getKeys().get(c)).castAsList();
-                    }
-                })
-                .cols(slotSize.getX())
-                .rows(slotSize.getZ())
+            Widgets.delegateWithBounds(() -> layers.get(y.get()))
         );
         return List.of(background, lower, upper, label, layer);
     }
@@ -133,21 +130,21 @@ public class RitualStructureDisplayCategory extends SimpleCategory<RitualStructu
     }
 
     @Override
-    public Map<String, EntryIngredient> inputEntries(RecipeHolder<RitualStructure> holder) {
+    public Map<String, Supplier<EntryIngredient>> inputEntries(RecipeHolder<RitualStructure> holder) {
         RitualStructure recipe = holder.value();
-        Map<String, EntryIngredient> map = new HashMap<>();
+        Map<String, Supplier<EntryIngredient>> map = new HashMap<>();
         for (Map.Entry<Character, BlockInput> entry : recipe.getKeys().entrySet()) {
             char c = entry.getKey();
-            map.put(String.valueOf(c), Util.toIngredient(entry.getValue(), recipe.getPattern().count(c)));
+            map.put(String.valueOf(c), () -> Util.toIngredient(entry.getValue(), recipe.getPattern().count(c)));
         }
         ResourceLocation id = holder.id().location();
-        map.put("*", Util.toIngredient(BuiltInRegistries.ITEM.getValue(id)));
+        map.put("*", () -> Util.toIngredient(BuiltInRegistries.ITEM.getValue(id)));
         return ImmutableMap.copyOf(map);
     }
 
     @Override
-    public Map<String, EntryIngredient> outputEntries(RecipeHolder<RitualStructure> holder) {
-        return Map.of("*", Util.toIngredient(BuiltInRegistries.ITEM.getValue(holder.id().location())));
+    public Map<String, Supplier<EntryIngredient>> outputEntries(RecipeHolder<RitualStructure> holder) {
+        return Map.of("*", () -> Util.toIngredient(BuiltInRegistries.ITEM.getValue(holder.id().location())));
     }
 
     @Override

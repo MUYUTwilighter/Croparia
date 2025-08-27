@@ -5,6 +5,7 @@ import cool.muyucloud.croparia.api.core.command.CommonCommandRoot;
 import cool.muyucloud.croparia.config.Config;
 import cool.muyucloud.croparia.config.ConfigFileHandler;
 import cool.muyucloud.croparia.registry.*;
+import cool.muyucloud.croparia.util.supplier.OnLoadSupplier;
 import dev.architectury.event.events.common.LifecycleEvent;
 import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
@@ -37,10 +38,10 @@ public class CropariaIf {
         LifecycleEvent.SERVER_STARTING.register(server -> ConfigFileHandler.reload(CONFIG));
         LifecycleEvent.SERVER_STARTED.register(server -> {
             SERVER_STARTED = true;
+            OnLoadSupplier.LAST_DATA_LOAD = System.currentTimeMillis();
             if (CONFIG.getAutoReload() >= 0) {
                 LOGGER.info("Croparia IF is performing a datapack reload to apply data generators");
-                server.getCommands().performPrefixedCommand(server.createCommandSourceStack(), "schedule function croparia:auto_reload 20");
-//                server.getCommands().performPrefixedCommand(server.createCommandSourceStack(), "reload");
+                server.getCommands().performPrefixedCommand(server.createCommandSourceStack(), "schedule function croparia:auto_reload %s".formatted(CONFIG.getAutoReload()));
             }
         });
         LifecycleEvent.SERVER_STOPPING.register(server -> {
