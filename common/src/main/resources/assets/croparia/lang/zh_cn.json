@@ -185,5 +185,8 @@
   "subtitles.block.croparia.infusor.infuse": "注魔台：注魔",
   "subtitles.block.croparia.ritual.craft": "元素仪式：合成",
   "subtitles.ambient.croparia.magic_rope.teleport": "魔力绳：传送",
-  "chat.croparia.recipe_wizard.success": "已保存配方文件 %s"
+  "chat.croparia.recipe_wizard.success": "已保存配方文件 %s",
+  "overlay.croparia.recipe_wizard.error.no_match": "没有匹配目标方块的配方模板",
+  "overlay.croparia.recipe_wizard.soak.missing.element": "将注魔台放置在元素石上并注魔",
+  "commands.croparia.config.soakAttempts": "元素浸润尝试次数: %s"
 }

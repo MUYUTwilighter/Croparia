@@ -15,7 +15,7 @@
     {
       "item": "{result}",
       "count": {result_count.2},
-      "components": {result_components}
+      "components": {material_components}
     }
   ]
 }

@@ -28,7 +28,7 @@
                     "count": {result_count.2},
                     "ingredient": {
                         "item": "{result}",
-                        "components": {result_components}
+                        "components": {material_components}
                     }
                 },
                 "chance": 10000,

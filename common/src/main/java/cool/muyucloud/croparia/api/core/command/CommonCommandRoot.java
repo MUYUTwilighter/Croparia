@@ -21,6 +21,7 @@ public class CommonCommandRoot {
         .then(ConfigCommand.buildFruitUse())
         .then(ConfigCommand.buildAutoReload())
         .then(ConfigCommand.buildOverride())
+        .then(ConfigCommand.buildSoakAttempts())
         .then(CreateCommand.build());
 
     public static void register() {

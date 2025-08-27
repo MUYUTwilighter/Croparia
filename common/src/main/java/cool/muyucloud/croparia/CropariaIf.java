@@ -37,9 +37,10 @@ public class CropariaIf {
         LifecycleEvent.SERVER_STARTING.register(server -> ConfigFileHandler.reload(CONFIG));
         LifecycleEvent.SERVER_STARTED.register(server -> {
             SERVER_STARTED = true;
-            if (CONFIG.getAutoReload()) {
+            if (CONFIG.getAutoReload() >= 0) {
                 LOGGER.info("Croparia IF is performing a datapack reload to apply data generators");
                 server.getCommands().performPrefixedCommand(server.createCommandSourceStack(), "schedule function croparia:auto_reload 20");
+//                server.getCommands().performPrefixedCommand(server.createCommandSourceStack(), "reload");
             }
         });
         LifecycleEvent.SERVER_STOPPING.register(server -> {
