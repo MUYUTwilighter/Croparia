@@ -6,12 +6,12 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 
 public interface StateHolderAccess {
-    Property<?> croparia_if$getProperty(String key);
+    Property<?> cif$getProperty(String key);
 
     @Nullable
-    String croparia_if$getValue(String key);
+    String cif$getValue(String key);
 
-    void croparia_if$setValue(String key, String value);
+    void cif$setValue(String key, String value);
 
-    Map<String, String> croparia_if$getProperties();
+    Map<String, String> cif$getProperties();
 }

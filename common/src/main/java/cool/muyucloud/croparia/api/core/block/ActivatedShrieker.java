@@ -25,7 +25,7 @@ import org.jetbrains.annotations.Nullable;
 public class ActivatedShrieker extends SculkShriekerBlock {
     public ActivatedShrieker(BlockBehaviour.Properties properties) {
         super(properties);
-        ((BlockAccess) this).croparia_if$modifyDefaultState(this.defaultBlockState().setValue(CAN_SUMMON, true));
+        ((BlockAccess) this).cif$modifyDefaultState(this.defaultBlockState().setValue(CAN_SUMMON, true));
     }
 
     public void stepOn(Level level, BlockPos blockPos, BlockState blockState, Entity entity) {

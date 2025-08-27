@@ -102,7 +102,7 @@ public class BlockOutput implements SlotDisplay {
         try {
             BlockState state = this.getBlock().defaultBlockState();
             StateHolderAccess access = (StateHolderAccess) state;
-            this.getProperties().forEach(entry -> access.croparia_if$setValue(entry.getKey(), entry.getValue()));
+            this.getProperties().forEach(entry -> access.cif$setValue(entry.getKey(), entry.getValue()));
             level.setBlock(pos, state, 3);
         } catch (Throwable t) {
             DisplayableRecipe.LOGGER.error("Failed to set block", t);

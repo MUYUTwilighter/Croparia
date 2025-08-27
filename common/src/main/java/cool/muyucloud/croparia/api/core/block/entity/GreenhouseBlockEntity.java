@@ -62,7 +62,7 @@ public class GreenhouseBlockEntity extends BlockEntity implements MenuProvider, 
                         addItemStackInInventory(stack, greenHouseBlockEntity);
                     }
 
-                    IntegerProperty property = ((CropBlockAccess) block).croparia_if$invokeGetAgeProperty();
+                    IntegerProperty property = ((CropBlockAccess) block).cif$invokeGetAgeProperty();
                     int maxAge = block.getMaxAge();
                     level.setBlockAndUpdate(worldPosition.below(), block.defaultBlockState().setValue(property, maxAge / 2));
                 }

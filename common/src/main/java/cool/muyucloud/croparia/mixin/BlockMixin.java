@@ -11,7 +11,7 @@ public abstract class BlockMixin implements BlockAccess {
     @Shadow private BlockState defaultBlockState;
 
     @Override
-    public void croparia_if$modifyDefaultState(BlockState state) {
+    public void cif$modifyDefaultState(BlockState state) {
         this.defaultBlockState = state;
     }
 }

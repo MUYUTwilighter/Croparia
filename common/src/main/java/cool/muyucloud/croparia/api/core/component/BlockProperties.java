@@ -35,7 +35,7 @@ public class BlockProperties implements TooltipProvider, Iterable<Map.Entry<Stri
     }
 
     public static BlockProperties create(@NotNull BlockState state) {
-        return create(((StateHolderAccess) state).croparia_if$getProperties());
+        return create(((StateHolderAccess) state).cif$getProperties());
     }
 
     @NotNull
@@ -70,7 +70,7 @@ public class BlockProperties implements TooltipProvider, Iterable<Map.Entry<Stri
         for (Map.Entry<String, String> entry : this.getProperties().entrySet()) {
             @NotNull String key = entry.getKey();
             @Nullable String value = entry.getValue();
-            @Nullable String blockVal = access.croparia_if$getValue(key);
+            @Nullable String blockVal = access.cif$getValue(key);
             if (value == null && blockVal != null) {
                 continue;
             }

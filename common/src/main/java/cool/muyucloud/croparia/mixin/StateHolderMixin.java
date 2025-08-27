@@ -44,13 +44,13 @@ public abstract class StateHolderMixin<O, S> implements StateHolderAccess {
     }
 
     @Override
-    public Property<?> croparia_if$getProperty(String key) {
+    public Property<?> cif$getProperty(String key) {
         return this.croparia_if$properties.get(key);
     }
 
     @Override
-    public String croparia_if$getValue(String key) {
-        Property<?> property = this.croparia_if$getProperty(key);
+    public String cif$getValue(String key) {
+        Property<?> property = this.cif$getProperty(key);
         Comparable<?> value = this.values.get(property);
         if (value == null) {
             return null;
@@ -62,8 +62,8 @@ public abstract class StateHolderMixin<O, S> implements StateHolderAccess {
     }
 
     @Override
-    public void croparia_if$setValue(String key, String value) {
-        Property<? extends Comparable<?>> property = this.croparia_if$getProperty(key);
+    public void cif$setValue(String key, String value) {
+        Property<? extends Comparable<?>> property = this.cif$getProperty(key);
         Class<? extends Comparable<?>> cls = property.getValueClass();
         if (Integer.class.isAssignableFrom(cls)) {
             @SuppressWarnings("unchecked")
@@ -90,10 +90,10 @@ public abstract class StateHolderMixin<O, S> implements StateHolderAccess {
     }
 
     @Override
-    public Map<String, String> croparia_if$getProperties() {
+    public Map<String, String> cif$getProperties() {
         Map<String, String> map = new HashMap<>();
         for (String key : this.croparia_if$properties.keySet()) {
-            map.put(key, this.croparia_if$getValue(key));
+            map.put(key, this.cif$getValue(key));
         }
         return map;
     }
