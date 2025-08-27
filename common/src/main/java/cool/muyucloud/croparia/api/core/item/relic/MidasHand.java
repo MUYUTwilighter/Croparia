@@ -2,6 +2,7 @@ package cool.muyucloud.croparia.api.core.item.relic;
 
 import cool.muyucloud.croparia.util.Constants;
 import cool.muyucloud.croparia.util.PostConstants;
+import cool.muyucloud.croparia.util.text.Texts;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
@@ -33,7 +34,7 @@ public class MidasHand extends Item {
         @Nullable Player player = context.getPlayer();
         if (!world.getBlockState(pos).is(PostConstants.MIDAS_HAND_IMMUNE_BLOCKS) && !world.isClientSide && player != null) {
             if (player.totalExperience < 10) {
-                player.displayClientMessage(Constants.INSUFFICIENT_XP, true);
+                Texts.overlay(player, Constants.INSUFFICIENT_XP);
                 return InteractionResult.FAIL;
             }
             player.giveExperiencePoints(-10);
@@ -58,7 +59,7 @@ public class MidasHand extends Item {
                 cooldown = 200;
             }
             if (player.totalExperience < xpConsume) {
-                player.displayClientMessage(Constants.INSUFFICIENT_XP, true);
+                Texts.overlay(player, Constants.INSUFFICIENT_XP);
                 return InteractionResult.FAIL;
             }
             player.giveExperiencePoints(-xpConsume);

@@ -8,8 +8,8 @@ import cool.muyucloud.croparia.registry.CropariaItems;
 import cool.muyucloud.croparia.registry.Crops;
 import cool.muyucloud.croparia.registry.DgRegistries;
 import cool.muyucloud.croparia.util.Util;
-import cool.muyucloud.croparia.util.text.FailureMessage;
-import cool.muyucloud.croparia.util.text.SuccessMessage;
+import cool.muyucloud.croparia.util.text.FailureMessenger;
+import cool.muyucloud.croparia.util.text.SuccessMessenger;
 import cool.muyucloud.croparia.util.text.Texts;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
@@ -40,7 +40,7 @@ public class CropCommand {
         return CROP;
     }
 
-    public static int reportSingular(ResourceLocation id, SuccessMessage success, FailureMessage failure) {
+    public static int reportSingular(ResourceLocation id, SuccessMessenger success, FailureMessenger failure) {
         Optional<Crop> crop = DgRegistries.CROPS.forName(id);
         if (crop.isEmpty()) {
             failure.send(Texts.translatable("commands.croparia.crop.absent", id));
@@ -51,7 +51,7 @@ public class CropCommand {
         return crop.get().getTier();
     }
 
-    public static int reportForPlayer(Player player, Level world, SuccessMessage success, FailureMessage failure) {
+    public static int reportForPlayer(Player player, Level world, SuccessMessenger success, FailureMessenger failure) {
         Crop crop = null;
         if (player.getWeaponItem().getItem() instanceof CropAccess<?> access) {
             crop = CropAccess.tryGet(access);

@@ -7,6 +7,7 @@ import cool.muyucloud.croparia.api.generator.pack.PackHandler;
 import cool.muyucloud.croparia.api.generator.util.JarJarEntry;
 import cool.muyucloud.croparia.util.FileUtil;
 import cool.muyucloud.croparia.util.supplier.OnLoadSupplier;
+import cool.muyucloud.croparia.util.text.Texts;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
@@ -65,7 +66,7 @@ public class RecipeWizard extends Item {
                 return InteractionResult.SUCCESS;
             }
         }
-        player.displayClientMessage(Component.translatable("overlay.croparia.recipe_wizard.error.no_match"), true);
+        Texts.overlay(player, Component.translatable("overlay.croparia.recipe_wizard.error.no_match"));
         return InteractionResult.PASS;
     }
 }

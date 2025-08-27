@@ -9,6 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 @SuppressWarnings("unused")
 public class Texts {
@@ -20,74 +21,74 @@ public class Texts {
         return Component.translatable(key, args);
     }
 
-    public static MutableComponent forStyles(MutableComponent component, Style... styles) {
+    public static MutableComponent forStyles(@NotNull MutableComponent component, Style... styles) {
         for (Style style : styles) {
             component.withStyle(style);
         }
         return component;
     }
 
-    public static void chat(Player player, Component message) {
+    public static void chat(@NotNull Player player, Component message) {
         player.displayClientMessage(message, false);
     }
 
-    public static void chat(CommandSourceStack source, Component msg) {
+    public static void chat(@NotNull CommandSourceStack source, Component msg) {
         source.sendSystemMessage(msg);
     }
 
-    public static void chat(ClientCommandRegistrationEvent.ClientCommandSourceStack source, Component msg) {
+    public static void chat(@NotNull ClientCommandRegistrationEvent.ClientCommandSourceStack source, Component msg) {
         success(source, msg);
     }
 
-    public static void overlay(Player player, Component message) {
+    public static void overlay(@NotNull Player player, Component message) {
         player.displayClientMessage(message, true);
     }
 
-    public static SuccessMessage success(CommandSourceStack source) {
+    public static SuccessMessenger success(@NotNull CommandSourceStack source) {
         return (msg, broadcast) -> success(source, msg, broadcast);
     }
 
-    public static SuccessMessage success(ClientCommandRegistrationEvent.ClientCommandSourceStack source) {
+    public static SuccessMessenger success(@NotNull ClientCommandRegistrationEvent.ClientCommandSourceStack source) {
         return (msg, broadcast) -> success(source, msg, broadcast);
     }
 
-    public static void success(CommandSourceStack source, Component message, boolean broadcast) {
+    public static void success(@NotNull CommandSourceStack source, Component message, boolean broadcast) {
         source.sendSuccess(() -> message, broadcast);
     }
 
-    public static void success(CommandSourceStack source, Component message) {
+    public static void success(@NotNull CommandSourceStack source, Component message) {
         success(source, message, false);
     }
 
-    public static void success(ClientCommandRegistrationEvent.ClientCommandSourceStack source, Component message, boolean broadcast) {
+    public static void success(@NotNull ClientCommandRegistrationEvent.ClientCommandSourceStack source, Component message, boolean broadcast) {
         source.arch$sendSuccess(() -> message, broadcast);
     }
 
-    public static void success(ClientCommandRegistrationEvent.ClientCommandSourceStack source, Component message) {
+    public static void success(@NotNull ClientCommandRegistrationEvent.ClientCommandSourceStack source, Component message) {
         success(source, message, false);
     }
 
-    public static void broadcastSuccess(CommandSourceStack source, Component message) {
+    public static void broadcastSuccess(@NotNull CommandSourceStack source, Component message) {
         source.sendSuccess(() -> message, true);
     }
 
-    public static void broadcastSuccess(ClientCommandRegistrationEvent.ClientCommandSourceStack source, Component message) {
+    public static void broadcastSuccess(@NotNull ClientCommandRegistrationEvent.ClientCommandSourceStack source, Component message) {
         source.arch$sendSuccess(() -> message, true);
     }
 
-    public static FailureMessage failure(CommandSourceStack source) {
+    public static FailureMessenger failure(@NotNull CommandSourceStack source) {
         return (msg) -> failure(source, msg);
     }
 
-    public static FailureMessage failure(ClientCommandRegistrationEvent.ClientCommandSourceStack source) {
+    public static FailureMessenger failure(@NotNull ClientCommandRegistrationEvent.ClientCommandSourceStack source) {
         return (msg) -> failure(source, msg);
     }
 
-    public static void failure(CommandSourceStack source, Component message) {
+    public static void failure(@NotNull CommandSourceStack source, Component message) {
         source.sendFailure(message);
     }
 
-    public static void failure(ClientCommandRegistrationEvent.ClientCommandSourceStack source, Component message) {
+    public static void failure(@NotNull ClientCommandRegistrationEvent.ClientCommandSourceStack source, Component message) {
         source.arch$sendFailure(message);
     }
 

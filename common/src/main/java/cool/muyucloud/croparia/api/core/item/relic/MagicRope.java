@@ -4,7 +4,7 @@ import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.api.core.component.TargetPos;
 import cool.muyucloud.croparia.registry.CropariaComponents;
 import cool.muyucloud.croparia.registry.CropariaItems;
-import net.minecraft.network.chat.Component;
+import cool.muyucloud.croparia.util.text.Texts;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -33,12 +33,12 @@ public class MagicRope extends Item {
                 TargetPos targetPos = new TargetPos(player);
                 newStack.set(CropariaComponents.TARGET_POS.get(), targetPos);
                 player.addItem(newStack);
-                player.displayClientMessage(targetPos.getTooltip(), true);
+                Texts.overlay(player, targetPos.getTooltip());
                 return InteractionResult.SUCCESS;
             }
             @Nullable TargetPos targetPos = itemStack.get(CropariaComponents.TARGET_POS.get());
             if (targetPos == null) {
-                player.displayClientMessage(Component.translatable("overlay.croparia.magic_rope.no_target"), true);
+                Texts.overlay(player, Texts.translatable("overlay.croparia.magic_rope.no_target"));
                 return InteractionResult.FAIL;
             } else {
                 level.playSound(null, player.getOnPos(), SoundEvent.createVariableRangeEvent(CropariaIf.of("ambient.magic_rope.teleport")), SoundSource.AMBIENT, 1.0F, 1.0F);

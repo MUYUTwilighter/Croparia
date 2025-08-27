@@ -21,10 +21,10 @@ import cool.muyucloud.croparia.util.FileUtil;
 import cool.muyucloud.croparia.util.codec.CodecUtil;
 import cool.muyucloud.croparia.util.codec.GenericListCodec;
 import cool.muyucloud.croparia.util.supplier.LazySupplier;
+import cool.muyucloud.croparia.util.text.Texts;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
@@ -64,7 +64,7 @@ public class RecipeWizardGenerator {
         ResourceLocation.tryParse("default"), "\\{main_hand}", context -> {
             ItemStack stack = Objects.requireNonNull(context.getPlayer()).getItemInHand(InteractionHand.MAIN_HAND);
             if (stack.isEmpty()) {
-                context.getPlayer().displayClientMessage(Component.translatable("overlay.croparia.recipe_wizard.default.missing.main_hand"), true);
+                Texts.overlay(context.getPlayer(), Texts.translatable("overlay.croparia.recipe_wizard.default.missing.main_hand"));
                 throw new IllegalStateException();
             } else return Objects.requireNonNull(stack.getItem().arch$registryName()).toString();
         }
@@ -73,7 +73,7 @@ public class RecipeWizardGenerator {
         ResourceLocation.tryParse("default"), "\\{main_hand_namespace}", context -> {
             ItemStack stack = Objects.requireNonNull(context.getPlayer()).getItemInHand(InteractionHand.MAIN_HAND);
             if (stack.isEmpty()) {
-                context.getPlayer().displayClientMessage(Component.translatable("overlay.croparia.recipe_wizard.default.missing.main_hand"), true);
+                Texts.overlay(context.getPlayer(), Texts.translatable("overlay.croparia.recipe_wizard.default.missing.main_hand"));
                 throw new IllegalStateException();
             } else return Objects.requireNonNull(stack.getItem().arch$registryName()).getNamespace();
         }
@@ -82,7 +82,7 @@ public class RecipeWizardGenerator {
         ResourceLocation.tryParse("default"), "\\{main_hand_path}", context -> {
             ItemStack stack = Objects.requireNonNull(context.getPlayer()).getItemInHand(InteractionHand.MAIN_HAND);
             if (stack.isEmpty()) {
-                context.getPlayer().displayClientMessage(Component.translatable("overlay.croparia.recipe_wizard.default.missing.main_hand"), true);
+                Texts.overlay(context.getPlayer(), Texts.translatable("overlay.croparia.recipe_wizard.default.missing.main_hand"));
                 throw new IllegalStateException();
             } else return Objects.requireNonNull(stack.getItem().arch$registryName()).getPath();
         }
@@ -91,7 +91,7 @@ public class RecipeWizardGenerator {
         ResourceLocation.tryParse("default"), "\\{main_hand_components}", context -> {
             ItemStack stack = Objects.requireNonNull(context.getPlayer()).getItemInHand(InteractionHand.MAIN_HAND);
             if (stack.isEmpty()) {
-                context.getPlayer().displayClientMessage(Component.translatable("overlay.croparia.recipe_wizard.default.missing.main_hand"), true);
+                Texts.overlay(context.getPlayer(), Texts.translatable("overlay.croparia.recipe_wizard.default.missing.main_hand"));
                 throw new IllegalStateException();
             } else return CodecUtil.encodeJson(stack.getComponentsPatch(), DataComponentPatch.CODEC).toString();
         }
@@ -100,7 +100,7 @@ public class RecipeWizardGenerator {
         ResourceLocation.tryParse("default"), "\\{off_hand}", context -> {
             ItemStack stack = Objects.requireNonNull(context.getPlayer()).getItemInHand(InteractionHand.OFF_HAND);
             if (stack.isEmpty()) {
-                context.getPlayer().displayClientMessage(Component.translatable("overlay.croparia.recipe_wizard.default.missing.off_hand"), true);
+                Texts.overlay(context.getPlayer(), Texts.translatable("overlay.croparia.recipe_wizard.default.missing.off_hand"));
                 throw new IllegalStateException();
             } else return Objects.requireNonNull(stack.getItem().arch$registryName()).toString();
         }
@@ -109,7 +109,7 @@ public class RecipeWizardGenerator {
         ResourceLocation.tryParse("default"), "\\{off_hand_namespace}", context -> {
             ItemStack stack = Objects.requireNonNull(context.getPlayer()).getItemInHand(InteractionHand.OFF_HAND);
             if (stack.isEmpty()) {
-                context.getPlayer().displayClientMessage(Component.translatable("overlay.croparia.recipe_wizard.default.missing.off_hand"), true);
+                Texts.overlay(context.getPlayer(), Texts.translatable("overlay.croparia.recipe_wizard.default.missing.off_hand"));
                 throw new IllegalStateException();
             } else return Objects.requireNonNull(stack.getItem().arch$registryName()).getNamespace();
         }
@@ -118,7 +118,7 @@ public class RecipeWizardGenerator {
         ResourceLocation.tryParse("default"), "\\{off_hand_namespace}", context -> {
             ItemStack stack = Objects.requireNonNull(context.getPlayer()).getItemInHand(InteractionHand.OFF_HAND);
             if (stack.isEmpty()) {
-                context.getPlayer().displayClientMessage(Component.translatable("overlay.croparia.recipe_wizard.default.missing.off_hand"), true);
+                Texts.overlay(context.getPlayer(), Texts.translatable("overlay.croparia.recipe_wizard.default.missing.off_hand"));
                 throw new IllegalStateException();
             } else return Objects.requireNonNull(stack.getItem().arch$registryName()).getPath();
         }
@@ -127,7 +127,7 @@ public class RecipeWizardGenerator {
         ResourceLocation.tryParse("default"), "\\{off_hand_components}", context -> {
             ItemStack stack = Objects.requireNonNull(context.getPlayer()).getItemInHand(InteractionHand.OFF_HAND);
             if (stack.isEmpty()) {
-                context.getPlayer().displayClientMessage(Component.translatable("overlay.croparia.recipe_wizard.default.missing.off_hand"), true);
+                Texts.overlay(context.getPlayer(), Texts.translatable("overlay.croparia.recipe_wizard.default.missing.off_hand"));
                 throw new IllegalStateException();
             } else return CodecUtil.encodeJson(stack.getComponentsPatch(), DataComponentPatch.CODEC).toString();
         }
@@ -140,8 +140,9 @@ public class RecipeWizardGenerator {
                 item -> !item.getItem().isEmpty()
             );
             if (entities.isEmpty()) {
-                Objects.requireNonNull(context.getPlayer()).displayClientMessage(
-                    Component.translatable("overlay.croparia.recipe_wizard.default.missing.target_item"), true
+                assert context.getPlayer() != null;
+                Texts.overlay(context.getPlayer(),
+                    Texts.translatable("overlay.croparia.recipe_wizard.default.missing.target_item")
                 );
                 throw new IllegalStateException();
             } else
@@ -156,8 +157,9 @@ public class RecipeWizardGenerator {
                 item -> !item.getItem().isEmpty()
             );
             if (entities.isEmpty()) {
-                Objects.requireNonNull(context.getPlayer()).displayClientMessage(
-                    Component.translatable("overlay.croparia.recipe_wizard.default.missing.target_item"), true
+                assert context.getPlayer() != null;
+                Texts.overlay(context.getPlayer(),
+                    Texts.translatable("overlay.croparia.recipe_wizard.default.missing.target_item")
                 );
                 throw new IllegalStateException();
             } else return Objects.requireNonNull(
@@ -173,8 +175,9 @@ public class RecipeWizardGenerator {
                 item -> !item.getItem().isEmpty()
             );
             if (entities.isEmpty()) {
-                Objects.requireNonNull(context.getPlayer()).displayClientMessage(
-                    Component.translatable("overlay.croparia.recipe_wizard.default.missing.target_item"), true
+                assert context.getPlayer() != null;
+                Texts.overlay(context.getPlayer(),
+                    Texts.translatable("overlay.croparia.recipe_wizard.default.missing.target_item")
                 );
                 throw new IllegalStateException();
             } else return Objects.requireNonNull(entities.getFirst().getItem().getItem().arch$registryName()).getPath();
@@ -188,8 +191,9 @@ public class RecipeWizardGenerator {
                 item -> !item.getItem().isEmpty()
             );
             if (entities.isEmpty()) {
-                Objects.requireNonNull(context.getPlayer()).displayClientMessage(
-                    Component.translatable("overlay.croparia.recipe_wizard.default.missing.target_item"), true
+                assert context.getPlayer() != null;
+                Texts.overlay(context.getPlayer(),
+                    Texts.translatable("overlay.croparia.recipe_wizard.default.missing.target_item")
                 );
                 throw new IllegalStateException();
             } else return CodecUtil.encodeJson(entities.getFirst().getItem().getComponentsPatch(),
@@ -201,8 +205,9 @@ public class RecipeWizardGenerator {
             Level level = context.getLevel();
             Block block = level.getBlockState(context.getClickedPos()).getBlock();
             if (block == Blocks.AIR) {
-                Objects.requireNonNull(context.getPlayer()).displayClientMessage(
-                    Component.translatable("overlay.croparia.recipe_wizard.default.missing.block"), true
+                assert context.getPlayer() != null;
+                Texts.overlay(context.getPlayer(),
+                    Texts.translatable("overlay.croparia.recipe_wizard.default.missing.block")
                 );
                 throw new IllegalStateException();
             }
@@ -214,8 +219,9 @@ public class RecipeWizardGenerator {
             Level level = context.getLevel();
             Block block = level.getBlockState(context.getClickedPos()).getBlock();
             if (block == Blocks.AIR) {
-                Objects.requireNonNull(context.getPlayer()).displayClientMessage(
-                    Component.translatable("overlay.croparia.recipe_wizard.default.missing.block"), true
+                assert context.getPlayer() != null;
+                Texts.overlay(context.getPlayer(),
+                    Texts.translatable("overlay.croparia.recipe_wizard.default.missing.block")
                 );
                 throw new IllegalStateException();
             }
@@ -227,8 +233,9 @@ public class RecipeWizardGenerator {
             Level level = context.getLevel();
             Block block = level.getBlockState(context.getClickedPos()).getBlock();
             if (block == Blocks.AIR) {
-                Objects.requireNonNull(context.getPlayer()).displayClientMessage(
-                    Component.translatable("overlay.croparia.recipe_wizard.default.missing.block"), true
+                assert context.getPlayer() != null;
+                Texts.overlay(context.getPlayer(),
+                    Texts.translatable("overlay.croparia.recipe_wizard.default.missing.block")
                 );
                 throw new IllegalStateException();
             }
@@ -240,8 +247,9 @@ public class RecipeWizardGenerator {
             Level level = context.getLevel();
             BlockState state = level.getBlockState(context.getClickedPos());
             if (state.getBlock() instanceof AirBlock) {
-                Objects.requireNonNull(context.getPlayer()).displayClientMessage(
-                    Component.translatable("overlay.croparia.recipe_wizard.default.missing.block"), true
+                assert context.getPlayer() != null;
+                Texts.overlay(context.getPlayer(),
+                    Texts.translatable("overlay.croparia.recipe_wizard.default.missing.block")
                 );
                 throw new IllegalStateException();
             }
@@ -260,8 +268,9 @@ public class RecipeWizardGenerator {
                     return element.getSerializedName();
                 }
             }
-            Objects.requireNonNull(context.getPlayer()).displayClientMessage(
-                Component.translatable("overlay.croparia.recipe_wizard.infusor.missing.element"), true
+            assert context.getPlayer() != null;
+            Texts.overlay(context.getPlayer(),
+                Texts.translatable("overlay.croparia.recipe_wizard.infusor.missing.element")
             );
             throw new IllegalStateException();
         }
@@ -279,8 +288,9 @@ public class RecipeWizardGenerator {
                     block -> CodecUtil.encodeJson(BlockInput.of(block), BlockInput.CODEC).toString()
                 ).orElseThrow();
             }
-            Objects.requireNonNull(context.getPlayer()).displayClientMessage(
-                Component.translatable("overlay.croparia.recipe_wizard.ritual.missing.block"), true
+            assert context.getPlayer() != null;
+            Texts.overlay(context.getPlayer(),
+                Texts.translatable("overlay.croparia.recipe_wizard.ritual.missing.block")
             );
             throw new IllegalStateException();
         }
@@ -398,7 +408,7 @@ public class RecipeWizardGenerator {
                 }
                 Path result = CropariaIf.CONFIG.getDumpPath().resolve("dumped").resolve(path);
                 FileUtil.write(result.toFile(), template, true);
-                player.displayClientMessage(Component.translatable("chat.croparia.recipe_wizard.success", result), true);
+                Texts.chat(player, (Texts.translatable("chat.croparia.recipe_wizard.success", result)));
             } catch (Throwable t) {
                 CropariaIf.LOGGER.error("Failed to generate recipe", t);
             }

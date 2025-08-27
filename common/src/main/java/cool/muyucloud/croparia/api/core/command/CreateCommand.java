@@ -9,8 +9,8 @@ import cool.muyucloud.croparia.api.crop.util.Color;
 import cool.muyucloud.croparia.api.crop.util.CropDependencies;
 import cool.muyucloud.croparia.api.crop.util.Material;
 import cool.muyucloud.croparia.registry.DgRegistries;
-import cool.muyucloud.croparia.util.text.FailureMessage;
-import cool.muyucloud.croparia.util.text.SuccessMessage;
+import cool.muyucloud.croparia.util.text.FailureMessenger;
+import cool.muyucloud.croparia.util.text.SuccessMessenger;
 import cool.muyucloud.croparia.util.text.Texts;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -91,7 +91,7 @@ public class CreateCommand {
         return CREATE;
     }
 
-    public static int create(Player player, @Nullable ResourceLocation id, String type, String rawColor, SuccessMessage success, FailureMessage failure, boolean client, boolean forced) {
+    public static int create(Player player, @Nullable ResourceLocation id, String type, String rawColor, SuccessMessenger success, FailureMessenger failure, boolean client, boolean forced) {
         ItemStack material = player.getMainHandItem();
         if (material.isEmpty()) {
             failure.send(Texts.translatable("commands.croparia.create.no_material"));
