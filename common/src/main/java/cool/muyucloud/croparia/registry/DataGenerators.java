@@ -9,7 +9,7 @@ import cool.muyucloud.croparia.api.generator.LangGenerator;
 @SuppressWarnings("unused")
 public class DataGenerators {
     public static final MapCodec<DataGenerator> GENERATOR = DataGenerator.register(CropariaIf.of("generator"), DataGenerator.CODEC);
-    public static final MapCodec<AggregatedGenerator> COMPOSITE = DataGenerator.register(CropariaIf.of("aggregated"), AggregatedGenerator.CODEC);
+    public static final MapCodec<AggregatedGenerator> AGGREGATED = DataGenerator.register(CropariaIf.of("aggregated"), AggregatedGenerator.CODEC);
     public static final MapCodec<LangGenerator> LANG = DataGenerator.register(CropariaIf.of("lang"), LangGenerator.CODEC);
 
     public static void register() {
