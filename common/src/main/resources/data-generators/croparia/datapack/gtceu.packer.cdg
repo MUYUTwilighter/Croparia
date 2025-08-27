@@ -27,7 +27,8 @@
                     "type": "gtceu:sized",
                     "count": {result_count.2},
                     "ingredient": {
-                        "item": "{result}"
+                        "item": "{result}",
+                        "components": {result_components}
                     }
                 },
                 "chance": 10000,

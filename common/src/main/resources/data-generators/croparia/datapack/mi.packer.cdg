@@ -14,7 +14,8 @@
   "item_outputs": [
     {
       "item": "{result}",
-      "count": {result_count.2}
+      "count": {result_count.2},
+      "components": {result_components}
     }
   ]
 }

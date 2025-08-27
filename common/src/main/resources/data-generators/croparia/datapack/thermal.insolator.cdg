@@ -9,7 +9,7 @@
   "result": [
     {
       "item": "{seed}",
-      "chance": 2.0
+      "chance": 0.0
     },
     {
       "item": "{fruit}",
