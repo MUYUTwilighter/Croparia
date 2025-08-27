@@ -2,7 +2,7 @@ package cool.muyucloud.croparia.api.generator.pack;
 
 import com.google.gson.JsonObject;
 import cool.muyucloud.croparia.CropariaIf;
-import cool.muyucloud.croparia.util.Util;
+import cool.muyucloud.croparia.util.FileUtil;
 import cool.muyucloud.croparia.util.text.Texts;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackLocationInfo;
@@ -53,9 +53,9 @@ public class ResourcePackHandler extends PackHandler {
         if (file.isDirectory()) {
             CropariaIf.LOGGER.info("Clearing resource pack directory");
             try {
-                Util.deleteUnder(file);
+                FileUtil.deleteUnder(file);
             } catch (Throwable e) {
-                CropariaIf.LOGGER.error("Failed to clear resource pack directory", e);
+                CropariaIf.LOGGER.error("Failed to clear resourcepack directory", e);
             }
         }
     }

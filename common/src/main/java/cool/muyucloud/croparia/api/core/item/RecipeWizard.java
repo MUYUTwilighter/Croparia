@@ -33,6 +33,7 @@ public class RecipeWizard extends Item {
             entry.forInputStream(inputStream -> {
                 try (FileOutputStream outputStream = new FileOutputStream(CropariaIf.CONFIG.getPackPath().resolve(finalName).toFile())) {
                     inputStream.transferTo(outputStream);
+                    outputStream.flush();
                 } catch (Throwable t) {
                     CropariaIf.LOGGER.error("Failed to move built-in recipe wizard template %s".formatted(name), t);
                 }
@@ -41,7 +42,11 @@ public class RecipeWizard extends Item {
         Collection<RecipeWizardGenerator> generators = new ArrayList<>();
         FileUtil.forFilesIn(
             CropariaIf.CONFIG.getDumpPath().resolve("generators").toFile(),
-            file -> RecipeWizardGenerator.read(file).ifPresent(generators::add)
+            file -> RecipeWizardGenerator.read(file).ifPresent(generator -> {
+                if (generator.isEnabled() && generator.isDependenciesAvailable()) {
+                    generators.add(generator);
+                }
+            })
         );
         return ImmutableList.copyOf(generators);
     });

@@ -259,6 +259,65 @@ public class RecipeWizardGenerator {
             return json.toString();
         }
     );
+    public static final Placeholder<UseOnContext> NEIGHBOR = register(
+        ResourceLocation.tryParse("default"), "\\{neighbor}", context -> {
+            Level level = context.getLevel();
+            Block block = level.getBlockState(context.getClickedPos().offset(context.getClickedFace().getUnitVec3i())).getBlock();
+            if (block == Blocks.AIR) {
+                assert context.getPlayer() != null;
+                Texts.overlay(context.getPlayer(),
+                    Texts.translatable("overlay.croparia.recipe_wizard.default.missing.neighbor")
+                );
+                throw new IllegalStateException();
+            }
+            return Objects.requireNonNull(block.arch$registryName()).toString();
+        }
+    );
+    public static final Placeholder<UseOnContext> NEIGHBOR_NAMESPACE = register(
+        ResourceLocation.tryParse("default"), "\\{neighbor_namespace}", context -> {
+            Level level = context.getLevel();
+            Block block = level.getBlockState(context.getClickedPos().offset(context.getClickedFace().getUnitVec3i())).getBlock();
+            if (block == Blocks.AIR) {
+                assert context.getPlayer() != null;
+                Texts.overlay(context.getPlayer(),
+                    Texts.translatable("overlay.croparia.recipe_wizard.default.missing.neighbor")
+                );
+                throw new IllegalStateException();
+            }
+            return Objects.requireNonNull(block.arch$registryName()).getNamespace();
+        }
+    );
+    public static final Placeholder<UseOnContext> NEIGHBOR_PATH = register(
+        ResourceLocation.tryParse("default"), "\\{neighbor_path}", context -> {
+            Level level = context.getLevel();
+            Block block = level.getBlockState(context.getClickedPos().offset(context.getClickedFace().getUnitVec3i())).getBlock();
+            if (block == Blocks.AIR) {
+                assert context.getPlayer() != null;
+                Texts.overlay(context.getPlayer(),
+                    Texts.translatable("overlay.croparia.recipe_wizard.default.missing.neighbor")
+                );
+                throw new IllegalStateException();
+            }
+            return Objects.requireNonNull(block.arch$registryName()).getPath();
+        }
+    );
+    public static final Placeholder<UseOnContext> NEIGHBOR_PROPERTIES = register(
+        ResourceLocation.tryParse("default"), "\\{neighbor_properties}", context -> {
+            Level level = context.getLevel();
+            BlockState state = level.getBlockState(context.getClickedPos().offset(context.getClickedFace().getUnitVec3i()));
+            if (state.getBlock() instanceof AirBlock) {
+                assert context.getPlayer() != null;
+                Texts.overlay(context.getPlayer(),
+                    Texts.translatable("overlay.croparia.recipe_wizard.default.missing.neighbor")
+                );
+                throw new IllegalStateException();
+            }
+            StateHolderAccess access = (StateHolderAccess) level.getBlockState(context.getClickedPos());
+            JsonObject json = new JsonObject();
+            access.croparia_if$getProperties().forEach(json::addProperty);
+            return json.toString();
+        }
+    );
     public static final Placeholder<UseOnContext> INFUSOR_ELEMENT = register(
         CropariaIf.of("infusor"), "\\{infuser_element}", context -> {
             BlockState state = context.getLevel().getBlockState(context.getClickedPos());
@@ -293,6 +352,21 @@ public class RecipeWizardGenerator {
                 Texts.translatable("overlay.croparia.recipe_wizard.ritual.missing.block")
             );
             throw new IllegalStateException();
+        }
+    );
+    public static final Placeholder<UseOnContext> SOAK_ELEMENT = register(
+        CropariaIf.of("soak"), "\\{soak_element}", context -> {
+            BlockState state = context.getLevel().getBlockState(context.getClickedPos().above());
+            if (state.getBlock() instanceof Infusor infusor) {
+                Element element = state.getValue(Infusor.ELEMENT);
+                return element.getKey().toString();
+            } else {
+                assert context.getPlayer() != null;
+                Texts.overlay(
+                    context.getPlayer(), Texts.translatable("overlay.croparia.recipe_wizard.soak.missing.element")
+                );
+                throw new IllegalStateException();
+            }
         }
     );
 

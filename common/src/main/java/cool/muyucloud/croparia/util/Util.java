@@ -23,9 +23,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -37,23 +34,6 @@ public class Util {
     @SuppressWarnings("unused")
     public static boolean allNull(Object... objects) {
         return Arrays.stream(objects).allMatch(Objects::isNull);
-    }
-
-    public static void deleteUnder(File dir) throws IOException {
-        if (dir.isDirectory()) {
-            for (File child : Objects.requireNonNull(dir.listFiles())) {
-                deleteDir(child);
-            }
-        }
-    }
-
-    public static void deleteDir(File dir) throws IOException {
-        if (dir.isDirectory()) {
-            for (File child : Objects.requireNonNull(dir.listFiles())) {
-                deleteDir(child);
-            }
-        }
-        Files.delete(dir.toPath());
     }
 
     public static boolean isEdible(ItemStack item) {

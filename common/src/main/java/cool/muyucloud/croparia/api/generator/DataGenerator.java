@@ -138,7 +138,7 @@ public class DataGenerator {
     }
 
     public void generate(PackHandler pack) {
-        if (isEnabled() && isAvailable() && (this.isStartup() || CropariaIf.isServerStarted())) {
+        if (this.isStartup() || CropariaIf.isServerStarted()) {
             if (this.getWhitelist().isEmpty()) {
                 for (DgElement element : this.getRegistry()) {
                     if (element.shouldLoad()) {

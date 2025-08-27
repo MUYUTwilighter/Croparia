@@ -3,7 +3,7 @@ package cool.muyucloud.croparia.api.generator.pack;
 import com.google.gson.JsonObject;
 import cool.muyucloud.croparia.CropariaIf;
 import cool.muyucloud.croparia.api.generator.util.AlwaysEnabledFileResourcePackProvider;
-import cool.muyucloud.croparia.util.Util;
+import cool.muyucloud.croparia.util.FileUtil;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.PackSource;
@@ -44,9 +44,9 @@ public class DataPackHandler extends PackHandler {
         File file = path.toFile();
         if (file.isDirectory()) {
             try {
-                Util.deleteUnder(file);
+                FileUtil.deleteUnder(file);
             } catch (Throwable e) {
-                CropariaIf.LOGGER.error("Failed to clear data pack directory", e);
+                CropariaIf.LOGGER.error("Failed to clear datapack directory", e);
             }
         }
     }

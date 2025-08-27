@@ -118,6 +118,7 @@
   "overlay.croparia.recipe_wizard.default.missing.block": "Targeting a block",
   "overlay.croparia.recipe_wizard.ritual.missing.block": "Correctly keep the structure and place the input blocks",
   "overlay.croparia.recipe_wizard.infusor.missing.element": "Infuse element to the infusor",
+  "overlay.croparia.recipe_wizard.soak.missing.element": "Place infusor above the elemental stone and infuse",
   "overlay.croparia.magic_rope.no_target": "No target bounded",
   "overlay.croparia.xp": "Not enough XP",
   "tooltip.croparia.block_place": "Place the block(s)",

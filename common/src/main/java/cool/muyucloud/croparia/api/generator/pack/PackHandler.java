@@ -11,7 +11,10 @@ import dev.architectury.platform.Platform;
 import net.minecraft.resources.ResourceLocation;
 import org.apache.commons.lang3.NotImplementedException;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Supplier;
@@ -85,6 +88,7 @@ public abstract class PackHandler {
                             throw new RuntimeException(e);
                         }
                     });
+                    stream.flush();
                 } catch (IOException e) {
                     DataGenerator.LOGGER.error("Failed to move built-in generator \"%s\" from %s".formatted(name, entry.getFile().getName()), e);
                 }
@@ -99,7 +103,7 @@ public abstract class PackHandler {
             FileUtil.forFilesIn(parent, file -> {
                 try {
                     DataGenerator generator = DataGenerator.read(file);
-                    this.generators.add(generator);
+                    if (generator.isEnabled() && generator.isAvailable()) this.generators.add(generator);
                 } catch (Throwable t) {
                     DataGenerator.LOGGER.error("Failed in reading generator \"%s\"".formatted(file), t);
                 }
@@ -118,7 +122,7 @@ public abstract class PackHandler {
     protected void dump() {
         try {
             for (Map.Entry<Path, String> entry : this.cache.entrySet()) {
-                this.writeFile(entry.getValue(), entry.getKey().toFile());
+                FileUtil.write(entry.getKey().toFile(), entry.getValue(), this.canOverride());
             }
         } catch (Exception e) {
             DataGenerator.LOGGER.error("Failed to write pack data to file system", e);
@@ -128,20 +132,9 @@ public abstract class PackHandler {
 
     protected void writeMeta() {
         try {
-            this.writeFile(GSON.toJson(this.meta), this.root.resolve("pack.mcmeta").toFile());
+            FileUtil.write(this.root.resolve("pack.mcmeta").toFile(), GSON.toJson(this.meta), true);
         } catch (IOException e) {
             DataGenerator.LOGGER.error("Failed to write pack metadata to file system", e);
-        }
-    }
-
-    protected void writeFile(String content, File file) throws IOException {
-        if (!file.getParentFile().exists() && !file.getParentFile().mkdirs()) {
-            throw new IOException("Failed to create directory");
-        }
-        if (!file.exists() || file.exists() && this.canOverride()) {
-            FileWriter writer = new FileWriter(file);   // FileWriter will auto create the file if it doesn't exist
-            writer.write(content);
-            writer.close();
         }
     }
 
