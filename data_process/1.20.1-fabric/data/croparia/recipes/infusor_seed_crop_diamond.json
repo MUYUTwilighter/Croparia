@@ -1,7 +1,0 @@
-{
-  "type": "croparia:infusor_recipe",
-  "input": "croparia:seed_crop_lapis",
-  "element": "elemental",
-  "output": "croparia:seed_crop_diamond",
-  "count": 1
-}
