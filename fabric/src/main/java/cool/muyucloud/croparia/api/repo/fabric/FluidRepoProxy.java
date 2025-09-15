@@ -65,46 +65,44 @@ public class FluidRepoProxy extends RepoProxy<FluidSpec> implements Storage<Flui
 
         @Override
         public StorageView<FluidVariant> next() {
-            return new ItemView(FluidRepoProxy.this, this.i++);
+            return new ItemView(this.i++);
         }
     }
 
-    static class ItemView implements StorageView<FluidVariant> {
-        private final Repo<FluidSpec> repo;
+    class ItemView implements StorageView<FluidVariant> {
         private final int i;
 
-        public ItemView(Repo<FluidSpec> repo, int i) {
-            if (repo.size() <= i) {
-                throw new IllegalArgumentException("Index %s is out of bounds: %s".formatted(i, repo.size()));
+        public ItemView(int i) {
+            if (FluidRepoProxy.this.size() <= i) {
+                throw new IllegalArgumentException("Index %s is out of bounds: %s".formatted(i, FluidRepoProxy.this.size()));
             }
-            this.repo = repo;
             this.i = i;
         }
 
         @Override
         public long extract(FluidVariant resource, long maxAmount, TransactionContext transaction) {
             FluidSpec item = FabricFluidSpec.from(resource);
-            return this.repo.consume(i, item, maxAmount);
+            return FluidRepoProxy.this.consume(i, item, maxAmount);
         }
 
         @Override
         public boolean isResourceBlank() {
-            return this.repo.isEmpty(i);
+            return FluidRepoProxy.this.isEmpty(i);
         }
 
         @Override
         public FluidVariant getResource() {
-            return FabricFluidSpec.of(this.repo.resourceFor(i));
+            return FabricFluidSpec.of(FluidRepoProxy.this.resourceFor(i));
         }
 
         @Override
         public long getAmount() {
-            return this.repo.amountFor(i, this.repo.resourceFor(i));
+            return FluidRepoProxy.this.amountFor(i, FluidRepoProxy.this.resourceFor(i));
         }
 
         @Override
         public long getCapacity() {
-            return this.repo.capacityFor(i, this.repo.resourceFor(i));
+            return FluidRepoProxy.this.capacityFor(i, FluidRepoProxy.this.resourceFor(i));
         }
     }
 }
