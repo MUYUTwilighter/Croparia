@@ -64,46 +64,54 @@ public class ItemRepoProxy extends RepoProxy<ItemSpec> implements Storage<ItemVa
 
         @Override
         public StorageView<ItemVariant> next() {
-            return new ItemView(ItemRepoProxy.this, this.i++);
+            return new ItemView(this.i++);
         }
     }
 
-    static class ItemView implements StorageView<ItemVariant> {
-        private final Repo<ItemSpec> repo;
+    class ItemView implements StorageView<ItemVariant> {
         private final int i;
 
-        public ItemView(Repo<ItemSpec> repo, int i) {
-            if (repo.size() <= i) {
-                throw new IllegalArgumentException("Index %s is out of bounds: %s".formatted(i, repo.size()));
+        public ItemView(int i) {
+            if (ItemRepoProxy.this.size() <= i) {
+                throw new IllegalArgumentException("Index %s is out of bounds: %s".formatted(i, ItemRepoProxy.this.size()));
             }
-            this.repo = repo;
             this.i = i;
         }
 
         @Override
-        public long extract(ItemVariant resource, long maxAmount, TransactionContext transaction) {
-            ItemSpec item = FabricItemSpec.from(resource);
-            return this.repo.consume(i, item, maxAmount);
+        public long extract(ItemVariant resource, long maxAmount, TransactionContext context) {
+            ItemSpec itemSpec = FabricItemSpec.from(resource);
+            if (context == null) {
+                return ItemRepoProxy.this.consume(i, itemSpec, maxAmount);
+            } else {
+                long amount = ItemRepoProxy.this.simConsume(i, itemSpec, maxAmount);
+                context.addCloseCallback((ignored, result) -> {
+                    if (result == TransactionContext.Result.COMMITTED) {
+                        ItemRepoProxy.this.consume(i, itemSpec, amount);
+                    }
+                });
+                return amount;
+            }
         }
 
         @Override
         public boolean isResourceBlank() {
-            return this.repo.isEmpty(i);
+            return ItemRepoProxy.this.isEmpty(i);
         }
 
         @Override
         public ItemVariant getResource() {
-            return FabricItemSpec.of(this.repo.resourceFor(i));
+            return FabricItemSpec.of(ItemRepoProxy.this.resourceFor(i));
         }
 
         @Override
         public long getAmount() {
-            return this.repo.amountFor(i, this.repo.resourceFor(i));
+            return ItemRepoProxy.this.amountFor(i, ItemRepoProxy.this.resourceFor(i));
         }
 
         @Override
         public long getCapacity() {
-            return this.repo.capacityFor(i, this.repo.resourceFor(i));
+            return ItemRepoProxy.this.capacityFor(i, ItemRepoProxy.this.resourceFor(i));
         }
     }
 }
