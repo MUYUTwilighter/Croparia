@@ -51,10 +51,11 @@ public interface Repo<T extends ResourceType> extends TypeTokenAccess {
      * @return The amount that can be consumed
      */
     default long simConsume(T resource, long amount) {
+        long required = amount;
         for (int i = 0; i < size() && amount > 0; i++) {
             amount -= simConsume(i, resource, amount);
         }
-        return amount;
+        return required - amount;
     }
 
     /**
@@ -72,7 +73,7 @@ public interface Repo<T extends ResourceType> extends TypeTokenAccess {
      *
      * @param resource The resource to consume
      * @param amount   The amount to consume
-     * @return the amount actually consumed
+     * @return The amount actually consumed
      */
     default long consume(T resource, long amount) {
         long required = amount;
@@ -122,7 +123,7 @@ public interface Repo<T extends ResourceType> extends TypeTokenAccess {
      *
      * @param resource The resource to accept
      * @param amount   The amount to accept
-     * @return the amount actually accepted
+     * @return The amount actually accepted
      */
     default long accept(T resource, long amount) {
         long required = amount;

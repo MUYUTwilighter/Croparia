@@ -105,18 +105,18 @@ public abstract class RepoProxy<T extends ResourceType> implements Repo<T> {
     }
 
     @Override
-    public long capacityFor(int i, T fluid) {
-        return this.get().capacityFor(i, fluid);
+    public long capacityFor(int i, T resource) {
+        return this.get().capacityFor(i, resource);
     }
 
     @Override
-    public long capacityFor(T fluid) {
-        return this.get().capacityFor(fluid);
+    public long capacityFor(T resource) {
+        return this.get().capacityFor(resource);
     }
 
     @Override
-    public long amountFor(int i, T fluid) {
-        return this.get().amountFor(i, fluid);
+    public long amountFor(int i, T resource) {
+        return this.get().amountFor(i, resource);
     }
 
     @Override
