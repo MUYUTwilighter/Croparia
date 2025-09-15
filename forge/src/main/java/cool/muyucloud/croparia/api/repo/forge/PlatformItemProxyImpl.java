@@ -42,7 +42,7 @@ public class PlatformItemProxyImpl implements PlatformItemProxy {
     @Override
     public long simConsume(int i, ItemSpec item, long amount) {
         ItemStack stored = this.get().getStackInSlot(i);
-        if (item.matches(stored)) {
+        if (item.is(stored)) {
             return this.get().extractItem(i, (int) Math.min(amount, stored.getCount()), true).getCount();
         } else {
             return 0;
@@ -52,7 +52,7 @@ public class PlatformItemProxyImpl implements PlatformItemProxy {
     @Override
     public long consume(int i, ItemSpec item, long amount) {
         ItemStack stored = this.get().getStackInSlot(i);
-        if (item.matches(stored)) {
+        if (item.is(stored)) {
             return this.get().extractItem(i, (int) Math.min(amount, stored.getCount()), false).getCount();
         } else {
             return 0;
@@ -73,7 +73,7 @@ public class PlatformItemProxyImpl implements PlatformItemProxy {
     public long capacityFor(int i, ItemSpec item) {
         ItemStack stored = this.get().getStackInSlot(i);
         if ((stored.isEmpty() && this.get().insertItem(i, item.toStack(1), true).getCount() == 1)
-            || item.matches(stored)) {
+            || item.is(stored)) {
             return this.get().getSlotLimit(i);
         } else {
             return 0;
@@ -83,7 +83,7 @@ public class PlatformItemProxyImpl implements PlatformItemProxy {
     @Override
     public long amountFor(int i, ItemSpec item) {
         ItemStack stored = this.get().getStackInSlot(i);
-        if (item.matches(stored)) {
+        if (item.is(stored)) {
             return stored.getCount();
         } else {
             return 0;
