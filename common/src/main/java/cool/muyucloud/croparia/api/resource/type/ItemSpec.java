@@ -88,10 +88,6 @@ public class ItemSpec implements ResourceType {
         return TagUtil.isIn(TagKey.create(BuiltInRegistries.ITEM.key(), tag), this.getItem());
     }
 
-    public boolean matches(ItemStack stack) {
-        return ItemStack.isSameItemSameTags(stack, this.toStack());
-    }
-
     @Override
     public TypeToken<ItemSpec> getType() {
         return TYPE;

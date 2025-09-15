@@ -65,14 +65,14 @@ public class FluidRepoProxy extends RepoProxy<FluidSpec> implements Storage<Flui
 
         @Override
         public StorageView<FluidVariant> next() {
-            return new ItemView(this.i++);
+            return new FluidView(this.i++);
         }
     }
 
-    class ItemView implements StorageView<FluidVariant> {
+    class FluidView implements StorageView<FluidVariant> {
         private final int i;
 
-        public ItemView(int i) {
+        public FluidView(int i) {
             if (FluidRepoProxy.this.size() <= i) {
                 throw new IllegalArgumentException("Index %s is out of bounds: %s".formatted(i, FluidRepoProxy.this.size()));
             }
@@ -80,9 +80,19 @@ public class FluidRepoProxy extends RepoProxy<FluidSpec> implements Storage<Flui
         }
 
         @Override
-        public long extract(FluidVariant resource, long maxAmount, TransactionContext transaction) {
-            FluidSpec item = FabricFluidSpec.from(resource);
-            return FluidRepoProxy.this.consume(i, item, maxAmount);
+        public long extract(FluidVariant resource, long maxAmount, TransactionContext context) {
+            FluidSpec fluidSpec = FabricFluidSpec.from(resource);
+            if (context == null) {
+                return FluidRepoProxy.this.consume(fluidSpec, maxAmount);
+            } else {
+                long amount = FluidRepoProxy.this.simConsume(fluidSpec, maxAmount);
+                context.addCloseCallback((ignored, result) -> {
+                    if (result == TransactionContext.Result.COMMITTED) {
+                        FluidRepoProxy.this.consume(i, fluidSpec, amount);
+                    }
+                });
+                return amount;
+            }
         }
 
         @Override

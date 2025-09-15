@@ -83,12 +83,12 @@ public class ItemRepoProxy extends RepoProxy<ItemSpec> implements Storage<ItemVa
         public long extract(ItemVariant resource, long maxAmount, TransactionContext context) {
             ItemSpec itemSpec = FabricItemSpec.from(resource);
             if (context == null) {
-                return ItemRepoProxy.this.accept(itemSpec, maxAmount);
+                return ItemRepoProxy.this.consume(i, itemSpec, maxAmount);
             } else {
-                long amount = ItemRepoProxy.this.simAccept(itemSpec, maxAmount);
+                long amount = ItemRepoProxy.this.simConsume(i, itemSpec, maxAmount);
                 context.addCloseCallback((ignored, result) -> {
                     if (result == TransactionContext.Result.COMMITTED) {
-                        ItemRepoProxy.this.accept(itemSpec, amount);
+                        ItemRepoProxy.this.consume(i, itemSpec, amount);
                     }
                 });
                 return amount;
