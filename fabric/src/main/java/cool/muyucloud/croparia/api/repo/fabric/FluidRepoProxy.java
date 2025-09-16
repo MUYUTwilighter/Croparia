@@ -83,9 +83,9 @@ public class FluidRepoProxy extends RepoProxy<FluidSpec> implements Storage<Flui
         public long extract(FluidVariant resource, long maxAmount, TransactionContext context) {
             FluidSpec fluidSpec = FabricFluidSpec.from(resource);
             if (context == null) {
-                return FluidRepoProxy.this.consume(fluidSpec, maxAmount);
+                return FluidRepoProxy.this.consume(i, fluidSpec, maxAmount);
             } else {
-                long amount = FluidRepoProxy.this.simConsume(fluidSpec, maxAmount);
+                long amount = FluidRepoProxy.this.simConsume(i, fluidSpec, maxAmount);
                 context.addCloseCallback((ignored, result) -> {
                     if (result == TransactionContext.Result.COMMITTED) {
                         FluidRepoProxy.this.consume(i, fluidSpec, amount);
