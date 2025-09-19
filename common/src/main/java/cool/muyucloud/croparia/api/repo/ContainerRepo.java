@@ -55,7 +55,7 @@ public record ContainerRepo(@NotNull Container container) implements Repo<ItemSp
         }
         ItemStack stored = this.container().getItem(i);
         if (resource.is(stored) || stored.isEmpty()) {
-            int accepted = (int) Math.min(this.capacityFor(i, resource) - stored.getCount(), amount);
+            long accepted = Math.min(this.capacityFor(i, resource) - stored.getCount(), amount);
             return Math.max(accepted, 0);
         } else {
             return 0;
@@ -69,7 +69,7 @@ public record ContainerRepo(@NotNull Container container) implements Repo<ItemSp
         }
         ItemStack stored = this.container().getItem(i);
         if (resource.is(stored) || stored.isEmpty()) {
-            int accepted = (int) Math.min(this.capacityFor(i, resource) - stored.getCount(), amount);
+            long accepted = Math.min(this.capacityFor(i, resource) - stored.getCount(), amount);
             this.container().setItem(i, resource.toStack(Math.max(accepted, 0) + stored.getCount()));
             return accepted;
         } else {
