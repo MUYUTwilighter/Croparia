@@ -51,10 +51,10 @@ public class FluidRepoProxy extends RepoProxy<FluidSpec> implements Storage<Flui
 
     @Override
     public Iterator<? extends StorageView<FluidVariant>> iterator(TransactionContext transaction) {
-        return new ItemIterator();
+        return new FluidIterator();
     }
 
-    class ItemIterator implements Iterator<StorageView<FluidVariant>> {
+    class FluidIterator implements Iterator<StorageView<FluidVariant>> {
         private int i = 0;
 
         @Override
@@ -64,46 +64,54 @@ public class FluidRepoProxy extends RepoProxy<FluidSpec> implements Storage<Flui
 
         @Override
         public StorageView<FluidVariant> next() {
-            return new ItemView(FluidRepoProxy.this, this.i++);
+            return new FluidView(this.i++);
         }
     }
 
-    static class ItemView implements StorageView<FluidVariant> {
-        private final Repo<FluidSpec> repo;
+    class FluidView implements StorageView<FluidVariant> {
         private final int i;
 
-        public ItemView(Repo<FluidSpec> repo, int i) {
-            if (repo.size() <= i) {
-                throw new IllegalArgumentException("Index %s is out of bounds: %s".formatted(i, repo.size()));
+        public FluidView(int i) {
+            if (FluidRepoProxy.this.size() <= i) {
+                throw new IllegalArgumentException("Index %s is out of bounds: %s".formatted(i, FluidRepoProxy.this.size()));
             }
-            this.repo = repo;
             this.i = i;
         }
 
         @Override
-        public long extract(FluidVariant resource, long maxAmount, TransactionContext transaction) {
-            FluidSpec item = FabricFluidSpec.from(resource);
-            return this.repo.consume(i, item, maxAmount);
+        public long extract(FluidVariant resource, long maxAmount, TransactionContext context) {
+            FluidSpec fluidSpec = FabricFluidSpec.from(resource);
+            if (context == null) {
+                return FluidRepoProxy.this.consume(i, fluidSpec, maxAmount);
+            } else {
+                long amount = FluidRepoProxy.this.simConsume(i, fluidSpec, maxAmount);
+                context.addCloseCallback((ignored, result) -> {
+                    if (result == TransactionContext.Result.COMMITTED) {
+                        FluidRepoProxy.this.consume(i, fluidSpec, amount);
+                    }
+                });
+                return amount;
+            }
         }
 
         @Override
         public boolean isResourceBlank() {
-            return this.repo.isEmpty(i);
+            return FluidRepoProxy.this.isEmpty(i);
         }
 
         @Override
         public FluidVariant getResource() {
-            return FabricFluidSpec.of(this.repo.resourceFor(i));
+            return FabricFluidSpec.of(FluidRepoProxy.this.resourceFor(i));
         }
 
         @Override
         public long getAmount() {
-            return this.repo.amountFor(i, this.repo.resourceFor(i));
+            return FluidRepoProxy.this.amountFor(i);
         }
 
         @Override
         public long getCapacity() {
-            return this.repo.capacityFor(i, this.repo.resourceFor(i));
+            return FluidRepoProxy.this.capacityFor(i, FluidRepoProxy.this.resourceFor(i));
         }
     }
 }
