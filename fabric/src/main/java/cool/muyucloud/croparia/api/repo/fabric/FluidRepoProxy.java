@@ -51,10 +51,10 @@ public class FluidRepoProxy extends RepoProxy<FluidSpec> implements Storage<Flui
 
     @Override
     public @NotNull Iterator<StorageView<FluidVariant>> iterator() {
-        return new ItemIterator();
+        return new FluidIterator();
     }
 
-    class ItemIterator implements Iterator<StorageView<FluidVariant>> {
+    class FluidIterator implements Iterator<StorageView<FluidVariant>> {
         private int i = 0;
 
         @Override
@@ -64,14 +64,14 @@ public class FluidRepoProxy extends RepoProxy<FluidSpec> implements Storage<Flui
 
         @Override
         public StorageView<FluidVariant> next() {
-            return new ItemView(this.i++);
+            return new FluidView(this.i++);
         }
     }
 
-    class ItemView implements StorageView<FluidVariant> {
+    class FluidView implements StorageView<FluidVariant> {
         private final int i;
 
-        public ItemView(int i) {
+        public FluidView(int i) {
             if (FluidRepoProxy.this.size() <= i) {
                 throw new IllegalArgumentException("Index %s is out of bounds: %s".formatted(i, FluidRepoProxy.this.size()));
             }
