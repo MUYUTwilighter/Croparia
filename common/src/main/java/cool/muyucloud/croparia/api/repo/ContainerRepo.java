@@ -19,7 +19,7 @@ public record ContainerRepo(@NotNull Container container) implements Repo<ItemSp
 
     @Override
     public boolean isEmpty(int i) {
-        return this.container().isEmpty();
+        return this.container().getItem(i).isEmpty();
     }
 
     @Override

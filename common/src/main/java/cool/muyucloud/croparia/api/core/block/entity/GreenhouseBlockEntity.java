@@ -35,7 +35,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class GreenhouseBlockEntity extends BlockEntity implements MenuProvider, Container {
     private final NonNullList<ItemStack> inventory;
@@ -46,7 +45,7 @@ public class GreenhouseBlockEntity extends BlockEntity implements MenuProvider, 
         this.inventory = NonNullList.withSize(9, ItemStack.EMPTY);
     }
 
-    public static void tick(Level level, BlockPos worldPosition, GreenhouseBlockEntity greenHouseBlockEntity) {
+    public static void tick(Level level, BlockPos worldPosition, GreenhouseBlockEntity gbe) {
         if (!level.isClientSide) {
             BlockState belowState = level.getBlockState(worldPosition.below());
             if (belowState.getBlock() instanceof CropBlock block) {
@@ -59,28 +58,14 @@ public class GreenhouseBlockEntity extends BlockEntity implements MenuProvider, 
                             stack.shrink(1);
                             decreased = true;
                         }
-                        addItemStackInInventory(stack, greenHouseBlockEntity);
+                        gbe.proxy.accept(ItemSpec.from(stack), stack.getCount());
                     }
-
-                    IntegerProperty property = ((CropBlockAccess) block).croparia_if$invokeGetAgeProperty();
+                    IntegerProperty property = ((CropBlockAccess) block).cif$getAgeProperty();
                     int maxAge = block.getMaxAge();
                     level.setBlockAndUpdate(worldPosition.below(), block.defaultBlockState().setValue(property, maxAge / 2));
                 }
             }
         }
-    }
-
-    public static void addItemStackInInventory(ItemStack itemstack, GreenhouseBlockEntity greenHouseBlockEntity) {
-        int i = greenHouseBlockEntity.inventory.size();
-        ItemStack stack = itemstack;
-
-        for (int j = 0; j < i && !stack.isEmpty(); ++j) {
-            if (greenHouseBlockEntity.getItem(j).getCount() < 64 && greenHouseBlockEntity.getItem(j).getItem() == stack.getItem() || greenHouseBlockEntity.getItem(j).isEmpty()) {
-                greenHouseBlockEntity.setItem(j, new ItemStack(stack.getItem(), stack.getCount() + greenHouseBlockEntity.getItem(j).getCount()));
-                stack = new ItemStack(stack.getItem(), stack.getCount() - greenHouseBlockEntity.getItem(j).getCount());
-            }
-        }
-
     }
 
     @Override
@@ -100,14 +85,7 @@ public class GreenhouseBlockEntity extends BlockEntity implements MenuProvider, 
     }
 
     public boolean isEmpty() {
-        AtomicBoolean empty = new AtomicBoolean(true);
-        this.inventory.forEach((itemStack) -> {
-            if (!itemStack.isEmpty()) {
-                empty.set(false);
-            }
-
-        });
-        return empty.get();
+        return this.inventory.stream().allMatch(ItemStack::isEmpty);
     }
 
     public @NotNull ItemStack getItem(int slot) {

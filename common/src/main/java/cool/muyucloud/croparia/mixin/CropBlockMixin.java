@@ -24,7 +24,7 @@ public abstract class CropBlockMixin extends BushBlock implements BonemealableBl
 
     @Unique
     @Override
-    public IntegerProperty croparia_if$invokeGetAgeProperty() {
+    public IntegerProperty cif$getAgeProperty() {
         return this.getAgeProperty();
     }
 }
