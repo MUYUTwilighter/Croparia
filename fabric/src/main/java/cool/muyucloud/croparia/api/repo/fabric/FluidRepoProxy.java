@@ -10,9 +10,12 @@ import net.fabricmc.fabric.api.transfer.v1.storage.StorageView;
 import net.fabricmc.fabric.api.transfer.v1.transaction.TransactionContext;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 public class FluidRepoProxy extends RepoProxy<FluidSpec> implements Storage<FluidVariant> {
+    private final ArrayList<FluidView> views = new ArrayList<>();
+
     public FluidRepoProxy(Repo<FluidSpec> repo) {
         super(repo);
     }
@@ -51,6 +54,7 @@ public class FluidRepoProxy extends RepoProxy<FluidSpec> implements Storage<Flui
 
     @Override
     public @NotNull Iterator<StorageView<FluidVariant>> iterator() {
+        views.removeIf(view -> view.i >= this.size());
         return new FluidIterator();
     }
 
@@ -64,7 +68,10 @@ public class FluidRepoProxy extends RepoProxy<FluidSpec> implements Storage<Flui
 
         @Override
         public StorageView<FluidVariant> next() {
-            return new FluidView(this.i++);
+            if (this.i >= views.size()) {
+                views.add(new FluidView(this.i));
+            }
+            return views.get(this.i++);
         }
     }
 
