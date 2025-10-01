@@ -6,7 +6,6 @@ import net.fabricmc.api.ModInitializer;
 public class CropariaIfFabric implements ModInitializer {
     @Override
     public void onInitialize() {
-        CompatCrops.init();
         CropariaIf.init();
     }
 }

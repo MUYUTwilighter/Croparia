@@ -6,7 +6,6 @@ import net.neoforged.fml.common.Mod;
 @Mod(CropariaIf.MOD_ID)
 public class CropariaIfNeoForge {
     public CropariaIfNeoForge() {
-        CompatCrops.init();
         CropariaIf.init();
     }
 }

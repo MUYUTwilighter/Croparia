@@ -55,7 +55,7 @@ dependencies {
 //    modApi "dev.latvian.mods:kubejs-neoforge:${kubejs_version}"
 
     // Mekanism
-    modRuntimeOnly "curse.maven:mekanism-268560:6018306"
+    modLocalRuntime "curse.maven:mekanism-268560:6018306"
 }
 
 processResources {

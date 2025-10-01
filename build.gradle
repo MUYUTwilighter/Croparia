@@ -94,3 +94,27 @@ subprojects {
         }
     }
 }
+
+def findTaskPath = { String projPath, String taskName ->
+    def p = project(projPath)
+    def t = p.tasks.named(taskName).get()
+    return t != null ? "${projPath}:${taskName}" : null
+}
+
+tasks.register("publishAll") {
+    group = "publishing"
+    description = "Publishes all platforms to their configured services (Modrinth, CurseForge, etc)."
+
+    def deps = []
+
+    enabled_platforms.split(",").collect { p -> ":" + p.trim() }.forEach {p -> {
+        ['curseforge', 'modrinth'].forEach { taskName ->
+            def t = findTaskPath(p, taskName)
+            if (t != null) {
+                deps.add(t)
+            }
+        }
+    }}
+
+    dependsOn deps
+}
