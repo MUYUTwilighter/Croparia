@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(CapabilityProvider.class)
 public abstract class CapabilityProviderMixin {
-    @Inject(method = "getCapability", at = @At("HEAD"), cancellable = true, remap = false)
+    @Inject(method = "getCapability", at = @At("RETURN"), cancellable = true, remap = false)
     public void onGetCapability(@NotNull Capability<?> cap, @Nullable Direction side, CallbackInfoReturnable<LazyOptional<Object>> cir) {
         //noinspection ConstantValue
         if ((Object) this instanceof BlockEntity be && !(cir.getReturnValue().isPresent())) {
