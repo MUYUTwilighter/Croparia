@@ -7,6 +7,7 @@ import cool.muyucloud.croparia.api.element.fluid.ElementalSource;
 import dev.architectury.core.fluid.ArchitecturyFlowingFluid;
 import dev.architectury.registry.registries.DeferredRegister;
 import dev.architectury.registry.registries.RegistrySupplier;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.material.Fluid;
 
